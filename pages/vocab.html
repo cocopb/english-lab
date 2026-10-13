@@ -25,7 +25,7 @@
             <select id="vocab-track"><option value="all">전체</option><option value="toeic">토익</option><option value="speaking">회화</option><option value="toefl">토플</option></select>
           </label>
           <label class="field" for="vocab-day-filter"><span id="vocab-day-filter-label">Day</span>
-            <select id="vocab-day-filter"><option value="all">전체</option></select>
+            <select id="vocab-day-filter"></select>
           </label>
           <label class="field vocab-search-field" for="vocab-search">검색
             <input id="vocab-search" type="search" placeholder="영어 단어 또는 한글 뜻">
@@ -34,7 +34,9 @@
           <button class="button button-quiet vocab-hide-toggle" id="vocab-hide-toggle" type="button" aria-pressed="false">뜻 가리기</button>
         </div>
         <p class="vocab-result-count" id="vocab-result-count" aria-live="polite"></p>
+        <div class="vocab-day-navigation" id="vocab-day-navigation"></div>
         <div id="vocab-list" class="vocab-list"></div>
+        <div class="vocab-day-navigation" id="vocab-day-navigation-bottom"></div>
       </section>
       <section class="vocab-tab-panel" id="vocab-panel-exam" role="tabpanel" aria-labelledby="vocab-tab-exam" hidden>
         <h2>보카 시험</h2>

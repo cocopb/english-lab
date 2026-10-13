@@ -11,6 +11,8 @@
     var expandToggle = document.getElementById("vocab-expand-toggle");
     var resultCount = document.getElementById("vocab-result-count");
     var dayFilterLabel = document.getElementById("vocab-day-filter-label");
+    var dayNavigation = document.getElementById("vocab-day-navigation");
+    var dayNavigationBottom = document.getElementById("vocab-day-navigation-bottom");
     var examForm = document.getElementById("vocab-exam-form");
     var examTrack = document.getElementById("vocab-exam-track");
     var examDay = document.getElementById("vocab-exam-day");
@@ -145,9 +147,15 @@
       var selectedTrack = trackSelect.value;
       var selectedDay = daySelect.value;
       var query = searchInput.value.trim().toLocaleLowerCase();
+      if (selectedTrack === "all") {
+        renderTrackSummary();
+        updateExpandToggle();
+        renderDayNavigation();
+        return;
+      }
       var filtered = vocabulary.filter(function (item) {
         return trackMatches(item.track, selectedTrack) &&
-          (selectedDay === "all" || String(item.situation || item.day) === selectedDay) &&
+          (query || String(item.situation || item.day) === selectedDay) &&
           (!query || (item.word + " " + item.meaning).toLocaleLowerCase().includes(query));
       });
       var groups = [];
@@ -170,6 +178,7 @@
       if (!filtered.length) {
         container.appendChild(makeElement("div", "placeholder", "조건에 맞는 단어가 없어요."));
         updateExpandToggle();
+        renderDayNavigation();
         return;
       }
 
@@ -208,6 +217,10 @@
             makeElement("span", "vocab-word en", item.word),
             makeElement("span", "vocab-pos-inline", item.pos)
           );
+          if (query) {
+            var membership = item.situation || "Day " + item.day;
+            wordContent.appendChild(makeElement("span", "vocab-membership", membership));
+          }
           addCell(row, "단어", wordContent);
           addCell(row, "품사", makeElement("span", "vocab-pos", item.pos));
 
@@ -228,6 +241,78 @@
         container.appendChild(table);
       });
       updateExpandToggle();
+      renderDayNavigation();
+    }
+
+    function renderTrackSummary() {
+      var counts = { toeic: 0, speaking: 0, toefl: 0 };
+      vocabulary.forEach(function (item) {
+        var track = item.track === "survival" || item.track === "conversation" || item.track === "회화"
+          ? "speaking"
+          : item.track;
+        if (Object.prototype.hasOwnProperty.call(counts, track)) counts[track] += 1;
+      });
+      container.replaceChildren();
+      container.appendChild(makeElement("div", "placeholder vocab-track-prompt", "트랙을 선택하세요"));
+      var summary = makeElement("div", "vocab-track-summary");
+      [
+        ["toeic", "토익"],
+        ["speaking", "회화"],
+        ["toefl", "토플"]
+      ].forEach(function (entry) {
+        var card = makeElement("article", "vocab-track-count");
+        card.append(
+          makeElement("span", "", entry[1]),
+          makeElement("strong", "", counts[entry[0]] + "개")
+        );
+        summary.appendChild(card);
+      });
+      container.appendChild(summary);
+      resultCount.textContent = "트랙별 단어 수";
+    }
+
+    function renderDayNavigation() {
+      [dayNavigation, dayNavigationBottom].forEach(function (navigation) {
+        navigation.replaceChildren();
+        var days = Array.from(daySelect.options).map(function (option) { return option.value; });
+        var currentIndex = days.indexOf(daySelect.value);
+        var unit = dayFilterLabel.textContent === "상황" ? "상황" : "Day";
+        var previous = makeElement("button", "button button-quiet", "← 이전 " + unit);
+        previous.type = "button";
+        previous.disabled = daySelect.disabled || currentIndex <= 0 || Boolean(searchInput.value.trim());
+        previous.addEventListener("click", function () {
+          if (currentIndex > 0) selectDay(days[currentIndex - 1]);
+        });
+        var next = makeElement("button", "button button-quiet", "다음 " + unit + " →");
+        next.type = "button";
+        next.disabled = daySelect.disabled || currentIndex < 0 || currentIndex >= days.length - 1 || Boolean(searchInput.value.trim());
+        next.addEventListener("click", function () {
+          if (currentIndex < days.length - 1) selectDay(days[currentIndex + 1]);
+        });
+        navigation.append(previous, next);
+        navigation.hidden = selectedTrackIsAll() || daySelect.disabled;
+      });
+    }
+
+    function selectedTrackIsAll() {
+      return trackSelect.value === "all";
+    }
+
+    function selectDay(day) {
+      daySelect.value = day;
+      saveVocabSelection();
+      renderList();
+    }
+
+    function saveVocabSelection() {
+      try {
+        localStorage.setItem("englishLabVocabSelection", JSON.stringify({
+          track: trackSelect.value,
+          day: daySelect.value
+        }));
+      } catch (error) {
+        console.warn("단어장 선택값을 저장하지 못했습니다.", error);
+      }
     }
 
     function updateExpandToggle() {
@@ -272,8 +357,9 @@
         unavailable.textContent = "등록된 Day 없음";
         select.appendChild(unavailable);
       }
-      select.disabled = !days.length && !includeAll;
+      select.disabled = !days.length && !includeAll || select === daySelect && track === "all";
       if (days.some(function (day) { return String(day) === previous; })) select.value = previous;
+      else if (days.length) select.value = String(days[0]);
       return days;
     }
 
@@ -615,11 +701,33 @@
     });
 
     trackSelect.addEventListener("change", function () {
-      populateDayFilter(daySelect, trackSelect.value, true);
+      populateDayFilter(daySelect, trackSelect.value, false);
+      if (daySelect.options.length) daySelect.value = daySelect.options[0].value;
+      saveVocabSelection();
       renderList();
     });
-    populateDayFilter(daySelect, "all", true);
-    daySelect.addEventListener("change", renderList);
+    var savedSelection = null;
+    try {
+      var storedSelection = localStorage.getItem("englishLabVocabSelection");
+      if (storedSelection) savedSelection = JSON.parse(storedSelection);
+    } catch (error) {
+      console.warn("저장된 단어장 선택값을 읽지 못했습니다.", error);
+    }
+    if (savedSelection && Array.from(trackSelect.options).some(function (option) { return option.value === savedSelection.track; })) {
+      trackSelect.value = savedSelection.track;
+    } else {
+      trackSelect.value = "toeic";
+    }
+    populateDayFilter(daySelect, trackSelect.value, false);
+    if (savedSelection && savedSelection.track === trackSelect.value &&
+        Array.from(daySelect.options).some(function (option) { return option.value === savedSelection.day; })) {
+      daySelect.value = savedSelection.day;
+    }
+    saveVocabSelection();
+    daySelect.addEventListener("change", function () {
+      saveVocabSelection();
+      renderList();
+    });
     searchInput.addEventListener("input", renderList);
     hideToggle.addEventListener("click", function () {
       hiddenMeanings = !hiddenMeanings;
@@ -633,6 +741,7 @@
     });
     examTrack.addEventListener("change", function () {
       var days = populateDayFilter(examDay, examTrack.value, false, true);
+      if (days.length) examDay.value = String(days[0]);
       examMessage.textContent = days.length ? "" : "선택한 트랙에 등록된 단어가 없습니다.";
       updateExamRanges();
     });
