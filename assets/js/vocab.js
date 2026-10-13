@@ -333,7 +333,7 @@
       }).map(function (item) { return item.situation || item.day; })));
       var days = values.every(function (value) { return typeof value === "number"; })
         ? values.sort(function (a, b) { return a - b; })
-        : values.sort(function (a, b) { return String(a).localeCompare(String(b), "ko"); });
+        : values;
       var isSituation = track === "speaking" || track === "survival";
       var labelText = isSituation ? "상황" : track === "all" ? "Day / 상황" : "Day";
       if (select === daySelect) dayFilterLabel.textContent = labelText;
