@@ -8,6 +8,7 @@
     var daySelect = document.getElementById("vocab-day-filter");
     var searchInput = document.getElementById("vocab-search");
     var hideToggle = document.getElementById("vocab-hide-toggle");
+    var expandToggle = document.getElementById("vocab-expand-toggle");
     var resultCount = document.getElementById("vocab-result-count");
     var dayFilterLabel = document.getElementById("vocab-day-filter-label");
     var examForm = document.getElementById("vocab-exam-form");
@@ -29,6 +30,7 @@
     var questionIndex = 0;
     var correctCount = 0;
     var wrongItems = [];
+    var answerResults = [];
     var blankCache = Object.create(null);
     var blankWarnings = new Set();
 
@@ -139,6 +141,7 @@
     }
 
     function renderList() {
+      openIds.clear();
       var selectedTrack = trackSelect.value;
       var selectedDay = daySelect.value;
       var query = searchInput.value.trim().toLocaleLowerCase();
@@ -166,6 +169,7 @@
 
       if (!filtered.length) {
         container.appendChild(makeElement("div", "placeholder", "조건에 맞는 단어가 없어요."));
+        updateExpandToggle();
         return;
       }
 
@@ -223,6 +227,16 @@
         table.appendChild(body);
         container.appendChild(table);
       });
+      updateExpandToggle();
+    }
+
+    function updateExpandToggle() {
+      var rows = Array.from(container.querySelectorAll(".vocab-entry-row"));
+      var expanded = rows.length > 0 && rows.every(function (row) {
+        return openIds.has(row.dataset.vocabId);
+      });
+      expandToggle.textContent = expanded ? "전체 접기" : "전체 펼치기";
+      expandToggle.setAttribute("aria-expanded", String(expanded));
     }
 
     function populateDayFilter(select, track, includeAll, activeOnly) {
@@ -382,7 +396,11 @@
       }
       var words = [item.word].concat(item.distractors);
       var choices = words.map(function (word) {
-        return { text: trackMeaning[word.toLocaleLowerCase()], word: word, correct: word === item.word };
+        return {
+          text: word === item.word ? item.meaning : trackMeaning[word.toLocaleLowerCase()],
+          word: word,
+          correct: word === item.word
+        };
       });
       var missing = choices.filter(function (choice) { return !choice.text; }).map(function (choice) { return choice.word; });
       if (missing.length) throw new Error("뜻 데이터가 없는 혼동 단어: " + missing.join(", "));
@@ -413,6 +431,7 @@
       questionIndex = 0;
       correctCount = 0;
       wrongItems = [];
+      answerResults = [];
       examMessage.textContent = "";
       examStage.hidden = false;
       activateTab("exam");
@@ -453,6 +472,8 @@
     }
 
     function gradeAnswer(item, selected, choices, options, card) {
+      if (card.dataset.answered === "true") return;
+      card.dataset.answered = "true";
       var buttons = options.querySelectorAll(".vocab-quiz-option");
       buttons.forEach(function (button, index) {
         button.disabled = true;
@@ -460,6 +481,7 @@
         else if (choices[index] === selected) button.classList.add("incorrect");
       });
       window.Progress.recordVocabAnswer(item.id, selected.correct);
+      answerResults.push({ item: item, correct: selected.correct });
       if (selected.correct) {
         correctCount += 1;
         card.querySelector(".vocab-quiz-feedback").textContent = "정답이에요!";
@@ -477,6 +499,8 @@
     }
 
     function renderResults() {
+      correctCount = answerResults.filter(function (answer) { return answer.correct; }).length;
+      wrongItems = answerResults.filter(function (answer) { return !answer.correct; }).map(function (answer) { return answer.item; });
       examStage.replaceChildren();
       var card = makeElement("section", "panel vocab-results");
       var percentage = Math.round(correctCount / examItems.length * 100);
@@ -497,8 +521,10 @@
           );
           misses.appendChild(entry);
         });
-      } else {
+      } else if (correctCount === examItems.length && examItems.length > 0) {
         misses.appendChild(makeElement("p", "", "모든 문제를 맞혔어요!"));
+      } else {
+        misses.appendChild(makeElement("p", "", "틀린 단어 정보가 없습니다."));
       }
       card.appendChild(misses);
       var actions = makeElement("div", "button-row vocab-result-actions");
@@ -569,6 +595,23 @@
       expandButton.setAttribute("aria-expanded", String(openIds.has(id)));
       expandButton.setAttribute("aria-label", row.querySelector(".vocab-word").textContent + " 상세 " + (openIds.has(id) ? "접기" : "펼치기"));
       row.nextElementSibling.hidden = !openIds.has(id);
+      updateExpandToggle();
+    });
+
+    expandToggle.addEventListener("click", function () {
+      var rows = Array.from(container.querySelectorAll(".vocab-entry-row"));
+      var expanded = rows.length > 0 && rows.every(function (row) {
+        return openIds.has(row.dataset.vocabId);
+      });
+      if (expanded) openIds.clear();
+      else rows.forEach(function (row) { openIds.add(row.dataset.vocabId); });
+      rows.forEach(function (row) {
+        var isOpen = openIds.has(row.dataset.vocabId);
+        row.setAttribute("aria-expanded", String(isOpen));
+        row.querySelector(".vocab-expand-button").setAttribute("aria-expanded", String(isOpen));
+        row.nextElementSibling.hidden = !isOpen;
+      });
+      updateExpandToggle();
     });
 
     trackSelect.addEventListener("change", function () {
