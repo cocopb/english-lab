@@ -29,6 +29,8 @@
     var questionIndex = 0;
     var correctCount = 0;
     var wrongItems = [];
+    var blankCache = Object.create(null);
+    var blankWarnings = new Set();
 
     function trackLabel(track) {
       var labels = { toeic: "토익", speaking: "회화", survival: "회화", conversation: "회화", toefl: "토플" };
@@ -36,18 +38,57 @@
     }
 
     function blankExample(item) {
-      var target = item.word.replace(/[?!.,;:]+$/, "");
+      if (Object.prototype.hasOwnProperty.call(blankCache, item.id)) return blankCache[item.id];
+      var target = item.word.replace(/~/g, " ").trim().replace(/[?!.,;:]+$/, "");
+      var isPhrase = /\s/.test(target);
       var variants = [target];
-      if (/[^aeiou]y$/i.test(target)) variants.push(target.slice(0, -1) + "ies");
-      else variants.push(target + "s");
-      for (var index = 0; index < variants.length; index += 1) {
-        var expression = variants[index].split("~").map(function (part) {
-          return part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        }).join("\\S+");
-        var match = new RegExp(expression, "i");
-        if (match.test(item.example)) return item.example.replace(match, "____");
+      if (!isPhrase) {
+        var lower = target.toLowerCase();
+        var last = target.slice(-1);
+        var consonantY = /[^aeiou]y$/i.test(target);
+        var consonantVowelConsonant = /[^aeiou][aeiou][^aeiou]$/i.test(target);
+
+        variants.push(target + "s", target + "es");
+        if (consonantY) variants.push(target.slice(0, -1) + "ies");
+
+        variants.push(target + "d", target + "ed");
+        if (consonantY) variants.push(target.slice(0, -1) + "ied");
+        if (consonantVowelConsonant && !/[wxy]$/i.test(target)) variants.push(target + last + "ed");
+
+        if (last.toLowerCase() === "e") variants.push(target.slice(0, -1) + "ing");
+        else {
+          variants.push(target + "ing");
+          if (consonantVowelConsonant && !/[wxy]$/i.test(target)) variants.push(target + last + "ing");
+        }
+
+        if (consonantY) variants.push(target.slice(0, -1) + "ier", target.slice(0, -1) + "iest");
+        else if (last.toLowerCase() === "e") variants.push(target + "r", target + "st");
+        else variants.push(target + "er", target + "est");
+        if (consonantVowelConsonant && !/[wxy]$/i.test(target)) {
+          variants.push(target + last + "er", target + last + "est");
+        }
+        variants = variants.filter(function (variant, index) {
+          return variant && variants.indexOf(variant) === index && variant.toLowerCase() !== lower;
+        });
+        variants.unshift(target);
       }
-      return item.example;
+
+      for (var index = 0; index < variants.length; index += 1) {
+        var expression = variants[index].trim().split(/\s+/).map(function (part) {
+          return part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        }).join("\\s+");
+        var match = new RegExp("\\b" + expression + "\\b", "i");
+        if (match.test(item.example)) {
+          blankCache[item.id] = item.example.replace(match, "____");
+          return blankCache[item.id];
+        }
+      }
+      if (!blankWarnings.has(item.id)) {
+        console.warn("빈칸 시험에서 건너뛸 단어: " + item.id);
+        blankWarnings.add(item.id);
+      }
+      blankCache[item.id] = null;
+      return null;
     }
 
     function trackMatches(itemTrack, selectedTrack) {
@@ -352,10 +393,12 @@
       var progress = window.Progress.get();
       items = items.filter(function (item) {
         var status = progress.vocabProgress[item.id];
-        return !status || status.stage < 4;
+        return (!status || status.stage < 4) && (type !== "blank" || blankExample(item) !== null);
       });
       if (!items.length) {
-        examMessage.textContent = "선택한 범위에 출제할 단어가 없습니다.";
+        examMessage.textContent = type === "blank"
+          ? "선택한 범위에 빈칸 문제로 출제할 수 있는 단어가 없습니다."
+          : "선택한 범위에 출제할 단어가 없습니다.";
         return;
       }
       try {
