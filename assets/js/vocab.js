@@ -9,9 +9,11 @@
     var searchInput = document.getElementById("vocab-search");
     var hideToggle = document.getElementById("vocab-hide-toggle");
     var resultCount = document.getElementById("vocab-result-count");
+    var dayFilterLabel = document.getElementById("vocab-day-filter-label");
     var examForm = document.getElementById("vocab-exam-form");
     var examTrack = document.getElementById("vocab-exam-track");
     var examDay = document.getElementById("vocab-exam-day");
+    var examDayLabel = document.getElementById("vocab-exam-day-label");
     var examType = document.getElementById("vocab-exam-type");
     var examRange = document.getElementById("vocab-exam-range");
     var examMessage = document.getElementById("vocab-exam-message");
@@ -29,13 +31,28 @@
     var wrongItems = [];
 
     function trackLabel(track) {
-      var labels = { toeic: "토익", speaking: "회화", conversation: "회화", toefl: "토플" };
+      var labels = { toeic: "토익", speaking: "회화", survival: "회화", conversation: "회화", toefl: "토플" };
       return labels[track] || track;
+    }
+
+    function blankExample(item) {
+      var target = item.word.replace(/[?!.,;:]+$/, "");
+      var variants = [target];
+      if (/[^aeiou]y$/i.test(target)) variants.push(target.slice(0, -1) + "ies");
+      else variants.push(target + "s");
+      for (var index = 0; index < variants.length; index += 1) {
+        var expression = variants[index].split("~").map(function (part) {
+          return part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        }).join("\\S+");
+        var match = new RegExp(expression, "i");
+        if (match.test(item.example)) return item.example.replace(match, "____");
+      }
+      return item.example;
     }
 
     function trackMatches(itemTrack, selectedTrack) {
       if (selectedTrack === "all") return true;
-      if (selectedTrack === "speaking") return ["speaking", "conversation", "회화"].includes(itemTrack);
+      if (selectedTrack === "speaking") return ["speaking", "survival", "conversation", "회화"].includes(itemTrack);
       return itemTrack === selectedTrack || itemTrack === trackLabel(selectedTrack);
     }
 
@@ -86,15 +103,16 @@
       var query = searchInput.value.trim().toLocaleLowerCase();
       var filtered = vocabulary.filter(function (item) {
         return trackMatches(item.track, selectedTrack) &&
-          (selectedDay === "all" || String(item.day) === selectedDay) &&
+          (selectedDay === "all" || String(item.situation || item.day) === selectedDay) &&
           (!query || (item.word + " " + item.meaning).toLocaleLowerCase().includes(query));
       });
       var groups = [];
       filtered.forEach(function (item) {
-        var key = item.track + "-" + item.day;
+        var groupingValue = item.situation || item.day;
+        var key = item.track + "-" + groupingValue;
         var group = groups.find(function (entry) { return entry.key === key; });
         if (!group) {
-          group = { key: key, track: item.track, day: item.day, items: [] };
+          group = { key: key, track: item.track, groupingValue: groupingValue, situation: Boolean(item.situation), items: [] };
           groups.push(group);
         }
         group.items.push(item);
@@ -114,7 +132,7 @@
         var table = document.createElement("table");
         table.className = "vocab-table";
         var caption = document.createElement("caption");
-        caption.textContent = trackLabel(group.track) + " · DAY " + group.day;
+        caption.textContent = trackLabel(group.track) + (group.situation ? " · " + group.groupingValue : " · DAY " + group.groupingValue);
         table.appendChild(caption);
 
         var head = document.createElement("thead");
@@ -169,10 +187,17 @@
     function populateDayFilter(select, track, includeAll, activeOnly) {
       var previous = select.value;
       var progress = activeOnly ? window.Progress.get() : null;
-      var days = Array.from(new Set(vocabulary.filter(function (item) {
+      var values = Array.from(new Set(vocabulary.filter(function (item) {
         var status = progress && progress.vocabProgress[item.id];
         return (!activeOnly || !status || status.stage < 4) && trackMatches(item.track, track);
-      }).map(function (item) { return item.day; }))).sort(function (a, b) { return a - b; });
+      }).map(function (item) { return item.situation || item.day; })));
+      var days = values.every(function (value) { return typeof value === "number"; })
+        ? values.sort(function (a, b) { return a - b; })
+        : values.sort(function (a, b) { return String(a).localeCompare(String(b), "ko"); });
+      var isSituation = track === "speaking" || track === "survival";
+      var labelText = isSituation ? "상황" : track === "all" ? "Day / 상황" : "Day";
+      if (select === daySelect) dayFilterLabel.textContent = labelText;
+      if (select === examDay) examDayLabel.textContent = labelText;
       select.replaceChildren();
       if (includeAll) {
         var all = document.createElement("option");
@@ -183,7 +208,7 @@
       days.forEach(function (day) {
         var option = document.createElement("option");
         option.value = String(day);
-        option.textContent = "Day " + day;
+        option.textContent = typeof day === "number" ? "Day " + day : String(day);
         select.appendChild(option);
       });
       if (!includeAll && days.length === 0) {
@@ -193,7 +218,7 @@
         select.appendChild(unavailable);
       }
       select.disabled = !days.length && !includeAll;
-      if (days.includes(Number(previous))) select.value = previous;
+      if (days.some(function (day) { return String(day) === previous; })) select.value = previous;
       return days;
     }
 
@@ -202,7 +227,7 @@
       return vocabulary.filter(function (item) {
         var status = progress.vocabProgress[item.id];
         return (!status || status.stage < 4) &&
-          trackMatches(item.track, track) && (day === undefined || String(item.day) === String(day));
+          trackMatches(item.track, track) && (day === undefined || String(item.situation || item.day) === String(day));
       });
     }
 
@@ -359,7 +384,7 @@
       var card = makeElement("section", "panel vocab-question");
       card.append(
         makeElement("p", "quiz-count", (questionIndex + 1) + " / " + examItems.length),
-        makeElement("h3", "vocab-question-prompt en", examTypeForRun === "meaning" ? item.word : item.example.replace(new RegExp("\\b" + item.word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\b", "gi"), "____"))
+        makeElement("h3", "vocab-question-prompt en", examTypeForRun === "meaning" ? item.word : blankExample(item))
       );
       var options = makeElement("div", "quiz-options vocab-quiz-options");
       choices.forEach(function (choice) {
