@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ko"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#FAF8F6">
+  <title>보카 — English Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css"><script src="../assets/js/common.js" defer></script>
+</head><body>
+  <div id="site-header"></div><main class="container">
+    <header class="page-intro"><p class="eyebrow">VOCABULARY</p><h1>보카 노트</h1><p>오늘 외운 단어를 기록하고, 나만의 어휘장을 채워보세요.</p></header>
+    <section class="content-section"><h2>해커스 보카 진도</h2><div class="panel">
+      <form class="form-row" id="vocab-form"><label class="field" for="vocab-day">마지막으로 공부한 Day<input id="vocab-day" type="number" min="0" max="999" step="1" value="0" inputmode="numeric" required></label><button class="button button-primary" type="submit">진도 저장</button></form>
+      <p class="helper-text" id="vocab-message" aria-live="polite">숫자만 입력해 간단히 기록해요.</p>
+    </div></section>
+    <section class="content-section"><h2>단어 목록</h2><div id="vocab-list" class="list-stack"></div></section>
+  </main><div id="site-footer"></div>
+  <script src="../data/vocab.js"></script><script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var progress = window.Progress.get();
+      document.getElementById("vocab-day").value = progress.vocabDay;
+      document.getElementById("vocab-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+        var day = Number(document.getElementById("vocab-day").value);
+        if (!Number.isInteger(day) || day < 0) {
+          document.getElementById("vocab-message").textContent = "0 이상의 정수를 입력해주세요.";
+          return;
+        }
+        window.Progress.set({ vocabDay: day });
+        document.getElementById("vocab-message").textContent = "Day " + day + "까지의 진도를 저장했어요.";
+      });
+      document.getElementById("vocab-list").innerHTML = window.VOCAB.map(function (item) {
+        return '<article class="note-card"><h3 class="en">' + item.word + '</h3><p>' + item.meaning + '</p><span class="english-sentence en">' + item.example + "</span></article>";
+      }).join("");
+    });
+  </script>
+</body></html>

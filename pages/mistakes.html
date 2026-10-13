@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ko"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#FAF8F6">
+  <title>오답노트 — English Lab</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css"><script src="../assets/js/common.js" defer></script>
+</head><body><div id="site-header"></div><main class="container">
+  <header class="page-intro"><p class="eyebrow">MISTAKE NOTE</p><h1>오답노트</h1><p>틀린 문장을 다시 살펴보면 다음에는 더 정확하게 쓸 수 있어요.</p></header>
+  <section class="content-section"><h2>다시 확인하기</h2><div id="mistake-list" class="list-stack"></div></section>
+</main><div id="site-footer"></div>
+<script src="../data/mistakes.js"></script><script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("mistake-list").innerHTML = window.MISTAKES.map(function (item) {
+      return '<article class="note-card mistake-card"><span class="answer-wrong en">❌ ' + item.original + '</span><span class="answer-right en">⭕ ' + item.correction + '</span><p><strong>이유</strong> · ' + item.reason + "</p></article>";
+    }).join("");
+  });
+</script></body></html>

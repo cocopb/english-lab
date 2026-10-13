@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ko"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#FAF8F6">
+  <title>문법 — English Lab</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css"><script src="../assets/js/common.js" defer></script>
+</head><body><div id="site-header"></div><main class="container">
+  <header class="page-intro"><p class="eyebrow">GRAMMAR</p><h1>문법 정리</h1><p>규칙을 짧게 정리하고 예문으로 확인해요.</p></header>
+  <section class="content-section"><h2>문법 노트</h2><div id="grammar-list"></div></section>
+</main><div id="site-footer"></div>
+<script src="../data/grammar.js"></script><script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("grammar-list").innerHTML = window.GRAMMAR.map(function (item, index) {
+      return '<article class="accordion-item"><button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="grammar-panel-' + index + '">' + item.title + '</button><div class="accordion-panel" id="grammar-panel-' + index + '" hidden><p>' + item.summary + '</p><p>' + item.body + '</p><div class="tag-list">' + item.tags.map(function (tag) { return '<span class="tag">' + tag + "</span>"; }).join("") + "</div></div></article>";
+    }).join("");
+    document.querySelectorAll(".accordion-trigger").forEach(function (button) {
+      button.addEventListener("click", function () {
+        var expanded = button.getAttribute("aria-expanded") === "true";
+        button.setAttribute("aria-expanded", String(!expanded));
+        document.getElementById(button.getAttribute("aria-controls")).hidden = expanded;
+      });
+    });
+  });
+</script></body></html>

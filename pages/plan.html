@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ko"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#FAF8F6">
+  <title>6개월 계획 — English Lab</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css"><script src="../assets/js/common.js" defer></script>
+</head><body><div id="site-header"></div><main class="container">
+  <header class="page-intro"><p class="eyebrow">26-WEEK STUDY PLAN</p><h1>6개월 학습 계획</h1><p>주차별 목표를 완료하면 체크해두세요. 진도는 이 기기에 저장돼요.</p></header>
+  <section class="content-section"><h2>주차별 계획</h2><p class="plan-progress" id="plan-progress" aria-live="polite"></p><div class="plan-list" id="plan-list"></div></section>
+</main><div id="site-footer"></div>
+<script src="../data/plan.js"></script><script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var progress = window.Progress.get();
+    var list = document.getElementById("plan-list");
+    function updateCount() {
+      var done = Object.keys(window.Progress.get().planDone).filter(function (id) { return window.Progress.get().planDone[id]; }).length;
+      document.getElementById("plan-progress").textContent = done + " / " + window.PLAN.length + "주 완료";
+    }
+    list.innerHTML = window.PLAN.map(function (item, index) {
+      var checked = Boolean(progress.planDone[item.id]);
+      return '<label class="plan-item' + (checked ? " is-done" : "") + '"><input type="checkbox" data-plan-id="' + item.id + '"' + (checked ? " checked" : "") + '><span><span class="plan-week">WEEK ' + String(index + 1).padStart(2, "0") + '</span><span class="plan-title">' + item.title + "</span></span></label>";
+    }).join("");
+    list.querySelectorAll("input").forEach(function (checkbox) {
+      checkbox.addEventListener("change", function () {
+        var planDone = window.Progress.get().planDone;
+        planDone[checkbox.getAttribute("data-plan-id")] = checkbox.checked;
+        window.Progress.set({ planDone: planDone });
+        checkbox.closest(".plan-item").classList.toggle("is-done", checkbox.checked);
+        updateCount();
+      });
+    });
+    updateCount();
+  });
+</script></body></html>

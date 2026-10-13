@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ko"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#FAF8F6">
+  <title>회화 — English Lab</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css"><script src="../assets/js/common.js" defer></script>
+</head><body><div id="site-header"></div><main class="container">
+  <header class="page-intro"><p class="eyebrow">SPEAKING</p><h1>상황별 회화</h1><p>자주 만나는 상황의 표현을 소리 내어 연습해요.</p></header>
+  <section class="content-section"><h2>표현 노트</h2><div id="speaking-list" class="list-stack"></div></section>
+</main><div id="site-footer"></div>
+<script src="../data/speaking.js"></script><script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("speaking-list").innerHTML = window.SPEAKING.map(function (item) {
+      return '<article class="note-card"><span class="tag">SITUATION</span><h3>' + item.situation + '</h3>' + item.expressions.map(function (line) { return '<p class="english-sentence en">' + line.english + '</p><p>' + line.korean + "</p>"; }).join("") + "</article>";
+    }).join("");
+  });
+</script></body></html>
