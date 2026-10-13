@@ -10,7 +10,7 @@ english-lab/
 ├─ pages/                 # 보카, 독해, 문법, 회화, 오답노트, 퀴즈, 계획
 ├─ assets/
 │  ├─ css/style.css       # 디자인 시스템과 반응형 스타일
-│  └─ js/                 # 공통 UI/진도와 퀴즈 동작
+│  └─ js/                 # 공통 UI/진도, 퀴즈, 보카 시험 동작
 ├─ data/                  # 전역 배열로 제공하는 샘플 콘텐츠
 └─ README.md
 ```
@@ -31,7 +31,7 @@ english-lab/
 - `plan.js`: `id`, `title` (26개 주차 항목)
 
 문법, 회화, 오답노트, 단어, 퀴즈 콘텐츠는 각 배열의 객체를 복사해 필요한 내용만 바꾸면 됩니다. 계획은 주차 항목을 추가하거나 수정할 수 있고 완료 상태는 `localStorage`에 저장됩니다.
-보카 시험의 뜻 선택지에 사용되는 혼동 단어 번역은 `data/vocab.js`의 `window.VOCAB_DISTRACTOR_MEANINGS`에 추가합니다. 시험 결과와 단어별 복습 단계는 `englishLabProgress`에 함께 저장됩니다.
+보카 시험의 뜻 선택지에 사용되는 혼동 단어 번역은 `data/vocab.js`의 `window.VOCAB_DISTRACTOR_MEANINGS`에 추가합니다. 시험 결과와 단어별 복습 단계는 `englishLabProgress`에 함께 저장되며, 정답 시 1·4·7·14일 간격으로 다음 복습일을 기록합니다. 오답 공부 탭에는 오늘 복습할 단어, 누적 오답 약점, 졸업 단어 현황이 표시됩니다.
 
 ## 브라우저 저장 데이터
 

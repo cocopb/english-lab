@@ -35,6 +35,7 @@
         <article class="stat-card"><span class="stat-label">푼 문항</span><strong id="quiz-solved">0개</strong><span class="stat-caption">차곡차곡 쌓이는 연습</span></article>
         <article class="stat-card"><span class="stat-label">정답률</span><strong id="quiz-rate">—</strong><span class="stat-caption">정답 / 전체 문항</span></article>
         <article class="stat-card stat-card-accent"><span class="stat-label">시험까지</span><strong id="exam-dday">D-</strong><span class="stat-caption">목표일 2027.04.13</span></article>
+        <a class="stat-card due-review-card" id="due-review-card" href="pages/vocab.html#wrong" aria-disabled="true" tabindex="-1"><span class="stat-label">오늘 복습</span><strong id="due-review-count">0개</strong><span class="stat-caption">오답 공부에서 확인</span></a>
       </div>
     </section>
 
@@ -62,6 +63,13 @@
       document.getElementById("study-days").textContent = progress.studiedDates.length + "일";
       document.getElementById("quiz-solved").textContent = solved + "개";
       document.getElementById("quiz-rate").textContent = solved ? Math.round(progress.quizCorrect / solved * 100) + "%" : "—";
+      var dueCount = window.Progress.getDueWords().length;
+      var dueCard = document.getElementById("due-review-card");
+      document.getElementById("due-review-count").textContent = dueCount + "개";
+      dueCard.classList.toggle("has-due-words", dueCount > 0);
+      dueCard.setAttribute("aria-disabled", String(dueCount === 0));
+      dueCard.tabIndex = dueCount > 0 ? 0 : -1;
+      if (dueCount === 0) dueCard.removeAttribute("href");
       var days = Math.ceil((new Date("2027-04-13T00:00:00") - new Date(new Date().toDateString())) / 86400000);
       document.getElementById("exam-dday").textContent = days > 0 ? "D-" + days : days === 0 ? "D-day" : "완료";
       document.getElementById("mark-today").addEventListener("click", function () {

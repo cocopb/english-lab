@@ -17,7 +17,8 @@
     var examMessage = document.getElementById("vocab-exam-message");
     var examStage = document.getElementById("vocab-exam-stage");
     var wrongList = document.getElementById("vocab-wrong-list");
-    var wrongStart = document.getElementById("vocab-wrong-start");
+    var dueList = document.getElementById("vocab-due-list");
+    var reviewStart = document.getElementById("vocab-review-start");
     var openIds = new Set();
     var revealedIds = new Set();
     var hiddenMeanings = false;
@@ -36,10 +37,6 @@
       if (selectedTrack === "all") return true;
       if (selectedTrack === "speaking") return ["speaking", "conversation", "회화"].includes(itemTrack);
       return itemTrack === selectedTrack || itemTrack === trackLabel(selectedTrack);
-    }
-
-    function dateKey(date) {
-      return [date.getFullYear(), String(date.getMonth() + 1).padStart(2, "0"), String(date.getDate()).padStart(2, "0")].join("-");
     }
 
     function makeElement(tag, className, text) {
@@ -169,10 +166,12 @@
       });
     }
 
-    function populateDayFilter(select, track, includeAll) {
+    function populateDayFilter(select, track, includeAll, activeOnly) {
       var previous = select.value;
+      var progress = activeOnly ? window.Progress.get() : null;
       var days = Array.from(new Set(vocabulary.filter(function (item) {
-        return trackMatches(item.track, track);
+        var status = progress && progress.vocabProgress[item.id];
+        return (!activeOnly || !status || status.stage < 4) && trackMatches(item.track, track);
       }).map(function (item) { return item.day; }))).sort(function (a, b) { return a - b; });
       select.replaceChildren();
       if (includeAll) {
@@ -199,8 +198,11 @@
     }
 
     function trackItems(track, day) {
+      var progress = window.Progress.get();
       return vocabulary.filter(function (item) {
-        return trackMatches(item.track, track) && (day === undefined || String(item.day) === String(day));
+        var status = progress.vocabProgress[item.id];
+        return (!status || status.stage < 4) &&
+          trackMatches(item.track, track) && (day === undefined || String(item.day) === String(day));
       });
     }
 
@@ -216,27 +218,75 @@
     }
 
     function renderWrongList() {
-      var progress = window.Progress.get();
-      var mistakes = vocabulary.filter(function (item) {
-        var status = progress.vocabProgress[item.id];
-        return status && status.lastResult === "wrong";
+      var dueStatuses = window.Progress.getDueWords();
+      var weakStatuses = window.Progress.getWeakWords().sort(function (a, b) {
+        return b.wrongCount - a.wrongCount || a.wordId.localeCompare(b.wordId);
       });
+      var graduatedStatuses = window.Progress.getGraduated();
+      var statusById = window.Progress.get().vocabProgress;
+      var itemsById = Object.create(null);
+      vocabulary.forEach(function (item) { itemsById[item.id] = item; });
+      var dueItems = dueStatuses.map(function (status) { return itemsById[status.wordId]; }).filter(Boolean);
+      document.getElementById("vocab-due-count").textContent = dueItems.length + "개";
+      document.getElementById("vocab-weak-count").textContent = weakStatuses.length + "개";
+      document.getElementById("vocab-graduated-count").textContent = graduatedStatuses.length + "개";
+      dueList.replaceChildren();
       wrongList.replaceChildren();
-      wrongStart.disabled = !mistakes.length;
-      if (!mistakes.length) {
-        wrongList.appendChild(makeElement("div", "placeholder", "아직 틀린 단어가 없어요. 보카 시험을 풀면 여기에 표시됩니다."));
+      reviewStart.disabled = !dueItems.length;
+      if (!dueItems.length) {
+        dueList.appendChild(makeElement("div", "placeholder", "오늘 복습할 단어가 없어요. 새 Day를 시험 보거나 내일 다시 오세요."));
+      } else {
+        dueItems.forEach(function (item) {
+          var status = statusById[item.id];
+          var card = makeElement("article", "note-card vocab-due-card");
+          var heading = makeElement("div", "vocab-due-heading");
+          heading.append(
+            makeElement("h4", "en", item.word),
+            makeElement("span", "vocab-pos", item.pos),
+            makeElement("span", "vocab-review-badge", "오답 " + status.wrongCount + "회 · Stage " + status.stage + "/4")
+          );
+          card.append(
+            heading,
+            makeElement("p", "vocab-due-meaning", item.meaning),
+            makeElement("p", "vocab-due-tip", "💡 " + item.tip),
+            makeElement("p", "vocab-due-example en", item.example),
+            makeElement("p", "vocab-due-translation", item.exampleKo),
+            makeElement("p", "vocab-due-distractors", "혼동 단어 · " + item.distractors.join(", "))
+          );
+          dueList.appendChild(card);
+        });
+      }
+      if (!weakStatuses.length) {
+        wrongList.appendChild(makeElement("div", "placeholder", "아직 약점 단어가 없어요. 보카 시험을 풀면 누적 오답 단어를 확인할 수 있어요."));
         return;
       }
-      mistakes.forEach(function (item) {
-        var card = makeElement("article", "note-card vocab-wrong-card");
-        card.append(
-          makeElement("h3", "en", item.word),
-          makeElement("p", "", item.meaning),
-          makeElement("p", "", "💡 " + item.tip),
-          makeElement("span", "vocab-wrong-meta", "오답 " + progress.vocabProgress[item.id].wrongCount + "회 · 단계 " + progress.vocabProgress[item.id].stage + "/4")
-        );
-        wrongList.appendChild(card);
+      var table = document.createElement("table");
+      table.className = "vocab-weak-table";
+      var head = document.createElement("thead");
+      var header = document.createElement("tr");
+      ["단어", "뜻", "틀린 횟수", "현재 stage"].forEach(function (label) {
+        var cell = document.createElement("th");
+        cell.scope = "col";
+        cell.textContent = label;
+        header.appendChild(cell);
       });
+      head.appendChild(header);
+      var body = document.createElement("tbody");
+      weakStatuses.forEach(function (status) {
+        var item = itemsById[status.wordId];
+        if (!item) return;
+        var row = document.createElement("tr");
+        [item.word, item.meaning, status.wrongCount + "회", status.stage + " / 4"].forEach(function (value, index) {
+          var cell = document.createElement("td");
+          cell.dataset.label = ["단어", "뜻", "틀린 횟수", "현재 stage"][index];
+          cell.textContent = value;
+          if (index === 0) cell.className = "en";
+          row.appendChild(cell);
+        });
+        body.appendChild(row);
+      });
+      table.append(head, body);
+      wrongList.appendChild(table);
     }
 
     var trackMeaning = Object.create(null);
@@ -274,6 +324,11 @@
     }
 
     function beginExam(items, type) {
+      var progress = window.Progress.get();
+      items = items.filter(function (item) {
+        var status = progress.vocabProgress[item.id];
+        return !status || status.stage < 4;
+      });
       if (!items.length) {
         examMessage.textContent = "선택한 범위에 출제할 단어가 없습니다.";
         return;
@@ -390,6 +445,7 @@
       card.appendChild(actions);
       examStage.appendChild(card);
       renderWrongList();
+      updateExamRanges();
     }
 
     document.getElementById("vocab-day").value = window.Progress.get().vocabDay;
@@ -465,7 +521,7 @@
       renderList();
     });
     examTrack.addEventListener("change", function () {
-      var days = populateDayFilter(examDay, examTrack.value, false);
+      var days = populateDayFilter(examDay, examTrack.value, false, true);
       examMessage.textContent = days.length ? "" : "선택한 트랙에 등록된 단어가 없습니다.";
       updateExamRanges();
     });
@@ -477,22 +533,23 @@
       var selected = examRange.value === "all" ? source : source.slice(range[0] - 1, range[1]);
       beginExam(selected, examType.value);
     });
-    wrongStart.addEventListener("click", function () {
-      var progress = window.Progress.get();
-      var misses = vocabulary.filter(function (item) {
-        return progress.vocabProgress[item.id] && progress.vocabProgress[item.id].lastResult === "wrong";
-      });
-      beginExam(misses, examType.value);
+    reviewStart.addEventListener("click", function () {
+      var due = window.Progress.getDueWords();
+      var dueIds = new Set(due.map(function (status) { return status.wordId; }));
+      beginExam(vocabulary.filter(function (item) { return dueIds.has(item.id); }), examType.value);
     });
     examTrack.value = "toeic";
-    populateDayFilter(examDay, examTrack.value, false);
+    populateDayFilter(examDay, examTrack.value, false, true);
     examMessage.textContent = examDay.disabled ? "선택한 트랙에 등록된 단어가 없습니다." : "";
     examRange.addEventListener("change", updateExamRanges);
+    updateExamRanges();
     renderList();
     renderWrongList();
+    if (window.location.hash === "#wrong") activateTab("wrong");
 
     function updateExamRanges() {
       var count = trackItems(examTrack.value, examDay.value).length;
+      examForm.querySelector('button[type="submit"]').disabled = count === 0;
       Array.from(examRange.options).forEach(function (option) {
         if (option.value === "all") {
           option.disabled = count === 0;

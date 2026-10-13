@@ -1,6 +1,7 @@
 (function () {
   "use strict";
 
+  var reviewIntervals = [1, 4, 7, 14];
   var defaults = { studiedDates: [], vocabDay: 0, quizSolved: 0, quizCorrect: 0, vocabProgress: {}, planDone: {} };
   var navigation = [
     ["홈", "index.html", "home"],
@@ -22,10 +23,18 @@
     Object.keys(vocabProgress).forEach(function (wordId) {
       var status = vocabProgress[wordId];
       if (!status || typeof status !== "object") return;
+      var stage = Math.min(4, Math.max(0, Math.floor(Number(status.stage) || 0)));
+      var lastDate = typeof status.lastDate === "string" && /^\d{4}-\d{2}-\d{2}$/.test(status.lastDate) ? status.lastDate : "";
+      var nextDue = typeof status.nextDue === "string" && /^\d{4}-\d{2}-\d{2}$/.test(status.nextDue) ? status.nextDue : "";
+      if (!nextDue && stage < 4) {
+        var interval = status.lastResult === "wrong" ? 1 : status.lastResult === "correct" ? reviewIntervals[Math.max(0, stage - 1)] : 0;
+        nextDue = interval && lastDate ? addDays(lastDate, interval) : todayDate();
+      }
       result.vocabProgress[wordId] = {
-        stage: Math.min(4, Math.max(0, Math.floor(Number(status.stage) || 0))),
+        stage: stage,
         lastResult: status.lastResult === "correct" || status.lastResult === "wrong" ? status.lastResult : "",
-        lastDate: typeof status.lastDate === "string" ? status.lastDate : "",
+        lastDate: lastDate,
+        nextDue: nextDue,
         wrongCount: Math.max(0, Math.floor(Number(status.wrongCount) || 0))
       };
     });
@@ -36,11 +45,28 @@
   }
 
   function get() {
+    var stored;
     try {
-      var stored = localStorage.getItem("englishLabProgress");
-      return normalizeProgress(stored ? JSON.parse(stored) : defaults);
+      stored = localStorage.getItem("englishLabProgress");
     } catch (error) {
       console.warn("학습 진도를 읽지 못했습니다.", error);
+      return normalizeProgress(defaults);
+    }
+    if (!stored) return normalizeProgress(defaults);
+
+    try {
+      var parsed = JSON.parse(stored);
+      var progress = normalizeProgress(parsed);
+      if (JSON.stringify(parsed) !== JSON.stringify(progress)) {
+        try {
+          localStorage.setItem("englishLabProgress", JSON.stringify(progress));
+        } catch (error) {
+          console.warn("기존 학습 진도를 새 형식으로 저장하지 못했습니다.", error);
+        }
+      }
+      return progress;
+    } catch (error) {
+      console.warn("학습 진도를 해석하지 못했습니다.", error);
       return normalizeProgress(defaults);
     }
   }
@@ -56,7 +82,42 @@
   }
 
   function dateKey(date) {
-    return [date.getFullYear(), String(date.getMonth() + 1).padStart(2, "0"), String(date.getDate()).padStart(2, "0")].join("-");
+    return date.toLocaleDateString("sv-SE");
+  }
+
+  function todayDate() {
+    return dateKey(new Date());
+  }
+
+  function addDays(dateString, days) {
+    var parts = dateString.split("-").map(Number);
+    var date = new Date(parts[0], parts[1] - 1, parts[2]);
+    date.setDate(date.getDate() + days);
+    return dateKey(date);
+  }
+
+  function wordStatuses(filter) {
+    var progress = get();
+    return Object.keys(progress.vocabProgress).map(function (wordId) {
+      return Object.assign({ wordId: wordId }, progress.vocabProgress[wordId]);
+    }).filter(filter);
+  }
+
+  function getDueWords() {
+    var today = todayDate();
+    return wordStatuses(function (status) {
+      return status.stage < 4 && status.nextDue && status.nextDue <= today;
+    });
+  }
+
+  function getWeakWords() {
+    return wordStatuses(function (status) {
+      return status.wrongCount > 0 && status.stage < 4;
+    });
+  }
+
+  function getGraduated() {
+    return wordStatuses(function (status) { return status.stage === 4; });
   }
 
   function markToday() {
@@ -86,23 +147,35 @@
   function recordVocabAnswer(wordId, isCorrect) {
     var progress = get();
     var previous = progress.vocabProgress[wordId] || { stage: 0, wrongCount: 0 };
+    var previousStage = Math.min(4, Math.max(0, Number(previous.stage) || 0));
+    var today = todayDate();
+    var stage = isCorrect ? Math.min(4, previousStage + 1) : 0;
     var result = {
-      stage: isCorrect ? Math.min(4, Number(previous.stage) + 1 || 1) : 0,
+      stage: stage,
       lastResult: isCorrect ? "correct" : "wrong",
-      lastDate: dateKey(new Date()),
+      lastDate: today,
+      nextDue: isCorrect ? (previousStage < 4 ? addDays(today, reviewIntervals[previousStage]) : "") : addDays(today, 1),
       wrongCount: Number(previous.wrongCount) + (isCorrect ? 0 : 1)
     };
     progress.vocabProgress[wordId] = result;
     progress.quizSolved += 1;
     if (isCorrect) progress.quizCorrect += 1;
-    var today = dateKey(new Date());
     if (!progress.studiedDates.includes(today)) progress.studiedDates.push(today);
     progress.studiedDates.sort();
     set(progress);
     return result;
   }
 
-  window.Progress = { get: get, set: set, markToday: markToday, streak: streak, recordVocabAnswer: recordVocabAnswer };
+  window.Progress = {
+    get: get,
+    set: set,
+    markToday: markToday,
+    streak: streak,
+    recordVocabAnswer: recordVocabAnswer,
+    getDueWords: getDueWords,
+    getWeakWords: getWeakWords,
+    getGraduated: getGraduated
+  };
 
   function currentPage() {
     var path = window.location.pathname.toLowerCase();

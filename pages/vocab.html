@@ -62,9 +62,20 @@
       </section>
       <section class="vocab-tab-panel" id="vocab-panel-wrong" role="tabpanel" aria-labelledby="vocab-tab-wrong" hidden>
         <h2>오답 공부</h2>
-        <p class="vocab-result-count">최근 시험에서 틀린 단어를 다시 확인해요.</p>
-        <div id="vocab-wrong-list" class="list-stack"></div>
-        <button class="button button-primary" id="vocab-wrong-start" type="button">틀린 단어 시험 보기</button>
+        <div class="vocab-review-summary" aria-live="polite">
+          <article class="vocab-review-stat"><span>오늘 복습할 단어</span><strong id="vocab-due-count">0개</strong></article>
+          <article class="vocab-review-stat"><span>약점 단어</span><strong id="vocab-weak-count">0개</strong></article>
+          <article class="vocab-review-stat"><span>졸업한 단어</span><strong id="vocab-graduated-count">0개</strong></article>
+        </div>
+        <section class="vocab-review-section">
+          <h3>오늘의 복습</h3>
+          <div id="vocab-due-list" class="list-stack"></div>
+          <button class="button button-primary" id="vocab-review-start" type="button">복습 시험 시작</button>
+        </section>
+        <section class="vocab-review-section">
+          <h3>약점 단어 목록</h3>
+          <div id="vocab-wrong-list"></div>
+        </section>
       </section>
     </section>
   </main><div id="site-footer"></div>
