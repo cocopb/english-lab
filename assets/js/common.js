@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var defaults = { studiedDates: [], vocabDay: 0, quizSolved: 0, quizCorrect: 0, planDone: {} };
+  var defaults = { studiedDates: [], vocabDay: 0, quizSolved: 0, quizCorrect: 0, vocabProgress: {}, planDone: {} };
   var navigation = [
     ["홈", "index.html", "home"],
     ["보카", "pages/vocab.html", "vocab"],
@@ -17,6 +17,18 @@
     var result = Object.assign({}, defaults, value && typeof value === "object" ? value : {});
     result.studiedDates = Array.isArray(result.studiedDates) ? result.studiedDates : [];
     result.planDone = result.planDone && typeof result.planDone === "object" ? result.planDone : {};
+    var vocabProgress = result.vocabProgress && typeof result.vocabProgress === "object" ? result.vocabProgress : {};
+    result.vocabProgress = {};
+    Object.keys(vocabProgress).forEach(function (wordId) {
+      var status = vocabProgress[wordId];
+      if (!status || typeof status !== "object") return;
+      result.vocabProgress[wordId] = {
+        stage: Math.min(4, Math.max(0, Math.floor(Number(status.stage) || 0))),
+        lastResult: status.lastResult === "correct" || status.lastResult === "wrong" ? status.lastResult : "",
+        lastDate: typeof status.lastDate === "string" ? status.lastDate : "",
+        wrongCount: Math.max(0, Math.floor(Number(status.wrongCount) || 0))
+      };
+    });
     result.vocabDay = Number.isFinite(Number(result.vocabDay)) ? Number(result.vocabDay) : 0;
     result.quizSolved = Number.isFinite(Number(result.quizSolved)) ? Number(result.quizSolved) : 0;
     result.quizCorrect = Number.isFinite(Number(result.quizCorrect)) ? Number(result.quizCorrect) : 0;
@@ -71,7 +83,26 @@
     return count;
   }
 
-  window.Progress = { get: get, set: set, markToday: markToday, streak: streak };
+  function recordVocabAnswer(wordId, isCorrect) {
+    var progress = get();
+    var previous = progress.vocabProgress[wordId] || { stage: 0, wrongCount: 0 };
+    var result = {
+      stage: isCorrect ? Math.min(4, Number(previous.stage) + 1 || 1) : 0,
+      lastResult: isCorrect ? "correct" : "wrong",
+      lastDate: dateKey(new Date()),
+      wrongCount: Number(previous.wrongCount) + (isCorrect ? 0 : 1)
+    };
+    progress.vocabProgress[wordId] = result;
+    progress.quizSolved += 1;
+    if (isCorrect) progress.quizCorrect += 1;
+    var today = dateKey(new Date());
+    if (!progress.studiedDates.includes(today)) progress.studiedDates.push(today);
+    progress.studiedDates.sort();
+    set(progress);
+    return result;
+  }
+
+  window.Progress = { get: get, set: set, markToday: markToday, streak: streak, recordVocabAnswer: recordVocabAnswer };
 
   function currentPage() {
     var path = window.location.pathname.toLowerCase();

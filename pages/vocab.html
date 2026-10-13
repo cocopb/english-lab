@@ -12,98 +12,61 @@
       <form class="form-row" id="vocab-form"><label class="field" for="vocab-day">마지막으로 공부한 Day<input id="vocab-day" type="number" min="0" max="999" step="1" value="0" inputmode="numeric" required></label><button class="button button-primary" type="submit">진도 저장</button></form>
       <p class="helper-text" id="vocab-message" aria-live="polite">숫자만 입력해 간단히 기록해요.</p>
     </div></section>
-    <section class="content-section"><h2>단어 목록</h2><div id="vocab-list" class="vocab-list"></div></section>
+    <section class="content-section vocab-workspace">
+      <div class="vocab-tabs" role="tablist" aria-label="보카 학습 메뉴">
+        <button class="vocab-tab" id="vocab-tab-list" type="button" role="tab" aria-controls="vocab-panel-list" aria-selected="true">단어장</button>
+        <button class="vocab-tab" id="vocab-tab-exam" type="button" role="tab" aria-controls="vocab-panel-exam" aria-selected="false" tabindex="-1">보카 시험</button>
+        <button class="vocab-tab" id="vocab-tab-wrong" type="button" role="tab" aria-controls="vocab-panel-wrong" aria-selected="false" tabindex="-1">오답 공부</button>
+      </div>
+      <section class="vocab-tab-panel" id="vocab-panel-list" role="tabpanel" aria-labelledby="vocab-tab-list">
+        <h2>단어 목록</h2>
+        <div class="vocab-controls" aria-label="단어 검색 및 필터">
+          <label class="field" for="vocab-track">트랙
+            <select id="vocab-track"><option value="all">전체</option><option value="toeic">토익</option><option value="speaking">회화</option><option value="toefl">토플</option></select>
+          </label>
+          <label class="field" for="vocab-day-filter">Day
+            <select id="vocab-day-filter"><option value="all">전체</option></select>
+          </label>
+          <label class="field vocab-search-field" for="vocab-search">검색
+            <input id="vocab-search" type="search" placeholder="영어 단어 또는 한글 뜻">
+          </label>
+          <button class="button button-quiet vocab-hide-toggle" id="vocab-hide-toggle" type="button" aria-pressed="false">뜻 가리기</button>
+        </div>
+        <p class="vocab-result-count" id="vocab-result-count" aria-live="polite"></p>
+        <div id="vocab-list" class="vocab-list"></div>
+      </section>
+      <section class="vocab-tab-panel" id="vocab-panel-exam" role="tabpanel" aria-labelledby="vocab-tab-exam" hidden>
+        <h2>보카 시험</h2>
+        <form class="panel vocab-exam-settings" id="vocab-exam-form">
+          <label class="field" for="vocab-exam-track">트랙
+            <select id="vocab-exam-track"><option value="toeic">토익</option><option value="speaking">회화</option><option value="toefl">토플</option></select>
+          </label>
+          <label class="field" for="vocab-exam-day">Day
+            <select id="vocab-exam-day"></select>
+          </label>
+          <label class="field" for="vocab-exam-type">시험 유형
+            <select id="vocab-exam-type"><option value="meaning">뜻 시험</option><option value="blank">빈칸 시험</option></select>
+          </label>
+          <label class="field" for="vocab-exam-range">범위
+            <select id="vocab-exam-range">
+              <option value="1-10">1회차 (1~10)</option>
+              <option value="11-20">2회차 (11~20)</option>
+              <option value="21-30">3회차 (21~30)</option>
+              <option value="all">전체 30문제</option>
+            </select>
+          </label>
+          <p class="vocab-exam-message" id="vocab-exam-message" aria-live="polite"></p>
+          <button class="button button-primary" type="submit">시험 시작</button>
+        </form>
+        <div id="vocab-exam-stage" class="vocab-exam-stage" aria-live="polite" hidden></div>
+      </section>
+      <section class="vocab-tab-panel" id="vocab-panel-wrong" role="tabpanel" aria-labelledby="vocab-tab-wrong" hidden>
+        <h2>오답 공부</h2>
+        <p class="vocab-result-count">최근 시험에서 틀린 단어를 다시 확인해요.</p>
+        <div id="vocab-wrong-list" class="list-stack"></div>
+        <button class="button button-primary" id="vocab-wrong-start" type="button">틀린 단어 시험 보기</button>
+      </section>
+    </section>
   </main><div id="site-footer"></div>
-  <script src="../data/vocab.js"></script><script>
-    document.addEventListener("DOMContentLoaded", function () {
-      var progress = window.Progress.get();
-      document.getElementById("vocab-day").value = progress.vocabDay;
-      document.getElementById("vocab-form").addEventListener("submit", function (event) {
-        event.preventDefault();
-        var day = Number(document.getElementById("vocab-day").value);
-        if (!Number.isInteger(day) || day < 0) {
-          document.getElementById("vocab-message").textContent = "0 이상의 정수를 입력해주세요.";
-          return;
-        }
-        window.Progress.set({ vocabDay: day });
-        document.getElementById("vocab-message").textContent = "Day " + day + "까지의 진도를 저장했어요.";
-      });
-      var container = document.getElementById("vocab-list");
-      var groups = [];
-      window.VOCAB.forEach(function (item) {
-        var key = item.track + "-" + item.day;
-        var group = groups.find(function (entry) { return entry.key === key; });
-        if (!group) {
-          group = { key: key, track: item.track, day: item.day, items: [] };
-          groups.push(group);
-        }
-        group.items.push(item);
-      });
-
-      groups.forEach(function (group) {
-        var table = document.createElement("table");
-        table.className = "vocab-table";
-        var caption = document.createElement("caption");
-        caption.textContent = group.track.toUpperCase() + " · DAY " + group.day;
-        table.appendChild(caption);
-
-        var head = document.createElement("thead");
-        var headerRow = document.createElement("tr");
-        ["단어", "뜻", "예문", "학습 메모"].forEach(function (label) {
-          var cell = document.createElement("th");
-          cell.scope = "col";
-          cell.textContent = label;
-          headerRow.appendChild(cell);
-        });
-        head.appendChild(headerRow);
-        table.appendChild(head);
-
-        var body = document.createElement("tbody");
-        group.items.forEach(function (item) {
-          var row = document.createElement("tr");
-          var word = document.createElement("td");
-          word.dataset.label = "단어";
-          var wordText = document.createElement("span");
-          wordText.className = "vocab-word en";
-          wordText.textContent = item.word;
-          var pos = document.createElement("span");
-          pos.className = "vocab-pos";
-          pos.textContent = item.pos;
-          word.append(wordText, pos);
-          row.appendChild(word);
-
-          var meaning = document.createElement("td");
-          meaning.dataset.label = "뜻";
-          meaning.textContent = item.meaning;
-          row.appendChild(meaning);
-
-          var example = document.createElement("td");
-          example.dataset.label = "예문";
-          var sentence = document.createElement("span");
-          sentence.className = "vocab-example en";
-          sentence.textContent = item.example;
-          var translation = document.createElement("span");
-          translation.className = "vocab-example-ko";
-          translation.textContent = item.exampleKo;
-          example.append(sentence, translation);
-          row.appendChild(example);
-
-          var note = document.createElement("td");
-          note.dataset.label = "학습 메모";
-          var tip = document.createElement("p");
-          tip.className = "vocab-tip";
-          tip.textContent = item.tip;
-          note.appendChild(tip);
-          var details = document.createElement("p");
-          details.className = "vocab-details";
-          details.textContent = "혼동 단어: " + item.distractors.join(", ") + " · 태그: " + item.tags.join(", ");
-          note.appendChild(details);
-          row.appendChild(note);
-          body.appendChild(row);
-        });
-        table.appendChild(body);
-        container.appendChild(table);
-      });
-    });
-  </script>
+  <script src="../data/vocab.js"></script><script src="../assets/js/vocab.js" defer></script>
 </body></html>
