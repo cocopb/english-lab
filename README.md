@@ -25,7 +25,7 @@ english-lab/
 
 - `grammar.js`: `id`, `title`, `summary`, `body`, `tags`
 - `mistakes.js`: `id`, `original`, `correction`, `reason`
-- `vocab.js`: `id`, `word`, `meaning`, `example`
+- `vocab.js`: `id`, `track`, `day`, `word`, `pos`, `meaning`, `example`, `exampleKo`, `tip`, `distractors`, `tags`
 - `speaking.js`: `id`, `situation`, `expressions` (각 표현은 `english`, `korean`)
 - `quiz.js`: `id`, `question`, `options` (4개), `answer` (0부터 시작하는 정답 인덱스), `explanation`
 - `plan.js`: `id`, `title` (26개 주차 항목)
