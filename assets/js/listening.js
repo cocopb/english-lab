@@ -4,7 +4,9 @@
   document.addEventListener("DOMContentLoaded", function () {
     var rateSelect = document.getElementById("listening-rate");
     var localeSelect = document.getElementById("listening-locale");
+    var localeField = document.getElementById("listening-locale-field");
     var voiceDiagnostics = document.getElementById("listening-voice-diagnostics");
+    var accentNote = document.getElementById("listening-accent-note");
     var supportNote = document.getElementById("listening-support-note");
     var dictationIndex = 0;
     var part2Index = 0;
@@ -33,37 +35,40 @@
 
     function populateVoices() {
       var voices = supportedVoices();
-      var availableVoiceCount = window.Speech.getAvailableVoices().length;
+      var availableVoices = window.Speech.getAvailableVoices();
+      var availableVoiceCount = availableVoices.length;
       voiceDiagnostics.textContent = availableVoiceCount
         ? "사용 가능한 영어 음성: " + availableVoiceCount + "개"
         : voices.length
           ? "사용 가능한 영어 음성: 0개. 설치된 영어 음성을 재생할 수 없습니다. Windows 설정 > 시간 및 언어 > 음성에서 다른 영어 음성을 추가해 보세요."
           : "사용 가능한 영어 음성: 0개. 이 브라우저에 설치된 영어 음성이 없습니다. Windows 설정 > 시간 및 언어 > 음성에서 영어 음성을 추가할 수 있습니다.";
       var availableLocales = ["en-US", "en-GB", "en-AU"].filter(function (locale) {
-        return voices.some(function (voice) {
+        return availableVoices.some(function (voice) {
           return (voice.lang || "").toLowerCase() === locale.toLowerCase();
         });
       });
-      if (!availableLocales.length) availableLocales = [voiceSettings.locale];
       localeSelect.replaceChildren();
       availableLocales.forEach(function (locale) {
         var option = document.createElement("option");
         option.value = locale;
-        var localeVoices = voices.filter(function (voice) {
-          return (voice.lang || "").toLowerCase() === locale.toLowerCase();
-        });
-        var localeAvailable = !localeVoices.length || window.Speech.isLocaleAvailable(locale);
-        option.textContent = localeVoices.length
-          ? (localeLabels[locale] || locale) + (localeAvailable ? "" : " (사용 불가)")
-          : "기본 영어 음성";
-        option.disabled = !localeAvailable;
+        option.textContent = localeLabels[locale] || locale;
         localeSelect.appendChild(option);
       });
-      if (availableLocales.indexOf(voiceSettings.locale) === -1) {
-        voiceSettings.locale = availableLocales[0];
-        window.Speech.saveSettings(voiceSettings);
+      var selectedLocaleAvailable = availableLocales.indexOf(voiceSettings.locale) !== -1;
+      if (!selectedLocaleAvailable && availableLocales.length) {
+        voiceSettings = window.Speech.saveSettings({
+          locale: availableLocales[0],
+          voiceSelected: voiceSettings.voiceSelected
+        });
+      } else if (!availableVoiceCount && voiceSettings.voiceSelected) {
+        voiceSettings = window.Speech.saveSettings({ voiceSelected: false });
       }
-      localeSelect.value = voiceSettings.locale;
+      localeField.hidden = availableVoiceCount <= 1;
+      accentNote.hidden = availableVoiceCount !== 1;
+      localeSelect.disabled = !window.Speech.isSupported() || availableVoiceCount <= 1;
+      localeSelect.value = availableLocales.indexOf(voiceSettings.locale) !== -1
+        ? voiceSettings.locale
+        : availableLocales[0] || "";
     }
 
     function nextAvailableLocale(failedLocale) {
@@ -78,8 +83,9 @@
 
     function handleVoiceUnavailable(voice) {
       var failedLocale = voice.lang;
+      var selectedLocale = voiceSettings.locale;
       populateVoices();
-      if (voiceSettings.locale === failedLocale && !window.Speech.isLocaleAvailable(failedLocale)) {
+      if (selectedLocale === failedLocale && !window.Speech.isLocaleAvailable(failedLocale)) {
         voiceSettings = window.Speech.saveSettings({
           locale: nextAvailableLocale(failedLocale),
           voiceSelected: true
@@ -106,7 +112,7 @@
         button.disabled = !supported;
       });
       rateSelect.disabled = !supported;
-      localeSelect.disabled = !supported;
+      localeSelect.disabled = !supported || window.Speech.getAvailableVoices().length <= 1;
     }
 
     function messageAt(id, message) {
