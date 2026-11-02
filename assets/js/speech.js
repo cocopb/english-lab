@@ -7,6 +7,22 @@
   var currentResolve = null;
   var voicesReady = null;
   var speechGeneration = 0;
+  var unavailableVoiceIds = new Set();
+
+  function voiceId(voice) {
+    return voice.voiceURI || [voice.name, voice.lang].join("|");
+  }
+
+  function isVoiceUnavailable(voice) {
+    return unavailableVoiceIds.has(voiceId(voice));
+  }
+
+  function isLocaleAvailable(locale) {
+    var normalizedLocale = String(locale || "").toLowerCase();
+    return getVoices().some(function (voice) {
+      return (voice.lang || "").toLowerCase() === normalizedLocale && !isVoiceUnavailable(voice);
+    });
+  }
 
   function isSupported() {
     return typeof window.speechSynthesis !== "undefined" &&
@@ -66,6 +82,12 @@
       });
   }
 
+  function getAvailableVoices() {
+    return getVoices().filter(function (voice) {
+      return !isVoiceUnavailable(voice);
+    });
+  }
+
   function waitForVoices() {
     if (!isSupported()) return Promise.resolve([]);
     var available = getVoices();
@@ -110,11 +132,12 @@
   function chooseVoice(voices, preferred) {
     if (preferred && typeof preferred === "object") {
       var selected = voices.filter(function (voice) {
-        return voice === preferred || (preferred.voiceURI && voice.voiceURI === preferred.voiceURI);
+        return (voice === preferred || (preferred.voiceURI && voice.voiceURI === preferred.voiceURI)) &&
+          !isVoiceUnavailable(voice);
       });
       if (!selected.length) {
         selected = voices.filter(function (voice) {
-          return voice.name === preferred.name && voice.lang === preferred.lang;
+          return voice.name === preferred.name && voice.lang === preferred.lang && !isVoiceUnavailable(voice);
         });
       }
       if (selected.length) {
@@ -133,7 +156,7 @@
     if (typeof preferred !== "string" || !preferred) return null;
     var requestedLocale = preferred.toLowerCase();
     var exact = voices.filter(function (voice) {
-      return (voice.lang || "").toLowerCase() === requestedLocale;
+      return (voice.lang || "").toLowerCase() === requestedLocale && !isVoiceUnavailable(voice);
     });
     if (!exact.length) return null;
     exact.sort(function (a, b) {
@@ -191,7 +214,18 @@
 
         currentResolve = cancelPlayback;
 
-        function playAttempt(voice, rate) {
+        function markVoiceUnavailable(voice) {
+          if (!voice) return;
+          unavailableVoiceIds.add(voiceId(voice));
+          if (typeof opts.onVoiceUnavailable === "function") {
+            opts.onVoiceUnavailable(voice, isLocaleAvailable(voice.lang));
+          }
+          if (typeof opts.onFallback === "function") {
+            opts.onFallback(voice, opts.fallbackLang || "en-US");
+          }
+        }
+
+        function playAttempt(voice, rate, language) {
           if (generation !== speechGeneration || settled) {
             finish();
             return;
@@ -201,7 +235,7 @@
           var utterance;
           try {
             utterance = new window.SpeechSynthesisUtterance(text);
-            utterance.lang = voice && voice.lang ? voice.lang : (opts.lang || settings.locale || "en-US");
+            utterance.lang = voice && voice.lang ? voice.lang : (language || opts.lang || settings.locale || "en-US");
             if (voice) utterance.voice = voice;
             utterance.rate = rate;
           } catch (error) {
@@ -209,11 +243,15 @@
               attempt: attemptNumber,
               message: error.message,
               voice: voice ? voice.name : "browser default",
-              lang: voice && voice.lang ? voice.lang : (opts.lang || settings.locale || "en-US"),
+              lang: voice && voice.lang ? voice.lang : (language || opts.lang || settings.locale || "en-US"),
               rate: rate
             });
-            if (attemptNumber === 1) playAttempt(null, requestedRate);
-            else if (attemptNumber === 2) playAttempt(null, 1);
+            if (attemptNumber === 1) {
+              markVoiceUnavailable(voice);
+              playAttempt(null, requestedRate, opts.fallbackLang || "en-US");
+            } else if (attemptNumber === 2) {
+              playAttempt(null, 1, opts.fallbackLang || "en-US");
+            }
             else finish(new Error("음성 재생을 준비하지 못했습니다: " + error.message));
             return;
           }
@@ -252,9 +290,10 @@
               rate: utterance.rate
             });
             if (attemptNumber === 1) {
-              playAttempt(null, requestedRate);
+              markVoiceUnavailable(voice);
+              playAttempt(null, requestedRate, opts.fallbackLang || "en-US");
             } else if (attemptNumber === 2) {
-              playAttempt(null, 1);
+              playAttempt(null, 1, opts.fallbackLang || "en-US");
             } else {
               finish(new Error("음성 재생에 실패했습니다: " + event.error));
             }
@@ -280,8 +319,12 @@
               lang: utterance.lang,
               rate: utterance.rate
             });
-            if (attemptNumber === 1) playAttempt(null, requestedRate);
-            else if (attemptNumber === 2) playAttempt(null, 1);
+            if (attemptNumber === 1) {
+              markVoiceUnavailable(voice);
+              playAttempt(null, requestedRate, opts.fallbackLang || "en-US");
+            } else if (attemptNumber === 2) {
+              playAttempt(null, 1, opts.fallbackLang || "en-US");
+            }
             else finish(new Error("음성 재생을 시작하지 못했습니다: " + error.message));
           }
         }
@@ -507,6 +550,9 @@
   window.Speech = {
     isSupported: isSupported,
     getVoices: getVoices,
+    getAvailableVoices: getAvailableVoices,
+    isVoiceUnavailable: isVoiceUnavailable,
+    isLocaleAvailable: isLocaleAvailable,
     getSettings: readSettings,
     saveSettings: saveSettings,
     waitForVoices: waitForVoices,

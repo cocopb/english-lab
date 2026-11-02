@@ -33,9 +33,12 @@
 
     function populateVoices() {
       var voices = supportedVoices();
-      voiceDiagnostics.textContent = voices.length
-        ? "사용 가능한 영어 음성: " + voices.length + "개"
-        : "사용 가능한 영어 음성: 0개. 이 브라우저에 설치된 영어 음성이 없습니다. Windows 설정 > 시간 및 언어 > 음성에서 영어 음성을 추가할 수 있습니다.";
+      var availableVoiceCount = window.Speech.getAvailableVoices().length;
+      voiceDiagnostics.textContent = availableVoiceCount
+        ? "사용 가능한 영어 음성: " + availableVoiceCount + "개"
+        : voices.length
+          ? "사용 가능한 영어 음성: 0개. 설치된 영어 음성을 재생할 수 없습니다. Windows 설정 > 시간 및 언어 > 음성에서 다른 영어 음성을 추가해 보세요."
+          : "사용 가능한 영어 음성: 0개. 이 브라우저에 설치된 영어 음성이 없습니다. Windows 설정 > 시간 및 언어 > 음성에서 영어 음성을 추가할 수 있습니다.";
       var availableLocales = ["en-US", "en-GB", "en-AU"].filter(function (locale) {
         return voices.some(function (voice) {
           return (voice.lang || "").toLowerCase() === locale.toLowerCase();
@@ -46,9 +49,14 @@
       availableLocales.forEach(function (locale) {
         var option = document.createElement("option");
         option.value = locale;
-        option.textContent = voices.some(function (voice) {
+        var localeVoices = voices.filter(function (voice) {
           return (voice.lang || "").toLowerCase() === locale.toLowerCase();
-        }) ? (localeLabels[locale] || locale) : "기본 영어 음성";
+        });
+        var localeAvailable = !localeVoices.length || window.Speech.isLocaleAvailable(locale);
+        option.textContent = localeVoices.length
+          ? (localeLabels[locale] || locale) + (localeAvailable ? "" : " (사용 불가)")
+          : "기본 영어 음성";
+        option.disabled = !localeAvailable;
         localeSelect.appendChild(option);
       });
       if (availableLocales.indexOf(voiceSettings.locale) === -1) {
@@ -56,6 +64,36 @@
         window.Speech.saveSettings(voiceSettings);
       }
       localeSelect.value = voiceSettings.locale;
+    }
+
+    function nextAvailableLocale(failedLocale) {
+      var locales = ["en-US", "en-GB", "en-AU"];
+      var startIndex = locales.indexOf(failedLocale);
+      for (var offset = 1; offset <= locales.length; offset += 1) {
+        var candidate = locales[(startIndex + offset + locales.length) % locales.length];
+        if (window.Speech.isLocaleAvailable(candidate)) return candidate;
+      }
+      return "en-US";
+    }
+
+    function handleVoiceUnavailable(voice) {
+      var failedLocale = voice.lang;
+      populateVoices();
+      if (voiceSettings.locale === failedLocale && !window.Speech.isLocaleAvailable(failedLocale)) {
+        voiceSettings = window.Speech.saveSettings({
+          locale: nextAvailableLocale(failedLocale),
+          voiceSelected: true
+        });
+        localeSelect.value = voiceSettings.locale;
+      }
+    }
+
+    function handleVoiceFallback(voice) {
+      var labels = { "en-US": "미국식", "en-GB": "영국식", "en-AU": "호주식" };
+      var notice = document.getElementById("listening-fallback-note");
+      notice.textContent = (labels[voice.lang] || voice.lang) +
+        " 음성을 사용할 수 없어 기본 음성으로 재생했습니다.";
+      notice.hidden = false;
     }
 
     function setSupportState() {
@@ -85,10 +123,14 @@
       currentPlaybackButton = button || null;
       if (button) button.disabled = true;
       messageAt(messageId, "음성을 재생하고 있어요…");
+      var fallbackLang = "en-US";
       return window.Speech.speak(text, {
         rate: rate === undefined ? voiceSettings.rate : rate,
         voice: voice || (voiceSettings.voiceSelected ? voiceSettings.locale : null),
-        lang: voiceSettings.voiceSelected ? voiceSettings.locale : "en-US"
+        lang: voiceSettings.voiceSelected ? voiceSettings.locale : "en-US",
+        fallbackLang: fallbackLang,
+        onVoiceUnavailable: handleVoiceUnavailable,
+        onFallback: handleVoiceFallback
       }).then(function () {
         if (token === currentUtteranceToken) messageAt(messageId, "재생이 끝났어요.");
       }).catch(function (error) {
@@ -288,7 +330,8 @@
     function voiceForLine(speaker, lineIndex) {
       if (!voiceSettings.voiceSelected) return null;
       var voices = supportedVoices().filter(function (voice) {
-        return (voice.lang || "").toLowerCase() === voiceSettings.locale.toLowerCase();
+        return (voice.lang || "").toLowerCase() === voiceSettings.locale.toLowerCase() &&
+          !window.Speech.isVoiceUnavailable(voice);
       });
       if (!voices.length) return voiceSettings.locale;
       var hints = speaker === "W"
@@ -356,7 +399,10 @@
           return window.Speech.speak(line.text, {
             rate: voiceSettings.rate,
             voice: voiceForLine(line.speaker, index),
-            lang: voiceSettings.voiceSelected ? voiceSettings.locale : "en-US"
+            lang: voiceSettings.voiceSelected ? voiceSettings.locale : "en-US",
+            fallbackLang: "en-US",
+            onVoiceUnavailable: handleVoiceUnavailable,
+            onFallback: handleVoiceFallback
           });
         });
       });
@@ -457,12 +503,15 @@
     }
 
     document.getElementById("dictation-play").addEventListener("click", function () {
+      document.getElementById("listening-fallback-note").hidden = true;
       speakText(currentDictation().text, this, "dictation-message");
     });
     document.getElementById("dictation-replay").addEventListener("click", function () {
+      document.getElementById("listening-fallback-note").hidden = true;
       speakText(currentDictation().text, this, "dictation-message");
     });
     document.getElementById("dictation-slow").addEventListener("click", function () {
+      document.getElementById("listening-fallback-note").hidden = true;
       speakText(currentDictation().text, this, "dictation-message", 0.7);
     });
     document.getElementById("dictation-check").addEventListener("click", gradeDictation);
@@ -482,6 +531,7 @@
     });
 
     document.getElementById("part2-play-question").addEventListener("click", function () {
+      document.getElementById("listening-fallback-note").hidden = true;
       speakText(window.PART2[part2Index % window.PART2.length].question, this, "part2-message");
     });
     document.getElementById("part2-script-toggle").addEventListener("click", function () {
@@ -494,9 +544,11 @@
     });
 
     document.getElementById("part3-play").addEventListener("click", function () {
+      document.getElementById("listening-fallback-note").hidden = true;
       playDialogue(this);
     });
     document.getElementById("part3-replay").addEventListener("click", function () {
+      document.getElementById("listening-fallback-note").hidden = true;
       playDialogue(this);
     });
     document.getElementById("part3-start-questions").addEventListener("click", function () {

@@ -302,6 +302,7 @@ h1, h2, h3, p { overflow-wrap: anywhere; }
 .listening-voice-diagnostics { grid-column: 1 / -1; margin: -4px 0 0; color: var(--ink-faint); font-size: 10px; }
 .listening-support-note { min-height: 20px; margin: 0 0 12px; color: var(--ink-faint); font-size: 11px; }
 .listening-support-note.is-unsupported { color: var(--red); }
+.listening-fallback-note { margin: -7px 0 12px; color: var(--ink-faint); font-size: 10px; }
 .listening-workspace [hidden] { display: none; }
 .listening-exercise { max-width: 760px; margin-inline: auto; }
 .listening-counter { margin: 0 0 10px; color: var(--ink-faint); font-family: "IBM Plex Mono", monospace; font-size: 11px; }
