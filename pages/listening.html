@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#FAF8F6">
+  <title>리스닝 — English Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/common.js" defer></script>
+  <script src="../assets/js/speech.js" defer></script>
+  <script src="../assets/js/listening.js" defer></script>
+</head>
+<body>
+  <div id="site-header"></div>
+  <main class="container">
+    <header class="page-intro">
+      <p class="eyebrow">LISTENING</p>
+      <h1>듣고, 이해하고, 받아쓰기</h1>
+      <p>브라우저 음성으로 영어 문장을 듣고 차근차근 연습해요.</p>
+    </header>
+    <section class="content-section listening-workspace">
+      <section class="panel listening-voice-settings" aria-label="음성 설정">
+        <label class="field" for="listening-rate">재생 속도
+          <select id="listening-rate">
+            <option value="0.7">0.7배</option>
+            <option value="0.85">0.85배</option>
+            <option value="1">1.0배</option>
+          </select>
+        </label>
+        <label class="field" for="listening-locale">발음
+          <select id="listening-locale"></select>
+        </label>
+      </section>
+      <p class="listening-support-note" id="listening-support-note" role="status"></p>
+      <div class="vocab-tabs" role="tablist" aria-label="리스닝 학습 메뉴">
+        <button class="vocab-tab" id="listening-tab-dictation" type="button" role="tab" aria-controls="listening-panel-dictation" aria-selected="true">받아쓰기</button>
+        <button class="vocab-tab" id="listening-tab-part2" type="button" role="tab" aria-controls="listening-panel-part2" aria-selected="false" tabindex="-1">질의응답</button>
+        <button class="vocab-tab" id="listening-tab-part3" type="button" role="tab" aria-controls="listening-panel-part3" aria-selected="false" tabindex="-1">대화 듣기</button>
+      </div>
+      <section class="vocab-tab-panel" id="listening-panel-dictation" role="tabpanel" aria-labelledby="listening-tab-dictation">
+        <h2>받아쓰기</h2>
+        <div class="panel listening-exercise">
+          <p class="listening-counter" id="dictation-counter"></p>
+          <div class="listening-button-row">
+            <button class="button button-primary listening-playback-control" id="dictation-play" type="button">▶ 재생</button>
+            <button class="button button-quiet listening-playback-control" id="dictation-replay" type="button">다시 듣기</button>
+            <button class="button button-quiet listening-playback-control" id="dictation-slow" type="button">천천히 듣기 (0.7배)</button>
+          </div>
+          <label class="field listening-answer-field" for="dictation-input">들은 문장을 입력하세요
+            <input id="dictation-input" type="text" autocomplete="off" placeholder="영어 문장을 입력하세요">
+          </label>
+          <div class="listening-button-row">
+            <button class="button button-primary" id="dictation-check" type="button">채점</button>
+            <button class="button button-quiet" id="dictation-show-answer" type="button">정답 보기</button>
+            <button class="button button-quiet" id="dictation-next" type="button" hidden>다음 문장</button>
+          </div>
+          <p class="listening-score" id="dictation-score" aria-live="polite"></p>
+          <div class="dictation-result" id="dictation-result" aria-live="polite"></div>
+          <p class="dictation-translation" id="dictation-translation" hidden></p>
+          <p class="listening-playback-message" id="dictation-message" aria-live="polite"></p>
+        </div>
+      </section>
+      <section class="vocab-tab-panel" id="listening-panel-part2" role="tabpanel" aria-labelledby="listening-tab-part2" hidden>
+        <h2>질의응답 · Part 2</h2>
+        <div class="panel listening-exercise">
+          <p class="listening-counter" id="part2-counter"></p>
+          <div class="listening-button-row">
+            <button class="button button-primary listening-playback-control" id="part2-play-question" type="button">▶ 질문 재생</button>
+            <button class="button button-quiet" id="part2-script-toggle" type="button" aria-expanded="false">스크립트 보기</button>
+          </div>
+          <p class="listening-script en" id="part2-script" hidden></p>
+          <div class="listening-choice-list" id="part2-choices"></div>
+          <div class="listening-feedback" id="part2-feedback" aria-live="polite"></div>
+          <button class="button button-primary" id="part2-next" type="button" hidden>다음 문제</button>
+          <p class="listening-playback-message" id="part2-message" aria-live="polite"></p>
+        </div>
+      </section>
+      <section class="vocab-tab-panel" id="listening-panel-part3" role="tabpanel" aria-labelledby="listening-tab-part3" hidden>
+        <h2>대화 듣기 · Part 3/4</h2>
+        <div class="panel listening-exercise">
+          <p class="listening-counter" id="part3-counter"></p>
+          <div class="listening-button-row">
+            <button class="button button-primary listening-playback-control" id="part3-play" type="button">▶ 대화 듣기</button>
+            <button class="button button-quiet listening-playback-control" id="part3-replay" type="button">대화 다시 듣기</button>
+            <button class="button button-quiet" id="part3-start-questions" type="button" disabled>문제 시작</button>
+          </div>
+          <p class="listening-playback-message" id="part3-message" aria-live="polite"></p>
+          <div class="listening-part3-quiz" id="part3-quiz" hidden>
+            <p class="listening-counter" id="part3-question-counter"></p>
+            <h3 class="listening-question en" id="part3-question"></h3>
+            <div class="listening-choice-list" id="part3-choices"></div>
+            <div class="listening-feedback" id="part3-feedback" aria-live="polite"></div>
+            <button class="button button-primary" id="part3-next" type="button" hidden>다음 문제</button>
+            <button class="button button-quiet" id="part3-script-toggle" type="button" aria-expanded="false" hidden>스크립트 보기</button>
+            <div class="listening-transcript" id="part3-script" hidden></div>
+            <button class="button button-quiet" id="part3-next-dialogue" type="button" hidden>다음 대화</button>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="../data/listening.js"></script>
+</body>
+</html>

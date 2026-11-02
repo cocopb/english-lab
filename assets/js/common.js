@@ -12,6 +12,11 @@
       g01: { solved: 0, correct: 0, lastDate: null },
       g02: { solved: 0, correct: 0, lastDate: null }
     },
+    listeningStats: {
+      dictation: { attempted: 0, wordAccuracy: [] },
+      part2: { solved: 0, correct: 0 },
+      part3: { solved: 0, correct: 0 }
+    },
     planDone: {}
   };
   var navigation = [
@@ -19,6 +24,7 @@
     ["보카", "pages/vocab.html", "vocab"],
     ["독해", "pages/reading.html", "reading"],
     ["문법", "pages/grammar.html", "grammar"],
+    ["리스닝", "pages/listening.html", "listening"],
     ["회화", "pages/speaking.html", "speaking"],
     ["오답노트", "pages/mistakes.html", "mistakes"],
     ["퀴즈", "pages/quiz.html", "quiz"],
@@ -42,6 +48,36 @@
       var lastDate = typeof stats.lastDate === "string" && /^\d{4}-\d{2}-\d{2}$/.test(stats.lastDate) ? stats.lastDate : null;
       result.grammarStats[ruleId] = { solved: solved, correct: correct, lastDate: lastDate };
     });
+    var listeningStats = result.listeningStats && typeof result.listeningStats === "object" ? result.listeningStats : {};
+    var dictationStats = listeningStats.dictation && typeof listeningStats.dictation === "object" ? listeningStats.dictation : {};
+    var part2Stats = listeningStats.part2 && typeof listeningStats.part2 === "object" ? listeningStats.part2 : {};
+    var part3Stats = listeningStats.part3 && typeof listeningStats.part3 === "object" ? listeningStats.part3 : {};
+    result.listeningStats = {
+      dictation: {
+        attempted: Math.max(0, Math.floor(Number(dictationStats.attempted) || 0)),
+        wordAccuracy: Array.isArray(dictationStats.wordAccuracy)
+          ? dictationStats.wordAccuracy.filter(function (accuracy) {
+            return typeof accuracy === "number" && Number.isFinite(accuracy);
+          }).map(function (accuracy) {
+            return Math.min(1, Math.max(0, accuracy));
+          })
+          : []
+      },
+      part2: {
+        solved: Math.max(0, Math.floor(Number(part2Stats.solved) || 0)),
+        correct: Math.min(
+          Math.max(0, Math.floor(Number(part2Stats.solved) || 0)),
+          Math.max(0, Math.floor(Number(part2Stats.correct) || 0))
+        )
+      },
+      part3: {
+        solved: Math.max(0, Math.floor(Number(part3Stats.solved) || 0)),
+        correct: Math.min(
+          Math.max(0, Math.floor(Number(part3Stats.solved) || 0)),
+          Math.max(0, Math.floor(Number(part3Stats.correct) || 0))
+        )
+      }
+    };
     var vocabProgress = result.vocabProgress && typeof result.vocabProgress === "object" ? result.vocabProgress : {};
     result.vocabProgress = {};
     Object.keys(vocabProgress).forEach(function (wordId) {
@@ -238,6 +274,33 @@
     }).slice(0, limit);
   }
 
+  function recordDictation(accuracy) {
+    if (typeof accuracy !== "number" || !Number.isFinite(accuracy)) {
+      throw new TypeError("받아쓰기 정답률은 유한한 숫자여야 합니다.");
+    }
+    var progress = get();
+    var stats = progress.listeningStats.dictation;
+    stats.attempted += 1;
+    stats.wordAccuracy.push(Math.min(1, Math.max(0, accuracy)));
+    set({ listeningStats: progress.listeningStats });
+    return stats;
+  }
+
+  function recordListeningAnswer(type, isCorrect) {
+    if (type !== "part2" && type !== "part3") {
+      throw new TypeError("리스닝 문제 유형은 part2 또는 part3이어야 합니다.");
+    }
+    if (typeof isCorrect !== "boolean") {
+      throw new TypeError("정답 여부는 boolean 값이어야 합니다.");
+    }
+    var progress = get();
+    var stats = progress.listeningStats[type];
+    stats.solved += 1;
+    if (isCorrect) stats.correct += 1;
+    set({ listeningStats: progress.listeningStats });
+    return stats;
+  }
+
   window.Progress = {
     get: get,
     set: set,
@@ -247,6 +310,8 @@
     recordGrammarAnswer: recordGrammarAnswer,
     getGrammarStats: getGrammarStats,
     getWeakRules: getWeakRules,
+    recordDictation: recordDictation,
+    recordListeningAnswer: recordListeningAnswer,
     getDueWords: getDueWords,
     getWeakWords: getWeakWords,
     getGraduated: getGraduated

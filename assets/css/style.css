@@ -297,6 +297,42 @@ h1, h2, h3, p { overflow-wrap: anywhere; }
 .grammar-weak-item.is-weak .grammar-accuracy-bar { background: var(--red); }
 .grammar-accuracy-value { min-width: 38px; font-family: "IBM Plex Mono", monospace; font-size: 12px; text-align: right; }
 .grammar-weak-item .grammar-data-insufficient { grid-column: 2 / -1; }
+.listening-voice-settings { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 12px; }
+.listening-voice-settings select, .listening-answer-field input { width: 100%; min-width: 0; min-height: 43px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); background: var(--surface); }
+.listening-support-note { min-height: 20px; margin: 0 0 12px; color: var(--ink-faint); font-size: 11px; }
+.listening-support-note.is-unsupported { color: var(--red); }
+.listening-workspace [hidden] { display: none; }
+.listening-exercise { max-width: 760px; margin-inline: auto; }
+.listening-counter { margin: 0 0 10px; color: var(--ink-faint); font-family: "IBM Plex Mono", monospace; font-size: 11px; }
+.listening-button-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.listening-answer-field { margin: 12px 0; }
+.listening-score { margin: 12px 0 6px; color: var(--green); font-size: 13px; font-weight: 700; }
+.dictation-result { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px; min-height: 26px; margin: 8px 0; }
+.dictation-word-group { display: inline-flex; flex-direction: column; align-items: center; gap: 1px; }
+.dictation-word { color: var(--ink); font-family: "IBM Plex Mono", monospace; font-size: 13px; }
+.dictation-word.is-correct { color: var(--green); }
+.dictation-word.is-wrong, .dictation-word.is-extra { color: var(--red); }
+.dictation-word.is-missing { min-width: 25px; color: var(--ink-faint); text-align: center; }
+.dictation-expected { color: var(--green); font-family: "IBM Plex Mono", monospace; font-size: 9px; }
+.dictation-full-answer { color: var(--green); font-size: 15px; }
+.dictation-translation, .listening-translation { color: var(--ink-soft); font-size: 12px; }
+.listening-playback-message { min-height: 20px; margin: 8px 0 0; color: var(--ink-faint); font-size: 11px; }
+.listening-choice-list { display: grid; gap: 8px; margin: 12px 0; }
+.listening-choice-row { display: flex; min-width: 0; align-items: stretch; gap: 7px; }
+.listening-choice-answer { flex: 1; min-width: 0; padding: 11px 13px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); text-align: left; cursor: pointer; overflow-wrap: anywhere; }
+.listening-choice-answer:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-soft); }
+.listening-choice-answer:disabled { cursor: default; }
+.listening-choice-answer.correct { border-color: var(--green); color: var(--green); background: var(--green-soft); }
+.listening-choice-answer.incorrect { border-color: var(--red); color: var(--red); background: var(--red-soft); }
+.listening-choice-play { flex: 0 0 40px; width: 40px; border: 1px solid var(--line); border-radius: 9px; color: var(--blue); background: var(--surface); cursor: pointer; }
+.listening-feedback { margin: 12px 0; font-size: 12px; }
+.listening-feedback p { margin: 5px 0; }
+.listening-explanation { color: var(--ink-soft); }
+.listening-question { margin: 8px 0 14px; font-size: 17px; }
+.listening-part3-quiz { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line); }
+.listening-transcript { margin-top: 12px; padding: 12px 14px; border-radius: 9px; background: var(--surface-2); }
+.listening-transcript-line { margin: 6px 0; font-size: 12px; overflow-wrap: anywhere; }
+.listening-speaker { color: var(--blue); font-weight: 700; }
 .english-sentence { display: block; margin: 10px 0; color: var(--blue); font-size: 14px; }
 .strategy-grid { display: grid; gap: 12px; }
 .mistake-card { border-left: 3px solid var(--red); }
@@ -389,6 +425,10 @@ h1, h2, h3, p { overflow-wrap: anywhere; }
   .grammar-accuracy-track { grid-column: 1; }
   .grammar-accuracy-value { grid-column: 2; grid-row: 2; }
   .grammar-result-actions { flex-direction: column; }
+  .listening-voice-settings { padding: 14px; }
+  .listening-button-row .button { flex: 1 1 130px; }
+  .listening-choice-answer { padding: 10px; font-size: 12px; }
+  .listening-choice-play { flex-basis: 38px; width: 38px; }
   .vocab-exam-settings { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 15px; }
   .vocab-question-prompt { font-size: 16px; }
   .vocab-results h3 { font-size: 21px; }
