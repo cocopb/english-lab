@@ -18,6 +18,12 @@
       part3: { solved: 0, correct: 0 }
     },
     readingStats: {},
+    speakingStats: {
+      patternsPassed: [],
+      rolePlaysDone: [],
+      shadowingAvg: 0,
+      shadowingCount: 0
+    },
     planDone: {}
   };
   var navigation = [
@@ -101,6 +107,21 @@
         wrongQuestionIndexes: wrongQuestionIndexes
       };
     });
+    var speakingStats = result.speakingStats && typeof result.speakingStats === "object" ? result.speakingStats : {};
+    result.speakingStats = {
+      patternsPassed: Array.isArray(speakingStats.patternsPassed)
+        ? Array.from(new Set(speakingStats.patternsPassed.filter(function (id) {
+          return typeof id === "string" && id.trim();
+        })))
+        : [],
+      rolePlaysDone: Array.isArray(speakingStats.rolePlaysDone)
+        ? Array.from(new Set(speakingStats.rolePlaysDone.filter(function (id) {
+          return typeof id === "string" && id.trim();
+        })))
+        : [],
+      shadowingAvg: Math.min(1, Math.max(0, Number(speakingStats.shadowingAvg) || 0)),
+      shadowingCount: Math.max(0, Math.floor(Number(speakingStats.shadowingCount) || 0))
+    };
     var vocabProgress = result.vocabProgress && typeof result.vocabProgress === "object" ? result.vocabProgress : {};
     result.vocabProgress = {};
     Object.keys(vocabProgress).forEach(function (wordId) {
@@ -372,6 +393,37 @@
     });
   }
 
+  function recordSpeakingPattern(patternId) {
+    if (typeof patternId !== "string" || !patternId.trim()) {
+      throw new TypeError("회화 패턴 ID가 필요합니다.");
+    }
+    var stats = get().speakingStats;
+    if (!stats.patternsPassed.includes(patternId)) stats.patternsPassed.push(patternId);
+    set({ speakingStats: stats });
+    return stats;
+  }
+
+  function recordRolePlay(rolePlayId) {
+    if (typeof rolePlayId !== "string" || !rolePlayId.trim()) {
+      throw new TypeError("롤플레이 ID가 필요합니다.");
+    }
+    var stats = get().speakingStats;
+    if (!stats.rolePlaysDone.includes(rolePlayId)) stats.rolePlaysDone.push(rolePlayId);
+    set({ speakingStats: stats });
+    return stats;
+  }
+
+  function recordShadowingAttempt(accuracy) {
+    if (typeof accuracy !== "number" || !Number.isFinite(accuracy) || accuracy < 0 || accuracy > 1) {
+      throw new RangeError("쉐도잉 정확도는 0에서 1 사이여야 합니다.");
+    }
+    var stats = get().speakingStats;
+    stats.shadowingAvg = (stats.shadowingAvg * stats.shadowingCount + accuracy) / (stats.shadowingCount + 1);
+    stats.shadowingCount += 1;
+    set({ speakingStats: stats });
+    return stats;
+  }
+
   window.Progress = {
     get: get,
     set: set,
@@ -385,6 +437,9 @@
     recordListeningAnswer: recordListeningAnswer,
     recordReadingResult: recordReadingResult,
     getWeakPassages: getWeakPassages,
+    recordSpeakingPattern: recordSpeakingPattern,
+    recordRolePlay: recordRolePlay,
+    recordShadowingAttempt: recordShadowingAttempt,
     getDueWords: getDueWords,
     getWeakWords: getWeakWords,
     getGraduated: getGraduated

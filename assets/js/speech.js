@@ -155,6 +155,219 @@
     });
   }
 
+  var activeRecognition = null;
+  var recognitionSupported = typeof window.SpeechRecognition === "function" ||
+    typeof window.webkitSpeechRecognition === "function";
+
+  function recognitionIsSupported() {
+    return recognitionSupported;
+  }
+
+  function startRecognition(onResult, onError) {
+    if (!recognitionIsSupported()) {
+      if (typeof onError === "function") onError({ error: "unsupported" });
+      return false;
+    }
+    if (!window.isSecureContext && window.location.hostname !== "localhost" &&
+        window.location.hostname !== "127.0.0.1" && window.location.hostname !== "[::1]" &&
+        window.location.hostname !== "::1") {
+      if (typeof onError === "function") onError({ error: "insecure-context" });
+      return false;
+    }
+    stopRecognition();
+    var Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    var recognition;
+    try {
+      recognition = new Recognition();
+    } catch (error) {
+      if (typeof onError === "function") {
+        onError({ error: "start-failed", message: error.message });
+      }
+      return false;
+    }
+    recognition.lang = "en-US";
+    recognition.interimResults = true;
+    recognition.continuous = false;
+    recognition.onresult = function (event) {
+      var transcript = "";
+      for (var index = event.resultIndex; index < event.results.length; index += 1) {
+        transcript += event.results[index][0].transcript;
+      }
+      if (typeof onResult === "function") {
+        onResult(transcript.trim(), { isFinal: event.results[event.results.length - 1].isFinal });
+      }
+    };
+    recognition.onerror = function (event) {
+      if (typeof onError === "function") onError(event);
+    };
+    recognition.onend = function () {
+      if (activeRecognition === recognition) activeRecognition = null;
+    };
+    activeRecognition = recognition;
+    try {
+      recognition.start();
+      return true;
+    } catch (error) {
+      activeRecognition = null;
+      if (typeof onError === "function") {
+        onError({ error: error.name === "NotAllowedError" ? "not-allowed" : "start-failed", message: error.message });
+      }
+      return false;
+    }
+  }
+
+  function stopRecognition() {
+    if (!activeRecognition) return;
+    var recognition = activeRecognition;
+    activeRecognition = null;
+    try {
+      recognition.stop();
+    } catch (error) {
+      if (error.name !== "InvalidStateError") throw error;
+    }
+  }
+
+  var contractionMap = {
+    "i'm": ["i", "am"],
+    "i'd": ["i", "would"],
+    "i'll": ["i", "will"],
+    "i've": ["i", "have"],
+    "you're": ["you", "are"],
+    "you'd": ["you", "would"],
+    "you'll": ["you", "will"],
+    "you've": ["you", "have"],
+    "we're": ["we", "are"],
+    "we'd": ["we", "would"],
+    "we'll": ["we", "will"],
+    "we've": ["we", "have"],
+    "they're": ["they", "are"],
+    "they'd": ["they", "would"],
+    "they'll": ["they", "will"],
+    "they've": ["they", "have"],
+    "he's": ["he", "is"],
+    "he'd": ["he", "would"],
+    "he'll": ["he", "will"],
+    "she's": ["she", "is"],
+    "she'd": ["she", "would"],
+    "she'll": ["she", "will"],
+    "it's": ["it", "is"],
+    "it'd": ["it", "would"],
+    "it'll": ["it", "will"],
+    "that's": ["that", "is"],
+    "that'd": ["that", "would"],
+    "there's": ["there", "is"],
+    "there'd": ["there", "would"],
+    "what's": ["what", "is"],
+    "what'd": ["what", "would"],
+    "who's": ["who", "is"],
+    "who'd": ["who", "would"],
+    "where's": ["where", "is"],
+    "when's": ["when", "is"],
+    "how's": ["how", "is"],
+    "let's": ["let", "us"],
+    "can't": ["cannot"],
+    "cannot": ["cannot"],
+    "won't": ["will", "not"],
+    "don't": ["do", "not"],
+    "doesn't": ["does", "not"],
+    "didn't": ["did", "not"],
+    "isn't": ["is", "not"],
+    "aren't": ["are", "not"],
+    "wasn't": ["was", "not"],
+    "weren't": ["were", "not"],
+    "hasn't": ["has", "not"],
+    "haven't": ["have", "not"],
+    "hadn't": ["had", "not"],
+    "wouldn't": ["would", "not"],
+    "couldn't": ["could", "not"],
+    "shouldn't": ["should", "not"],
+    "mustn't": ["must", "not"],
+    "mightn't": ["might", "not"]
+  };
+
+  function normalizeSpeechWords(text) {
+    return String(text || "").toLowerCase().match(/[a-z0-9]+(?:'[a-z0-9]+)*/g) || [];
+  }
+
+  function expandSpeechWords(words) {
+    return words.reduce(function (variants, word) {
+      var alternatives = word === "i'd"
+        ? [["i", "would"], ["i", "had"]]
+        : [contractionMap[word] || [word]];
+      return variants.reduce(function (expanded, variant) {
+        alternatives.forEach(function (addition) {
+          expanded.push(variant.concat(addition));
+        });
+        return expanded;
+      }, []);
+    }, [[]]);
+  }
+
+  function alignSpeechWords(target, said) {
+    var rows = target.length + 1;
+    var columns = said.length + 1;
+    var matrix = Array.from({ length: rows }, function () { return Array(columns).fill(0); });
+    for (var row = 0; row < rows; row += 1) matrix[row][0] = row;
+    for (var column = 0; column < columns; column += 1) matrix[0][column] = column;
+    for (var i = 1; i < rows; i += 1) {
+      for (var j = 1; j < columns; j += 1) {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j] + 1,
+          matrix[i][j - 1] + 1,
+          matrix[i - 1][j - 1] + (target[i - 1] === said[j - 1] ? 0 : 1)
+        );
+      }
+    }
+    var aligned = [];
+    var targetIndex = target.length;
+    var saidIndex = said.length;
+    while (targetIndex || saidIndex) {
+      if (targetIndex && saidIndex && target[targetIndex - 1] === said[saidIndex - 1] &&
+          matrix[targetIndex][saidIndex] === matrix[targetIndex - 1][saidIndex - 1]) {
+        aligned.push({ word: target[targetIndex - 1], said: said[saidIndex - 1], ok: true });
+        targetIndex -= 1;
+        saidIndex -= 1;
+      } else if (targetIndex && saidIndex &&
+          matrix[targetIndex][saidIndex] === matrix[targetIndex - 1][saidIndex - 1] + 1) {
+        aligned.push({ word: target[targetIndex - 1], said: said[saidIndex - 1], ok: false });
+        targetIndex -= 1;
+        saidIndex -= 1;
+      } else if (targetIndex && matrix[targetIndex][saidIndex] === matrix[targetIndex - 1][saidIndex] + 1) {
+        aligned.push({ word: target[targetIndex - 1], said: "", ok: false });
+        targetIndex -= 1;
+      } else {
+        aligned.push({ word: said[saidIndex - 1], said: said[saidIndex - 1], ok: false, extra: true });
+        saidIndex -= 1;
+      }
+    }
+    return aligned.reverse();
+  }
+
+  function compareSpeech(said, target) {
+    var saidVariants = expandSpeechWords(normalizeSpeechWords(said));
+    var targetVariants = expandSpeechWords(normalizeSpeechWords(target));
+    var best = null;
+    targetVariants.forEach(function (targetVariant) {
+      saidVariants.forEach(function (saidVariant) {
+        var words = alignSpeechWords(targetVariant, saidVariant);
+        var correct = words.filter(function (word) { return word.ok; }).length;
+        var denominator = Math.max(targetVariant.length, saidVariant.length);
+        var accuracy = denominator ? correct / denominator : 1;
+        if (!best || accuracy > best.accuracy || (accuracy === best.accuracy && words.length < best.words.length)) {
+          best = { accuracy: accuracy, words: words };
+        }
+      });
+    });
+    return best || { accuracy: 1, words: [] };
+  }
+
+  window.Listen = {
+    isSupported: recognitionIsSupported,
+    start: startRecognition,
+    stop: stopRecognition
+  };
+  window.compareSpeech = compareSpeech;
+
   window.Speech = {
     isSupported: isSupported,
     getVoices: getVoices,

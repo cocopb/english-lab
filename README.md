@@ -19,16 +19,16 @@ english-lab/
 
 ## 로컬 실행
 
-`index.html`을 브라우저에서 열면 됩니다. 페이지와 데이터는 상대 경로의 스크립트로 연결되어 있으며 JSON `fetch`를 사용하지 않습니다. GitHub Pages에도 저장소 내용을 그대로 게시할 수 있습니다.
+`index.html`을 브라우저에서 열면 됩니다. 페이지와 데이터는 상대 경로의 스크립트로 연결되어 있으며 JSON `fetch`를 사용하지 않습니다. 회화의 음성 인식은 HTTPS 또는 localhost에서만 사용할 수 있고, 그 외 환경에서는 직접 입력으로 연습합니다. GitHub Pages에도 저장소 내용을 그대로 게시할 수 있습니다.
 
 ## 콘텐츠 추가
 
-`data/` 폴더의 해당 JavaScript 파일에 항목을 추가합니다. 각 파일은 `window.GRAMMAR`, `window.MISTAKES`, `window.VOCAB`, `window.SPEAKING`, `window.QUIZ`, `window.PLAN` 전역 배열을 제공합니다. 기존 항목과 같은 객체 필드를 유지하면 페이지가 항목을 자동으로 렌더링합니다.
+`data/` 폴더의 해당 JavaScript 파일에 항목을 추가합니다. 각 파일은 `window.GRAMMAR`, `window.MISTAKES`, `window.VOCAB`, `window.SPEAKING`, `window.PATTERNS`, `window.ROLEPLAYS`, `window.SHADOWING`, `window.QUIZ`, `window.PLAN` 전역 배열을 제공합니다. 기존 항목과 같은 객체 필드를 유지하면 페이지가 항목을 자동으로 렌더링합니다.
 
 - `grammar.js`: `id`, `title`, `summary`, `body`, `tags`
 - `mistakes.js`: `id`, `original`, `correction`, `reason`
 - `vocab.js`: `id`, `track`, `day`, `word`, `pos`, `meaning`, `example`, `exampleKo`, `tip`, `distractors`, `tags`
-- `speaking.js`: `id`, `situation`, `expressions` (각 표현은 `english`, `korean`)
+- `speaking.js`: 기존 `SPEAKING`의 `id`, `situation`, `expressions` (각 표현은 `english`, `korean`), 말하기 연습용 `PATTERNS`의 `drills` (`ko`, `en`), `ROLEPLAYS`의 `turns`, `SHADOWING`의 `en`, `ko`, `level`
 - `quiz.js`: `id`, `question`, `options` (4개), `answer` (0부터 시작하는 정답 인덱스), `explanation`
 - `plan.js`: `id`, `title` (26개 주차 항목)
 
@@ -36,6 +36,8 @@ english-lab/
 보카 시험의 뜻 선택지에 사용되는 혼동 단어 번역은 `data/vocab.js`의 `window.VOCAB_DISTRACTOR_MEANINGS`에 추가합니다. 시험 결과와 단어별 복습 단계는 `englishLabProgress`에 함께 저장되며, 정답 시 1·4·7·14일 간격으로 다음 복습일을 기록합니다. 오답 공부 탭에는 오늘 복습할 단어, 누적 오답 약점, 졸업 단어 현황이 표시됩니다.
 
 보카 데이터의 빈칸 생성 가능 여부, 필수 필드, 혼동 단어 수, ID 중복 및 트랙별 필수 정보를 확인하려면 프로젝트 루트에서 `node tools/check-vocab.js`를 실행합니다. 외부 패키지는 필요하지 않습니다.
+
+회화 진도는 `englishLabProgress`의 `speakingStats`에 패턴 통과, 완료한 롤플레이, 쉐도잉 평균 정확도로 저장됩니다. 브라우저 음성 인식은 지원 여부와 마이크 권한에 따라 사용할 수 있으며, 지원하지 않거나 권한이 거부되면 입력으로 대체할 수 있습니다.
 
 ## 브라우저 저장 데이터
 

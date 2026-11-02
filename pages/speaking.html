@@ -1,17 +1,48 @@
 <!doctype html>
-<html lang="ko"><head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#FAF8F6">
-  <title>회화 — English Lab</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#FAF8F6">
+  <title>회화 — English Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/style.css"><script src="../assets/js/common.js" defer></script>
-</head><body><div id="site-header"></div><main class="container">
-  <header class="page-intro"><p class="eyebrow">SPEAKING</p><h1>상황별 회화</h1><p>자주 만나는 상황의 표현을 소리 내어 연습해요.</p></header>
-  <section class="content-section"><h2>표현 노트</h2><div id="speaking-list" class="list-stack"></div></section>
-</main><div id="site-footer"></div>
-<script src="../data/speaking.js"></script><script>
-  document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("speaking-list").innerHTML = window.SPEAKING.map(function (item) {
-      return '<article class="note-card"><span class="tag">SITUATION</span><h3>' + item.situation + '</h3>' + item.expressions.map(function (line) { return '<p class="english-sentence en">' + line.english + '</p><p>' + line.korean + "</p>"; }).join("") + "</article>";
-    }).join("");
-  });
-</script></body></html>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/common.js" defer></script>
+  <script src="../assets/js/speech.js" defer></script>
+  <script src="../data/speaking.js" defer></script>
+  <script src="../assets/js/speaking.js" defer></script>
+</head>
+<body>
+  <div id="site-header"></div>
+  <main class="container">
+    <header class="page-intro">
+      <p class="eyebrow">SPEAKING · PRACTICE</p>
+      <h1>말하기 연습</h1>
+      <p>한국어를 보고 영어로 말해 보세요. 음성 인식이 안 되면 직접 입력할 수 있어요.</p>
+    </header>
+    <section class="content-section speaking-workspace">
+      <div class="vocab-tabs" role="tablist" aria-label="회화 학습 메뉴">
+        <button class="vocab-tab" id="speaking-tab-patterns" type="button" role="tab" aria-controls="speaking-panel-patterns" aria-selected="true">패턴 드릴</button>
+        <button class="vocab-tab" id="speaking-tab-roleplay" type="button" role="tab" aria-controls="speaking-panel-roleplay" aria-selected="false" tabindex="-1">롤플레이</button>
+        <button class="vocab-tab" id="speaking-tab-shadowing" type="button" role="tab" aria-controls="speaking-panel-shadowing" aria-selected="false" tabindex="-1">쉐도잉</button>
+      </div>
+      <p class="speaking-notice" id="speaking-notice" role="status">음성 연습은 HTTPS 또는 localhost에서 사용할 수 있어요. 음성 인식을 지원하지 않는 환경에서는 입력으로 연습하세요.</p>
+      <section class="vocab-tab-panel" id="speaking-panel-patterns" role="tabpanel" aria-labelledby="speaking-tab-patterns">
+        <h2>패턴 드릴</h2>
+        <div id="speaking-pattern-exercise"></div>
+      </section>
+      <section class="vocab-tab-panel" id="speaking-panel-roleplay" role="tabpanel" aria-labelledby="speaking-tab-roleplay" hidden>
+        <h2>롤플레이</h2>
+        <div id="speaking-roleplay-exercise"></div>
+      </section>
+      <section class="vocab-tab-panel" id="speaking-panel-shadowing" role="tabpanel" aria-labelledby="speaking-tab-shadowing" hidden>
+        <h2>쉐도잉</h2>
+        <div id="speaking-shadowing-exercise"></div>
+      </section>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+</body>
+</html>
