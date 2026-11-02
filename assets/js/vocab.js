@@ -33,6 +33,7 @@
     var correctCount = 0;
     var wrongItems = [];
     var answerResults = [];
+    var meaningChoicesById = Object.create(null);
     var blankCache = Object.create(null);
     var blankWarnings = new Set();
 
@@ -481,36 +482,59 @@
           return { text: word, correct: word === item.word };
         }));
       }
-      var words = [item.word].concat(item.distractors);
-      var choices = words.map(function (word) {
-        return {
-          text: word === item.word ? item.meaning : trackMeaning[word.toLocaleLowerCase()],
-          word: word,
-          correct: word === item.word
-        };
+      var choices = [];
+      var usedMeanings = new Set();
+      function addChoice(word, meaning, correct) {
+        if (!meaning || usedMeanings.has(meaning)) return;
+        usedMeanings.add(meaning);
+        choices.push({ text: meaning, word: word, correct: correct });
+      }
+
+      addChoice(item.word, item.meaning, true);
+      item.distractors.forEach(function (word) {
+        addChoice(word, trackMeaning[word.toLocaleLowerCase()], false);
       });
-      var missing = choices.filter(function (choice) { return !choice.text; }).map(function (choice) { return choice.word; });
-      if (missing.length) throw new Error("뜻 데이터가 없는 혼동 단어: " + missing.join(", "));
+
+      var groupingValue = String(item.situation || item.day);
+      var sameGroup = vocabulary.filter(function (candidate) {
+        return candidate.id !== item.id && candidate.track === item.track &&
+          String(candidate.situation || candidate.day) === groupingValue;
+      });
+      shuffle(sameGroup).forEach(function (candidate) {
+        if (choices.length < 4) addChoice(candidate.word, candidate.meaning, false);
+      });
+
+      if (choices.length < 4) {
+        shuffle(vocabulary.filter(function (candidate) {
+          return candidate.track === item.track && candidate.id !== item.id;
+        })).forEach(function (candidate) {
+          if (choices.length < 4) addChoice(candidate.word, candidate.meaning, false);
+        });
+      }
+
+      if (choices.length < 4) return null;
       return shuffle(choices);
     }
 
     function beginExam(items, type) {
       var progress = window.Progress.get();
+      meaningChoicesById = Object.create(null);
       items = items.filter(function (item) {
         var status = progress.vocabProgress[item.id];
-        return (!status || status.stage < 4) && (type !== "blank" || blankExample(item) !== null);
+        if (status && status.stage >= 4) return false;
+        if (type === "blank") return blankExample(item) !== null;
+        var choices = questionChoices(item, type);
+        if (!choices || choices.length !== 4) {
+          console.warn("뜻 시험에서 선택지를 4개 만들 수 없어 건너뜁니다.", item.id, item.word);
+          return false;
+        }
+        meaningChoicesById[item.id] = choices;
+        return true;
       });
       if (!items.length) {
         examMessage.textContent = type === "blank"
           ? "선택한 범위에 빈칸 문제로 출제할 수 있는 단어가 없습니다."
           : "선택한 범위에 출제할 단어가 없습니다.";
-        return;
-      }
-      try {
-        items.forEach(function (item) { questionChoices(item, type); });
-      } catch (error) {
-        console.error(error);
-        examMessage.textContent = error.message;
         return;
       }
       examItems = items.slice();
@@ -528,7 +552,9 @@
 
     function renderQuestion() {
       var item = examItems[questionIndex];
-      var choices = questionChoices(item, examTypeForRun);
+      var choices = examTypeForRun === "meaning"
+        ? meaningChoicesById[item.id]
+        : questionChoices(item, examTypeForRun);
       examStage.replaceChildren();
       var card = makeElement("section", "panel vocab-question");
       card.append(

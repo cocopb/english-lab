@@ -29,7 +29,8 @@ var distractorMeanings = context.window.VOCAB_DISTRACTOR_MEANINGS;
 if (distractorMeanings && typeof distractorMeanings === "object") {
   Object.keys(distractorMeanings).forEach(function (word) {
     var meaning = distractorMeanings[word];
-    if (typeof meaning === "string" && meaning.trim()) meanings[normalizeWord(word)] = meaning;
+    var key = normalizeWord(word);
+    if (!meanings[key] && typeof meaning === "string" && meaning.trim()) meanings[key] = meaning;
   });
 }
 
@@ -80,6 +81,37 @@ function blankExample(item) {
   return false;
 }
 
+function canBuildMeaningChoices(item) {
+  var choices = Object.create(null);
+  choices[item.meaning] = true;
+
+  function addMeaning(meaning) {
+    if (meaning && !choices[meaning]) choices[meaning] = true;
+  }
+
+  if (Array.isArray(item.distractors)) {
+    item.distractors.forEach(function (word) {
+      if (typeof word === "string") addMeaning(meanings[normalizeWord(word)]);
+    });
+  }
+
+  var groupingValue = String(item.situation || item.day);
+  vocabulary.forEach(function (candidate) {
+    if (candidate.id !== item.id && candidate.track === item.track &&
+        String(candidate.situation || candidate.day) === groupingValue) {
+      addMeaning(candidate.meaning);
+    }
+  });
+
+  if (Object.keys(choices).length < 4) {
+    vocabulary.forEach(function (candidate) {
+      if (candidate.track === item.track && candidate.id !== item.id) addMeaning(candidate.meaning);
+    });
+  }
+
+  return Object.keys(choices).length >= 4;
+}
+
 var failures = {
   blank: [],
   distractorCount: [],
@@ -87,6 +119,7 @@ var failures = {
   duplicateIds: [],
   answerAsDistractor: [],
   missingDistractorMeanings: [],
+  meaningChoiceCount: [],
   trackMetadata: []
 };
 var seenIds = Object.create(null);
@@ -130,6 +163,9 @@ vocabulary.forEach(function (item, index) {
       }
     });
   }
+  if (typeof item.meaning === "string" && item.meaning.trim() && !canBuildMeaningChoices(item)) {
+    failures.meaningChoiceCount.push({ id: label, word: item.word || "(word 없음)" });
+  }
   if ((item.track === "toeic" && (item.day === undefined || item.day === null || item.day === "")) ||
       (item.track === "survival" && (item.situation === undefined || item.situation === null || item.situation === ""))) {
     failures.trackMetadata.push({ id: label, track: item.track, day: item.day, situation: item.situation });
@@ -140,7 +176,7 @@ var failureCount = Object.keys(failures).reduce(function (total, key) {
   return total + failures[key].length;
 }, 0);
 var failedRules = Object.keys(failures).filter(function (key) { return failures[key].length > 0; }).length;
-console.log("요약: " + vocabulary.length + "개 단어 검사 | 규칙 통과 " + (7 - failedRules) + "/7 | 실패 항목 " + failureCount);
+console.log("요약: " + vocabulary.length + "개 단어 검사 | 규칙 통과 " + (8 - failedRules) + "/8 | 실패 항목 " + failureCount);
 Object.keys(failures).forEach(function (key) {
   console.log("\n" + key + " (" + failures[key].length + ")");
   if (!failures[key].length) {
