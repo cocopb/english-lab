@@ -1,24 +1,49 @@
 <!doctype html>
-<html lang="ko"><head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#FAF8F6">
-  <title>문법 — English Lab</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#FAF8F6">
+  <title>문법 — English Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/style.css"><script src="../assets/js/common.js" defer></script>
-</head><body><div id="site-header"></div><main class="container">
-  <header class="page-intro"><p class="eyebrow">GRAMMAR</p><h1>문법 정리</h1><p>규칙을 짧게 정리하고 예문으로 확인해요.</p></header>
-  <section class="content-section"><h2>문법 노트</h2><div id="grammar-list"></div></section>
-</main><div id="site-footer"></div>
-<script src="../data/grammar.js"></script><script>
-  document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("grammar-list").innerHTML = window.GRAMMAR.map(function (item, index) {
-      return '<article class="accordion-item"><button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="grammar-panel-' + index + '">' + item.title + '</button><div class="accordion-panel" id="grammar-panel-' + index + '" hidden><p>' + item.summary + '</p><p>' + item.body + '</p><div class="tag-list">' + item.tags.map(function (tag) { return '<span class="tag">' + tag + "</span>"; }).join("") + "</div></div></article>";
-    }).join("");
-    document.querySelectorAll(".accordion-trigger").forEach(function (button) {
-      button.addEventListener("click", function () {
-        var expanded = button.getAttribute("aria-expanded") === "true";
-        button.setAttribute("aria-expanded", String(!expanded));
-        document.getElementById(button.getAttribute("aria-controls")).hidden = expanded;
-      });
-    });
-  });
-</script></body></html>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/common.js" defer></script>
+  <script src="../assets/js/grammar.js" defer></script>
+</head>
+<body>
+  <div id="site-header"></div>
+  <main class="container">
+    <header class="page-intro">
+      <p class="eyebrow">GRAMMAR</p>
+      <h1>문법 정리</h1>
+      <p>규칙을 짧게 정리하고 예문으로 확인해요.</p>
+    </header>
+    <section class="content-section grammar-workspace">
+      <div class="vocab-tabs" role="tablist" aria-label="문법 학습 메뉴">
+        <button class="vocab-tab" id="grammar-tab-notes" type="button" role="tab" aria-controls="grammar-panel-notes" aria-selected="true">문법 노트</button>
+        <button class="vocab-tab" id="grammar-tab-quiz" type="button" role="tab" aria-controls="grammar-panel-quiz" aria-selected="false" tabindex="-1">문법 문제</button>
+        <button class="vocab-tab" id="grammar-tab-weak" type="button" role="tab" aria-controls="grammar-panel-weak" aria-selected="false" tabindex="-1">약점 유형</button>
+      </div>
+      <section class="vocab-tab-panel" id="grammar-panel-notes" role="tabpanel" aria-labelledby="grammar-tab-notes">
+        <div class="grammar-notes-heading">
+          <h2>문법 노트</h2>
+          <button class="button button-quiet" id="grammar-expand-toggle" type="button" aria-expanded="false">전체 펼치기</button>
+        </div>
+        <div id="grammar-list" class="grammar-list"></div>
+      </section>
+      <section class="vocab-tab-panel" id="grammar-panel-quiz" role="tabpanel" aria-labelledby="grammar-tab-quiz" hidden>
+        <h2>문법 문제</h2>
+        <div class="placeholder">문제 데이터 준비 중</div>
+      </section>
+      <section class="vocab-tab-panel" id="grammar-panel-weak" role="tabpanel" aria-labelledby="grammar-tab-weak" hidden>
+        <h2>약점 유형</h2>
+        <div class="placeholder">문법 문제 데이터가 쌓이면 유형별 정답률과 약점 유형을 여기에 보여드릴게요.</div>
+      </section>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="../data/grammar.js"></script>
+</body>
+</html>

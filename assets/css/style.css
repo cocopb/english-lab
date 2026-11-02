@@ -240,6 +240,32 @@ h1, h2, h3, p { overflow-wrap: anywhere; }
 .accordion-trigger[aria-expanded="true"]::after { content: "−"; }
 .accordion-panel { padding: 0 17px 16px; color: var(--ink-soft); font-size: 13px; }
 .accordion-panel[hidden] { display: none; }
+.grammar-notes-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.grammar-notes-heading h2 { margin: 0; font-size: 19px; }
+.grammar-list { display: grid; gap: 10px; }
+.grammar-topic-trigger { align-items: center; }
+.grammar-topic-summary { display: grid; min-width: 0; gap: 3px; }
+.grammar-topic-heading { color: var(--ink); }
+.grammar-topic-one-line { color: var(--ink-soft); font-size: 12px; font-weight: 400; }
+.grammar-weight { flex: 0 0 auto; padding: 3px 9px; border-radius: 99px; color: var(--blue); background: var(--blue-soft); font-size: 10px; }
+.grammar-topic-panel { display: grid; gap: 18px; padding-top: 2px; }
+.grammar-detail-section { min-width: 0; }
+.grammar-detail-section h3 { margin: 0 0 8px; color: var(--ink); font-size: 14px; }
+.grammar-detail-section > p { margin: 0; white-space: pre-line; }
+.grammar-table-scroll { max-width: 100%; overflow-x: auto; border: 1px solid var(--line); border-radius: 9px; }
+.grammar-table { width: 100%; min-width: 390px; border-collapse: collapse; background: var(--surface); }
+.grammar-table th, .grammar-table td { padding: 9px 11px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.grammar-table th { color: var(--ink-soft); background: var(--surface-2); font-size: 11px; }
+.grammar-table td { color: var(--ink); font-size: 12px; }
+.grammar-table tbody tr:last-child td { border-bottom: 0; }
+.grammar-examples { display: grid; gap: 8px; }
+.grammar-example-card { min-width: 0; padding: 10px 12px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); }
+.grammar-example-card p { margin: 0; overflow-wrap: anywhere; }
+.grammar-example-good { color: var(--green); }
+.grammar-example-bad { margin-top: 4px !important; color: var(--red); text-decoration: line-through; }
+.grammar-example-note { margin-top: 6px !important; color: var(--ink-faint); font-size: 11px; }
+.grammar-trap { padding: 11px 13px; border-left: 3px solid var(--red); border-radius: 0 8px 8px 0; color: var(--ink); background: var(--red-soft); }
+.grammar-workspace .vocab-tab-panel > h2 { margin-bottom: 14px; }
 .english-sentence { display: block; margin: 10px 0; color: var(--blue); font-size: 14px; }
 .strategy-grid { display: grid; gap: 12px; }
 .mistake-card { border-left: 3px solid var(--red); }
@@ -317,6 +343,12 @@ h1, h2, h3, p { overflow-wrap: anywhere; }
   .vocab-inline-tags { font-size: 9px; }
   .vocab-tabs { gap: 0; }
   .vocab-tab { flex: 1; padding-inline: 7px; font-size: 12px; white-space: nowrap; }
+  .grammar-topic-trigger { align-items: flex-start; gap: 8px; padding: 13px 12px; }
+  .grammar-topic-trigger::after { flex: 0 0 auto; }
+  .grammar-topic-one-line { font-size: 11px; }
+  .grammar-weight { padding: 3px 7px; font-size: 9px; }
+  .grammar-topic-panel { padding-inline: 12px; }
+  .grammar-notes-heading .button { min-height: 40px; padding-inline: 11px; font-size: 11px; white-space: nowrap; }
   .vocab-exam-settings { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 15px; }
   .vocab-question-prompt { font-size: 16px; }
   .vocab-results h3 { font-size: 21px; }

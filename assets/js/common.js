@@ -2,7 +2,18 @@
   "use strict";
 
   var reviewIntervals = [1, 4, 7, 14];
-  var defaults = { studiedDates: [], vocabDay: 0, quizSolved: 0, quizCorrect: 0, vocabProgress: {}, planDone: {} };
+  var defaults = {
+    studiedDates: [],
+    vocabDay: 0,
+    quizSolved: 0,
+    quizCorrect: 0,
+    vocabProgress: {},
+    grammarStats: {
+      g01: { solved: 0, correct: 0, lastDate: null },
+      g02: { solved: 0, correct: 0, lastDate: null }
+    },
+    planDone: {}
+  };
   var navigation = [
     ["홈", "index.html", "home"],
     ["보카", "pages/vocab.html", "vocab"],
@@ -18,6 +29,19 @@
     var result = Object.assign({}, defaults, value && typeof value === "object" ? value : {});
     result.studiedDates = Array.isArray(result.studiedDates) ? result.studiedDates : [];
     result.planDone = result.planDone && typeof result.planDone === "object" ? result.planDone : {};
+    var grammarStats = result.grammarStats && typeof result.grammarStats === "object" ? result.grammarStats : {};
+    result.grammarStats = {};
+    Object.keys(defaults.grammarStats).forEach(function (ruleId) {
+      result.grammarStats[ruleId] = { solved: 0, correct: 0, lastDate: null };
+    });
+    Object.keys(grammarStats).forEach(function (ruleId) {
+      var stats = grammarStats[ruleId];
+      if (!stats || typeof stats !== "object") return;
+      var solved = Math.max(0, Math.floor(Number(stats.solved) || 0));
+      var correct = Math.min(solved, Math.max(0, Math.floor(Number(stats.correct) || 0)));
+      var lastDate = typeof stats.lastDate === "string" && /^\d{4}-\d{2}-\d{2}$/.test(stats.lastDate) ? stats.lastDate : null;
+      result.grammarStats[ruleId] = { solved: solved, correct: correct, lastDate: lastDate };
+    });
     var vocabProgress = result.vocabProgress && typeof result.vocabProgress === "object" ? result.vocabProgress : {};
     result.vocabProgress = {};
     Object.keys(vocabProgress).forEach(function (wordId) {
@@ -171,12 +195,58 @@
     return result;
   }
 
+  function recordGrammarAnswer(ruleId, isCorrect) {
+    if (typeof ruleId !== "string" || !ruleId.trim()) {
+      throw new TypeError("문법 유형 ID가 필요합니다.");
+    }
+    var progress = get();
+    var stats = progress.grammarStats[ruleId] || { solved: 0, correct: 0, lastDate: null };
+    var updated = {
+      solved: stats.solved + 1,
+      correct: stats.correct + (isCorrect ? 1 : 0),
+      lastDate: todayDate()
+    };
+    progress.grammarStats[ruleId] = updated;
+    set({ grammarStats: progress.grammarStats });
+    return updated;
+  }
+
+  function getGrammarStats() {
+    var stats = get().grammarStats;
+    var result = {};
+    Object.keys(stats).forEach(function (ruleId) {
+      var entry = stats[ruleId];
+      result[ruleId] = {
+        solved: entry.solved,
+        correct: entry.correct,
+        accuracy: entry.solved ? Math.round(entry.correct / entry.solved * 100) : null,
+        lastDate: entry.lastDate
+      };
+    });
+    return result;
+  }
+
+  function getWeakRules(count) {
+    var limit = count === undefined ? 5 : Math.max(0, Math.floor(Number(count) || 0));
+    var stats = getGrammarStats();
+    return Object.keys(stats).map(function (ruleId) {
+      return Object.assign({ ruleId: ruleId }, stats[ruleId]);
+    }).filter(function (stats) {
+      return stats.solved >= 5;
+    }).sort(function (a, b) {
+      return a.accuracy - b.accuracy || a.ruleId.localeCompare(b.ruleId);
+    }).slice(0, limit);
+  }
+
   window.Progress = {
     get: get,
     set: set,
     markToday: markToday,
     streak: streak,
     recordVocabAnswer: recordVocabAnswer,
+    recordGrammarAnswer: recordGrammarAnswer,
+    getGrammarStats: getGrammarStats,
+    getWeakRules: getWeakRules,
     getDueWords: getDueWords,
     getWeakWords: getWeakWords,
     getGraduated: getGraduated
