@@ -266,6 +266,37 @@ h1, h2, h3, p { overflow-wrap: anywhere; }
 .grammar-example-note { margin-top: 6px !important; color: var(--ink-faint); font-size: 11px; }
 .grammar-trap { padding: 11px 13px; border-left: 3px solid var(--red); border-radius: 0 8px 8px 0; color: var(--ink); background: var(--red-soft); }
 .grammar-workspace .vocab-tab-panel > h2 { margin-bottom: 14px; }
+.grammar-quiz-settings { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: end; gap: 12px; margin-bottom: 16px; }
+.grammar-quiz-settings select { width: 100%; min-width: 0; min-height: 43px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); background: var(--surface); }
+.grammar-quiz-settings .button, .grammar-quiz-message { grid-column: 1 / -1; }
+.grammar-quiz-message { margin: 0; color: var(--red); font-size: 12px; }
+.grammar-quiz-stage[hidden] { display: none; }
+.grammar-question, .grammar-results { max-width: 760px; margin-inline: auto; }
+.grammar-question-prompt { margin: 7px 0 18px; font-size: 19px; }
+.grammar-quiz-options { margin-bottom: 14px; }
+.grammar-answer-feedback { margin: 13px 0; color: var(--ink-soft); font-size: 13px; }
+.grammar-explanation { margin: 0 0 8px; }
+.grammar-note-link { color: var(--blue); font-size: 12px; font-weight: 600; }
+.grammar-next-button { margin-top: 6px; }
+.grammar-results h3 { margin: 0 0 6px; font-size: 23px; }
+.grammar-result-rate { margin: 0 0 18px; color: var(--green); font-weight: 600; }
+.grammar-result-rules, .grammar-result-misses { margin-top: 18px; }
+.grammar-result-rules h4, .grammar-result-misses h4 { margin: 0 0 9px; font-size: 14px; }
+.grammar-result-rules p, .grammar-result-miss p { margin: 5px 0; font-size: 12px; }
+.grammar-result-miss { padding: 10px 12px; border-left: 3px solid var(--red); border-radius: 0 8px 8px 0; background: var(--red-soft); }
+.grammar-result-miss + .grammar-result-miss { margin-top: 8px; }
+.grammar-result-actions { margin-top: 18px; }
+.grammar-weak-list { display: grid; gap: 9px; margin-bottom: 16px; }
+.grammar-weak-item { display: grid; grid-template-columns: minmax(110px, 1fr) minmax(80px, 2fr) auto; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.grammar-weak-item.is-weak { border-color: var(--red); color: var(--red); background: var(--red-soft); }
+.grammar-weak-heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; }
+.grammar-weak-count, .grammar-data-insufficient { color: var(--ink-faint); font-size: 11px; }
+.grammar-data-insufficient { grid-column: 2 / -1; margin: 0; }
+.grammar-accuracy-track { height: 9px; overflow: hidden; border-radius: 99px; background: var(--surface-2); }
+.grammar-accuracy-bar { display: block; height: 100%; border-radius: inherit; background: var(--green); }
+.grammar-weak-item.is-weak .grammar-accuracy-bar { background: var(--red); }
+.grammar-accuracy-value { min-width: 38px; font-family: "IBM Plex Mono", monospace; font-size: 12px; text-align: right; }
+.grammar-weak-item .grammar-data-insufficient { grid-column: 2 / -1; }
 .english-sentence { display: block; margin: 10px 0; color: var(--blue); font-size: 14px; }
 .strategy-grid { display: grid; gap: 12px; }
 .mistake-card { border-left: 3px solid var(--red); }
@@ -349,6 +380,15 @@ h1, h2, h3, p { overflow-wrap: anywhere; }
   .grammar-weight { padding: 3px 7px; font-size: 9px; }
   .grammar-topic-panel { padding-inline: 12px; }
   .grammar-notes-heading .button { min-height: 40px; padding-inline: 11px; font-size: 11px; white-space: nowrap; }
+  .grammar-quiz-settings { padding: 14px; }
+  .grammar-quiz-settings .button, .grammar-result-actions .button, #grammar-weak-practice { width: 100%; }
+  .grammar-question-prompt { font-size: 16px; }
+  .grammar-weak-item { grid-template-columns: minmax(0, 1fr) auto; gap: 8px; padding: 11px; }
+  .grammar-weak-heading { grid-column: 1 / -1; justify-content: space-between; }
+  .grammar-data-insufficient { grid-column: 1 / -1; }
+  .grammar-accuracy-track { grid-column: 1; }
+  .grammar-accuracy-value { grid-column: 2; grid-row: 2; }
+  .grammar-result-actions { flex-direction: column; }
   .vocab-exam-settings { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 15px; }
   .vocab-question-prompt { font-size: 16px; }
   .vocab-results h3 { font-size: 21px; }

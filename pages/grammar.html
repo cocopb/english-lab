@@ -35,11 +35,26 @@
       </section>
       <section class="vocab-tab-panel" id="grammar-panel-quiz" role="tabpanel" aria-labelledby="grammar-tab-quiz" hidden>
         <h2>문법 문제</h2>
-        <div class="placeholder">문제 데이터 준비 중</div>
+        <form class="panel grammar-quiz-settings" id="grammar-quiz-form">
+          <label class="field" for="grammar-quiz-rule">유형
+            <select id="grammar-quiz-rule"></select>
+          </label>
+          <label class="field" for="grammar-quiz-count">문항 수
+            <select id="grammar-quiz-count">
+              <option value="10">10문제</option>
+              <option value="20">20문제</option>
+              <option value="all">전체</option>
+            </select>
+          </label>
+          <p class="grammar-quiz-message" id="grammar-quiz-message" aria-live="polite"></p>
+          <button class="button button-primary" type="submit">시작</button>
+        </form>
+        <div class="grammar-quiz-stage" id="grammar-quiz-stage" aria-live="polite" hidden></div>
       </section>
       <section class="vocab-tab-panel" id="grammar-panel-weak" role="tabpanel" aria-labelledby="grammar-tab-weak" hidden>
         <h2>약점 유형</h2>
-        <div class="placeholder">문법 문제 데이터가 쌓이면 유형별 정답률과 약점 유형을 여기에 보여드릴게요.</div>
+        <div id="grammar-weak-list" class="grammar-weak-list"></div>
+        <button class="button button-primary" id="grammar-weak-practice" type="button" disabled>약점 유형만 집중 연습</button>
       </section>
     </section>
   </main>
