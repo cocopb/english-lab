@@ -333,6 +333,70 @@ h1, h2, h3, p { overflow-wrap: anywhere; }
 .listening-transcript { margin-top: 12px; padding: 12px 14px; border-radius: 9px; background: var(--surface-2); }
 .listening-transcript-line { margin: 6px 0; font-size: 12px; overflow-wrap: anywhere; }
 .listening-speaker { color: var(--blue); font-weight: 700; }
+.reading-strategy-list { display: grid; gap: 10px; }
+.reading-strategy-trigger { align-items: flex-start; }
+.reading-strategy-summary { display: grid; min-width: 0; gap: 3px; }
+.reading-strategy-title { color: var(--ink); }
+.reading-strategy-one-line { color: var(--ink-soft); font-size: 12px; font-weight: 400; }
+.reading-strategy-panel { display: grid; gap: 16px; }
+.reading-strategy-section { min-width: 0; }
+.reading-strategy-section h3 { margin: 0 0 7px; color: var(--ink); font-size: 13px; }
+.reading-strategy-points { margin: 0; padding-left: 20px; }
+.reading-strategy-points li + li { margin-top: 5px; }
+.reading-strategy-trap, .reading-strategy-example { margin: 0; padding: 10px 12px; border-radius: 8px; background: var(--surface-2); }
+.reading-strategy-trap { border-left: 3px solid var(--red); }
+.reading-strategy-example { color: var(--blue); overflow-wrap: anywhere; }
+.reading-passage-picker { display: flex; align-items: end; gap: 12px; margin-bottom: 14px; }
+.reading-passage-picker .field { flex: 1; min-width: 0; }
+.reading-passage-picker select { width: 100%; min-width: 0; min-height: 43px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); background: var(--surface); }
+.reading-exercise { display: grid; gap: 14px; scroll-margin-top: 90px; }
+.reading-timer-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.reading-timer-label { color: var(--ink-faint); font-size: 11px; }
+.reading-timer-output { color: var(--blue); font-family: "IBM Plex Mono", monospace; font-size: 14px; font-weight: 500; }
+.reading-passage-card { min-width: 0; }
+.reading-passage-type { margin: 0 0 12px; color: var(--blue); font-size: 12px; font-weight: 700; }
+.reading-passage-header { max-width: 65ch; margin-bottom: 16px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 9px; color: var(--ink-soft); background: var(--surface-2); font-size: 12px; overflow-wrap: anywhere; }
+.reading-passage-header p { margin: 2px 0; }
+.reading-sentences { max-width: 65ch; color: var(--ink); font-size: 13px; line-height: 1.9; overflow-wrap: anywhere; }
+.reading-sentence { margin: 0 -8px; padding: 4px 8px; border-radius: 6px; cursor: pointer; transition: background .15s ease; }
+.reading-sentence.is-highlighted { background: var(--blue-soft); }
+.reading-sentence:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
+.reading-sentence p { margin: 0; }
+.reading-sentence-ko { color: var(--ink-soft); font-family: "IBM Plex Sans KR", sans-serif; font-size: 12px; }
+.reading-vocab-section { margin-top: 18px; padding-top: 13px; border-top: 1px solid var(--line); }
+.reading-vocab-section h3, .reading-questions > h3 { margin: 0 0 9px; font-size: 14px; }
+.reading-vocab-list { display: flex; flex-wrap: wrap; gap: 7px; margin: 0; padding: 0; list-style: none; }
+.reading-vocab-list li { display: flex; flex-wrap: wrap; gap: 5px; padding: 5px 9px; border-radius: 7px; background: var(--surface-2); font-size: 11px; }
+.reading-vocab-word { color: var(--blue); }
+.reading-vocab-meaning { color: var(--ink-soft); }
+.reading-action-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.reading-questions { display: grid; gap: 10px; }
+.reading-questions > h3 { margin-bottom: 0; }
+.reading-question-card { min-width: 0; padding: 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.reading-question-card h4 { margin: 0 0 10px; font-size: 13px; }
+.reading-choices { display: grid; gap: 7px; }
+.reading-choice { width: 100%; min-width: 0; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); text-align: left; cursor: pointer; font-size: 12px; overflow-wrap: anywhere; }
+.reading-choice:hover:not(:disabled), .reading-choice.is-selected { border-color: var(--blue); background: var(--blue-soft); }
+.reading-choice:disabled { cursor: default; }
+.reading-choice.is-correct { border-color: var(--green); color: var(--green); background: var(--green-soft); }
+.reading-choice.is-incorrect { border-color: var(--red); color: var(--red); background: var(--red-soft); }
+.reading-explanation { margin-top: 10px; padding: 9px 11px; border-radius: 8px; background: var(--surface-2); font-size: 12px; }
+.reading-explanation[hidden] { display: none; }
+.reading-explanation p { margin: 4px 0; }
+.reading-answer { font-weight: 700; }
+.reading-result-score { margin: 0; color: var(--green); font-size: 14px; font-weight: 700; }
+.reading-review-list { display: grid; gap: 12px; }
+.reading-review-card { min-width: 0; }
+.reading-review-heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 5px 12px; }
+.reading-review-heading h3 { margin: 0; font-size: 15px; }
+.reading-review-score, .reading-review-note { color: var(--ink-faint); font-size: 11px; }
+.reading-review-misses { display: grid; gap: 8px; margin: 12px 0; }
+.reading-review-miss { padding: 10px 12px; border-left: 3px solid var(--red); border-radius: 0 8px 8px 0; background: var(--red-soft); }
+.reading-review-miss h4 { margin: 0 0 5px; font-size: 12px; }
+.reading-review-miss p { margin: 4px 0; font-size: 11px; }
+.reading-review-answer { color: var(--green); font-weight: 700; }
+.reading-review-note { margin: 11px 0; }
+.reading-review-card > .button { margin-top: 12px; }
 .english-sentence { display: block; margin: 10px 0; color: var(--blue); font-size: 14px; }
 .strategy-grid { display: grid; gap: 12px; }
 .mistake-card { border-left: 3px solid var(--red); }
@@ -429,6 +493,17 @@ h1, h2, h3, p { overflow-wrap: anywhere; }
   .listening-button-row .button { flex: 1 1 130px; }
   .listening-choice-answer { padding: 10px; font-size: 12px; }
   .listening-choice-play { flex-basis: 38px; width: 38px; }
+  .reading-passage-picker { align-items: stretch; flex-direction: column; padding: 14px; }
+  .reading-passage-picker .button { width: 100%; }
+  .reading-timer-row { align-items: flex-start; }
+  .reading-timer-row .button { flex: 1 1 100%; }
+  .reading-passage-card, .reading-question-card, .reading-review-card { padding: 14px; }
+  .reading-passage-header { padding: 10px; font-size: 11px; }
+  .reading-sentences { font-size: 12px; }
+  .reading-action-row .button, .reading-review-card > .button { flex: 1 1 100%; }
+  .reading-strategy-trigger { gap: 8px; padding: 13px 12px; }
+  .reading-strategy-one-line { font-size: 11px; }
+  .reading-strategy-panel { padding-inline: 12px; }
   .vocab-exam-settings { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 15px; }
   .vocab-question-prompt { font-size: 16px; }
   .vocab-results h3 { font-size: 21px; }

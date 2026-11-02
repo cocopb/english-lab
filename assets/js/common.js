@@ -17,6 +17,7 @@
       part2: { solved: 0, correct: 0 },
       part3: { solved: 0, correct: 0 }
     },
+    readingStats: {},
     planDone: {}
   };
   var navigation = [
@@ -78,6 +79,28 @@
         )
       }
     };
+    var readingStats = result.readingStats && typeof result.readingStats === "object" ? result.readingStats : {};
+    result.readingStats = {};
+    Object.keys(readingStats).forEach(function (passageId) {
+      var stats = readingStats[passageId];
+      if (!stats || typeof stats !== "object") return;
+      var attempted = Math.max(0, Math.floor(Number(stats.attempted) || 0));
+      var total = Math.max(0, Math.floor(Number(stats.total) || 0));
+      var correct = Math.min(total, Math.max(0, Math.floor(Number(stats.correct) || 0)));
+      var lastDate = typeof stats.lastDate === "string" && /^\d{4}-\d{2}-\d{2}$/.test(stats.lastDate) ? stats.lastDate : null;
+      var wrongQuestionIndexes = Array.isArray(stats.wrongQuestionIndexes)
+        ? Array.from(new Set(stats.wrongQuestionIndexes.filter(function (index) {
+          return Number.isInteger(index) && index >= 0 && index < total;
+        })))
+        : [];
+      result.readingStats[passageId] = {
+        attempted: attempted,
+        correct: correct,
+        total: total,
+        lastDate: lastDate,
+        wrongQuestionIndexes: wrongQuestionIndexes
+      };
+    });
     var vocabProgress = result.vocabProgress && typeof result.vocabProgress === "object" ? result.vocabProgress : {};
     result.vocabProgress = {};
     Object.keys(vocabProgress).forEach(function (wordId) {
@@ -301,6 +324,54 @@
     return stats;
   }
 
+  function recordReadingResult(passageId, correct, total, wrongQuestionIndexes) {
+    if (typeof passageId !== "string" || !passageId.trim()) {
+      throw new TypeError("독해 지문 ID가 필요합니다.");
+    }
+    if (!Number.isInteger(correct) || !Number.isInteger(total) || total < 1 || correct < 0 || correct > total) {
+      throw new RangeError("독해 정답 수와 전체 문항 수가 올바르지 않습니다.");
+    }
+    var progress = get();
+    var stats = progress.readingStats[passageId] || {
+      attempted: 0,
+      correct: 0,
+      total: 0,
+      lastDate: null,
+      wrongQuestionIndexes: []
+    };
+    var missed = Array.isArray(wrongQuestionIndexes) ? wrongQuestionIndexes.filter(function (index) {
+      return Number.isInteger(index) && index >= 0 && index < total;
+    }) : [];
+    stats.attempted += 1;
+    stats.correct += correct;
+    stats.total += total;
+    stats.lastDate = todayDate();
+    stats.wrongQuestionIndexes = Array.from(new Set(stats.wrongQuestionIndexes.concat(missed)));
+    progress.readingStats[passageId] = stats;
+    set({ readingStats: progress.readingStats });
+    return stats;
+  }
+
+  function getWeakPassages() {
+    var stats = get().readingStats;
+    return Object.keys(stats).map(function (passageId) {
+      var entry = stats[passageId];
+      return {
+        passageId: passageId,
+        attempted: entry.attempted,
+        correct: entry.correct,
+        total: entry.total,
+        accuracy: entry.total ? Math.round(entry.correct / entry.total * 100) : 0,
+        lastDate: entry.lastDate,
+        wrongQuestionIndexes: entry.wrongQuestionIndexes.slice()
+      };
+    }).filter(function (entry) {
+      return entry.attempted > 0 && entry.correct < entry.total;
+    }).sort(function (a, b) {
+      return a.accuracy - b.accuracy || a.passageId.localeCompare(b.passageId);
+    });
+  }
+
   window.Progress = {
     get: get,
     set: set,
@@ -312,6 +383,8 @@
     getWeakRules: getWeakRules,
     recordDictation: recordDictation,
     recordListeningAnswer: recordListeningAnswer,
+    recordReadingResult: recordReadingResult,
+    getWeakPassages: getWeakPassages,
     getDueWords: getDueWords,
     getWeakWords: getWeakWords,
     getGraduated: getGraduated
