@@ -398,6 +398,7 @@
       document.getElementById("vocab-graduated-count").textContent = graduatedStatuses.length + "개";
       dueList.replaceChildren();
       wrongList.replaceChildren();
+      reviewStart.textContent = "오늘 복습 시험 (" + dueItems.length + "문제)";
       reviewStart.disabled = !dueItems.length;
       if (!dueItems.length) {
         dueList.appendChild(makeElement("div", "placeholder", "오늘 복습할 단어가 없어요. 새 Day를 시험 보거나 내일 다시 오세요."));

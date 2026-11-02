@@ -14,6 +14,25 @@ if (!Array.isArray(vocabulary)) {
   process.exit(1);
 }
 
+function normalizeWord(word) {
+  return word.trim().toLocaleLowerCase();
+}
+
+var meanings = Object.create(null);
+vocabulary.forEach(function (item) {
+  if (item && typeof item.word === "string" &&
+      typeof item.meaning === "string" && item.meaning.trim()) {
+    meanings[normalizeWord(item.word)] = item.meaning;
+  }
+});
+var distractorMeanings = context.window.VOCAB_DISTRACTOR_MEANINGS;
+if (distractorMeanings && typeof distractorMeanings === "object") {
+  Object.keys(distractorMeanings).forEach(function (word) {
+    var meaning = distractorMeanings[word];
+    if (typeof meaning === "string" && meaning.trim()) meanings[normalizeWord(word)] = meaning;
+  });
+}
+
 function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
@@ -67,9 +86,11 @@ var failures = {
   missingFields: [],
   duplicateIds: [],
   answerAsDistractor: [],
+  missingDistractorMeanings: [],
   trackMetadata: []
 };
 var seenIds = Object.create(null);
+var seenMissingDistractorMeanings = Object.create(null);
 var requiredFields = ["word", "pos", "meaning", "example", "exampleKo", "tip", "distractors"];
 
 vocabulary.forEach(function (item, index) {
@@ -99,6 +120,16 @@ vocabulary.forEach(function (item, index) {
       })) {
     failures.answerAsDistractor.push({ id: label, word: item.word });
   }
+  if (Array.isArray(item.distractors)) {
+    item.distractors.forEach(function (distractor) {
+      if (typeof distractor !== "string" || !distractor.trim()) return;
+      var normalizedWord = normalizeWord(distractor);
+      if (!meanings[normalizedWord] && !seenMissingDistractorMeanings[normalizedWord]) {
+        seenMissingDistractorMeanings[normalizedWord] = true;
+        failures.missingDistractorMeanings.push({ word: distractor.trim() });
+      }
+    });
+  }
   if ((item.track === "toeic" && (item.day === undefined || item.day === null || item.day === "")) ||
       (item.track === "survival" && (item.situation === undefined || item.situation === null || item.situation === ""))) {
     failures.trackMetadata.push({ id: label, track: item.track, day: item.day, situation: item.situation });
@@ -109,7 +140,7 @@ var failureCount = Object.keys(failures).reduce(function (total, key) {
   return total + failures[key].length;
 }, 0);
 var failedRules = Object.keys(failures).filter(function (key) { return failures[key].length > 0; }).length;
-console.log("요약: " + vocabulary.length + "개 단어 검사 | 규칙 통과 " + (6 - failedRules) + "/6 | 실패 항목 " + failureCount);
+console.log("요약: " + vocabulary.length + "개 단어 검사 | 규칙 통과 " + (7 - failedRules) + "/7 | 실패 항목 " + failureCount);
 Object.keys(failures).forEach(function (key) {
   console.log("\n" + key + " (" + failures[key].length + ")");
   if (!failures[key].length) {

@@ -67,6 +67,11 @@
       return progress;
     } catch (error) {
       console.warn("학습 진도를 해석하지 못했습니다.", error);
+      try {
+        localStorage.removeItem("englishLabProgress");
+      } catch (removeError) {
+        console.warn("잘못된 학습 진도를 제거하지 못했습니다.", removeError);
+      }
       return normalizeProgress(defaults);
     }
   }
