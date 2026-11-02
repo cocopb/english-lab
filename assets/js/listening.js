@@ -4,6 +4,7 @@
   document.addEventListener("DOMContentLoaded", function () {
     var rateSelect = document.getElementById("listening-rate");
     var localeSelect = document.getElementById("listening-locale");
+    var voiceDiagnostics = document.getElementById("listening-voice-diagnostics");
     var supportNote = document.getElementById("listening-support-note");
     var dictationIndex = 0;
     var part2Index = 0;
@@ -32,6 +33,9 @@
 
     function populateVoices() {
       var voices = supportedVoices();
+      voiceDiagnostics.textContent = voices.length
+        ? "사용 가능한 영어 음성: " + voices.length + "개"
+        : "사용 가능한 영어 음성: 0개. 이 브라우저에 설치된 영어 음성이 없습니다. Windows 설정 > 시간 및 언어 > 음성에서 영어 음성을 추가할 수 있습니다.";
       var availableLocales = ["en-US", "en-GB", "en-AU"].filter(function (locale) {
         return voices.some(function (voice) {
           return (voice.lang || "").toLowerCase() === locale.toLowerCase();
@@ -83,7 +87,8 @@
       messageAt(messageId, "음성을 재생하고 있어요…");
       return window.Speech.speak(text, {
         rate: rate === undefined ? voiceSettings.rate : rate,
-        voice: voice || voiceSettings.locale
+        voice: voice || (voiceSettings.voiceSelected ? voiceSettings.locale : null),
+        lang: voiceSettings.voiceSelected ? voiceSettings.locale : "en-US"
       }).then(function () {
         if (token === currentUtteranceToken) messageAt(messageId, "재생이 끝났어요.");
       }).catch(function (error) {
@@ -281,7 +286,10 @@
     }
 
     function voiceForLine(speaker, lineIndex) {
-      var voices = supportedVoices();
+      if (!voiceSettings.voiceSelected) return null;
+      var voices = supportedVoices().filter(function (voice) {
+        return (voice.lang || "").toLowerCase() === voiceSettings.locale.toLowerCase();
+      });
       if (!voices.length) return voiceSettings.locale;
       var hints = speaker === "W"
         ? /female|woman|samantha|victoria|karen|susan|tessa|serena|zira|ava|allison|siri.*female/i
@@ -347,7 +355,8 @@
           if (token !== currentUtteranceToken) return undefined;
           return window.Speech.speak(line.text, {
             rate: voiceSettings.rate,
-            voice: voiceForLine(line.speaker, index)
+            voice: voiceForLine(line.speaker, index),
+            lang: voiceSettings.voiceSelected ? voiceSettings.locale : "en-US"
           });
         });
       });
@@ -436,7 +445,7 @@
       voiceSettings = window.Speech.saveSettings({ rate: Number(rateSelect.value) });
     });
     localeSelect.addEventListener("change", function () {
-      voiceSettings = window.Speech.saveSettings({ locale: localeSelect.value });
+      voiceSettings = window.Speech.saveSettings({ locale: localeSelect.value, voiceSelected: true });
     });
     window.addEventListener("beforeunload", stopPlayback);
 

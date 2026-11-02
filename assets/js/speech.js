@@ -2,12 +2,11 @@
   "use strict";
 
   var SETTINGS_KEY = "englishLabSpeechSettings";
-  var defaultSettings = { rate: 0.85, locale: "en-US" };
+  var defaultSettings = { rate: 0.85, locale: "en-US", voiceSelected: false };
   var currentUtterance = null;
   var currentResolve = null;
   var voicesReady = null;
   var speechGeneration = 0;
-  var voicesLoaded = false;
 
   function isSupported() {
     return typeof window.speechSynthesis !== "undefined" &&
@@ -19,9 +18,13 @@
       var stored = localStorage.getItem(SETTINGS_KEY);
       if (!stored) return Object.assign({}, defaultSettings);
       var parsed = JSON.parse(stored);
+      if (!parsed || typeof parsed !== "object") return Object.assign({}, defaultSettings);
       return {
         rate: [0.7, 0.85, 1].indexOf(Number(parsed.rate)) !== -1 ? Number(parsed.rate) : defaultSettings.rate,
-        locale: ["en-US", "en-GB", "en-AU"].indexOf(parsed.locale) !== -1 ? parsed.locale : defaultSettings.locale
+        locale: ["en-US", "en-GB", "en-AU"].indexOf(parsed.locale) !== -1 ? parsed.locale : defaultSettings.locale,
+        voiceSelected: typeof parsed.voiceSelected === "boolean"
+          ? parsed.voiceSelected
+          : typeof parsed.locale === "string" && parsed.locale !== defaultSettings.locale
       };
     } catch (error) {
       console.warn("음성 설정을 읽지 못했습니다.", error);
@@ -35,6 +38,7 @@
     if (["en-US", "en-GB", "en-AU"].indexOf(settings.locale) === -1) {
       settings.locale = defaultSettings.locale;
     }
+    settings.voiceSelected = settings.voiceSelected === true;
     try {
       localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
     } catch (error) {
@@ -56,17 +60,16 @@
     return window.speechSynthesis.getVoices()
       .filter(function (voice) { return localeRank(voice) >= 0; })
       .sort(function (a, b) {
-        return localeRank(a) - localeRank(b) || a.name.localeCompare(b.name);
+        return localeRank(a) - localeRank(b) ||
+          Number(b.localService === true) - Number(a.localService === true) ||
+          a.name.localeCompare(b.name);
       });
   }
 
   function waitForVoices() {
     if (!isSupported()) return Promise.resolve([]);
-    if (getVoices().length) {
-      voicesLoaded = true;
-      return Promise.resolve(getVoices());
-    }
-    if (voicesLoaded) return Promise.resolve([]);
+    var available = getVoices();
+    if (available.length) return Promise.resolve(available);
     if (voicesReady) return voicesReady;
     voicesReady = new Promise(function (resolve) {
       var done = false;
@@ -74,13 +77,20 @@
       function finish() {
         if (done) return;
         done = true;
-        voicesLoaded = true;
-        window.speechSynthesis.removeEventListener("voiceschanged", finish);
+        if (typeof window.speechSynthesis.removeEventListener === "function") {
+          window.speechSynthesis.removeEventListener("voiceschanged", finish);
+        } else {
+          window.speechSynthesis.onvoiceschanged = null;
+        }
         window.clearTimeout(timeout);
         resolve(getVoices());
       }
-      window.speechSynthesis.addEventListener("voiceschanged", finish);
-      timeout = window.setTimeout(finish, 1500);
+      if (typeof window.speechSynthesis.addEventListener === "function") {
+        window.speechSynthesis.addEventListener("voiceschanged", finish);
+      } else {
+        window.speechSynthesis.onvoiceschanged = finish;
+      }
+      timeout = window.setTimeout(finish, 2000);
     }).then(function (voices) {
       voicesReady = null;
       return voices;
@@ -98,13 +108,38 @@
   }
 
   function chooseVoice(voices, preferred) {
-    if (preferred && typeof preferred === "object") return preferred;
-    var requestedLocale = typeof preferred === "string" ? preferred : readSettings().locale;
+    if (preferred && typeof preferred === "object") {
+      var selected = voices.filter(function (voice) {
+        return voice === preferred || (preferred.voiceURI && voice.voiceURI === preferred.voiceURI);
+      });
+      if (!selected.length) {
+        selected = voices.filter(function (voice) {
+          return voice.name === preferred.name && voice.lang === preferred.lang;
+        });
+      }
+      if (selected.length) {
+        selected.sort(function (a, b) {
+          return Number(b.localService === true) - Number(a.localService === true);
+        });
+        if (selected[0].localService === true) return selected[0];
+        var localForSelectedLocale = voices.filter(function (voice) {
+          return voice.localService === true &&
+            (voice.lang || "").toLowerCase() === (selected[0].lang || "").toLowerCase();
+        });
+        return localForSelectedLocale[0] || selected[0];
+      }
+      return null;
+    }
+    if (typeof preferred !== "string" || !preferred) return null;
+    var requestedLocale = preferred.toLowerCase();
     var exact = voices.filter(function (voice) {
-      return (voice.lang || "").toLowerCase() === requestedLocale.toLowerCase();
+      return (voice.lang || "").toLowerCase() === requestedLocale;
     });
-    if (exact.length) return exact[0];
-    return voices[0] || null;
+    if (!exact.length) return null;
+    exact.sort(function (a, b) {
+      return Number(b.localService === true) - Number(a.localService === true);
+    });
+    return exact[0];
   }
 
   function speak(text, options) {
@@ -117,40 +152,141 @@
     var generation = speechGeneration;
     return waitForVoices().then(function (voices) {
       if (generation !== speechGeneration) return undefined;
-      var utterance = new window.SpeechSynthesisUtterance(text);
-      var voice = chooseVoice(voices, opts.voice);
-      if (voice) {
-        utterance.voice = voice;
-        utterance.lang = voice.lang;
-      } else {
-        utterance.lang = settings.locale;
-      }
-      utterance.rate = [0.7, 0.85, 1].indexOf(Number(opts.rate)) !== -1 ? Number(opts.rate) : settings.rate;
-
       return new Promise(function (resolve, reject) {
-        currentUtterance = utterance;
-        currentResolve = resolve;
-        utterance.onend = function () {
-          if (currentUtterance === utterance) {
-            currentUtterance = null;
-            currentResolve = null;
+        var settled = false;
+        var attempts = 0;
+        var keepAliveTimer = null;
+        var selectedVoice = chooseVoice(voices, opts.voice);
+        var requestedRate = Number(opts.rate);
+        if ([0.7, 0.85, 1].indexOf(requestedRate) === -1) {
+          requestedRate = [0.7, 0.85, 1].indexOf(Number(settings.rate)) !== -1
+            ? Number(settings.rate)
+            : defaultSettings.rate;
+        }
+
+        function clearPlaybackState() {
+          if (keepAliveTimer !== null) {
+            window.clearInterval(keepAliveTimer);
+            keepAliveTimer = null;
           }
+          currentUtterance = null;
+        }
+
+        function finish(error) {
+          if (settled) return;
+          settled = true;
+          clearPlaybackState();
+          if (currentResolve === cancelPlayback) currentResolve = null;
+          if (error) reject(error);
+          else resolve();
+        }
+
+        function cancelPlayback() {
+          if (settled) return;
+          settled = true;
+          clearPlaybackState();
+          if (currentResolve === cancelPlayback) currentResolve = null;
+          resolve();
+        }
+
+        currentResolve = cancelPlayback;
+
+        function playAttempt(voice, rate) {
+          if (generation !== speechGeneration || settled) {
+            finish();
+            return;
+          }
+          attempts += 1;
+          var attemptNumber = attempts;
+          var utterance;
           try {
-            if (typeof opts.onEnd === "function") opts.onEnd();
-            resolve();
+            utterance = new window.SpeechSynthesisUtterance(text);
+            utterance.lang = voice && voice.lang ? voice.lang : (opts.lang || settings.locale || "en-US");
+            if (voice) utterance.voice = voice;
+            utterance.rate = rate;
           } catch (error) {
-            reject(error);
+            console.warn("Speech playback utterance setup failed", {
+              attempt: attemptNumber,
+              message: error.message,
+              voice: voice ? voice.name : "browser default",
+              lang: voice && voice.lang ? voice.lang : (opts.lang || settings.locale || "en-US"),
+              rate: rate
+            });
+            if (attemptNumber === 1) playAttempt(null, requestedRate);
+            else if (attemptNumber === 2) playAttempt(null, 1);
+            else finish(new Error("음성 재생을 준비하지 못했습니다: " + error.message));
+            return;
           }
-        };
-        utterance.onerror = function (event) {
-          if (currentUtterance === utterance) {
-            currentUtterance = null;
-            currentResolve = null;
+          currentUtterance = utterance;
+          window.clearInterval(keepAliveTimer);
+          keepAliveTimer = null;
+          console.info("Speech playback attempt", {
+            attempt: attemptNumber,
+            voice: voice ? voice.name : "browser default",
+            localService: voice ? voice.localService : null,
+            lang: utterance.lang,
+            rate: utterance.rate
+          });
+          utterance.onend = function () {
+            if (currentUtterance !== utterance || generation !== speechGeneration || settled) return;
+            clearPlaybackState();
+            try {
+              if (typeof opts.onEnd === "function") opts.onEnd();
+              finish();
+            } catch (error) {
+              finish(error);
+            }
+          };
+          utterance.onerror = function (event) {
+            if (currentUtterance !== utterance || generation !== speechGeneration || settled) return;
+            if (event.error === "canceled" || event.error === "interrupted") {
+              finish();
+              return;
+            }
+            clearPlaybackState();
+            console.warn("Speech playback attempt failed", {
+              attempt: attemptNumber,
+              error: event.error,
+              voice: voice ? voice.name : "browser default",
+              lang: utterance.lang,
+              rate: utterance.rate
+            });
+            if (attemptNumber === 1) {
+              playAttempt(null, requestedRate);
+            } else if (attemptNumber === 2) {
+              playAttempt(null, 1);
+            } else {
+              finish(new Error("음성 재생에 실패했습니다: " + event.error));
+            }
+          };
+          try {
+            window.speechSynthesis.cancel();
+            window.speechSynthesis.speak(utterance);
+            keepAliveTimer = window.setInterval(function () {
+              if (currentUtterance !== utterance || settled) return;
+              try {
+                window.speechSynthesis.pause();
+                window.speechSynthesis.resume();
+              } catch (error) {
+                console.warn("Speech playback keep-alive failed", error);
+              }
+            }, 14000);
+          } catch (error) {
+            clearPlaybackState();
+            console.warn("Speech playback could not be queued", {
+              attempt: attemptNumber,
+              message: error.message,
+              voice: voice ? voice.name : "browser default",
+              lang: utterance.lang,
+              rate: utterance.rate
+            });
+            if (attemptNumber === 1) playAttempt(null, requestedRate);
+            else if (attemptNumber === 2) playAttempt(null, 1);
+            else finish(new Error("음성 재생을 시작하지 못했습니다: " + error.message));
           }
-          if (event.error === "canceled" || event.error === "interrupted") resolve();
-          else reject(new Error("음성 재생에 실패했습니다: " + event.error));
-        };
-        window.speechSynthesis.speak(utterance);
+        }
+
+        playAttempt(selectedVoice, requestedRate);
       });
     });
   }
