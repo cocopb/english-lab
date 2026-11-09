@@ -212,26 +212,42 @@
 
       var passageCard = element("article", "panel reading-passage-card");
       passageCard.appendChild(element("p", "reading-passage-type", passage.type + " · " + passage.title));
-      var header = element("div", "reading-passage-header en");
-      passage.header.forEach(function (line) { header.appendChild(element("p", "", line)); });
-      passageCard.appendChild(header);
-
-      var sentenceList = element("div", "reading-sentences en");
-      passage.sentences.forEach(function (line, index) {
-        var sentence = element("article", "reading-sentence");
-        sentence.tabIndex = 0;
-        sentence.setAttribute("role", "group");
-        sentence.setAttribute("aria-label", "지문 문장 " + (index + 1));
-        sentence.dataset.selected = "false";
-        sentence.append(
-          element("p", "reading-sentence-en", line.en),
-          element("p", "reading-sentence-ko", line.ko)
-        );
-        sentence.querySelector(".reading-sentence-ko").hidden = true;
-        addSentenceHighlight(sentence);
-        sentenceList.appendChild(sentence);
+      var parts = Array.isArray(passage.parts) && passage.parts.length
+        ? passage.parts
+        : [{ header: passage.header, sentences: passage.sentences }];
+      var sentenceNumber = 0;
+      parts.forEach(function (part, partIndex) {
+        var container = passageCard;
+        if (part.label) {
+          container = element("section", "reading-passage-part");
+          if (partIndex > 0) container.classList.add("has-divider");
+          container.setAttribute("aria-label", part.label);
+          container.appendChild(element("p", "reading-part-label", part.label));
+          passageCard.appendChild(container);
+        }
+        if (Array.isArray(part.header) && part.header.length) {
+          var header = element("div", "reading-passage-header en");
+          part.header.forEach(function (line) { header.appendChild(element("p", "", line)); });
+          container.appendChild(header);
+        }
+        var sentenceList = element("div", "reading-sentences en");
+        (part.sentences || []).forEach(function (line) {
+          sentenceNumber += 1;
+          var sentence = element("article", "reading-sentence");
+          sentence.tabIndex = 0;
+          sentence.setAttribute("role", "group");
+          sentence.setAttribute("aria-label", (part.label ? part.label + " " : "지문 ") + "문장 " + sentenceNumber);
+          sentence.dataset.selected = "false";
+          sentence.append(
+            element("p", "reading-sentence-en", line.en),
+            element("p", "reading-sentence-ko", line.ko)
+          );
+          sentence.querySelector(".reading-sentence-ko").hidden = true;
+          addSentenceHighlight(sentence);
+          sentenceList.appendChild(sentence);
+        });
+        container.appendChild(sentenceList);
       });
-      passageCard.appendChild(sentenceList);
 
       var vocabSection = element("section", "reading-vocab-section");
       vocabSection.appendChild(element("h3", "", "핵심 어휘"));

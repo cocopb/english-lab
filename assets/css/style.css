@@ -359,6 +359,8 @@ h1, h2, h3, p { overflow-wrap: anywhere; }
 .reading-passage-type { margin: 0 0 12px; color: var(--blue); font-size: 12px; font-weight: 700; }
 .reading-passage-header { max-width: 65ch; margin-bottom: 16px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 9px; color: var(--ink-soft); background: var(--surface-2); font-size: 12px; overflow-wrap: anywhere; }
 .reading-passage-header p { margin: 2px 0; }
+.reading-passage-part.has-divider { margin-top: 20px; padding-top: 16px; border-top: 2px dashed var(--line); }
+.reading-part-label { display: inline-block; margin: 0 0 10px; padding: 3px 9px; border-radius: 999px; color: var(--blue); background: var(--blue-soft); font-size: 12px; font-weight: 700; }
 .reading-sentences { max-width: 65ch; color: var(--ink); font-size: 13px; line-height: 1.9; overflow-wrap: anywhere; }
 .reading-sentence { margin: 0 -8px; padding: 4px 8px; border-radius: 6px; cursor: pointer; transition: background .15s ease; }
 .reading-sentence.is-highlighted { background: var(--blue-soft); }

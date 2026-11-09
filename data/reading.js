@@ -34,6 +34,42 @@ window.READING_STRATEGY = [
     ],
     trap: "의도 파악 문제에서 그 표현의 사전적 의미를 고르면 틀린다. 문맥에서 무엇에 동의했는지를 골라야 한다.",
     example: "\"Will do.\" → 사전적으로는 '그렇게 하겠다'지만, 정답은 '일찍 출발하는 데 동의했다'처럼 구체적이어야 한다."
+  },
+  {
+    id: "r04", order: 4, title: "광고 · 구인 공고",
+    oneLine: "required(필수)와 preferred(우대)를 구분해서 읽어라.",
+    points: [
+      "구인 공고는 직무 → 자격 요건 → 혜택 → 지원 방법 순서로 고정되어 있다.",
+      "required(필수)와 preferred(우대)를 반드시 구분한다. 문제의 단골이다.",
+      "마감일과 제출 서류는 거의 항상 문제로 나온다.",
+      "광고는 할인율, 기간, 조건(회원 전용 등)에 표시하며 읽는다."
+    ],
+    trap: "preferred는 '있으면 좋다'는 뜻이지 필수가 아니다. required와 바꿔서 오답 선택지를 만든다.",
+    example: "preferred but not required → 정답 선택지는 '우대 사항'이지 '자격 요건'이 아니다."
+  },
+  {
+    id: "r05", order: 5, title: "기사 · 보도자료",
+    oneLine: "첫 문단이 기사 전체의 요약이다.",
+    points: [
+      "영어 기사는 첫 문단에 누가·무엇을·언제·왜가 다 들어 있다.",
+      "따옴표 안의 말은 인물의 발언이다. 누가 한 말인지 확인한다.",
+      "숫자(연도, 인원, 규모)는 표시해 두면 바로 찾을 수 있다.",
+      "마지막 문단은 앞으로의 계획인 경우가 많다."
+    ],
+    trap: "인물의 발언을 사실과 혼동하지 마라. '~라고 말했다'는 그 사람의 주장일 뿐이다.",
+    example: "\"We ran out of space.\" → 확장 이유를 묻는 문제의 근거가 된다."
+  },
+  {
+    id: "r06", order: 6, title: "이중 지문 (연계 문제)",
+    oneLine: "두 지문을 모두 봐야 풀리는 문제가 반드시 하나 있다.",
+    points: [
+      "지문이 둘이면 보통 3~5문제 중 1~2문제가 연계 문제다.",
+      "연계 문제는 한 지문의 정보를 다른 지문에서 찾아 연결해야 한다.",
+      "먼저 두 지문의 관계를 파악한다. 이메일 + 일정표, 공고 + 신청서 같은 조합이다.",
+      "한 지문만 보고 답이 바로 나오면 그 문제는 연계 문제가 아니다."
+    ],
+    trap: "첫 지문에서 답을 못 찾았다고 당황하지 마라. 두 번째 지문에 있는 경우가 많다.",
+    example: "이메일에서 '화요일 워크숍을 추천한다' → 일정표에서 화요일 항목을 찾아야 답이 나온다."
   }
 ];
 
@@ -113,6 +149,97 @@ window.PASSAGES = [
     questions: [
       { q: "What has changed about the meeting?", choices: ["The time", "The place", "The participants", "The topic"], answer: 1, explanation: "the location changed. 시간(eleven)은 그대로다." },
       { q: "At 9:18 a.m., what does Ji-woo most likely mean when she writes, \"Will do\"?", choices: ["She will cancel the meeting", "She agrees to leave earlier", "She will print more samples", "She will contact the client"], answer: 1, explanation: "바로 앞 문장이 could you leave a bit early? 이므로 일찍 출발하는 데 동의한 것이다. 의도 파악 문제는 반드시 앞 문장을 봐야 한다." }
+    ]
+  },
+  {
+    id: "rp04", type: "구인 공고", title: "마케팅 코디네이터 채용", strategyId: "r04", recommendedSec: 120,
+    header: ["Now Hiring — Marketing Coordinator", "Harbor Media Group"],
+    sentences: [
+      { en: "Harbor Media Group is seeking a full-time Marketing Coordinator for our Seattle office.", ko: "하버 미디어 그룹은 시애틀 사무소에서 근무할 정규직 마케팅 코디네이터를 찾고 있습니다." },
+      { en: "The successful candidate will manage social media accounts, prepare monthly reports, and assist with campaign planning.", ko: "합격자는 소셜 미디어 계정을 관리하고, 월간 보고서를 작성하며, 캠페인 기획을 지원하게 됩니다." },
+      { en: "A bachelor's degree and at least two years of marketing experience are required.", ko: "학사 학위와 최소 2년의 마케팅 경력이 필수입니다." },
+      { en: "Experience with data analysis tools is preferred but not required.", ko: "데이터 분석 도구 사용 경험은 우대하지만 필수는 아닙니다." },
+      { en: "We offer competitive pay, health benefits, and a flexible work schedule.", ko: "경쟁력 있는 급여, 건강 보험, 유연 근무제를 제공합니다." },
+      { en: "To apply, send your resume and cover letter to careers@harbormedia.com by May 20.", ko: "지원하시려면 5월 20일까지 이력서와 자기소개서를 careers@harbormedia.com으로 보내주세요." },
+      { en: "Only candidates selected for an interview will be contacted.", ko: "면접 대상자에게만 개별 연락드립니다." }
+    ],
+    vocab: [
+      { w: "seek", m: "찾다, 구하다" },
+      { w: "successful candidate", m: "합격자" },
+      { w: "required", m: "필수인" },
+      { w: "preferred", m: "우대하는" },
+      { w: "competitive pay", m: "경쟁력 있는 급여" },
+      { w: "flexible", m: "유연한" }
+    ],
+    questions: [
+      { q: "What is required for the position?", choices: ["A graduate degree", "Two years of marketing experience", "Experience with data analysis", "Fluency in two languages"], answer: 1, explanation: "at least two years of marketing experience are required. 학사 학위와 2년 경력이 필수다." },
+      { q: "What is mentioned as preferred?", choices: ["A bachelor's degree", "Experience with data analysis tools", "Previous management experience", "Willingness to travel"], answer: 1, explanation: "Experience with data analysis tools is preferred but not required. preferred와 required를 구분해야 한다." },
+      { q: "What should applicants send?", choices: ["A resume only", "A resume and a cover letter", "References and a portfolio", "An application form"], answer: 1, explanation: "send your resume and cover letter. 제출 서류는 반드시 문제로 나온다." }
+    ]
+  },
+  {
+    id: "rp05", type: "기사", title: "지역 베이커리 확장", strategyId: "r05", recommendedSec: 120,
+    header: ["Local Bakery Expands to Second Location"],
+    sentences: [
+      { en: "Rosewood Bakery will open a second shop on Pine Avenue next month, owner Elena Marsh announced Tuesday.", ko: "로즈우드 베이커리가 다음 달 파인 애비뉴에 2호점을 연다고 소유주 엘레나 마시가 화요일에 발표했습니다." },
+      { en: "The original store, which opened in 2019, has seen steady growth in demand for its bread and pastries.", ko: "2019년에 문을 연 1호점은 빵과 페이스트리 수요가 꾸준히 늘어왔습니다." },
+      { en: "\"We simply ran out of space,\" Marsh said.", ko: "\"공간이 부족했을 뿐입니다\"라고 마시는 말했습니다." },
+      { en: "\"Customers were waiting outside on weekends.\"", ko: "\"주말에는 손님들이 밖에서 기다리셨어요.\"" },
+      { en: "The new location will be twice the size of the current one and will include seating for forty people.", ko: "새 매장은 현재의 두 배 규모이며 40석의 좌석을 갖출 예정입니다." },
+      { en: "Marsh plans to hire about fifteen additional staff members before the opening.", ko: "마시는 개업 전에 약 15명의 직원을 추가로 채용할 계획입니다." },
+      { en: "The bakery will continue to operate both locations year-round.", ko: "베이커리는 두 매장을 연중 계속 운영할 예정입니다." }
+    ],
+    vocab: [
+      { w: "expand", m: "확장하다" },
+      { w: "steady", m: "꾸준한" },
+      { w: "run out of", m: "~이 떨어지다, 부족하다" },
+      { w: "twice the size", m: "두 배 크기" },
+      { w: "additional", m: "추가의" },
+      { w: "year-round", m: "연중 내내" }
+    ],
+    questions: [
+      { q: "What is the purpose of the article?", choices: ["To review a restaurant", "To announce a business expansion", "To advertise a job opening", "To report a closure"], answer: 1, explanation: "첫 문단에 2호점 개점 발표가 나온다. 기사는 첫 문단이 전체 요약이다." },
+      { q: "Why did the bakery decide to expand?", choices: ["Rent increased", "The current space was too small", "A competitor closed", "Customers requested new products"], answer: 1, explanation: "We simply ran out of space. 소유주의 발언이 근거다." },
+      { q: "What does Ms. Marsh plan to do before the opening?", choices: ["Renovate the original store", "Hire more staff", "Change the menu", "Move the headquarters"], answer: 1, explanation: "plans to hire about fifteen additional staff members before the opening." }
+    ]
+  },
+  {
+    id: "rp06", type: "이중 지문", title: "교육 일정 안내", strategyId: "r06", recommendedSec: 180,
+    parts: [
+      {
+        label: "지문 1 — 이메일",
+        header: ["From: Tom Reed", "To: Yuna Seo", "Subject: Training Schedule"],
+        sentences: [
+          { en: "Hi Yuna,", ko: "유나 씨께," },
+          { en: "Here is the training schedule for next week.", ko: "다음 주 교육 일정을 보내드립니다." },
+          { en: "Please note that the session on data security has been moved from Tuesday to Thursday.", ko: "데이터 보안 교육이 화요일에서 목요일로 변경된 점 참고해 주세요." },
+          { en: "If you can only attend one session, I recommend the customer service workshop, since it covers the new ticketing system.", ko: "한 과정만 들으실 수 있다면 고객 서비스 워크숍을 추천합니다. 새 티켓 시스템을 다루기 때문입니다." },
+          { en: "Let me know which sessions you plan to attend by Friday.", ko: "금요일까지 어떤 과정에 참석하실지 알려주세요." },
+          { en: "Best, Tom", ko: "감사합니다, 톰 드림" }
+        ]
+      },
+      {
+        label: "지문 2 — 교육 일정표",
+        header: ["Training Schedule — Week of June 8"],
+        sentences: [
+          { en: "Monday 10:00 — Company Overview (Room A)", ko: "월요일 10:00 — 회사 개요 (A룸)" },
+          { en: "Tuesday 14:00 — Customer Service Workshop (Room B)", ko: "화요일 14:00 — 고객 서비스 워크숍 (B룸)" },
+          { en: "Wednesday 10:00 — Software Basics (Room A)", ko: "수요일 10:00 — 소프트웨어 기초 (A룸)" },
+          { en: "Thursday 14:00 — Data Security (Room C)", ko: "목요일 14:00 — 데이터 보안 (C룸)" }
+        ]
+      }
+    ],
+    vocab: [
+      { w: "session", m: "교육 과정, 시간" },
+      { w: "be moved from A to B", m: "A에서 B로 변경되다" },
+      { w: "attend", m: "참석하다" },
+      { w: "cover", m: "다루다, 포함하다" },
+      { w: "overview", m: "개요" }
+    ],
+    questions: [
+      { q: "What change does Tom mention?", choices: ["A session was canceled", "A session was moved to a different day", "A room was changed", "A new session was added"], answer: 1, explanation: "the session on data security has been moved from Tuesday to Thursday." },
+      { q: "Which day should Yuna attend if she can only choose one session?", choices: ["Monday", "Tuesday", "Wednesday", "Thursday"], answer: 1, explanation: "연계 문제다. 이메일에서 고객 서비스 워크숍을 추천했고, 일정표에서 그 과정은 화요일이다. 두 지문을 연결해야 답이 나온다." },
+      { q: "Where will the data security session be held?", choices: ["Room A", "Room B", "Room C", "Room D"], answer: 2, explanation: "일정표의 Thursday 14:00 — Data Security (Room C)." }
     ]
   }
 ];
