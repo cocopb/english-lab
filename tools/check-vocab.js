@@ -81,35 +81,42 @@ function blankExample(item) {
   return false;
 }
 
-function canBuildMeaningChoices(item) {
-  var choices = Object.create(null);
-  choices[item.meaning] = true;
+// 뜻 시험 선택지 규칙 (assets/js/vocab.js와 동일):
+// 정답 뜻 + 같은 Day·상황의 다른 단어 뜻 → 부족하면 같은 트랙 전체.
+// 유사도 가드(같음 / 포함 / 쉼표·슬래시 조각 겹침)를 통과한 뜻만, 서로도 겹치지 않게 4개를 만든다.
+function meaningPieces(meaning) {
+  return String(meaning).split(/[,/]/).map(function (piece) {
+    return piece.replace(/\([^)]*\)/g, "").replace(/\s+/g, " ").trim();
+  }).filter(Boolean);
+}
 
-  function addMeaning(meaning) {
-    if (meaning && !choices[meaning]) choices[meaning] = true;
+function meaningsTooSimilar(a, b) {
+  var left = String(a).replace(/\s+/g, " ").trim();
+  var right = String(b).replace(/\s+/g, " ").trim();
+  if (!left || !right) return false;
+  if (left === right || left.indexOf(right) !== -1 || right.indexOf(left) !== -1) return true;
+  var rightPieces = meaningPieces(right);
+  return meaningPieces(left).some(function (piece) { return rightPieces.indexOf(piece) !== -1; });
+}
+
+function guardedMeaningChoices(item) {
+  var chosen = [item.meaning];
+  function tryAdd(candidate) {
+    if (chosen.length >= 4 || candidate.id === item.id || candidate.track !== item.track) return;
+    if (typeof candidate.meaning !== "string" || !candidate.meaning.trim()) return;
+    if (chosen.some(function (meaning) { return meaningsTooSimilar(meaning, candidate.meaning); })) return;
+    chosen.push(candidate.meaning);
   }
-
-  if (Array.isArray(item.distractors)) {
-    item.distractors.forEach(function (word) {
-      if (typeof word === "string") addMeaning(meanings[normalizeWord(word)]);
-    });
-  }
-
   var groupingValue = String(item.situation || item.day);
   vocabulary.forEach(function (candidate) {
-    if (candidate.id !== item.id && candidate.track === item.track &&
-        String(candidate.situation || candidate.day) === groupingValue) {
-      addMeaning(candidate.meaning);
-    }
+    if (String(candidate.situation || candidate.day) === groupingValue) tryAdd(candidate);
   });
+  vocabulary.forEach(tryAdd);
+  return chosen;
+}
 
-  if (Object.keys(choices).length < 4) {
-    vocabulary.forEach(function (candidate) {
-      if (candidate.track === item.track && candidate.id !== item.id) addMeaning(candidate.meaning);
-    });
-  }
-
-  return Object.keys(choices).length >= 4;
+function canBuildMeaningChoices(item) {
+  return guardedMeaningChoices(item).length >= 4;
 }
 
 var failures = {

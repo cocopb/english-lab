@@ -64,7 +64,7 @@ window.PART2 = [
   { id: "p215", question: "Why is the office closed today?", choices: ["On the first floor.", "It's a public holiday.", "Yes, it is."], answer: 1, explanation: "Why(이유)로 물었으므로 이유로 답한다.", ko: "오늘 사무실이 왜 닫았나요? — 공휴일이라서요." },
   { id: "p216", question: "Would you like to join us for lunch?", choices: ["At the cafeteria.", "I already ate, thanks.", "It was delicious."], answer: 1, explanation: "권유 표현이므로 수락 또는 거절로 답한다.", ko: "점심 같이 하실래요? — 이미 먹었어요, 감사합니다." },
   { id: "p217", question: "Could you review this report?", choices: ["Sure, send it over.", "It's on my desk.", "Last Monday."], answer: 0, explanation: "요청 표현이므로 수락으로 답한다.", ko: "이 보고서 검토해 주시겠어요? — 그럼요, 보내주세요." },
-  { id: "p218", question: "Have you met the new manager?", choices: ["Not yet.", "In the meeting room.", "He is very busy."], answer: 0, explanation: "Have 의문문이므로 경험 여부로 답한다. Not yet은 '아직'이라는 뜻이다.", ko: "새 부장님 만나보셨어요? — 아직이요." },
+  { id: "p218", question: "Have you met the new manager?", choices: ["Not yet.", "In the meeting room.", "On the third floor."], answer: 0, explanation: "Have 의문문이므로 경험 여부로 답한다. Not yet은 '아직'이라는 뜻이다.", ko: "새 부장님 만나보셨어요? — 아직이요." },
   { id: "p219", question: "What time does the store close?", choices: ["On Main Street.", "Every day.", "At nine."], answer: 2, explanation: "What time(시각)으로 물었으므로 시각으로 답한다.", ko: "가게가 몇 시에 닫나요? — 9시에요." },
   { id: "p220", question: "Do you know where the meeting is?", choices: ["Yes, in Room B.", "At two o'clock.", "With the client."], answer: 0, explanation: "Do you know 의문문이지만 실제로는 장소를 묻는 것이다. 장소로 답한다.", ko: "회의가 어디서 하는지 아세요? — 네, B룸에서요." },
   { id: "p221", question: "Should we take the bus or a taxi?", choices: ["About twenty minutes.", "The bus is cheaper.", "Yes, let's go."], answer: 1, explanation: "선택 의문문(A or B)에는 둘 중 하나를 고르거나 이유를 답한다. Yes/No로 답하지 않는다.", ko: "버스 탈까요, 택시 탈까요? — 버스가 더 싸요." },
@@ -72,7 +72,7 @@ window.PART2 = [
   { id: "p223", question: "How long have you worked here?", choices: ["In the sales team.", "Since 2021.", "Forty hours a week."], answer: 1, explanation: "How long(기간)으로 물었으므로 since나 for로 답한다.", ko: "여기서 얼마나 일하셨어요? — 2021년부터요." },
   { id: "p224", question: "Isn't the deadline next Friday?", choices: ["No, it's Thursday.", "In the folder.", "Yes, I finished."], answer: 0, explanation: "부정 의문문도 일반 의문문처럼 답한다. 사실이 아니면 No로 답하고 바로잡는다.", ko: "마감이 다음 주 금요일 아닌가요? — 아니요, 목요일이에요." },
   { id: "p225", question: "Where did you put the samples?", choices: ["This morning.", "They're in the cabinet.", "Ten boxes."], answer: 1, explanation: "Where(장소)로 물었으므로 장소로 답한다.", ko: "샘플을 어디에 두셨어요? — 캐비닛 안에 있어요." },
-  { id: "p226", question: "Can I pay by credit card?", choices: ["It's twenty dollars.", "Of course.", "At the counter."], answer: 1, explanation: "허락을 구하는 질문이므로 수락 또는 거절로 답한다.", ko: "신용카드로 결제해도 될까요? — 물론입니다." },
+  { id: "p226", question: "Can I pay by credit card?", choices: ["It's twenty dollars.", "Of course.", "Twenty dollars, please."], answer: 1, explanation: "허락을 구하는 질문이므로 수락 또는 거절로 답한다.", ko: "신용카드로 결제해도 될까요? — 물론입니다." },
   { id: "p227", question: "Why don't we reschedule the call?", choices: ["That works for me.", "On the phone.", "He called twice."], answer: 0, explanation: "Why don't we ~?는 이유가 아니라 제안이다. 수락 또는 거절로 답한다. 토익 빈출 함정이다.", ko: "통화 일정을 다시 잡는 게 어때요? — 저는 괜찮아요." },
   { id: "p228", question: "Who's giving the presentation?", choices: ["In the main hall.", "At ten.", "Mr. Park is."], answer: 2, explanation: "Who(사람)로 물었으므로 사람으로 답한다.", ko: "발표는 누가 하나요? — 박 씨가 합니다." },
   { id: "p229", question: "Did the client approve the design?", choices: ["Yes, this morning.", "In the email.", "It's very modern."], answer: 0, explanation: "Did 의문문이므로 Yes/No로 답할 수 있다. 시점을 덧붙이면 자연스럽다.", ko: "고객이 디자인을 승인했나요? — 네, 오늘 아침에요." },
@@ -157,12 +157,12 @@ window.PART3 = [
       { speaker: "W", text: "The first meeting is at nine on Monday, so Sunday would be safer." },
       { speaker: "M", text: "Then I'll book a Sunday evening flight. What about the hotel?" },
       { speaker: "W", text: "The company has an account with the Harbor Inn. Just mention the company name." },
-      { speaker: "M", text: "Got it. I'll forward the confirmation to you." }
+      { speaker: "M", text: "Got it. I'll forward the hotel confirmation to you." }
     ],
     questions: [
       { q: "What are the speakers mainly discussing?", choices: ["A client meeting", "Travel arrangements", "A budget report", "An office relocation"], answer: 1, explanation: "항공편과 호텔 예약을 논의하고 있다." },
       { q: "Why does the woman suggest leaving on Sunday?", choices: ["Flights are cheaper", "The first meeting is early Monday", "The hotel is fully booked", "The weather is better"], answer: 1, explanation: "The first meeting is at nine on Monday, so Sunday would be safer." },
-      { q: "What will the man send the woman?", choices: ["A hotel confirmation", "A meeting agenda", "An expense report", "A flight schedule"], answer: 0, explanation: "I'll forward the confirmation to you." }
+      { q: "What will the man send the woman?", choices: ["A hotel confirmation", "A meeting agenda", "An expense report", "A flight schedule"], answer: 0, explanation: "I'll forward the hotel confirmation to you. 호텔 예약 확인서를 보내겠다는 뜻이다." }
     ]
   }
 ];

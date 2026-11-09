@@ -335,7 +335,7 @@ window.ROLEPLAYS = [
       { who: "other", en: "Sure, what do you need?", ko: "네, 무엇을 도와드릴까요?" },
       { who: "me", instruction: "중앙 도서관에 어떻게 가는지 물어보세요.", model: "How do I get to the central library?", alts: ["Where is the central library?", "Could you tell me how to get to the central library?"], comment: "How do I get to ~? 가 길 묻기의 표준 문장이다." },
       { who: "other", en: "Go straight for three blocks, then turn right at the bank. It's on your left.", ko: "세 블록 직진하신 다음 은행에서 우회전하세요. 왼편에 있습니다." },
-      { who: "me", instruction: "잘 못 알아들었으니 천천히 말해달라고 하세요.", model: "Sorry, could you speak more slowly?", alts: ["Could you say that again, please?", "Sorry, I didn't catch that."], comment: "되묻는 것은 실력 부족이 아니다. 두 번째 들을 때 훨씬 잘 들린다." },
+      { who: "me", instruction: "잘 못 알아들었으니 천천히 말해달라고 하세요.", model: "Sorry, could you speak more slowly?", alts: ["Could you speak a little slower?", "Sorry, could you say that more slowly?"], comment: "되묻는 것은 실력 부족이 아니다. 두 번째 들을 때 훨씬 잘 들린다." },
       { who: "other", en: "Of course. Go straight, three blocks. Then turn right, at the bank.", ko: "물론이죠. 직진, 세 블록. 그다음 우회전, 은행에서요." },
       { who: "me", instruction: "들은 내용을 되뇌어 확인하세요.", model: "So, three blocks and then right at the bank?", alts: ["Straight three blocks, then right. Got it.", "Three blocks, turn right at the bank?"], comment: "들은 것을 되뇌어 확인하는 습관이 길을 잃지 않게 해준다." },
       { who: "other", en: "Exactly. It takes about ten minutes on foot. Good luck!", ko: "맞습니다. 걸어서 10분쯤 걸려요. 행운을 빌어요!" }

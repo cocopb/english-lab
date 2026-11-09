@@ -457,13 +457,23 @@
       wrongList.appendChild(table);
     }
 
-    var trackMeaning = Object.create(null);
-    vocabulary.forEach(function (item) {
-      trackMeaning[item.word.toLocaleLowerCase()] = item.meaning;
-    });
-    Object.keys(window.VOCAB_DISTRACTOR_MEANINGS || {}).forEach(function (word) {
-      if (!trackMeaning[word.toLocaleLowerCase()]) trackMeaning[word.toLocaleLowerCase()] = window.VOCAB_DISTRACTOR_MEANINGS[word];
-    });
+    // 유사도 가드: 두 뜻이 같거나, 한쪽이 다른 쪽을 포함하거나,
+    // 쉼표·슬래시로 나눈 조각(괄호 설명 제외) 중 같은 것이 있으면 '너무 비슷하다'고 본다.
+    // 예) "고객" ⊂ "고객, 의뢰인" / "이익, 수익"과 "수익, 매출"은 "수익"이 겹친다.
+    function meaningPieces(meaning) {
+      return String(meaning).split(/[,/]/).map(function (piece) {
+        return piece.replace(/\([^)]*\)/g, "").replace(/\s+/g, " ").trim();
+      }).filter(Boolean);
+    }
+
+    function meaningsTooSimilar(a, b) {
+      var left = String(a).replace(/\s+/g, " ").trim();
+      var right = String(b).replace(/\s+/g, " ").trim();
+      if (!left || !right) return false;
+      if (left === right || left.indexOf(right) !== -1 || right.indexOf(left) !== -1) return true;
+      var rightPieces = meaningPieces(right);
+      return meaningPieces(left).some(function (piece) { return rightPieces.indexOf(piece) !== -1; });
+    }
 
     function shuffle(items) {
       var shuffled = items.slice();
@@ -482,18 +492,17 @@
           return { text: word, correct: word === item.word };
         }));
       }
+      // 뜻 시험: 선택지가 모두 한국어라 철자가 비슷한 큐레이션 distractors는 쓰지 않는다
+      // (생존 영어의 '틀린 형태의 같은 표현'은 뜻이 정답과 거의 같아진다).
+      // 같은 Day·상황 → 같은 트랙 순으로 다른 단어의 뜻을 뽑고, 유사도 가드를 통과한 것만 쓴다.
       var choices = [];
-      var usedMeanings = new Set();
       function addChoice(word, meaning, correct) {
-        if (!meaning || usedMeanings.has(meaning)) return;
-        usedMeanings.add(meaning);
+        if (!meaning) return;
+        if (choices.some(function (choice) { return meaningsTooSimilar(choice.text, meaning); })) return;
         choices.push({ text: meaning, word: word, correct: correct });
       }
 
       addChoice(item.word, item.meaning, true);
-      item.distractors.forEach(function (word) {
-        addChoice(word, trackMeaning[word.toLocaleLowerCase()], false);
-      });
 
       var groupingValue = String(item.situation || item.day);
       var sameGroup = vocabulary.filter(function (candidate) {
