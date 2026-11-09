@@ -135,7 +135,7 @@ check('Part별 개수 15/8/7', counts.join(',') === 'Part 5=15,Part 6=8,Part 7=7
 check('초기 타이머 25:00', timerBar.querySelector('.practice-time').textContent === '25:00');
 check('중간에 정답 표시 없음', !area.querySelector('.correct') && !area.querySelector('.answer-right'));
 
-const expected = { p5: 0, p6: 0, p7: 0 }; let answered = 0; let ruleAnswered = 0; const seenP5 = new Set(); const p7Groups = new Set();
+const expected = { p5: 0, p6: 0, p7: 0 }; let answered = 0; let ruleAnswered = 0; const seenP5 = new Set(); const p7Groups = new Map();
 let firstChoiceWasCorrect = 0;
 for (let i = 0; i < 30; i++) {
   mockStage.querySelector('.practice-omr').querySelectorAll('.practice-omr-cell')[i].click();
@@ -147,7 +147,7 @@ for (let i = 0; i < 30; i++) {
   const { part, q } = currentAnswer(a);
   if (!q) { check('문항 원본 찾기 ' + (i + 1), false, meta); continue; }
   if (part === 'p5') seenP5.add(q.question);
-  if (part === 'p7') p7Groups.add(a.querySelector('.reading-passage-type').textContent);
+  if (part === 'p7') { const key = a.querySelector('.reading-passage-type').textContent; p7Groups.set(key, (p7Groups.get(key) || 0) + 1); }
   if (i % 5 === 0) continue; // 미응답
   const choice = i % 3 === 0 ? (q.answer + 1) % 4 : q.answer;
   a.querySelectorAll('.quiz-option')[choice].click();
@@ -156,11 +156,17 @@ for (let i = 0; i < 30; i++) {
   if (choice === q.answer) expected[part]++;
 }
 check('Part 5 중복 없음', seenP5.size === 15);
-// 지문을 문항 수가 찰 때까지 담으므로, 마지막 지문을 빼면 7문항 미만이어야 한다 (불필요한 지문 없음).
-const p7Counts = [...p7Groups].map(t => W.PASSAGES.find(p => p.type + ' · ' + p.title === t).questions.length);
-const p7Sum = p7Counts.reduce((s, n) => s + n, 0);
-check('Part 7 지문 구성', p7Counts.length >= 1 && p7Sum >= 7 && p7Sum - Math.min(...p7Counts) < 7,
-  [...p7Groups].join(' | ') + ' (지문별 문항 ' + p7Counts.join('+') + ')');
+// 지문을 출제 순서대로 문항 수가 찰 때까지 담고 마지막 지문만 잘라 쓴다.
+// → 마지막 지문 앞까지는 전 문항 사용, 그 합은 7 미만(불필요한 지문 없음), 마지막 지문은 1문항 이상 원래 문항 수 이하.
+const p7Titles = [...p7Groups.keys()];
+const p7Full = p7Titles.map(t => W.PASSAGES.find(p => p.type + ' · ' + p.title === t).questions.length);
+const p7Used = p7Titles.map(t => p7Groups.get(t));
+const p7BeforeLast = p7Used.slice(0, -1).reduce((s, n) => s + n, 0);
+check('Part 7 지문 구성', p7Used.length >= 1 &&
+  p7Used.reduce((s, n) => s + n, 0) === 7 &&
+  p7Used.slice(0, -1).every((n, i) => n === p7Full[i]) &&
+  p7BeforeLast < 7 && p7Used[p7Used.length - 1] <= p7Full[p7Full.length - 1],
+  p7Titles.join(' | ') + ' (사용 문항 ' + p7Used.join('+') + ' / 지문별 문항 ' + p7Full.join('+') + ')');
 const filled = mockStage.querySelector('.practice-omr').querySelectorAll('.practice-omr-cell.is-answered').length;
 check('푼 문제 OMR 색 채움', filled === answered, filled + '/' + answered);
 check('진행 표시', timerBar.querySelector('.practice-progress').textContent === '푼 문제 ' + answered + ' / 30');

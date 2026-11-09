@@ -241,6 +241,170 @@ window.PASSAGES = [
       { q: "Which day should Yuna attend if she can only choose one session?", choices: ["Monday", "Tuesday", "Wednesday", "Thursday"], answer: 1, explanation: "연계 문제다. 이메일에서 고객 서비스 워크숍을 추천했고, 일정표에서 그 과정은 화요일이다. 두 지문을 연결해야 답이 나온다." },
       { q: "Where will the data security session be held?", choices: ["Room A", "Room B", "Room C", "Room D"], answer: 2, explanation: "일정표의 Thursday 14:00 — Data Security (Room C)." }
     ]
+  },
+  {
+    id: "rp07", type: "이메일", title: "회의 시간 변경", strategyId: "r01", recommendedSec: 140,
+    header: ["From: Clara Jennings <c.jennings@vertexconsult.com>", "To: Project Team", "Subject: Thursday Meeting — Change of Plan"],
+    sentences: [
+      { en: "Dear team,", ko: "팀 여러분께," },
+      { en: "I need to move Thursday's project review from 10 a.m. to 2 p.m.", ko: "목요일 프로젝트 검토 회의를 오전 10시에서 오후 2시로 옮겨야 합니다." },
+      { en: "Our client has requested a morning call that I cannot reschedule.", ko: "고객사에서 오전 통화를 요청했는데 일정을 조정할 수 없습니다." },
+      { en: "The meeting will still take place in Room 4B and should last about ninety minutes.", ko: "회의는 그대로 4B룸에서 열리며 약 90분간 진행될 예정입니다." },
+      { en: "Please bring updated figures for your section.", ko: "각자 담당 부분의 최신 수치를 가져와 주세요." },
+      { en: "Hana, could you also prepare a short summary of last month's survey results?", ko: "하나 씨, 지난달 설문 결과 요약본도 준비해 주시겠어요?" },
+      { en: "If the new time does not work for you, let me know by Wednesday noon and I will arrange a separate briefing.", ko: "새 시간이 어려우시면 수요일 정오까지 알려주세요. 별도 보고 자리를 마련하겠습니다." },
+      { en: "Thank you for your flexibility.", ko: "유연하게 협조해 주셔서 감사합니다." }
+    ],
+    vocab: [
+      { w: "project review", m: "프로젝트 검토 회의" },
+      { w: "reschedule", m: "일정을 다시 잡다" },
+      { w: "take place", m: "열리다, 개최되다" },
+      { w: "figures", m: "수치" },
+      { w: "separate briefing", m: "별도 보고" }
+    ],
+    questions: [
+      { q: "What is the main purpose of the email?", choices: ["To cancel a meeting", "To announce a schedule change", "To introduce a new client", "To request a report"], answer: 1, explanation: "I need to move Thursday's project review. 목적은 첫 문단에 나온다." },
+      { q: "Why was the meeting moved?", choices: ["The room was unavailable", "A client requested a morning call", "Several members are absent", "The agenda changed"], answer: 1, explanation: "Our client has requested a morning call that I cannot reschedule." },
+      { q: "What is Hana asked to do?", choices: ["Book a meeting room", "Contact the client", "Prepare a summary of survey results", "Update the budget"], answer: 2, explanation: "could you also prepare a short summary of last month's survey results?" },
+      { q: "What should team members do if the new time does not work?", choices: ["Send their figures by email", "Notify the sender by Wednesday", "Attend a different meeting", "Call the client directly"], answer: 1, explanation: "let me know by Wednesday noon. 요청 사항은 마지막 문단에 있다." }
+    ]
+  },
+  {
+    id: "rp08", type: "공지", title: "주차장 포장 공사", strategyId: "r02", recommendedSec: 140,
+    header: ["NOTICE — Parking Lot Resurfacing"],
+    sentences: [
+      { en: "The north parking lot will be resurfaced from Monday, August 4 to Friday, August 8.", ko: "북쪽 주차장은 8월 4일 월요일부터 8월 8일 금요일까지 재포장 공사를 합니다." },
+      { en: "During this period, employees should park in the south lot or the garage on Elm Street.", ko: "이 기간 동안 직원은 남쪽 주차장이나 엘름 가 주차 건물을 이용해 주세요." },
+      { en: "Garage parking will be free for employees who show their ID badge at the gate.", ko: "주차 건물은 입구에서 사원증을 제시하는 직원에게 무료입니다." },
+      { en: "The north lot will reopen on Monday, August 11.", ko: "북쪽 주차장은 8월 11일 월요일에 다시 엽니다." },
+      { en: "Please note that vehicles left in the north lot after 6 p.m. on August 1 will be towed at the owner's expense.", ko: "8월 1일 오후 6시 이후 북쪽 주차장에 남아 있는 차량은 차주 부담으로 견인됩니다." },
+      { en: "Direct questions to the facilities office at extension 318.", ko: "문의 사항은 내선 318번 시설 관리실로 연락해 주세요." }
+    ],
+    vocab: [
+      { w: "resurface", m: "(도로를) 재포장하다" },
+      { w: "ID badge", m: "사원증" },
+      { w: "reopen", m: "다시 열다" },
+      { w: "tow", m: "견인하다" },
+      { w: "at the owner's expense", m: "차주 부담으로" }
+    ],
+    questions: [
+      { q: "How long will the north lot be closed?", choices: ["Three days", "About one week", "Two weeks", "One month"], answer: 1, explanation: "8월 4일부터 8일까지 공사하고 11일에 다시 연다. 약 일주일이다." },
+      { q: "What is offered to employees during the closure?", choices: ["Free garage parking", "A shuttle service", "Extra break time", "A parking refund"], answer: 0, explanation: "Garage parking will be free for employees." },
+      { q: "What must employees show at the garage gate?", choices: ["A parking permit", "An ID badge", "A receipt", "A visitor pass"], answer: 1, explanation: "employees who show their ID badge at the gate." },
+      { q: "What will happen to vehicles left after August 1?", choices: ["They will be fined", "They will be towed", "They will be moved to the south lot", "They will be locked"], answer: 1, explanation: "will be towed at the owner's expense." }
+    ]
+  },
+  {
+    id: "rp09", type: "광고", title: "헬스장 여름 회원 모집", strategyId: "r04", recommendedSec: 110,
+    header: ["SUMMER MEMBERSHIP SALE — Riverside Fitness"],
+    sentences: [
+      { en: "Join before July 31 and pay no registration fee.", ko: "7월 31일 전에 가입하시면 등록비가 없습니다." },
+      { en: "Monthly plans start at $29 and include access to all cardio and weight equipment.", ko: "월 요금제는 29달러부터 시작하며 모든 유산소 및 웨이트 기구를 이용할 수 있습니다." },
+      { en: "Group classes such as yoga and spinning are available for an extra $10 per month.", ko: "요가와 스피닝 같은 단체 수업은 월 10달러를 추가하면 이용할 수 있습니다." },
+      { en: "Members who refer a friend receive one free month.", ko: "친구를 추천한 회원에게는 1개월 무료 이용권을 드립니다." },
+      { en: "Visit our website or stop by the front desk to sign up.", ko: "가입은 웹사이트를 방문하시거나 프런트에 들러 주세요." },
+      { en: "Offer valid at the Riverside location only.", ko: "이 혜택은 리버사이드 지점에서만 유효합니다." }
+    ],
+    vocab: [
+      { w: "registration fee", m: "등록비" },
+      { w: "access to", m: "~의 이용 권한" },
+      { w: "refer", m: "추천하다, 소개하다" },
+      { w: "sign up", m: "가입하다" },
+      { w: "valid", m: "유효한" }
+    ],
+    questions: [
+      { q: "What is required to avoid the registration fee?", choices: ["Signing a one-year contract", "Joining before July 31", "Referring a friend", "Paying in cash"], answer: 1, explanation: "Join before July 31 and pay no registration fee." },
+      { q: "What costs an additional amount?", choices: ["Weight equipment", "Locker rental", "Group classes", "Parking"], answer: 2, explanation: "Group classes ... for an extra $10 per month." },
+      { q: "What do members receive for referring a friend?", choices: ["A discount on classes", "One free month", "A free T-shirt", "A personal trainer session"], answer: 1, explanation: "Members who refer a friend receive one free month." }
+    ]
+  },
+  {
+    id: "rp10", type: "문자", title: "재고 부족 대응", strategyId: "r03", recommendedSec: 100,
+    header: ["Text Message Chain"],
+    sentences: [
+      { en: "Owen Blake (2:05 p.m.): The supplier just called. Our order won't arrive until Friday.", ko: "오웬 블레이크 (오후 2:05): 공급업체에서 방금 전화 왔어요. 주문품이 금요일에야 도착한대요." },
+      { en: "Mina Cho (2:07 p.m.): That's two days late. Do we have enough stock for the weekend?", ko: "미나 조 (오후 2:07): 이틀이나 늦네요. 주말 동안 재고가 충분한가요?" },
+      { en: "Owen Blake (2:08 p.m.): Barely. We might run out by Saturday afternoon.", ko: "오웬 블레이크 (오후 2:08): 간신히요. 토요일 오후면 다 떨어질 수도 있어요." },
+      { en: "Mina Cho (2:10 p.m.): Let's borrow from the downtown branch. I'll call their manager now.", ko: "미나 조 (오후 2:10): 시내 지점에서 빌려 옵시다. 제가 지금 거기 매니저에게 전화할게요." },
+      { en: "Owen Blake (2:11 p.m.): Perfect. Keep me posted.", ko: "오웬 블레이크 (오후 2:11): 좋아요. 계속 알려주세요." }
+    ],
+    vocab: [
+      { w: "supplier", m: "공급업체" },
+      { w: "stock", m: "재고" },
+      { w: "barely", m: "간신히, 가까스로" },
+      { w: "run out", m: "다 떨어지다" },
+      { w: "keep someone posted", m: "계속 소식을 알려주다" }
+    ],
+    questions: [
+      { q: "What problem are the writers discussing?", choices: ["A delayed order", "A broken machine", "A staff shortage", "A pricing error"], answer: 0, explanation: "Our order won't arrive until Friday." },
+      { q: "What does Ms. Cho plan to do?", choices: ["Cancel the order", "Contact another branch", "Visit the supplier", "Hire temporary staff"], answer: 1, explanation: "Let's borrow from the downtown branch. I'll call their manager now." },
+      { q: "At 2:11 p.m., what does Mr. Blake mean when he writes, \"Keep me posted\"?", choices: ["He wants to be updated", "He will send a package", "He will post a notice", "He wants to change the plan"], answer: 0, explanation: "keep someone posted는 '계속 알려주다'라는 뜻이다. 의도 파악 문제는 앞 문장을 봐야 한다." }
+    ]
+  },
+  {
+    id: "rp11", type: "기사", title: "신규 버스 노선 신설", strategyId: "r05", recommendedSec: 130,
+    header: ["City to Add New Bus Route Next Spring"],
+    sentences: [
+      { en: "The city council approved funding on Monday for a new bus route connecting the east district to the central train station.", ko: "시의회가 월요일에 동부 지역과 중앙역을 잇는 신규 버스 노선 예산을 승인했습니다." },
+      { en: "Residents of the east district have long complained that the area is poorly served by public transportation.", ko: "동부 지역 주민들은 오랫동안 이 지역의 대중교통이 부족하다고 불만을 제기해 왔습니다." },
+      { en: "The route, numbered 42, will run every fifteen minutes during weekday rush hours and every half hour at other times.", ko: "42번으로 지정된 이 노선은 평일 혼잡 시간대에는 15분 간격으로, 그 외 시간에는 30분 간격으로 운행됩니다." },
+      { en: "Construction of three new bus stops will begin in January and is expected to finish by March.", ko: "신규 정류장 세 곳의 공사는 1월에 시작해 3월까지 끝날 예정입니다." },
+      { en: "Council member Rita Dole said the project will cut average commute times by about twenty minutes.", ko: "시의원 리타 돌은 이 사업으로 평균 통근 시간이 약 20분 줄어들 것이라고 말했습니다." }
+    ],
+    vocab: [
+      { w: "city council", m: "시의회" },
+      { w: "funding", m: "예산, 자금" },
+      { w: "residents", m: "주민" },
+      { w: "rush hour", m: "혼잡 시간대" },
+      { w: "commute", m: "통근" }
+    ],
+    questions: [
+      { q: "What did the city council approve?", choices: ["A new train station", "Funding for a bus route", "A road repair project", "A parking regulation"], answer: 1, explanation: "The city council approved funding ... for a new bus route." },
+      { q: "When will construction begin?", choices: ["In January", "In March", "Next spring", "Next summer"], answer: 0, explanation: "Construction ... will begin in January." },
+      { q: "What does Ms. Dole say about the project?", choices: ["It will create new jobs", "It will shorten commute times", "It will reduce traffic accidents", "It will cost less than expected"], answer: 1, explanation: "the project will cut average commute times by about twenty minutes." }
+    ]
+  },
+  {
+    id: "rp12", type: "이중 지문", title: "채용 공고와 지원 메일", strategyId: "r06", recommendedSec: 200,
+    parts: [
+      {
+        label: "지문 1 — 채용 공고",
+        header: ["POSITION AVAILABLE — Office Administrator", "Linden Legal Group"],
+        sentences: [
+          { en: "Responsibilities include scheduling, filing, and client correspondence.", ko: "업무에는 일정 관리, 문서 정리, 고객 서신 처리가 포함됩니다." },
+          { en: "Requirements: two years of office experience and strong written English.", ko: "자격 요건: 사무 경력 2년과 뛰어난 영문 작성 능력." },
+          { en: "Applicants with experience in a legal office are preferred.", ko: "법률 사무소 근무 경험이 있는 지원자를 우대합니다." },
+          { en: "Send your resume to hiring@lindenlegal.com.", ko: "이력서는 hiring@lindenlegal.com으로 보내주세요." },
+          { en: "Applications close on March 15.", ko: "지원은 3월 15일에 마감됩니다." },
+          { en: "Interviews will be held during the last week of March.", ko: "면접은 3월 마지막 주에 진행됩니다." }
+        ]
+      },
+      {
+        label: "지문 2 — 지원 이메일",
+        header: ["From: Noor Haddad", "To: hiring@lindenlegal.com", "Subject: Office Administrator Position"],
+        sentences: [
+          { en: "Dear Hiring Manager,", ko: "채용 담당자님께," },
+          { en: "I am writing to apply for the Office Administrator position.", ko: "사무 관리자 직책에 지원하고자 메일을 드립니다." },
+          { en: "I have worked as an office assistant for three years, including one year at a small law firm.", ko: "저는 3년간 사무 보조로 일했으며, 그중 1년은 소규모 법률 사무소에서 근무했습니다." },
+          { en: "I am available for an interview at any time after March 20.", ko: "3월 20일 이후에는 언제든 면접이 가능합니다." },
+          { en: "My resume is attached. Thank you for your consideration.", ko: "이력서를 첨부합니다. 검토해 주셔서 감사합니다." },
+          { en: "Noor Haddad", ko: "누르 하다드 드림" }
+        ]
+      }
+    ],
+    vocab: [
+      { w: "responsibilities", m: "업무, 책무" },
+      { w: "correspondence", m: "서신 왕래" },
+      { w: "requirements", m: "자격 요건" },
+      { w: "preferred", m: "우대되는" },
+      { w: "available", m: "시간이 되는" }
+    ],
+    questions: [
+      { q: "What is NOT listed as a responsibility of the position?", choices: ["Scheduling", "Filing", "Client correspondence", "Managing budgets"], answer: 3, explanation: "공고에 scheduling, filing, client correspondence만 나온다. 예산 관리는 언급되지 않았다." },
+      { q: "What preferred qualification does Ms. Haddad have?", choices: ["A law degree", "Experience in a legal office", "Fluency in two languages", "Management experience"], answer: 1, explanation: "연계 문제다. 공고의 우대 사항은 법률 사무소 경험이고, 이메일에서 one year at a small law firm이라고 밝힌다." },
+      { q: "When will interviews take place?", choices: ["Before March 15", "During the last week of March", "In early April", "On March 20"], answer: 1, explanation: "Interviews will be held during the last week of March." },
+      { q: "What did Ms. Haddad include with her email?", choices: ["A cover letter", "References", "Her resume", "A portfolio"], answer: 2, explanation: "My resume is attached." }
+    ]
   }
 ];
 
