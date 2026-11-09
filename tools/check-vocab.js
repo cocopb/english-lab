@@ -125,12 +125,13 @@ var failures = {
   missingFields: [],
   duplicateIds: [],
   answerAsDistractor: [],
-  missingDistractorMeanings: [],
   meaningChoiceCount: [],
   trackMetadata: []
 };
 var seenIds = Object.create(null);
 var seenMissingDistractorMeanings = Object.create(null);
+// 경고: 혼동 단어 뜻 누락 (단어장 상세 표시용이라 앱 동작에는 영향이 없다)
+var missingDistractorMeanings = [];
 var requiredFields = ["word", "pos", "meaning", "example", "exampleKo", "tip", "distractors"];
 
 vocabulary.forEach(function (item, index) {
@@ -166,7 +167,7 @@ vocabulary.forEach(function (item, index) {
       var normalizedWord = normalizeWord(distractor);
       if (!meanings[normalizedWord] && !seenMissingDistractorMeanings[normalizedWord]) {
         seenMissingDistractorMeanings[normalizedWord] = true;
-        failures.missingDistractorMeanings.push({ word: distractor.trim() });
+        missingDistractorMeanings.push(distractor.trim());
       }
     });
   }
@@ -183,7 +184,8 @@ var failureCount = Object.keys(failures).reduce(function (total, key) {
   return total + failures[key].length;
 }, 0);
 var failedRules = Object.keys(failures).filter(function (key) { return failures[key].length > 0; }).length;
-console.log("요약: " + vocabulary.length + "개 단어 검사 | 규칙 통과 " + (8 - failedRules) + "/8 | 실패 항목 " + failureCount);
+var ruleCount = Object.keys(failures).length;
+console.log("요약: " + vocabulary.length + "개 단어 검사 | 규칙 통과 " + (ruleCount - failedRules) + "/" + ruleCount + " | 실패 항목 " + failureCount);
 Object.keys(failures).forEach(function (key) {
   console.log("\n" + key + " (" + failures[key].length + ")");
   if (!failures[key].length) {
@@ -220,5 +222,10 @@ if (!duplicateWordWarnings.length) console.log("  없음");
 duplicateWordWarnings.forEach(function (warning) {
   console.log("  ⚠ [" + warning.track + "] " + warning.word + " — " + warning.entries.join(" / "));
 });
+
+console.log("\nmissingDistractorMeanings — 경고 (" + missingDistractorMeanings.length + ")");
+console.log(missingDistractorMeanings.length
+  ? "  ⚠ 혼동 단어 " + missingDistractorMeanings.length + "개의 뜻이 없습니다. 단어장 상세에 단어만 표시됩니다. 목록: node tools/list-missing-meanings.js"
+  : "  없음");
 
 if (failureCount) process.exit(1);

@@ -117,6 +117,20 @@
       return cell;
     }
 
+    // 단어장 상세의 "혼동 단어" 뜻: VOCAB_DISTRACTOR_MEANINGS → 같은 단어의 표제어 뜻 순으로 찾고, 없으면 단어만 보여준다.
+    var distractorMeanings = window.VOCAB_DISTRACTOR_MEANINGS || {};
+    var headwordMeanings = Object.create(null);
+    vocabulary.forEach(function (entry) {
+      var key = String(entry.word || "").toLocaleLowerCase();
+      if (key && !headwordMeanings[key]) headwordMeanings[key] = entry.meaning;
+    });
+    function distractorMeaning(word) {
+      if (Object.prototype.hasOwnProperty.call(distractorMeanings, word)) return distractorMeanings[word];
+      var lower = String(word).toLocaleLowerCase();
+      if (Object.prototype.hasOwnProperty.call(distractorMeanings, lower)) return distractorMeanings[lower];
+      return headwordMeanings[lower] || "";
+    }
+
     function createDetailRow(item) {
       var row = document.createElement("tr");
       row.className = "vocab-detail-row";
@@ -134,7 +148,10 @@
       var tip = makeElement("p", "vocab-detail-section", "💡 학습 팁 · " + item.tip);
       var recall = makeElement("div", "vocab-recall-row");
       recall.append(
-        makeElement("span", "vocab-detail-section", "혼동 단어 · " + item.distractors.join(", ")),
+        makeElement("span", "vocab-detail-section", "혼동 단어 · " + item.distractors.map(function (word) {
+          var meaning = distractorMeaning(word);
+          return meaning ? word + "(" + meaning + ")" : word;
+        }).join(", ")),
         makeElement("span", "vocab-inline-tags", item.tags.join(" · "))
       );
       panel.append(example, tip, recall);
