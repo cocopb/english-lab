@@ -36,7 +36,7 @@
   }
 
   var NO_ENGLISH_VOICE_HINT = "기기에 영어 음성이 없으면 소리가 나지 않을 수 있습니다.";
-  var UNSUPPORTED_MESSAGE = "이 브라우저는 음성 재생을 지원하지 않습니다.";
+  var UNSUPPORTED_MESSAGE = "이 브라우저는 음성 재생을 지원하지 않습니다. 크롬으로 열면 음성이 재생됩니다.";
 
   function readSettings() {
     try {

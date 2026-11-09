@@ -124,7 +124,7 @@
 
     function speakText(text, button, messageId, rate, voice) {
       if (!window.Speech.isSupported()) {
-        messageAt(messageId, "이 브라우저는 음성 재생을 지원하지 않습니다.");
+        messageAt(messageId, window.Speech.UNSUPPORTED_MESSAGE);
         return Promise.resolve();
       }
       var token = ++currentUtteranceToken;
@@ -391,7 +391,7 @@
 
     function playDialogue(button) {
       if (!window.Speech.isSupported()) {
-        messageAt("part3-message", "이 브라우저는 음성 재생을 지원하지 않습니다.");
+        messageAt("part3-message", window.Speech.UNSUPPORTED_MESSAGE);
         return Promise.resolve();
       }
       var dialogue = currentDialogue();

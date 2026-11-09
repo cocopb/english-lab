@@ -442,6 +442,13 @@ async function runTtsScenario() {
   if (du) { du.onend(); await flush(); }
   check(desktop.roots.shadowing.querySelector(".speaking-audio-status").textContent === "", "[TTS·데스크톱] 재생 후 안내가 남음");
 
+  // speechSynthesis가 없는 브라우저: 크롬 권장 문구
+  delete desktop.window.speechSynthesis;
+  buttonByText(desktop.roots.shadowing, "🔊 문장 재생").click();
+  const unsupportedText = desktop.roots.shadowing.querySelector(".speaking-audio-status").textContent;
+  check(unsupportedText === "이 브라우저는 음성 재생을 지원하지 않습니다. 크롬으로 열면 음성이 재생됩니다.",
+    "[TTS·미지원] 안내 문구 — " + unsupportedText);
+
   console.log("TTS: 음성 목록이 빈 모바일 상황(쉐도잉·모범답안·롤플레이)과 데스크톱 회귀" + (errors.length ? "" : " — 이상 없음"));
   return errors;
 }

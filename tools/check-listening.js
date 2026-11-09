@@ -210,7 +210,7 @@ function runListeningPage() {
     Speech: {
       isSupported: function () { return false; },
       hasEnglishVoices: function () { return false; },
-      UNSUPPORTED_MESSAGE: "이 브라우저는 음성 재생을 지원하지 않습니다.",
+      UNSUPPORTED_MESSAGE: "이 브라우저는 음성 재생을 지원하지 않습니다. 크롬으로 열면 음성이 재생됩니다.",
       NO_ENGLISH_VOICE_HINT: "기기에 영어 음성이 없으면 소리가 나지 않을 수 있습니다.",
       getSettings: function () { return Object.assign({}, settings); },
       saveSettings: function (next) { settings = Object.assign(settings, next); return Object.assign({}, settings); },
@@ -491,7 +491,7 @@ async function runSpeechScenarios() {
   // --- speechSynthesis 자체가 없는 브라우저 ---
   var n = loadListeningWithRealSpeech("none");
   $ = n.$;
-  check($("listening-support-note").textContent.indexOf("이 브라우저는 음성 재생을 지원하지 않습니다.") === 0,
+  check($("listening-support-note").textContent === "이 브라우저는 음성 재생을 지원하지 않습니다. 크롬으로 열면 음성이 재생됩니다. 텍스트로 학습할 수 있어요.",
     "[미지원] 안내 문구 — " + $("listening-support-note").textContent);
   check($("dictation-play").disabled, "[미지원] 재생 버튼이 활성화되어 있음");
 
