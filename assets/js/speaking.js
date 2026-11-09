@@ -101,12 +101,17 @@
       text = spokenText(text);
       if (!text) return;
       if (!window.Speech.isSupported()) {
-        status.textContent = "이 브라우저는 음성 재생을 지원하지 않아요.";
+        status.textContent = window.Speech.UNSUPPORTED_MESSAGE;
         return;
       }
-      status.textContent = "음성을 재생하고 있어요…";
-      window.Speech.speak(text, { rate: rate }).then(function () {
-        status.textContent = "재생이 끝났어요.";
+      // 재생은 즉시 시도하고(클릭 핸들러 안에서 동기 호출), 재생 중에는 안내를 띄우지 않는다.
+      status.textContent = "";
+      window.Speech.speak(text, {
+        rate: rate,
+        onStart: function () { status.textContent = ""; }
+      }).then(function () {
+        // 끝난 뒤에도 영어 음성이 하나도 확인되지 않으면 작은 안내만 남긴다.
+        status.textContent = window.Speech.hasEnglishVoices() ? "" : window.Speech.NO_ENGLISH_VOICE_HINT;
       }).catch(function (error) {
         status.textContent = error.message;
       });

@@ -37,11 +37,14 @@
       var voices = supportedVoices();
       var availableVoices = window.Speech.getAvailableVoices();
       var availableVoiceCount = availableVoices.length;
-      voiceDiagnostics.textContent = availableVoiceCount
-        ? "사용 가능한 영어 음성: " + availableVoiceCount + "개"
-        : voices.length
-          ? "사용 가능한 영어 음성: 0개. 설치된 영어 음성을 재생할 수 없습니다. Windows 설정 > 시간 및 언어 > 음성에서 다른 영어 음성을 추가해 보세요."
-          : "사용 가능한 영어 음성: 0개. 이 브라우저에 설치된 영어 음성이 없습니다. Windows 설정 > 시간 및 언어 > 음성에서 영어 음성을 추가할 수 있습니다.";
+      // 음성 목록이 비어 있는 것은 '로드 전'일 수 있으므로 미지원으로 안내하지 않는다.
+      voiceDiagnostics.textContent = !window.Speech.isSupported()
+        ? ""
+        : availableVoiceCount
+          ? "사용 가능한 영어 음성: " + availableVoiceCount + "개"
+          : voices.length
+            ? "설치된 영어 음성을 재생할 수 없습니다. Windows 설정 > 시간 및 언어 > 음성에서 다른 영어 음성을 추가해 보세요."
+            : window.Speech.NO_ENGLISH_VOICE_HINT;
       var availableLocales = ["en-US", "en-GB", "en-AU"].filter(function (locale) {
         return availableVoices.some(function (voice) {
           return (voice.lang || "").toLowerCase() === locale.toLowerCase();
@@ -106,7 +109,7 @@
       var supported = window.Speech.isSupported();
       supportNote.textContent = supported
         ? "영어 음성은 브라우저와 기기에 따라 다를 수 있어요."
-        : "이 브라우저에서는 음성 재생을 지원하지 않습니다. 텍스트로 학습할 수 있어요.";
+        : window.Speech.UNSUPPORTED_MESSAGE + " 텍스트로 학습할 수 있어요.";
       supportNote.classList.toggle("is-unsupported", !supported);
       document.querySelectorAll(".listening-playback-control").forEach(function (button) {
         button.disabled = !supported;
@@ -128,7 +131,7 @@
       if (currentPlaybackButton && currentPlaybackButton !== button) currentPlaybackButton.disabled = false;
       currentPlaybackButton = button || null;
       if (button) button.disabled = true;
-      messageAt(messageId, "음성을 재생하고 있어요…");
+      messageAt(messageId, "");
       var fallbackLang = "en-US";
       return window.Speech.speak(text, {
         rate: rate === undefined ? voiceSettings.rate : rate,
@@ -138,7 +141,7 @@
         onVoiceUnavailable: handleVoiceUnavailable,
         onFallback: handleVoiceFallback
       }).then(function () {
-        if (token === currentUtteranceToken) messageAt(messageId, "재생이 끝났어요.");
+        if (token === currentUtteranceToken) messageAt(messageId, "");
       }).catch(function (error) {
         if (token === currentUtteranceToken) messageAt(messageId, error.message);
       }).then(function () {
@@ -397,20 +400,22 @@
       currentPlaybackButton = button;
       button.disabled = true;
       document.getElementById("part3-start-questions").disabled = true;
-      messageAt("part3-message", "대화를 재생하고 있어요…");
-      var sequence = Promise.resolve();
-      dialogue.script.forEach(function (line, index) {
-        sequence = sequence.then(function () {
-          if (token !== currentUtteranceToken) return undefined;
-          return window.Speech.speak(line.text, {
-            rate: voiceSettings.rate,
-            voice: voiceForLine(line.speaker, index),
-            lang: voiceSettings.voiceSelected ? voiceSettings.locale : "en-US",
-            fallbackLang: "en-US",
-            onVoiceUnavailable: handleVoiceUnavailable,
-            onFallback: handleVoiceFallback
-          });
+      messageAt("part3-message", "");
+      function speakLine(line, index) {
+        if (token !== currentUtteranceToken) return undefined;
+        return window.Speech.speak(line.text, {
+          rate: voiceSettings.rate,
+          voice: voiceForLine(line.speaker, index),
+          lang: voiceSettings.voiceSelected ? voiceSettings.locale : "en-US",
+          fallbackLang: "en-US",
+          onVoiceUnavailable: handleVoiceUnavailable,
+          onFallback: handleVoiceFallback
         });
+      }
+      // 첫 대사는 클릭 핸들러 안에서 바로 재생해야 iOS에서 막히지 않는다. 이후 대사는 차례로 잇는다.
+      var sequence = Promise.resolve(speakLine(dialogue.script[0], 0));
+      dialogue.script.slice(1).forEach(function (line, offset) {
+        sequence = sequence.then(function () { return speakLine(line, offset + 1); });
       });
       return sequence.then(function () {
         if (token !== currentUtteranceToken) return;

@@ -24,10 +24,19 @@
     });
   }
 
+  // 지원 여부는 API 존재만으로 판단한다. 음성 목록이 비어 있는 것은 '아직 로드 전'일 수 있으므로
+  // 미지원으로 보지 않는다 (모바일은 사용자 제스처 이후에야 목록이 채워지는 경우가 많다).
   function isSupported() {
-    return typeof window.speechSynthesis !== "undefined" &&
-      typeof window.SpeechSynthesisUtterance === "function";
+    return "speechSynthesis" in window && !!window.speechSynthesis;
   }
+
+  // 지원하지만 현재 알려진 영어 음성이 하나도 없는 상태 (로드 전이거나 실제로 없음)
+  function hasEnglishVoices() {
+    return getVoices().length > 0;
+  }
+
+  var NO_ENGLISH_VOICE_HINT = "기기에 영어 음성이 없으면 소리가 나지 않을 수 있습니다.";
+  var UNSUPPORTED_MESSAGE = "이 브라우저는 음성 재생을 지원하지 않습니다.";
 
   function readSettings() {
     try {
@@ -72,8 +81,14 @@
   }
 
   function getVoices() {
-    if (!isSupported()) return [];
-    return window.speechSynthesis.getVoices()
+    if (!isSupported() || typeof window.speechSynthesis.getVoices !== "function") return [];
+    var voices;
+    try {
+      voices = window.speechSynthesis.getVoices() || [];
+    } catch (error) {
+      return [];
+    }
+    return Array.prototype.slice.call(voices)
       .filter(function (voice) { return localeRank(voice) >= 0; })
       .sort(function (a, b) {
         return localeRank(a) - localeRank(b) ||
@@ -165,172 +180,183 @@
     return exact[0];
   }
 
+  // 재생은 호출 즉시(같은 클릭 핸들러 안에서 동기적으로) speechSynthesis.speak()까지 실행한다.
+  // iOS Safari는 await 등으로 사용자 제스처를 벗어난 뒤의 speak()를 막는다.
+  // 음성 목록은 이미 로드된 것만 사용하고, 비어 있으면 voice 없이 lang="en-US"로 재생한다.
   function speak(text, options) {
-    if (!isSupported()) return Promise.reject(new Error("이 브라우저는 음성 재생을 지원하지 않습니다."));
+    if (!isSupported()) return Promise.reject(new Error(UNSUPPORTED_MESSAGE));
     if (typeof text !== "string" || !text.trim()) return Promise.reject(new TypeError("읽을 문장이 필요합니다."));
 
     var settings = readSettings();
     var opts = options || {};
     stop();
     var generation = speechGeneration;
-    return waitForVoices().then(function (voices) {
-      if (generation !== speechGeneration) return undefined;
-      return new Promise(function (resolve, reject) {
-        var settled = false;
-        var attempts = 0;
-        var keepAliveTimer = null;
-        var selectedVoice = chooseVoice(voices, opts.voice);
-        var requestedRate = Number(opts.rate);
-        if ([0.7, 0.85, 1].indexOf(requestedRate) === -1) {
-          requestedRate = [0.7, 0.85, 1].indexOf(Number(settings.rate)) !== -1
-            ? Number(settings.rate)
-            : defaultSettings.rate;
-        }
+    var voices = getVoices();
+    if (!voices.length) waitForVoices(); // 백그라운드에서 목록 로딩만 계속한다 (재생은 기다리지 않음)
+    return new Promise(function (resolve, reject) {
+      var settled = false;
+      var attempts = 0;
+      var keepAliveTimer = null;
+      var started = false;
+      var selectedVoice = voices.length ? chooseVoice(voices, opts.voice) : null;
+      var defaultLang = voices.length ? (opts.lang || settings.locale || "en-US") : "en-US";
+      var requestedRate = Number(opts.rate);
+      if ([0.7, 0.85, 1].indexOf(requestedRate) === -1) {
+        requestedRate = [0.7, 0.85, 1].indexOf(Number(settings.rate)) !== -1
+          ? Number(settings.rate)
+          : defaultSettings.rate;
+      }
 
-        function clearPlaybackState() {
-          if (keepAliveTimer !== null) {
-            window.clearInterval(keepAliveTimer);
-            keepAliveTimer = null;
+      function clearPlaybackState() {
+        if (keepAliveTimer !== null) {
+          window.clearInterval(keepAliveTimer);
+          keepAliveTimer = null;
+        }
+        currentUtterance = null;
+      }
+
+      function finish(error) {
+        if (settled) return;
+        settled = true;
+        clearPlaybackState();
+        if (currentResolve === cancelPlayback) currentResolve = null;
+        if (error) reject(error);
+        else resolve();
+      }
+
+      function cancelPlayback() {
+        if (settled) return;
+        settled = true;
+        clearPlaybackState();
+        if (currentResolve === cancelPlayback) currentResolve = null;
+        resolve();
+      }
+
+      currentResolve = cancelPlayback;
+
+      function markVoiceUnavailable(voice) {
+        if (!voice) return;
+        unavailableVoiceIds.add(voiceId(voice));
+        if (typeof opts.onVoiceUnavailable === "function") {
+          opts.onVoiceUnavailable(voice, isLocaleAvailable(voice.lang));
+        }
+        if (typeof opts.onFallback === "function") {
+          opts.onFallback(voice, opts.fallbackLang || "en-US");
+        }
+      }
+
+      function playAttempt(voice, rate, language) {
+        if (generation !== speechGeneration || settled) {
+          finish();
+          return;
+        }
+        attempts += 1;
+        var attemptNumber = attempts;
+        var utterance;
+        try {
+          utterance = new window.SpeechSynthesisUtterance(text);
+          utterance.lang = voice && voice.lang ? voice.lang : (language || defaultLang);
+          if (voice) utterance.voice = voice;
+          utterance.rate = rate;
+        } catch (error) {
+          console.warn("Speech playback utterance setup failed", {
+            attempt: attemptNumber,
+            message: error.message,
+            voice: voice ? voice.name : "browser default",
+            lang: voice && voice.lang ? voice.lang : (language || defaultLang),
+            rate: rate
+          });
+          if (attemptNumber === 1) {
+            markVoiceUnavailable(voice);
+            playAttempt(null, requestedRate, opts.fallbackLang || "en-US");
+          } else if (attemptNumber === 2) {
+            playAttempt(null, 1, opts.fallbackLang || "en-US");
           }
-          currentUtterance = null;
+          else finish(new Error("음성 재생을 준비하지 못했습니다: " + error.message));
+          return;
         }
-
-        function finish(error) {
-          if (settled) return;
-          settled = true;
+        currentUtterance = utterance;
+        window.clearInterval(keepAliveTimer);
+        keepAliveTimer = null;
+        console.info("Speech playback attempt", {
+          attempt: attemptNumber,
+          voice: voice ? voice.name : "browser default",
+          localService: voice ? voice.localService : null,
+          lang: utterance.lang,
+          rate: utterance.rate
+        });
+        utterance.onstart = function () {
+          if (currentUtterance !== utterance || generation !== speechGeneration || settled || started) return;
+          started = true;
+          if (typeof opts.onStart === "function") {
+            try { opts.onStart(); } catch (error) { console.warn("Speech onStart handler failed", error); }
+          }
+        };
+        utterance.onend = function () {
+          if (currentUtterance !== utterance || generation !== speechGeneration || settled) return;
           clearPlaybackState();
-          if (currentResolve === cancelPlayback) currentResolve = null;
-          if (error) reject(error);
-          else resolve();
-        }
-
-        function cancelPlayback() {
-          if (settled) return;
-          settled = true;
-          clearPlaybackState();
-          if (currentResolve === cancelPlayback) currentResolve = null;
-          resolve();
-        }
-
-        currentResolve = cancelPlayback;
-
-        function markVoiceUnavailable(voice) {
-          if (!voice) return;
-          unavailableVoiceIds.add(voiceId(voice));
-          if (typeof opts.onVoiceUnavailable === "function") {
-            opts.onVoiceUnavailable(voice, isLocaleAvailable(voice.lang));
+          try {
+            if (typeof opts.onEnd === "function") opts.onEnd();
+            finish();
+          } catch (error) {
+            finish(error);
           }
-          if (typeof opts.onFallback === "function") {
-            opts.onFallback(voice, opts.fallbackLang || "en-US");
-          }
-        }
-
-        function playAttempt(voice, rate, language) {
-          if (generation !== speechGeneration || settled) {
+        };
+        utterance.onerror = function (event) {
+          if (currentUtterance !== utterance || generation !== speechGeneration || settled) return;
+          if (event.error === "canceled" || event.error === "interrupted") {
             finish();
             return;
           }
-          attempts += 1;
-          var attemptNumber = attempts;
-          var utterance;
-          try {
-            utterance = new window.SpeechSynthesisUtterance(text);
-            utterance.lang = voice && voice.lang ? voice.lang : (language || opts.lang || settings.locale || "en-US");
-            if (voice) utterance.voice = voice;
-            utterance.rate = rate;
-          } catch (error) {
-            console.warn("Speech playback utterance setup failed", {
-              attempt: attemptNumber,
-              message: error.message,
-              voice: voice ? voice.name : "browser default",
-              lang: voice && voice.lang ? voice.lang : (language || opts.lang || settings.locale || "en-US"),
-              rate: rate
-            });
-            if (attemptNumber === 1) {
-              markVoiceUnavailable(voice);
-              playAttempt(null, requestedRate, opts.fallbackLang || "en-US");
-            } else if (attemptNumber === 2) {
-              playAttempt(null, 1, opts.fallbackLang || "en-US");
-            }
-            else finish(new Error("음성 재생을 준비하지 못했습니다: " + error.message));
-            return;
-          }
-          currentUtterance = utterance;
-          window.clearInterval(keepAliveTimer);
-          keepAliveTimer = null;
-          console.info("Speech playback attempt", {
+          clearPlaybackState();
+          console.warn("Speech playback attempt failed", {
             attempt: attemptNumber,
+            error: event.error,
             voice: voice ? voice.name : "browser default",
-            localService: voice ? voice.localService : null,
             lang: utterance.lang,
             rate: utterance.rate
           });
-          utterance.onend = function () {
-            if (currentUtterance !== utterance || generation !== speechGeneration || settled) return;
-            clearPlaybackState();
-            try {
-              if (typeof opts.onEnd === "function") opts.onEnd();
-              finish();
-            } catch (error) {
-              finish(error);
-            }
-          };
-          utterance.onerror = function (event) {
-            if (currentUtterance !== utterance || generation !== speechGeneration || settled) return;
-            if (event.error === "canceled" || event.error === "interrupted") {
-              finish();
-              return;
-            }
-            clearPlaybackState();
-            console.warn("Speech playback attempt failed", {
-              attempt: attemptNumber,
-              error: event.error,
-              voice: voice ? voice.name : "browser default",
-              lang: utterance.lang,
-              rate: utterance.rate
-            });
-            if (attemptNumber === 1) {
-              markVoiceUnavailable(voice);
-              playAttempt(null, requestedRate, opts.fallbackLang || "en-US");
-            } else if (attemptNumber === 2) {
-              playAttempt(null, 1, opts.fallbackLang || "en-US");
-            } else {
-              finish(new Error("음성 재생에 실패했습니다: " + event.error));
-            }
-          };
-          try {
-            window.speechSynthesis.cancel();
-            window.speechSynthesis.speak(utterance);
-            keepAliveTimer = window.setInterval(function () {
-              if (currentUtterance !== utterance || settled) return;
-              try {
-                window.speechSynthesis.pause();
-                window.speechSynthesis.resume();
-              } catch (error) {
-                console.warn("Speech playback keep-alive failed", error);
-              }
-            }, 14000);
-          } catch (error) {
-            clearPlaybackState();
-            console.warn("Speech playback could not be queued", {
-              attempt: attemptNumber,
-              message: error.message,
-              voice: voice ? voice.name : "browser default",
-              lang: utterance.lang,
-              rate: utterance.rate
-            });
-            if (attemptNumber === 1) {
-              markVoiceUnavailable(voice);
-              playAttempt(null, requestedRate, opts.fallbackLang || "en-US");
-            } else if (attemptNumber === 2) {
-              playAttempt(null, 1, opts.fallbackLang || "en-US");
-            }
-            else finish(new Error("음성 재생을 시작하지 못했습니다: " + error.message));
+          if (attemptNumber === 1) {
+            markVoiceUnavailable(voice);
+            playAttempt(null, requestedRate, opts.fallbackLang || "en-US");
+          } else if (attemptNumber === 2) {
+            playAttempt(null, 1, opts.fallbackLang || "en-US");
+          } else {
+            finish(new Error("음성 재생에 실패했습니다: " + event.error));
           }
+        };
+        try {
+          window.speechSynthesis.cancel();
+          window.speechSynthesis.speak(utterance);
+          keepAliveTimer = window.setInterval(function () {
+            if (currentUtterance !== utterance || settled) return;
+            try {
+              window.speechSynthesis.pause();
+              window.speechSynthesis.resume();
+            } catch (error) {
+              console.warn("Speech playback keep-alive failed", error);
+            }
+          }, 14000);
+        } catch (error) {
+          clearPlaybackState();
+          console.warn("Speech playback could not be queued", {
+            attempt: attemptNumber,
+            message: error.message,
+            voice: voice ? voice.name : "browser default",
+            lang: utterance.lang,
+            rate: utterance.rate
+          });
+          if (attemptNumber === 1) {
+            markVoiceUnavailable(voice);
+            playAttempt(null, requestedRate, opts.fallbackLang || "en-US");
+          } else if (attemptNumber === 2) {
+            playAttempt(null, 1, opts.fallbackLang || "en-US");
+          }
+          else finish(new Error("음성 재생을 시작하지 못했습니다: " + error.message));
         }
+      }
 
-        playAttempt(selectedVoice, requestedRate);
-      });
+      playAttempt(selectedVoice, requestedRate);
     });
   }
 
@@ -547,8 +573,33 @@
   };
   window.compareSpeech = compareSpeech;
 
+  // iOS 등에서 첫 재생이 무음이 되는 경우를 막기 위해, 페이지의 첫 사용자 입력 때
+  // 소리 없는 빈 utterance를 한 번만 speak()해서 음성 엔진을 깨운다.
+  var engineUnlocked = false;
+  var unlockEvents = ["touchend", "click", "keydown"];
+  function unlockSpeechEngine() {
+    if (engineUnlocked) return;
+    engineUnlocked = true;
+    unlockEvents.forEach(function (type) { document.removeEventListener(type, unlockSpeechEngine, true); });
+    if (!isSupported() || typeof window.SpeechSynthesisUtterance !== "function") return;
+    if (currentUtterance || window.speechSynthesis.speaking) return; // 이미 재생 중이면 건드리지 않는다
+    try {
+      var silent = new window.SpeechSynthesisUtterance("");
+      silent.volume = 0;
+      window.speechSynthesis.speak(silent);
+    } catch (error) {
+      console.warn("Speech engine warm-up failed", error);
+    }
+  }
+  if (isSupported() && typeof document !== "undefined" && typeof document.addEventListener === "function") {
+    unlockEvents.forEach(function (type) { document.addEventListener(type, unlockSpeechEngine, true); });
+  }
+
   window.Speech = {
     isSupported: isSupported,
+    hasEnglishVoices: hasEnglishVoices,
+    NO_ENGLISH_VOICE_HINT: NO_ENGLISH_VOICE_HINT,
+    UNSUPPORTED_MESSAGE: UNSUPPORTED_MESSAGE,
     getVoices: getVoices,
     getAvailableVoices: getAvailableVoices,
     isVoiceUnavailable: isVoiceUnavailable,

@@ -328,11 +328,133 @@ function runSpeakingPage() {
   return errors;
 }
 
-const renderErrors = runSpeakingPage();
-renderErrors.forEach(message => console.log("✗ " + message));
+// ---------- 3. TTS 재생 검사 (실제 speech.js + 가짜 speechSynthesis, 음성 목록 비어 있음) ----------
 
-if (dataFailures || renderErrors.length) {
-  console.log("검사 실패");
-  process.exit(1);
+function loadSpeakingWithSynth(voices) {
+  const body = new El("body");
+  const add = id => { const e = new El("div"); e.id = id; body.appendChild(e); return e; };
+  const header = add("site-header");
+  header.querySelector = sel => (sel === ".theme-toggle" ? new El("button") : null);
+  add("site-footer");
+  ["patterns", "roleplay", "shadowing"].forEach(name => {
+    const tab = add("speaking-tab-" + name); tab.setAttribute("role", "tab");
+    add("speaking-panel-" + name);
+  });
+  const roots = {
+    pattern: add("speaking-pattern-exercise"),
+    roleplay: add("speaking-roleplay-exercise"),
+    shadowing: add("speaking-shadowing-exercise")
+  };
+  add("speaking-notice");
+  const ready = [];
+  const docListeners = {};
+  const document = {
+    readyState: "loading",
+    documentElement: new El("html"),
+    createElement: t => new El(t),
+    createTextNode: t => { const n = new El("#text"); n._text = String(t); return n; },
+    getElementById: id => body.all().find(e => e.id === id) || null,
+    querySelectorAll: s => body.querySelectorAll(s),
+    querySelector: s => body.querySelector(s),
+    addEventListener: (t, f) => { if (t === "DOMContentLoaded") ready.push(f); else (docListeners[t] = docListeners[t] || []).push(f); },
+    removeEventListener: (t, f) => { docListeners[t] = (docListeners[t] || []).filter(x => x !== f); }
+  };
+  const synth = {
+    voices, queue: [], speaking: false,
+    getVoices: () => synth.voices.slice(),
+    speak: u => synth.queue.push(u),
+    cancel() {}, pause() {}, resume() {}, addEventListener() {}, removeEventListener() {}
+  };
+  function FakeUtterance(text) { this.text = text; this.volume = 1; this.lang = ""; this.voice = null; this.rate = 1; }
+  const store = new Map();
+  const window = {
+    document,
+    location: { pathname: "/english-lab/pages/speaking.html", hash: "", hostname: "example.github.io" },
+    isSecureContext: true,
+    addEventListener() {}, removeEventListener() {},
+    matchMedia: () => ({ matches: false, addEventListener() {} }),
+    setTimeout: () => 1, clearTimeout() {}, setInterval: () => 1, clearInterval() {},
+    speechSynthesis: synth, SpeechSynthesisUtterance: FakeUtterance
+  };
+  const localStorage = { getItem: k => (store.has(k) ? store.get(k) : null), setItem: (k, v) => store.set(k, String(v)), removeItem: k => store.delete(k) };
+  const quiet = { info() {}, warn() {}, log: console.log, error: console.error };
+  const ctx = vm.createContext({ window, document, localStorage, console: quiet, Promise });
+  for (const file of ["assets/js/common.js", "assets/js/speech.js", "data/speaking.js", "assets/js/speaking.js"]) {
+    vm.runInContext(fs.readFileSync(path.join(root, file), "utf8"), ctx, { filename: file });
+  }
+  ready.forEach(f => f());
+  return { document, synth, roots, docListeners, window };
 }
-console.log("모든 회화 검사 통과");
+
+async function runTtsScenario() {
+  const errors = [];
+  const check = (cond, message) => { if (!cond) errors.push(message); };
+  const flush = () => new Promise(resolve => setImmediate(resolve));
+  const HINT = "기기에 영어 음성이 없으면 소리가 나지 않을 수 있습니다.";
+  const buttonByText = (stage, text) => stage.querySelectorAll(".button").find(b => b.textContent === text);
+
+  const page = loadSpeakingWithSynth([]);
+  const { synth, roots } = page;
+  (page.docListeners.click || []).slice().forEach(fn => fn({}));
+  check(synth.queue.length === 1 && synth.queue[0].text === "" && synth.queue[0].volume === 0, "[TTS] 첫 클릭 무음 깨우기가 한 번 실행되지 않음");
+  synth.queue = [];
+
+  // 쉐도잉 문장 재생: 클릭 직후 동기 재생, 재생 중 안내 없음, 끝난 뒤 영어 음성 없음 안내
+  const shadowPlay = buttonByText(roots.shadowing, "🔊 문장 재생");
+  const status = roots.shadowing.querySelector(".speaking-audio-status");
+  shadowPlay.click();
+  check(synth.queue.length === 1, "[TTS] 쉐도잉 재생 클릭 직후 speak()가 호출되지 않음 (" + synth.queue.length + "회)");
+  const u = synth.queue[0];
+  if (u) {
+    check(u.lang === "en-US" && !u.voice, "[TTS] 음성 목록이 비었을 때 voice 없이 en-US로 재생해야 함");
+    check(status.textContent === "", "[TTS] 재생 중 안내가 표시됨 — " + status.textContent);
+    check(!/지원하지 않/.test(status.textContent), "[TTS] 미지원 안내가 뜸");
+    u.onstart(); u.onend();
+    await flush();
+    check(status.textContent === HINT, "[TTS] 재생 후 영어 음성 없음 안내 — " + status.textContent);
+  }
+
+  // 패턴 모범답안 듣기
+  const patternInput = roots.pattern.querySelector(".speaking-answer");
+  patternInput.value = page.window.PATTERNS[0].drills[0].en; patternInput.dispatch("input");
+  buttonByText(roots.pattern, "제출").click();
+  synth.queue = [];
+  buttonByText(roots.pattern, "🔊 모범답안 듣기").click();
+  check(synth.queue.length === 1 && synth.queue[0].text === page.window.PATTERNS[0].drills[0].en, "[TTS] 모범답안 듣기 클릭 직후 재생되지 않음");
+  page.window.Speech.stop();
+
+  // 롤플레이 탭: 첫 상대방 대사가 탭 클릭 안에서 바로 재생
+  synth.queue = [];
+  page.document.getElementById("speaking-tab-roleplay").click();
+  check(synth.queue.length === 1 && synth.queue[0].text === page.window.ROLEPLAYS[0].turns[0].en, "[TTS] 롤플레이 첫 대사가 탭 클릭 직후 재생되지 않음");
+  const rpStatus = roots.roleplay.querySelector(".speaking-audio-status");
+  synth.queue[0] && synth.queue[0].onerror({ error: "synthesis-failed" });
+  synth.queue[1] && synth.queue[1].onerror({ error: "synthesis-failed" });
+  synth.queue[2] && synth.queue[2].onerror({ error: "synthesis-failed" });
+  await flush();
+  check(rpStatus.textContent === "음성 재생에 실패했습니다: synthesis-failed", "[TTS] 실제 실패 시 오류 안내 — " + rpStatus.textContent);
+
+  // 음성이 있는 환경(데스크톱 회귀): 재생 후 안내 없음
+  const desktop = loadSpeakingWithSynth([{ name: "Zira", lang: "en-US", voiceURI: "zira", localService: true }]);
+  buttonByText(desktop.roots.shadowing, "🔊 문장 재생").click();
+  const du = desktop.synth.queue[desktop.synth.queue.length - 1];
+  check(!!du, "[TTS·데스크톱] 재생되지 않음");
+  if (du) { du.onend(); await flush(); }
+  check(desktop.roots.shadowing.querySelector(".speaking-audio-status").textContent === "", "[TTS·데스크톱] 재생 후 안내가 남음");
+
+  console.log("TTS: 음성 목록이 빈 모바일 상황(쉐도잉·모범답안·롤플레이)과 데스크톱 회귀" + (errors.length ? "" : " — 이상 없음"));
+  return errors;
+}
+
+(async () => {
+  const renderErrors = runSpeakingPage();
+  renderErrors.forEach(message => console.log("✗ " + message));
+  const ttsErrors = await runTtsScenario();
+  ttsErrors.forEach(message => console.log("✗ " + message));
+
+  if (dataFailures || renderErrors.length || ttsErrors.length) {
+    console.log("검사 실패");
+    process.exit(1);
+  }
+  console.log("모든 회화 검사 통과");
+})();
