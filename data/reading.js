@@ -243,3 +243,50 @@ window.PASSAGES = [
     ]
   }
 ];
+
+window.PART6 = [
+  {
+    id: "p601", title: "구내식당 운영 시간 변경", recommendedSec: 120,
+    header: ["Attention all employees:"],
+    blocks: [
+      { type: "text", en: "Beginning next month, the company cafeteria will " },
+      { type: "blank", n: 1 },
+      { type: "text", en: " new operating hours. It will open at 7:30 a.m. and close at 7:00 p.m. This change was made " },
+      { type: "blank", n: 2 },
+      { type: "text", en: " feedback from staff members who work early shifts. " },
+      { type: "blank", n: 3 },
+      { type: "text", en: " We appreciate your understanding during the transition. Please direct any questions " },
+      { type: "blank", n: 4 },
+      { type: "text", en: " the facilities manager." }
+    ],
+    ko: "전 직원 안내: 다음 달부터 구내식당 운영 시간이 바뀝니다. 오전 7시 30분에 열고 오후 7시에 닫습니다. 이번 변경은 이른 교대 근무 직원들의 의견을 반영한 것입니다. 새 운영 시간은 입구에 게시될 예정입니다. 전환 기간 동안 양해해 주셔서 감사합니다. 문의 사항은 시설 관리자에게 전달해 주세요.",
+    questions: [
+      { n: 1, choices: ["adopt", "adopts", "adopting", "adopted"], answer: 0, explanation: "조동사 will 뒤에는 동사원형이 온다.", ruleId: "g01" },
+      { n: 2, choices: ["because", "in response to", "although", "despite"], answer: 1, explanation: "빈칸 뒤가 명사(feedback)이므로 전치사가 필요하다. 의견을 반영했다는 뜻이므로 in response to.", ruleId: "g07" },
+      { n: 3, choices: ["The new hours will be posted at the entrance.", "The cafeteria will be closed permanently.", "Employees must bring their own lunch.", "The manager has resigned."], answer: 0, explanation: "문장 삽입 문제다. 앞뒤가 운영 시간 변경 안내이므로 게시 안내가 자연스럽다. 나머지는 문맥과 맞지 않는다.", ruleId: null },
+      { n: 4, choices: ["to", "at", "for", "with"], answer: 0, explanation: "direct A to B(A를 B에게 보내다) 형태다.", ruleId: "g06" }
+    ]
+  },
+  {
+    id: "p602", title: "주문 발송 안내", recommendedSec: 120,
+    header: ["Dear Mr. Alvarez,"],
+    blocks: [
+      { type: "text", en: "Thank you for your recent purchase. Your order " },
+      { type: "blank", n: 1 },
+      { type: "text", en: " on November 3 and should arrive within five business days. If you need to change the delivery address, please contact us " },
+      { type: "blank", n: 2 },
+      { type: "text", en: " Friday. " },
+      { type: "blank", n: 3 },
+      { type: "text", en: " Customers who sign up for our newsletter receive a 10 percent discount on their " },
+      { type: "blank", n: 4 },
+      { type: "text", en: " order." }
+    ],
+    ko: "알바레즈 님께, 최근 구매해 주셔서 감사합니다. 주문하신 물품은 11월 3일에 발송되었으며 영업일 기준 5일 이내에 도착할 예정입니다. 배송지를 변경하셔야 한다면 금요일까지 연락 주세요. 저희 소식지도 구독해 보세요. 소식지를 신청하신 고객은 다음 주문 시 10퍼센트 할인을 받으십니다.",
+    questions: [
+      { n: 1, choices: ["ships", "shipped", "was shipped", "shipping"], answer: 2, explanation: "주문품은 발송되는 쪽이므로 수동태다. 빈칸 뒤에 목적어가 없다.", ruleId: "g04" },
+      { n: 2, choices: ["by", "until", "during", "since"], answer: 0, explanation: "금요일 전까지 연락하라는 마감 의미이므로 by.", ruleId: "g06" },
+      { n: 3, choices: ["We are closing our store next month.", "You may also want to subscribe to our newsletter.", "Your refund has been processed.", "Please return the item within 7 days."], answer: 1, explanation: "뒤 문장이 소식지 구독 혜택을 설명하므로 소식지를 언급하는 문장이 앞에 와야 한다.", ruleId: null },
+      { n: 4, choices: ["next", "nearest", "later", "following"], answer: 0, explanation: "'다음 주문'이라는 뜻이므로 next order가 자연스럽다.", ruleId: null }
+    ]
+  }
+];

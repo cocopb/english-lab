@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#FAF8F6">
+  <title>실전 — English Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/common.js" defer></script>
+  <script src="../assets/js/practice.js" defer></script>
+</head>
+<body>
+  <div id="site-header"></div>
+  <main class="container">
+    <header class="page-intro">
+      <p class="eyebrow">PRACTICE · TOEIC RC</p>
+      <h1>실전 연습</h1>
+      <p>시간을 재고 끝까지 푼 뒤 한 번에 채점해요. 실제 시험처럼요.</p>
+    </header>
+    <section class="content-section practice-workspace">
+      <div class="vocab-tabs" role="tablist" aria-label="실전 학습 메뉴">
+        <button class="vocab-tab" id="practice-tab-mock" type="button" role="tab" aria-controls="practice-panel-mock" aria-selected="true">미니 모의고사</button>
+        <button class="vocab-tab" id="practice-tab-parts" type="button" role="tab" aria-controls="practice-panel-parts" aria-selected="false" tabindex="-1">파트별 연습</button>
+        <button class="vocab-tab" id="practice-tab-history" type="button" role="tab" aria-controls="practice-panel-history" aria-selected="false" tabindex="-1">기록</button>
+      </div>
+      <section class="vocab-tab-panel" id="practice-panel-mock" role="tabpanel" aria-labelledby="practice-tab-mock">
+        <h2>미니 모의고사</h2>
+        <div id="practice-mock-stage"></div>
+      </section>
+      <section class="vocab-tab-panel" id="practice-panel-parts" role="tabpanel" aria-labelledby="practice-tab-parts" hidden>
+        <h2>파트별 연습</h2>
+        <form class="panel practice-part-picker" id="practice-part-form">
+          <label class="field" for="practice-part-select">파트
+            <select id="practice-part-select">
+              <option value="p5">Part 5 · 단문 빈칸 (10문항)</option>
+              <option value="p6">Part 6 · 장문 빈칸 (1세트)</option>
+              <option value="p7">Part 7 · 독해 (1지문)</option>
+            </select>
+          </label>
+          <button class="button button-primary" type="submit">연습 시작</button>
+        </form>
+        <div id="practice-part-stage" class="practice-part-stage"></div>
+      </section>
+      <section class="vocab-tab-panel" id="practice-panel-history" role="tabpanel" aria-labelledby="practice-tab-history" hidden>
+        <h2>기록</h2>
+        <div id="practice-history"></div>
+      </section>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="../data/grammar.js"></script>
+  <script src="../data/reading.js"></script>
+</body>
+</html>

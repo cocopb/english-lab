@@ -414,5 +414,9 @@
         if (next.id === "grammar-tab-weak") renderWeakRules();
       });
     });
+
+    // 다른 페이지(실전 결과 등)에서 grammar.html#grammar-note-g05 형태로 들어오면 해당 노트를 연다.
+    var noteHash = /^#grammar-note-(g\d+)$/.exec(window.location.hash);
+    if (noteHash) openNote(noteHash[1]);
   });
 }());

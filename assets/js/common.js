@@ -24,19 +24,50 @@
       shadowingAvg: 0,
       shadowingCount: 0
     },
+    practiceStats: { attempts: [] },
     planDone: {}
   };
+  var practiceParts = ["p5", "p6", "p7"];
+  var practiceAttemptLimit = 100;
+  // 오답노트·퀴즈·계획 페이지는 남겨두되 메뉴에서는 제외한다 (README 참고).
   var navigation = [
     ["홈", "index.html", "home"],
     ["보카", "pages/vocab.html", "vocab"],
-    ["독해", "pages/reading.html", "reading"],
     ["문법", "pages/grammar.html", "grammar"],
     ["리스닝", "pages/listening.html", "listening"],
+    ["독해", "pages/reading.html", "reading"],
     ["회화", "pages/speaking.html", "speaking"],
-    ["오답노트", "pages/mistakes.html", "mistakes"],
-    ["퀴즈", "pages/quiz.html", "quiz"],
-    ["계획", "pages/plan.html", "plan"]
+    ["실전", "pages/practice.html", "practice"]
   ];
+
+  function nonNegativeInt(value) {
+    return Math.max(0, Math.floor(Number(value) || 0));
+  }
+
+  function normalizePracticeAttempt(attempt) {
+    if (!attempt || typeof attempt !== "object") return null;
+    var total = nonNegativeInt(attempt.total);
+    if (total < 1) return null;
+    var date = typeof attempt.date === "string" && !Number.isNaN(Date.parse(attempt.date)) ? attempt.date : null;
+    if (!date) return null;
+    var scores = attempt.partScores && typeof attempt.partScores === "object" ? attempt.partScores : {};
+    var totals = attempt.partTotals && typeof attempt.partTotals === "object" ? attempt.partTotals : { p5: 15, p6: 8, p7: 7 };
+    var partScores = {};
+    var partTotals = {};
+    practiceParts.forEach(function (part) {
+      partTotals[part] = nonNegativeInt(totals[part]);
+      partScores[part] = Math.min(partTotals[part], nonNegativeInt(scores[part]));
+    });
+    return {
+      date: date,
+      correct: Math.min(total, nonNegativeInt(attempt.correct)),
+      total: total,
+      elapsedSec: nonNegativeInt(attempt.elapsedSec),
+      timedOut: attempt.timedOut === true,
+      partScores: partScores,
+      partTotals: partTotals
+    };
+  }
 
   function normalizeProgress(value) {
     var result = Object.assign({}, defaults, value && typeof value === "object" ? value : {});
@@ -121,6 +152,12 @@
         : [],
       shadowingAvg: Math.min(1, Math.max(0, Number(speakingStats.shadowingAvg) || 0)),
       shadowingCount: Math.max(0, Math.floor(Number(speakingStats.shadowingCount) || 0))
+    };
+    var practiceStats = result.practiceStats && typeof result.practiceStats === "object" ? result.practiceStats : {};
+    result.practiceStats = {
+      attempts: Array.isArray(practiceStats.attempts)
+        ? practiceStats.attempts.map(normalizePracticeAttempt).filter(Boolean).slice(-practiceAttemptLimit)
+        : []
     };
     var vocabProgress = result.vocabProgress && typeof result.vocabProgress === "object" ? result.vocabProgress : {};
     result.vocabProgress = {};
@@ -424,7 +461,37 @@
     return stats;
   }
 
+  // result: { correct, total, elapsedSec, timedOut, partScores:{p5,p6,p7}, partTotals:{p5,p6,p7},
+  //           ruleAnswers:[{ ruleId, correct }] }  — ruleAnswers는 grammarStats에도 반영한다.
+  function recordPracticeAttempt(result) {
+    var attempt = normalizePracticeAttempt(Object.assign({}, result || {}, { date: new Date().toISOString() }));
+    if (!attempt) throw new RangeError("모의고사 결과가 올바르지 않습니다.");
+    var progress = get();
+    progress.practiceStats.attempts.push(attempt);
+    var today = todayDate();
+    (Array.isArray(result.ruleAnswers) ? result.ruleAnswers : []).forEach(function (entry) {
+      if (!entry || typeof entry.ruleId !== "string" || !entry.ruleId.trim()) return;
+      var stats = progress.grammarStats[entry.ruleId] || { solved: 0, correct: 0, lastDate: null };
+      progress.grammarStats[entry.ruleId] = {
+        solved: stats.solved + 1,
+        correct: stats.correct + (entry.correct ? 1 : 0),
+        lastDate: today
+      };
+    });
+    set({ practiceStats: progress.practiceStats, grammarStats: progress.grammarStats });
+    return attempt;
+  }
+
+  // 오래된 응시부터 최신 응시 순서로 돌려준다.
+  function getPracticeHistory() {
+    return get().practiceStats.attempts.map(function (attempt) {
+      return JSON.parse(JSON.stringify(attempt));
+    });
+  }
+
   window.Progress = {
+    recordPracticeAttempt: recordPracticeAttempt,
+    getPracticeHistory: getPracticeHistory,
     get: get,
     set: set,
     markToday: markToday,

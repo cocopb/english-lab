@@ -7,15 +7,38 @@
 ```text
 english-lab/
 ├─ index.html
-├─ pages/                 # 보카, 독해, 문법, 회화, 오답노트, 퀴즈, 계획
+├─ pages/                 # 보카, 문법, 리스닝, 독해, 회화, 실전 (+ 메뉴 제외 페이지)
 ├─ assets/
 │  ├─ css/style.css       # 디자인 시스템과 반응형 스타일
-│  └─ js/                 # 공통 UI/진도, 퀴즈, 보카 시험 동작
+│  └─ js/                 # 공통 UI/진도, 퀴즈, 보카 시험, 실전 모의고사 동작
 ├─ data/                  # 전역 배열로 제공하는 샘플 콘텐츠
 ├─ tools/
-│  └─ check-vocab.js      # 보카 데이터와 빈칸 예문 검사
+│  ├─ check-vocab.js      # 보카 데이터와 빈칸 예문 검사
+│  ├─ check-grammar.js    # 문법 문제 데이터 검사
+│  └─ check-reading.js    # 독해·Part 6 데이터 검사 + 가짜 DOM으로 독해 화면 렌더링 검사
 └─ README.md
 ```
+
+## 메뉴
+
+상단 메뉴는 `홈 / 보카 / 문법 / 리스닝 / 독해 / 회화 / 실전` 7개입니다 (`assets/js/common.js`의 `navigation`).
+
+| 페이지 | 상태 |
+|---|---|
+| `pages/mistakes.html` (오답노트) | **현재 메뉴에서 제외됨** — 보카·문법의 오답/약점 탭과 중복 |
+| `pages/quiz.html` (퀴즈) | **현재 메뉴에서 제외됨** — 보카·문법의 시험/문제 탭과 중복 |
+| `pages/plan.html` (계획) | **현재 메뉴에서 제외됨** |
+
+세 페이지는 삭제하지 않았으며 주소로 직접 열면 그대로 동작합니다.
+
+## 실전 (pages/practice.html)
+
+- **미니 모의고사**: Part 5 15문항(`GRAMMAR_QUIZ`) + Part 6 8문항(`PART6`) + Part 7 7문항(`PASSAGES`) = 30문항, 제한 시간 25분. 모두 무작위 출제하며, 제출 전에는 정답을 보여주지 않고 시간이 끝나면 자동 제출합니다. Part 6·7은 세트/지문을 무작위로 골라 문항 수가 찰 때까지 담고, 마지막 세트/지문은 앞에서부터 필요한 문항만 사용합니다.
+- **파트별 연습**: 파트 하나만 시간 제한 없이 풀고 문항마다 즉시 채점합니다.
+- **기록**: `englishLabProgress.practiceStats.attempts`에 `{ date, correct, total, elapsedSec, timedOut, partScores:{p5,p6,p7}, partTotals:{p5,p6,p7} }`로 저장합니다 (최근 100회). `ruleId`가 있는 문항의 응답은 `grammarStats`에도 반영됩니다.
+- 결과 화면의 RC 예상 점수대는 맞은 개수 구간으로 정한 **참고용 추정치**입니다.
+
+`data/reading.js`의 `window.PART6` 항목은 `id`, `title`, `header`, `blocks`(`{type:"text", en}` 또는 `{type:"blank", n}`), `ko`, `questions`(`n`, `choices` 4개, `answer`, `explanation`, `ruleId` 또는 `null`)로 구성합니다. `PASSAGES` 항목은 단일 지문(`header` + `sentences`) 대신 `parts`(`label`, `header`, `sentences`) 배열로 이중 지문을 만들 수 있습니다.
 
 ## 로컬 실행
 
