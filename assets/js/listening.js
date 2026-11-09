@@ -43,7 +43,7 @@
         : availableVoiceCount
           ? "사용 가능한 영어 음성: " + availableVoiceCount + "개"
           : voices.length
-            ? "설치된 영어 음성을 재생할 수 없습니다. Windows 설정 > 시간 및 언어 > 음성에서 다른 영어 음성을 추가해 보세요."
+            ? window.Speech.VOICES_UNUSABLE_MESSAGE
             : window.Speech.NO_ENGLISH_VOICE_HINT;
       var availableLocales = ["en-US", "en-GB", "en-AU"].filter(function (locale) {
         return availableVoices.some(function (voice) {

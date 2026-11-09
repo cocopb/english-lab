@@ -390,7 +390,7 @@ async function runTtsScenario() {
   const errors = [];
   const check = (cond, message) => { if (!cond) errors.push(message); };
   const flush = () => new Promise(resolve => setImmediate(resolve));
-  const HINT = "기기에 영어 음성이 없으면 소리가 나지 않을 수 있습니다.";
+  const HINT = "기기에 영어 음성이 없으면 소리가 나지 않을 수 있습니다. 크롬으로 열면 음성이 재생됩니다.";
   const buttonByText = (stage, text) => stage.querySelectorAll(".button").find(b => b.textContent === text);
 
   const page = loadSpeakingWithSynth([]);
@@ -432,7 +432,7 @@ async function runTtsScenario() {
   synth.queue[1] && synth.queue[1].onerror({ error: "synthesis-failed" });
   synth.queue[2] && synth.queue[2].onerror({ error: "synthesis-failed" });
   await flush();
-  check(rpStatus.textContent === "음성 재생에 실패했습니다: synthesis-failed", "[TTS] 실제 실패 시 오류 안내 — " + rpStatus.textContent);
+  check(rpStatus.textContent === "음성 재생에 실패했습니다: synthesis-failed. 크롬으로 열면 음성이 재생됩니다.", "[TTS] 실제 실패 시 오류 안내 — " + rpStatus.textContent);
 
   // 음성이 있는 환경(데스크톱 회귀): 재생 후 안내 없음
   const desktop = loadSpeakingWithSynth([{ name: "Zira", lang: "en-US", voiceURI: "zira", localService: true }]);

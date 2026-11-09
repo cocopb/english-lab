@@ -211,7 +211,8 @@ function runListeningPage() {
       isSupported: function () { return false; },
       hasEnglishVoices: function () { return false; },
       UNSUPPORTED_MESSAGE: "이 브라우저는 음성 재생을 지원하지 않습니다. 크롬으로 열면 음성이 재생됩니다.",
-      NO_ENGLISH_VOICE_HINT: "기기에 영어 음성이 없으면 소리가 나지 않을 수 있습니다.",
+      NO_ENGLISH_VOICE_HINT: "기기에 영어 음성이 없으면 소리가 나지 않을 수 있습니다. 크롬으로 열면 음성이 재생됩니다.",
+      VOICES_UNUSABLE_MESSAGE: "설치된 영어 음성을 재생할 수 없습니다.",
       getSettings: function () { return Object.assign({}, settings); },
       saveSettings: function (next) { settings = Object.assign(settings, next); return Object.assign({}, settings); },
       getVoices: function () { return []; },
@@ -408,7 +409,7 @@ async function runSpeechScenarios() {
   var $ = m.$;
   check(!UNSUPPORTED.test($("listening-support-note").textContent), "[모바일] 음성 목록이 비었는데 미지원 안내가 뜸 — " + $("listening-support-note").textContent);
   check(!$("dictation-play").disabled && !$("part3-play").disabled, "[모바일] 재생 버튼이 비활성화됨");
-  check($("listening-voice-diagnostics").textContent === "기기에 영어 음성이 없으면 소리가 나지 않을 수 있습니다.",
+  check($("listening-voice-diagnostics").textContent === "기기에 영어 음성이 없으면 소리가 나지 않을 수 있습니다. 크롬으로 열면 음성이 재생됩니다.",
     "[모바일] 영어 음성 없음 안내 — " + $("listening-voice-diagnostics").textContent);
   check($("part2-script").hidden === true, "[모바일] 미지원처럼 Part 2 스크립트가 처음부터 펼쳐짐");
 
@@ -456,7 +457,7 @@ async function runSpeechScenarios() {
     current.onerror({ error: "synthesis-failed" });
   }
   await flush();
-  check($("dictation-message").textContent === "음성 재생에 실패했습니다: synthesis-failed",
+  check($("dictation-message").textContent === "음성 재생에 실패했습니다: synthesis-failed. 크롬으로 열면 음성이 재생됩니다.",
     "[모바일] 실제 실패 시 오류 안내 — " + $("dictation-message").textContent);
 
   // 나중에 음성 목록이 채워지면 안내가 갱신된다

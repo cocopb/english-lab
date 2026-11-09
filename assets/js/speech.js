@@ -35,8 +35,19 @@
     return getVoices().length > 0;
   }
 
-  var NO_ENGLISH_VOICE_HINT = "기기에 영어 음성이 없으면 소리가 나지 않을 수 있습니다.";
-  var UNSUPPORTED_MESSAGE = "이 브라우저는 음성 재생을 지원하지 않습니다. 크롬으로 열면 음성이 재생됩니다.";
+  // ---- 음성 관련 안내 문구 (리스닝·회화 페이지가 모두 여기서 가져다 쓴다) ----
+  // speechSynthesis가 없거나, 있어도 음성 목록이 비거나 소리 없이 실패하는 브라우저(삼성 인터넷 등)가 있어
+  // 사용자에게 보이는 안내에는 크롬 권장 문구를 붙인다.
+  var CHROME_HINT = "크롬으로 열면 음성이 재생됩니다.";
+  var UNSUPPORTED_MESSAGE = "이 브라우저는 음성 재생을 지원하지 않습니다. " + CHROME_HINT;
+  var NO_ENGLISH_VOICE_HINT = "기기에 영어 음성이 없으면 소리가 나지 않을 수 있습니다. " + CHROME_HINT;
+  var VOICES_UNUSABLE_MESSAGE = "설치된 영어 음성을 재생할 수 없습니다. Windows 설정 > 시간 및 언어 > 음성에서 다른 영어 음성을 추가해 보세요.";
+
+  // 재생 실패 문구: "음성 재생에 실패했습니다: synthesis-failed. 크롬으로 열면 음성이 재생됩니다."
+  function failureMessage(prefix, detail) {
+    var reason = String(detail || "").trim().replace(/[.。]+$/, "");
+    return prefix + (reason ? ": " + reason : "") + ". " + CHROME_HINT;
+  }
 
   function readSettings() {
     try {
@@ -272,7 +283,7 @@
           } else if (attemptNumber === 2) {
             playAttempt(null, 1, opts.fallbackLang || "en-US");
           }
-          else finish(new Error("음성 재생을 준비하지 못했습니다: " + error.message));
+          else finish(new Error(failureMessage("음성 재생을 준비하지 못했습니다", error.message)));
           return;
         }
         currentUtterance = utterance;
@@ -322,7 +333,7 @@
           } else if (attemptNumber === 2) {
             playAttempt(null, 1, opts.fallbackLang || "en-US");
           } else {
-            finish(new Error("음성 재생에 실패했습니다: " + event.error));
+            finish(new Error(failureMessage("음성 재생에 실패했습니다", event.error)));
           }
         };
         try {
@@ -352,7 +363,7 @@
           } else if (attemptNumber === 2) {
             playAttempt(null, 1, opts.fallbackLang || "en-US");
           }
-          else finish(new Error("음성 재생을 시작하지 못했습니다: " + error.message));
+          else finish(new Error(failureMessage("음성 재생을 시작하지 못했습니다", error.message)));
         }
       }
 
@@ -600,6 +611,9 @@
     hasEnglishVoices: hasEnglishVoices,
     NO_ENGLISH_VOICE_HINT: NO_ENGLISH_VOICE_HINT,
     UNSUPPORTED_MESSAGE: UNSUPPORTED_MESSAGE,
+    CHROME_HINT: CHROME_HINT,
+    VOICES_UNUSABLE_MESSAGE: VOICES_UNUSABLE_MESSAGE,
+    failureMessage: failureMessage,
     getVoices: getVoices,
     getAvailableVoices: getAvailableVoices,
     isVoiceUnavailable: isVoiceUnavailable,
