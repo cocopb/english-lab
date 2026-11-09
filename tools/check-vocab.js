@@ -188,4 +188,30 @@ Object.keys(failures).forEach(function (key) {
   });
 });
 
+// 경고: 같은 track 안에서 word가 중복되는 항목 (track이 다르면 허용)
+// 의도적으로 다른 뜻을 가르치는 경우도 있어 실패로 보지 않고 id·word·뜻을 알려준다.
+var wordGroups = Object.create(null);
+vocabulary.forEach(function (item) {
+  if (!item || typeof item.word !== "string" || !item.word.trim()) return;
+  var key = String(item.track) + "\u0000" + normalizeWord(item.word);
+  (wordGroups[key] = wordGroups[key] || []).push(item);
+});
+var duplicateWordWarnings = Object.keys(wordGroups).filter(function (key) {
+  return wordGroups[key].length > 1;
+}).map(function (key) {
+  var items = wordGroups[key];
+  return {
+    track: items[0].track,
+    word: items[0].word,
+    entries: items.map(function (item) {
+      return item.id + "(" + (item.situation || "Day " + item.day) + ": " + item.meaning + ")";
+    })
+  };
+});
+console.log("\nduplicateWords — 경고 (" + duplicateWordWarnings.length + ")");
+if (!duplicateWordWarnings.length) console.log("  없음");
+duplicateWordWarnings.forEach(function (warning) {
+  console.log("  ⚠ [" + warning.track + "] " + warning.word + " — " + warning.entries.join(" / "));
+});
+
 if (failureCount) process.exit(1);

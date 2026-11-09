@@ -27,7 +27,7 @@ english-lab/
 프로젝트 루트에서 실행합니다. Node.js만 있으면 되고 외부 패키지는 필요하지 않습니다. 모두 통과하면 종료 코드 0, 하나라도 실패하면 1을 반환합니다.
 
 ```bash
-node tools/check-vocab.js      # 보카: 빈칸 생성 가능 여부, 필수 필드, 혼동 단어 수, ID 중복, 트랙별 필수 정보
+node tools/check-vocab.js      # 보카: 빈칸 생성 가능 여부, 필수 필드, 혼동 단어 수·뜻, ID 중복, 트랙별 필수 정보 + 같은 트랙 중복 단어 경고(실패 아님)
 node tools/check-grammar.js    # 문법 문제: 유형 ID, 선택지 4개, 정답 인덱스, 빈칸, ID 중복, 해설, 중복 선택지
 node tools/check-reading.js    # 독해: 전략 ID, 정답 인덱스, 문장별 en/ko, ID 중복, Part 6 빈칸·문항 일치 + 지문 렌더링
 node tools/check-listening.js  # 리스닝: 받아쓰기 text/ko/level, Part 2 선택지 3개·정답, Part 3 script/questions·선택지 4개·정답, ID 중복, 해설 + 화면 로드 + 음성 재생(음성 목록이 빈 모바일·데스크톱·미지원 브라우저)
