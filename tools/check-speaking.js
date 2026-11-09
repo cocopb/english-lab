@@ -149,7 +149,7 @@ function runSpeakingPage() {
     add("speaking-panel-" + name);
   });
   const patternRoot = add("speaking-pattern-exercise");
-  add("speaking-roleplay-exercise");
+  const rolePlayRoot = add("speaking-roleplay-exercise");
   const shadowingRoot = add("speaking-shadowing-exercise");
   add("speaking-notice");
 
@@ -182,6 +182,11 @@ function runSpeakingPage() {
   for (const file of ["assets/js/common.js", "assets/js/speech.js", "data/speaking.js", "assets/js/speaking.js"]) {
     vm.runInContext(fs.readFileSync(path.join(root, file), "utf8"), ctx, { filename: file });
   }
+  // 음성 재생을 지원하는 것처럼 만들고, 실제로 읽힌 문장을 기록한다 (괄호 지문이 읽히는지 확인용).
+  const spoken = [];
+  window.Speech.isSupported = () => true;
+  window.Speech.speak = text => { spoken.push(text); return Promise.resolve(); };
+  window.Speech.stop = () => {};
   try { ready.forEach(f => f()); } catch (error) { errors.push("초기화 오류: " + error.message); return errors; }
 
   const W = window;
@@ -257,8 +262,69 @@ function runSpeakingPage() {
   check(after.shadowingCount === S.length && Math.round(after.shadowingAvg * 100) === 100,
     "쉐도잉 기록 — 횟수 " + after.shadowingCount + ", 평균 " + Math.round(after.shadowingAvg * 100) + "%");
 
+  // 롤플레이: 모든 상황을 처음부터 끝까지 진행하며 모범답안으로 답한다
+  const R = W.ROLEPLAYS;
+  const isStageOnly = text => !String(text).replace(/\([^)]*\)/g, "").trim();
+  document.getElementById("speaking-tab-roleplay").click();
+  let meTurns = 0;
+  let stageTurns = 0;
+  R.forEach((rolePlay, rIndex) => {
+    if (rIndex > 0) {
+      const select = rolePlayRoot.all().find(e => e.tagName === "SELECT");
+      select.value = rolePlay.id; select.dispatch("change");
+    }
+    rolePlay.turns.forEach((turn, tIndex) => {
+      const label = rolePlay.id + " 턴 " + (tIndex + 1);
+      const progress = rolePlayRoot.querySelector(".speaking-progress").textContent;
+      check(progress === rolePlay.title + " · 대화 " + (tIndex + 1) + " / " + rolePlay.turns.length, label + " 진행 표시 — " + progress);
+      if (turn.who === "other") {
+        const before = spoken.length;
+        if (isStageOnly(turn.en)) {
+          stageTurns += 1;
+          check(rolePlayRoot.querySelector(".speaking-speaker").textContent === "상황", label + " 지문 턴이 '상황'으로 표시되지 않음");
+          check(!rolePlayRoot.querySelector(".speaking-other-line"), label + " 지문이 상대방 대사로 표시됨");
+          check(!buttonByText(rolePlayRoot, "🔊 다시 듣기"), label + " 지문 턴에 다시 듣기 버튼이 있음");
+          check(spoken.length === before, label + " 지문이 음성으로 재생됨");
+        } else {
+          check(rolePlayRoot.querySelector(".speaking-other-line").textContent === turn.en, label + " 상대방 대사 불일치");
+          check(rolePlayRoot.querySelector(".speaking-translation").textContent === turn.ko, label + " 해석 불일치");
+          check(!!buttonByText(rolePlayRoot, "🔊 다시 듣기"), label + " 다시 듣기 버튼 없음");
+        }
+        const next = buttonByText(rolePlayRoot, "계속");
+        if (!next) { check(false, label + " 계속 버튼 없음"); return; }
+        next.click();
+        return;
+      }
+      meTurns += 1;
+      check(rolePlayRoot.querySelector(".speaking-prompt").textContent === turn.instruction, label + " 지시문 불일치");
+      if (!answerWith(rolePlayRoot, turn.model)) { check(false, label + " 입력창/제출 버튼 없음"); return; }
+      const score = rolePlayRoot.querySelector(".speaking-score");
+      check(!!rolePlayRoot.querySelector(".is-passed") && score && score.textContent === "통과 · 정확도 100%",
+        label + " 모범답안이 통과하지 못함 — " + (score && score.textContent));
+      const comment = rolePlayRoot.querySelector(".speaking-comment");
+      check(comment && comment.textContent === "💡 " + turn.comment, label + " 코멘트 미표시");
+      const next = buttonByText(rolePlayRoot, "다음 턴");
+      if (!next) { check(false, label + " 다음 턴 버튼 없음"); return; }
+      next.click();
+    });
+    const summary = rolePlayRoot.querySelector(".speaking-summary");
+    const myTurns = rolePlay.turns.filter(t => t.who === "me").length;
+    check(!!summary, rolePlay.id + " 대화 완료 화면 없음");
+    if (summary) {
+      check(summary.querySelector(".speaking-score").textContent === myTurns + " / " + myTurns + "턴 통과",
+        rolePlay.id + " 통과 집계 — " + summary.querySelector(".speaking-score").textContent);
+      check(summary.querySelectorAll(".speaking-transcript")[0].children.length === rolePlay.turns.length, rolePlay.id + " 모범 대화 줄 수");
+    }
+  });
+  check(W.Progress.get().speakingStats.rolePlaysDone.length === R.length,
+    "완료 롤플레이 기록 " + W.Progress.get().speakingStats.rolePlaysDone.length + " / " + R.length);
+  const otherLines = R.reduce((n, r) => n + r.turns.filter(t => t.who === "other" && !isStageOnly(t.en)).length, 0);
+  check(spoken.length === otherLines, "자동 재생된 상대방 대사 " + spoken.length + " / " + otherLines);
+  check(spoken.every(text => !/[()]/.test(text)), "괄호가 포함된 문장이 음성으로 재생됨");
+
   console.log("화면: 패턴 " + P.length + "개 · 드릴 " + drillsPassed + "개 통과, 쉐도잉 " + seenShadowing.size +
-    "문장 로드·채점" + (errors.length ? "" : " — 이상 없음"));
+    "문장 로드·채점, 롤플레이 " + R.length + "개 · 내 턴 " + meTurns + "개 통과(지문 턴 " + stageTurns + "개는 음성 제외)" +
+    (errors.length ? "" : " — 이상 없음"));
   return errors;
 }
 

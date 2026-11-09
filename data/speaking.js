@@ -284,6 +284,62 @@ window.ROLEPLAYS = [
       { who: "me", instruction: "와이파이 비밀번호를 물어보세요.", model: "What's the Wi-Fi password?", alts: ["Could I get the Wi-Fi password?", "What is the Wi-Fi password?"], comment: "호텔에서 가장 많이 쓰는 질문 중 하나다." },
       { who: "other", en: "It's grand2026, all lowercase. Enjoy your stay!", ko: "grand2026이고 전부 소문자입니다. 즐거운 숙박 되세요!" }
     ]
+  },
+  {
+    id: "rp_pharmacy", title: "약국에서 약 사기", situation: "해외 약국. 당신은 감기 기운이 있다.",
+    turns: [
+      { who: "other", en: "Hi, how can I help you today?", ko: "안녕하세요, 무엇을 도와드릴까요?" },
+      { who: "me", instruction: "감기약을 찾고 있다고 말하세요.", model: "I'm looking for some cold medicine.", alts: ["Do you have cold medicine?", "I need something for a cold."], comment: "약 이름을 몰라도 괜찮다. 증상이나 종류로 말하면 통한다." },
+      { who: "other", en: "Sure. What are your symptoms?", ko: "네. 증상이 어떻게 되세요?" },
+      { who: "me", instruction: "목이 아프고 기침이 난다고 말하세요.", model: "I have a sore throat and a cough.", alts: ["My throat hurts and I'm coughing.", "I've got a sore throat and a cough."], comment: "증상은 I have + 증상 형태로 말한다. sore throat(목 아픔), cough(기침)는 통째로 외운다." },
+      { who: "other", en: "This one should help. Take one tablet twice a day after meals.", ko: "이게 도움이 될 거예요. 식후에 하루 두 번, 한 알씩 드세요." },
+      { who: "me", instruction: "복용법을 되물어 확인하세요.", model: "So, one tablet twice a day?", alts: ["Twice a day, right?", "One tablet, two times a day?"], comment: "약 복용법은 반드시 되물어 확인한다. 들은 것을 되뇌는 게 가장 안전하다." },
+      { who: "other", en: "That's right. Don't take it on an empty stomach.", ko: "맞습니다. 공복에는 드시지 마세요." },
+      { who: "me", instruction: "감사 인사를 하고 카드로 결제하겠다고 하세요.", model: "Got it, thank you. Can I pay by card?", alts: ["Thanks. Card, please.", "Thank you. I'll pay by card."], comment: "Got it은 '알겠습니다'라는 뜻으로 아주 자주 쓴다." },
+      { who: "other", en: "Of course. That'll be twelve dollars. Feel better soon!", ko: "물론입니다. 12달러입니다. 빨리 나으세요!" }
+    ]
+  },
+  {
+    id: "rp_exchange", title: "옷 교환하기", situation: "의류 매장. 어제 산 셔츠가 작다.",
+    turns: [
+      { who: "other", en: "Hi there! Do you need any help?", ko: "안녕하세요! 도움이 필요하신가요?" },
+      { who: "me", instruction: "어제 산 셔츠를 교환하고 싶다고 말하세요.", model: "I'd like to exchange this shirt I bought yesterday.", alts: ["I want to exchange this shirt.", "Can I exchange this shirt?"], comment: "교환은 exchange, 환불은 refund다. 둘을 구분해서 말해야 한다." },
+      { who: "other", en: "No problem. Do you have the receipt?", ko: "문제없습니다. 영수증 가지고 계신가요?" },
+      { who: "me", instruction: "영수증이 있다고 하고, 사이즈가 작다고 말하세요.", model: "Yes, here it is. The size is too small.", alts: ["Yes, I have it. It's too small.", "Here you go. It doesn't fit."], comment: "It doesn't fit(저한테 안 맞아요)도 아주 자주 쓴다." },
+      { who: "other", en: "Let me check if we have a larger size. What size do you need?", ko: "더 큰 사이즈가 있는지 확인해 볼게요. 어떤 사이즈가 필요하세요?" },
+      { who: "me", instruction: "라지 사이즈가 있는지 물어보세요.", model: "Do you have this in a large?", alts: ["Do you have a large?", "Is there a large size?"], comment: "Do you have this in + 사이즈·색 은 쇼핑에서 쓰는 만능 표현이다." },
+      { who: "other", en: "We do, but only in blue. Is that okay?", ko: "있습니다. 다만 파란색만 있어요. 괜찮으세요?" },
+      { who: "me", instruction: "괜찮다고 하고 그걸로 하겠다고 하세요.", model: "That's fine. I'll take it.", alts: ["Sure, that works.", "Okay, I'll take the blue one."], comment: "I'll take it은 '그걸로 할게요'라는 구매 확정 표현이다." },
+      { who: "other", en: "Great. I'll get that for you right away.", ko: "좋습니다. 바로 가져다 드릴게요." }
+    ]
+  },
+  {
+    id: "rp_phone", title: "업무 전화 걸기", situation: "거래처에 전화를 건다. 담당자는 김 부장이다.",
+    turns: [
+      { who: "other", en: "Good morning, Dalton Partners. How may I help you?", ko: "안녕하세요, 달튼 파트너스입니다. 무엇을 도와드릴까요?" },
+      { who: "me", instruction: "영업부의 Ms. Kim을 바꿔달라고 하세요.", model: "Could I speak with Ms. Kim in sales?", alts: ["May I speak to Ms. Kim in the sales department?", "I'd like to speak with Ms. Kim, please."], comment: "speak with와 speak to 둘 다 쓴다. 전화의 가장 기본 문장이다." },
+      { who: "other", en: "I'm sorry, she's in a meeting right now. Would you like to leave a message?", ko: "죄송하지만 지금 회의 중이십니다. 메시지를 남기시겠어요?" },
+      { who: "me", instruction: "메시지를 남기겠다고 하고 자기 이름과 회사를 밝히세요.", model: "Yes, please. This is Damwon Jeong from Harbor Media.", alts: ["Yes. My name is Damwon Jeong from Harbor Media.", "Sure. It's Damwon Jeong calling from Harbor Media."], comment: "전화에서 자기를 밝힐 때는 I am이 아니라 This is를 쓴다. 한국인이 가장 많이 틀리는 지점이다." },
+      { who: "other", en: "Thank you. What message would you like to leave?", ko: "감사합니다. 어떤 메시지를 남기시겠어요?" },
+      { who: "me", instruction: "계약서를 받았는지 물어봐 달라고 하세요.", model: "Could you ask her if she received the contract?", alts: ["Please ask her whether she got the contract.", "Could you ask if she has the contract?"], comment: "ask + 사람 + if ~ 구조다. 문장 안에 들어간 질문이라 평서문 어순을 쓴다." },
+      { who: "other", en: "Certainly. Could I have your phone number?", ko: "알겠습니다. 전화번호를 알려주시겠어요?" },
+      { who: "me", instruction: "전화번호를 알려주고 감사 인사를 하세요.", model: "It's 555-0147. Thank you very much.", alts: ["Sure, 555-0147. Thanks a lot.", "My number is 555-0147. Thank you."], comment: "전화번호는 숫자를 하나씩 끊어 읽는다. 0은 보통 'oh'라고 읽는다." },
+      { who: "other", en: "I'll pass the message along. Have a good day!", ko: "메시지를 전달하겠습니다. 좋은 하루 보내세요!" }
+    ]
+  },
+  {
+    id: "rp_directions", title: "길 묻기", situation: "낯선 도시의 길거리. 중앙 도서관을 찾고 있다.",
+    turns: [
+      { who: "other", en: "(A passerby is walking by.)", ko: "(행인이 지나가고 있다.)" },
+      { who: "me", instruction: "지나가는 사람에게 말을 거세요.", model: "Excuse me, could you help me?", alts: ["Excuse me, can I ask you something?", "Excuse me, sorry to bother you."], comment: "모르는 사람을 부를 때는 Excuse me가 유일한 정답이다. Hey나 Hello는 실례다." },
+      { who: "other", en: "Sure, what do you need?", ko: "네, 무엇을 도와드릴까요?" },
+      { who: "me", instruction: "중앙 도서관에 어떻게 가는지 물어보세요.", model: "How do I get to the central library?", alts: ["Where is the central library?", "Could you tell me how to get to the central library?"], comment: "How do I get to ~? 가 길 묻기의 표준 문장이다." },
+      { who: "other", en: "Go straight for three blocks, then turn right at the bank. It's on your left.", ko: "세 블록 직진하신 다음 은행에서 우회전하세요. 왼편에 있습니다." },
+      { who: "me", instruction: "잘 못 알아들었으니 천천히 말해달라고 하세요.", model: "Sorry, could you speak more slowly?", alts: ["Could you say that again, please?", "Sorry, I didn't catch that."], comment: "되묻는 것은 실력 부족이 아니다. 두 번째 들을 때 훨씬 잘 들린다." },
+      { who: "other", en: "Of course. Go straight, three blocks. Then turn right, at the bank.", ko: "물론이죠. 직진, 세 블록. 그다음 우회전, 은행에서요." },
+      { who: "me", instruction: "들은 내용을 되뇌어 확인하세요.", model: "So, three blocks and then right at the bank?", alts: ["Straight three blocks, then right. Got it.", "Three blocks, turn right at the bank?"], comment: "들은 것을 되뇌어 확인하는 습관이 길을 잃지 않게 해준다." },
+      { who: "other", en: "Exactly. It takes about ten minutes on foot. Good luck!", ko: "맞습니다. 걸어서 10분쯤 걸려요. 행운을 빌어요!" }
+    ]
   }
 ];
 

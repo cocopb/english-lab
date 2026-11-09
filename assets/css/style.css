@@ -434,6 +434,7 @@ h1, h2, h3, p { overflow-wrap: anywhere; }
 .speaking-saved-progress { margin: 6px 0 0; color: var(--ink-faint); font-size: 11px; }
 .speaking-speaker { margin: 0; color: var(--blue); font-size: 11px; font-weight: 700; }
 .speaking-other-line { margin: 0; color: var(--ink); font-size: 16px; line-height: 1.8; overflow-wrap: anywhere; }
+.speaking-stage-direction { margin: 0; color: var(--ink-soft); font-size: 14px; font-style: italic; line-height: 1.7; overflow-wrap: anywhere; }
 .speaking-comment { margin: 0; color: var(--ink-soft); font-size: 12px; }
 .speaking-summary h3 { margin: 0 0 10px; font-size: 17px; }
 .speaking-summary h4 { margin: 12px 0 6px; font-size: 13px; }

@@ -92,7 +92,14 @@
       return "음성 인식을 시작할 수 없어요. 직접 입력해 주세요.";
     }
 
+    // 괄호 안 지문("(A passerby is walking by.)")은 화면에만 보여주고 음성으로는 읽지 않는다.
+    function spokenText(text) {
+      return String(text || "").replace(/\([^)]*\)/g, " ").replace(/\s+/g, " ").trim();
+    }
+
     function playSpeech(text, rate, status) {
+      text = spokenText(text);
+      if (!text) return;
       if (!window.Speech.isSupported()) {
         status.textContent = "이 브라우저는 음성 재생을 지원하지 않아요.";
         return;
@@ -320,7 +327,7 @@
       var transcript = element("ol", "speaking-transcript");
       rolePlay.turns.forEach(function (turn) {
         if (turn.who === "other") {
-          transcript.appendChild(element("li", "", "상대방: " + turn.en));
+          transcript.appendChild(element("li", "", spokenText(turn.en) ? "상대방: " + turn.en : "상황: " + (turn.ko || turn.en)));
         } else {
           transcript.appendChild(element("li", "", "나: " + turn.model));
         }
@@ -359,6 +366,24 @@
       var body = element("div", "speaking-activity");
       card.appendChild(body);
       rolePlayRoot.append(renderRolePlaySelector(), card);
+      if (turn.who === "other" && !spokenText(turn.en)) {
+        // 대사 없이 괄호 지문만 있는 턴: 상황 설명으로 보여주고 재생 버튼·자동 재생은 생략한다.
+        body.append(
+          element("p", "speaking-speaker", "상황"),
+          element("p", "speaking-stage-direction", turn.ko || turn.en)
+        );
+        if (turn.ko) body.appendChild(element("p", "speaking-translation en", turn.en));
+        var stageActions = element("div", "button-row");
+        var stageContinue = element("button", "button button-primary", "계속");
+        stageContinue.type = "button";
+        stageContinue.addEventListener("click", function () {
+          turnIndex += 1;
+          renderRolePlay(true);
+        });
+        stageActions.appendChild(stageContinue);
+        body.appendChild(stageActions);
+        return;
+      }
       if (turn.who === "other") {
         body.append(
           element("p", "speaking-speaker", "상대방"),
