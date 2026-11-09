@@ -30,7 +30,7 @@ window.VOCAB = [
   { id: "v029", track: "toeic", day: 1, word: "attach", pos: "v.", meaning: "첨부하다, 붙이다", example: "Please see the attached file.", exampleKo: "첨부된 파일을 봐주세요.", tip: "이메일 지문에 늘 attached 형태로 나온다.", distractors: ["attack", "attain", "attempt"], tags: ["사무"] },
   { id: "v030", track: "toeic", day: 1, word: "temporary", pos: "adj.", meaning: "임시의, 일시적인", example: "This is a temporary solution.", exampleKo: "이것은 임시 해결책입니다.", tip: "반대말 permanent(영구적인). 토익이 이 짝을 자주 대비시킨다.", distractors: ["temporal", "contemporary", "voluntary"], tags: ["사무"] },
 
-  { id: "v031", track: "toeic", day: 2, word: "attach", pos: "v.", meaning: "첨부하다", example: "I attached the file to this email.", exampleKo: "이 이메일에 파일을 첨부했습니다.", tip: "이메일 지문의 단골. attached(첨부된) 형태로 가장 많이 나온다.", distractors: ["attack", "attain", "attempt"], tags: ["사무"] },
+  { id: "v031", track: "toeic", day: 2, word: "proposal", pos: "n.", meaning: "제안서", example: "We submitted a proposal to the client.", exampleKo: "고객사에 제안서를 제출했습니다.", tip: "동사는 propose. 사업 제안 지문의 단골이다.", distractors: ["proposition", "proportion", "protocol"], tags: ["거래"] },
   { id: "v032", track: "toeic", day: 2, word: "colleague", pos: "n.", meaning: "동료", example: "I had lunch with my colleagues.", exampleKo: "동료들과 점심을 먹었습니다.", tip: "co-(함께) + league(league 동맹). coworker와 같은 뜻인데 토익은 colleague를 더 쓴다.", distractors: ["college", "coverage", "campaign"], tags: ["사무"] },
   { id: "v033", track: "toeic", day: 2, word: "conference", pos: "n.", meaning: "회의, 학회", example: "The conference starts at nine.", exampleKo: "회의는 9시에 시작합니다.", tip: "meeting보다 규모가 큰 행사. conference room(회의실)으로도 자주 나온다.", distractors: ["confidence", "conference call", "consequence"], tags: ["사무"] },
   { id: "v034", track: "toeic", day: 2, word: "budget", pos: "n.", meaning: "예산", example: "We went over budget this month.", exampleKo: "이번 달 예산을 초과했습니다.", tip: "over budget(예산 초과) / within budget(예산 내). 짝으로 외운다.", distractors: ["bulletin", "burden", "bundle"], tags: ["회계"] },
@@ -293,7 +293,7 @@ window.VOCAB = [
   { id: "s066", track: "survival", situation: "길찾기·교통", word: "I'm looking for ~", pos: "표현", meaning: "~를 찾고 있어요", example: "I'm looking for the subway station.", exampleKo: "지하철역을 찾고 있어요.", tip: "look for는 찾는 과정, find는 찾아낸 결과. 아직 못 찾았으면 look for.", distractors: ["I'm finding ~", "I'm searching to ~", "I look for to ~"], tags: ["길찾기"] },
   { id: "s067", track: "survival", situation: "길찾기·교통", word: "Could you show me on the map?", pos: "표현", meaning: "지도에서 보여주시겠어요?", example: "Could you show me on the map?", exampleKo: "지도에서 짚어주시겠어요?", tip: "말로 설명을 못 알아들었을 때 최후의 수단. 폰 지도를 내밀면 된다.", distractors: ["Could you show map me?", "Can you point the map?", "Could you showing on map?"], tags: ["소통"] },
   { id: "s068", track: "survival", situation: "길찾기·교통", word: "rush hour", pos: "n.", meaning: "혼잡 시간대", example: "Avoid the subway during rush hour.", exampleKo: "혼잡 시간대에는 지하철을 피하세요.", tip: "출퇴근 시간. 보통 오전 7~9시, 오후 5~7시.", distractors: ["rush time", "crowd hour", "busy clock"], tags: ["교통"] },
-  { id: "s069", track: "survival", situation: "길찾기·교통", word: "Keep the change.", pos: "표현", meaning: "잔돈은 괜찮아요", example: "Keep the change, thanks.", exampleKo: "잔돈은 가지세요.", tip: "택시에서 팁을 줄 때 가장 짧은 표현. change는 '잔돈'.", distractors: ["Keep the rest.", "Hold the coins.", "Take the remain."], tags: ["교통"] },
+  { id: "s069", track: "survival", situation: "길찾기·교통", word: "Could you turn on the meter?", pos: "표현", meaning: "미터기 좀 켜주시겠어요?", example: "Could you turn on the meter, please?", exampleKo: "미터기 좀 켜주시겠어요?", tip: "해외 택시에서 미터기를 켜지 않고 요금을 부르는 경우가 있다. 타자마자 확인하는 게 안전하다.", distractors: ["Could you turn on the engine?", "Could you turn off the meter?", "Could you check the mirror?"], tags: ["교통"] },
   { id: "s070", track: "survival", situation: "길찾기·교통", word: "Can you pull over here?", pos: "표현", meaning: "여기 세워주시겠어요?", example: "Can you pull over here, please?", exampleKo: "여기 세워주시겠어요?", tip: "택시에서 내릴 때. pull over는 '차를 길가에 대다'.", distractors: ["Can you stop over here?", "Can you pull out here?", "Can you park down here?"], tags: ["교통"] },
 
   // ===== 토익 Day 8 — 마케팅·광고 =====
@@ -430,7 +430,7 @@ window.VOCAB = [
   { id: "v335", track: "toeic", day: 12, word: "network", pos: "n.", meaning: "네트워크, 망", example: "The network will be down for maintenance.", exampleKo: "정비로 네트워크가 중단될 예정입니다.", tip: "인맥이라는 뜻도 있다. networking은 인맥 쌓기.", distractors: ["notebook", "framework", "homework"], tags: ["IT"] },
   { id: "v336", track: "toeic", day: 12, word: "server", pos: "n.", meaning: "서버", example: "The server crashed this morning.", exampleKo: "오늘 아침 서버가 다운됐습니다.", tip: "식당 종업원도 server다. 문맥으로 가른다.", distractors: ["service", "servant", "surfer"], tags: ["IT"] },
   { id: "v337", track: "toeic", day: 12, word: "access", pos: "n./v.", meaning: "접근 권한 / 접근하다", example: "You need a password to access the system.", exampleKo: "시스템에 접근하려면 비밀번호가 필요합니다.", tip: "have access to(~에 접근 권한이 있다). 전치사 to가 따라온다.", distractors: ["excess", "assess", "accent"], tags: ["IT"] },
-  { id: "v338", track: "toeic", day: 12, word: "log in", pos: "v.", meaning: "로그인하다", example: "Please log in with your employee ID.", exampleKo: "사번으로 로그인해 주세요.", tip: "동사는 띄어 쓰고 명사는 login으로 붙인다. 반대는 log out.", distractors: ["log out", "sign out", "check out"], tags: ["IT"] },
+  { id: "v338", track: "toeic", day: 12, word: "log in", pos: "v.", meaning: "로그인하다", example: "Please log in with your employee ID.", exampleKo: "사번으로 로그인해 주세요.", tip: "동사는 띄어 쓰고 명사는 login으로 붙인다. 반대는 log out.", distractors: ["log out", "sign up", "check out"], tags: ["IT"] },
   { id: "v339", track: "toeic", day: 12, word: "download", pos: "v.", meaning: "내려받다", example: "You can download the manual from our site.", exampleKo: "저희 사이트에서 설명서를 내려받으실 수 있습니다.", tip: "반대는 upload(올리다).", distractors: ["upload", "unload", "overload"], tags: ["IT"] },
   { id: "v340", track: "toeic", day: 12, word: "attachment", pos: "n.", meaning: "첨부 파일", example: "I couldn't open the attachment.", exampleKo: "첨부 파일을 열 수 없었습니다.", tip: "동사는 attach. 이메일 지문에 늘 나온다.", distractors: ["attainment", "achievement", "adjustment"], tags: ["IT"] },
   { id: "v341", track: "toeic", day: 12, word: "crash", pos: "v.", meaning: "(시스템이) 다운되다", example: "The program crashed without warning.", exampleKo: "프로그램이 예고 없이 다운됐습니다.", tip: "자동차 충돌이라는 뜻도 있다. 컴퓨터에서는 '멈추다'.", distractors: ["clash", "cash", "crush"], tags: ["IT"] },
@@ -1432,5 +1432,19 @@ var day11To13DistractorMeanings = {
 Object.keys(day11To13DistractorMeanings).forEach(function (word) {
   if (!Object.prototype.hasOwnProperty.call(window.VOCAB_DISTRACTOR_MEANINGS, word)) {
     window.VOCAB_DISTRACTOR_MEANINGS[word] = day11To13DistractorMeanings[word];
+  }
+});
+
+// ===== 중복 정리(v031·s069·v338)에 따른 혼동 단어 뜻 (기존 키는 덮어쓰지 않음) =====
+var cleanupDistractorMeanings = {
+  "proposition": "제안, 명제",
+  "sign up": "가입하다, 신청하다",
+  "Could you turn on the engine?": "시동 좀 걸어주시겠어요?",
+  "Could you turn off the meter?": "미터기 좀 꺼주시겠어요?",
+  "Could you check the mirror?": "거울 좀 확인해 주시겠어요?"
+};
+Object.keys(cleanupDistractorMeanings).forEach(function (word) {
+  if (!Object.prototype.hasOwnProperty.call(window.VOCAB_DISTRACTOR_MEANINGS, word)) {
+    window.VOCAB_DISTRACTOR_MEANINGS[word] = cleanupDistractorMeanings[word];
   }
 });
