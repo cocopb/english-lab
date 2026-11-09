@@ -103,6 +103,156 @@ window.PATTERNS = [
       { ko: "상황에 따라 달라요.", en: "It depends on the situation." },
       { ko: "언제 가느냐에 따라 달라요.", en: "It depends on when you go." }
     ]
+  },
+  {
+    id: "sp11", pattern: "Could I get ~?", meaning: "~ 좀 받을 수 있을까요?",
+    tip: "Can I get보다 정중하다. 가게·식당에서 물건을 요청할 때 가장 많이 쓴다.",
+    drills: [
+      { ko: "물 한 잔 주시겠어요?", en: "Could I get a glass of water?" },
+      { ko: "영수증 좀 주시겠어요?", en: "Could I get a receipt?" },
+      { ko: "봉투 하나 주시겠어요?", en: "Could I get a bag?" },
+      { ko: "5분만 더 주시겠어요?", en: "Could I get five more minutes?" }
+    ]
+  },
+  {
+    id: "sp12", pattern: "Is it okay if I ~?", meaning: "제가 ~해도 괜찮을까요?",
+    tip: "Can I보다 조심스러운 표현. 상대에게 영향이 가는 일을 물을 때 쓴다.",
+    drills: [
+      { ko: "창문 좀 열어도 괜찮을까요?", en: "Is it okay if I open the window?" },
+      { ko: "조금 늦어도 괜찮을까요?", en: "Is it okay if I am a little late?" },
+      { ko: "여기 앉아도 괜찮을까요?", en: "Is it okay if I sit here?" },
+      { ko: "내일 다시 연락드려도 괜찮을까요?", en: "Is it okay if I call you back tomorrow?" }
+    ]
+  },
+  {
+    id: "sp13", pattern: "I was wondering if ~", meaning: "혹시 ~인지 궁금해서요",
+    tip: "가장 정중한 질문 틀이다. 부탁하기 전에 쿠션처럼 쓴다. 과거형이지만 현재 뜻이다.",
+    drills: [
+      { ko: "혹시 도와주실 수 있는지 궁금해서요.", en: "I was wondering if you could help me." },
+      { ko: "혹시 아직 자리가 있는지 궁금해서요.", en: "I was wondering if you still have seats." },
+      { ko: "혹시 할인이 되는지 궁금해서요.", en: "I was wondering if there is a discount." },
+      { ko: "혹시 일정을 바꿀 수 있는지 궁금해서요.", en: "I was wondering if we could change the schedule." }
+    ]
+  },
+  {
+    id: "sp14", pattern: "Let me ~", meaning: "제가 ~할게요",
+    tip: "뒤에 동사원형이 온다. 내가 하겠다고 나설 때 쓰는 가장 간단한 표현이다.",
+    drills: [
+      { ko: "제가 확인해 볼게요.", en: "Let me check." },
+      { ko: "제가 도와드릴게요.", en: "Let me help you." },
+      { ko: "제가 다시 전화드릴게요.", en: "Let me call you back." },
+      { ko: "제가 설명해 드릴게요.", en: "Let me explain." }
+    ]
+  },
+  {
+    id: "sp15", pattern: "How about ~?", meaning: "~는 어때요?",
+    tip: "뒤에 명사나 -ing가 온다. How about to go는 틀린 표현이다.",
+    drills: [
+      { ko: "내일은 어때요?", en: "How about tomorrow?" },
+      { ko: "같이 가는 건 어때요?", en: "How about going together?" },
+      { ko: "7시는 어때요?", en: "How about seven o'clock?" },
+      { ko: "다른 걸로 하는 건 어때요?", en: "How about trying something else?" }
+    ]
+  },
+  {
+    id: "sp16", pattern: "I'd rather ~", meaning: "차라리 ~하고 싶어요",
+    tip: "뒤에 동사원형이 온다. 둘 중에 더 나은 쪽을 고를 때 쓴다. I would rather의 줄임이다.",
+    drills: [
+      { ko: "저는 차라리 집에 있고 싶어요.", en: "I'd rather stay home." },
+      { ko: "저는 차라리 걸어가고 싶어요.", en: "I'd rather walk." },
+      { ko: "저는 차라리 내일 하고 싶어요.", en: "I'd rather do it tomorrow." },
+      { ko: "저는 차라리 안 가고 싶어요.", en: "I'd rather not go." }
+    ]
+  },
+  {
+    id: "sp17", pattern: "Do you mind if I ~?", meaning: "제가 ~해도 될까요?",
+    tip: "mind는 '꺼리다'라서 수락할 때 No, go ahead(전혀요, 그러세요)라고 답한다. Yes라고 하면 거절이다.",
+    drills: [
+      { ko: "여기 앉아도 될까요?", en: "Do you mind if I sit here?" },
+      { ko: "사진 좀 찍어도 될까요?", en: "Do you mind if I take a photo?" },
+      { ko: "에어컨 좀 켜도 될까요?", en: "Do you mind if I turn on the air conditioner?" },
+      { ko: "먼저 가도 될까요?", en: "Do you mind if I leave early?" }
+    ]
+  },
+  {
+    id: "sp18", pattern: "I'm afraid ~", meaning: "죄송하지만 ~입니다",
+    tip: "나쁜 소식이나 거절을 부드럽게 전할 때 쓰는 쿠션이다. 무서워한다는 뜻이 아니다.",
+    drills: [
+      { ko: "죄송하지만 그건 어려울 것 같아요.", en: "I'm afraid that won't be possible." },
+      { ko: "죄송하지만 지금은 시간이 안 돼요.", en: "I'm afraid I'm not available right now." },
+      { ko: "죄송하지만 자리가 없습니다.", en: "I'm afraid we are fully booked." },
+      { ko: "죄송하지만 제가 늦을 것 같아요.", en: "I'm afraid I'll be late." }
+    ]
+  },
+  {
+    id: "sp19", pattern: "That sounds ~", meaning: "~하겠네요 (상대 말에 반응)",
+    tip: "뒤에 형용사가 온다. That's와 동사가 겹치지 않게 주의한다. That's sounds good은 틀린 표현이다.",
+    drills: [
+      { ko: "좋네요.", en: "That sounds good." },
+      { ko: "재밌겠네요.", en: "That sounds fun." },
+      { ko: "힘들겠네요.", en: "That sounds tough." },
+      { ko: "좋은 생각이네요.", en: "That sounds like a good idea." }
+    ]
+  },
+  {
+    id: "sp20", pattern: "I'm not good at ~", meaning: "저는 ~를 잘 못해요",
+    tip: "at 뒤에는 명사나 -ing가 온다. 반대는 I'm good at ~.",
+    drills: [
+      { ko: "저는 영어를 잘 못해요.", en: "I'm not good at English." },
+      { ko: "저는 요리를 잘 못해요.", en: "I'm not good at cooking." },
+      { ko: "저는 길 찾는 걸 잘 못해요.", en: "I'm not good at finding my way." },
+      { ko: "저는 아침에 일찍 일어나는 걸 잘 못해요.", en: "I'm not good at getting up early." }
+    ]
+  },
+  {
+    id: "sp21", pattern: "Is there any way to ~?", meaning: "~할 방법이 있을까요?",
+    tip: "어려운 부탁을 할 때 쓴다. 직접 요구하지 않아서 부담이 적다.",
+    drills: [
+      { ko: "더 빨리 받을 방법이 있을까요?", en: "Is there any way to get it faster?" },
+      { ko: "예약을 바꿀 방법이 있을까요?", en: "Is there any way to change the reservation?" },
+      { ko: "환불받을 방법이 있을까요?", en: "Is there any way to get a refund?" },
+      { ko: "연락할 방법이 있을까요?", en: "Is there any way to contact him?" }
+    ]
+  },
+  {
+    id: "sp22", pattern: "What do you think about ~?", meaning: "~에 대해 어떻게 생각해요?",
+    tip: "about 뒤에는 명사나 -ing가 온다. How do you think about은 틀린 표현이다.",
+    drills: [
+      { ko: "이 계획에 대해 어떻게 생각해요?", en: "What do you think about this plan?" },
+      { ko: "새 사무실에 대해 어떻게 생각해요?", en: "What do you think about the new office?" },
+      { ko: "일찍 출발하는 건 어떻게 생각해요?", en: "What do you think about leaving early?" },
+      { ko: "그 제안에 대해 어떻게 생각해요?", en: "What do you think about the offer?" }
+    ]
+  },
+  {
+    id: "sp23", pattern: "Make sure you ~", meaning: "꼭 ~하세요",
+    tip: "뒤에 동사원형이 온다. 당부할 때 쓰는 표현이다.",
+    drills: [
+      { ko: "꼭 여권 챙기세요.", en: "Make sure you bring your passport." },
+      { ko: "꼭 확인하세요.", en: "Make sure you check it." },
+      { ko: "꼭 제시간에 오세요.", en: "Make sure you arrive on time." },
+      { ko: "꼭 저장하세요.", en: "Make sure you save the file." }
+    ]
+  },
+  {
+    id: "sp24", pattern: "I used to ~", meaning: "예전에는 ~했어요 (지금은 아님)",
+    tip: "뒤에 동사원형이 온다. be used to -ing(~에 익숙하다)와 혼동하지 말 것.",
+    drills: [
+      { ko: "저는 예전에 서울에 살았어요.", en: "I used to live in Seoul." },
+      { ko: "저는 예전에 커피를 많이 마셨어요.", en: "I used to drink a lot of coffee." },
+      { ko: "저는 예전에 식당에서 일했어요.", en: "I used to work at a restaurant." },
+      { ko: "저는 예전에 매일 운동했어요.", en: "I used to exercise every day." }
+    ]
+  },
+  {
+    id: "sp25", pattern: "I'm supposed to ~", meaning: "~하기로 되어 있어요",
+    tip: "뒤에 동사원형이 온다. 약속이나 규정상 정해진 일을 말할 때 쓴다.",
+    drills: [
+      { ko: "저는 9시에 도착하기로 되어 있어요.", en: "I'm supposed to arrive at nine." },
+      { ko: "저는 오늘 보고서를 내기로 되어 있어요.", en: "I'm supposed to submit the report today." },
+      { ko: "여기서 기다리기로 되어 있어요.", en: "I'm supposed to wait here." },
+      { ko: "저는 그를 만나기로 되어 있어요.", en: "I'm supposed to meet him." }
+    ]
   }
 ];
 
@@ -145,5 +295,17 @@ window.SHADOWING = [
   { id: "sh05", en: "Sorry, I didn't catch that. Could you say it again?", ko: "죄송해요, 못 알아들었어요. 다시 말씀해 주시겠어요?", level: 3 },
   { id: "sh06", en: "I'm afraid weekends are difficult for me, but I could do weekday evenings.", ko: "죄송하지만 주말은 어렵고, 평일 저녁은 가능합니다.", level: 3 },
   { id: "sh07", en: "Would you mind if I opened the window?", ko: "창문 좀 열어도 될까요?", level: 2 },
-  { id: "sh08", en: "It depends on how much time we have.", ko: "시간이 얼마나 있느냐에 따라 달라요.", level: 2 }
+  { id: "sh08", en: "It depends on how much time we have.", ko: "시간이 얼마나 있느냐에 따라 달라요.", level: 2 },
+  { id: "sh09", en: "Could I get a receipt, please?", ko: "영수증 좀 주시겠어요?", level: 1 },
+  { id: "sh10", en: "I'm supposed to meet her at three.", ko: "3시에 그녀를 만나기로 되어 있어요.", level: 2 },
+  { id: "sh11", en: "Is there any way to change my reservation?", ko: "예약을 바꿀 방법이 있을까요?", level: 3 },
+  { id: "sh12", en: "I was wondering if you could help me with this.", ko: "혹시 이것 좀 도와주실 수 있는지 궁금해서요.", level: 3 },
+  { id: "sh13", en: "Let me check and get back to you.", ko: "확인해 보고 다시 연락드릴게요.", level: 2 },
+  { id: "sh14", en: "I'm afraid I won't be able to make it.", ko: "죄송하지만 참석하지 못할 것 같아요.", level: 3 },
+  { id: "sh15", en: "How about meeting a little earlier?", ko: "조금 일찍 만나는 건 어때요?", level: 2 },
+  { id: "sh16", en: "Make sure you bring your ID badge.", ko: "사원증 꼭 챙기세요.", level: 2 },
+  { id: "sh17", en: "I used to work in the marketing department.", ko: "저는 예전에 마케팅 부서에서 일했어요.", level: 2 },
+  { id: "sh18", en: "Do you mind if I open the window?", ko: "창문 좀 열어도 될까요?", level: 2 },
+  { id: "sh19", en: "That sounds like a great idea to me.", ko: "제가 보기엔 아주 좋은 생각이네요.", level: 2 },
+  { id: "sh20", en: "I'd rather discuss this in person than over the phone.", ko: "전화보다는 직접 만나서 얘기하고 싶어요.", level: 3 }
 ];

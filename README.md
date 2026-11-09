@@ -17,6 +17,7 @@ english-lab/
 │  ├─ check-grammar.js    # 문법 문제 데이터 검사
 │  ├─ check-reading.js    # 독해·Part 6 데이터 검사 + 가짜 DOM으로 독해 화면 렌더링 검사
 │  ├─ check-listening.js  # 받아쓰기·Part 2·Part 3 데이터 검사 + 가짜 DOM으로 리스닝 화면 로드 검사
+│  ├─ check-speaking.js   # 회화 패턴·롤플레이·쉐도잉 데이터 검사 + 가짜 DOM으로 회화 화면 로드·채점 검사
 │  └─ check-practice.js   # 가짜 DOM으로 실전 페이지(모의고사·OMR·타이머·기록) 동작 검사
 └─ README.md
 ```
@@ -30,10 +31,11 @@ node tools/check-vocab.js      # 보카: 빈칸 생성 가능 여부, 필수 필
 node tools/check-grammar.js    # 문법 문제: 유형 ID, 선택지 4개, 정답 인덱스, 빈칸, ID 중복, 해설, 중복 선택지
 node tools/check-reading.js    # 독해: 전략 ID, 정답 인덱스, 문장별 en/ko, ID 중복, Part 6 빈칸·문항 일치 + 지문 렌더링
 node tools/check-listening.js  # 리스닝: 받아쓰기 text/ko/level, Part 2 선택지 3개·정답, Part 3 script/questions·선택지 4개·정답, ID 중복, 해설 + 화면 로드
+node tools/check-speaking.js   # 회화: 패턴 pattern/meaning/tip/drills, 드릴 ko/en, 롤플레이 me 턴 instruction/model/comment, 쉐도잉 en/ko/level, ID 중복 + 화면 로드·채점
 node tools/check-practice.js   # 실전: 메뉴 7개, 30문항 구성, OMR 이동, 타이머 색·자동 제출, 결과 집계, 기록 저장, 파트별 연습
 ```
 
-데이터를 추가하거나 화면 코드를 바꾼 뒤에는 다섯 스크립트를 모두 실행해 확인합니다. `check-practice.js`는 모의고사를 매번 무작위로 출제하므로 여러 번 실행해 보는 것이 좋습니다.
+데이터를 추가하거나 화면 코드를 바꾼 뒤에는 여섯 스크립트를 모두 실행해 확인합니다. `check-practice.js`는 모의고사를 매번 무작위로 출제하므로 여러 번 실행해 보는 것이 좋습니다.
 
 ## 메뉴
 

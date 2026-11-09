@@ -527,17 +527,17 @@ window.PART6 = [
       { type: "blank", n: 1 },
       { type: "text", en: " to have you join our marketing team. Your first day will begin with an orientation in Room 2A at nine o'clock. " },
       { type: "blank", n: 2 },
-      { type: "text", en: " Your manager, Ms. Ortiz, will meet you afterward to review your " },
+      { type: "text", en: " Your manager, Ms. Ortiz, will meet you afterward to review your three main " },
       { type: "blank", n: 3 },
       { type: "text", en: " for the first month. Please bring a photo ID so that we can issue your building pass. If you need " },
       { type: "blank", n: 4 },
       { type: "text", en: " before Monday, email hr@bartonco.com." }
     ],
-    ko: "바튼 앤 코에 오신 것을 환영합니다. 마케팅팀에 합류하게 되어 기쁩니다. 첫날은 9시에 2A룸에서 오리엔테이션으로 시작합니다. 점심은 직원 휴게실에서 제공됩니다. 그 후 매니저인 오르티스 씨가 첫 달 목표를 함께 검토할 예정입니다. 출입증 발급을 위해 사진이 있는 신분증을 지참해 주세요. 월요일 전에 도움이 필요하시면 hr@bartonco.com으로 메일 주세요.",
+    ko: "바튼 앤 코에 오신 것을 환영합니다. 마케팅팀에 합류하게 되어 기쁩니다. 첫날은 9시에 2A룸에서 오리엔테이션으로 시작합니다. 점심은 직원 휴게실에서 제공됩니다. 그 후 매니저인 오르티스 씨가 첫 달의 주요 목표 세 가지를 함께 검토할 예정입니다. 출입증 발급을 위해 사진이 있는 신분증을 지참해 주세요. 월요일 전에 도움이 필요하시면 hr@bartonco.com으로 메일 주세요.",
     questions: [
       { n: 1, choices: ["delight", "delighted", "delighting", "delightful"], answer: 1, explanation: "사람이 기쁨을 느끼는 쪽이므로 -ed 형태인 delighted. We are delighted to ~ 는 환영 인사의 정형 표현이다.", ruleId: "g01" },
       { n: 2, choices: ["Lunch will be provided in the staff lounge.", "You must submit your resignation in advance.", "The orientation has been canceled.", "Parking is not available for employees."], answer: 0, explanation: "첫날 일정을 안내하는 문맥이므로 점심 제공 안내가 자연스럽다.", ruleId: null },
-      { n: 3, choices: ["goal", "goals", "goaled", "goaling"], answer: 1, explanation: "your 뒤는 명사 자리이고 첫 달 목표는 보통 복수로 쓴다.", ruleId: "g01" },
+      { n: 3, choices: ["goal", "goals", "goaled", "goaling"], answer: 1, explanation: "three main 뒤이므로 복수 명사 goals가 와야 한다.", ruleId: "g01" },
       { n: 4, choices: ["assist", "assistance", "assistant", "assisted"], answer: 1, explanation: "need의 목적어 자리이므로 명사가 필요하다. assistance(도움)는 셀 수 없는 명사, assistant는 사람이다.", ruleId: "g01" }
     ]
   }
