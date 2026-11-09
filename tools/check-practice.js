@@ -135,7 +135,7 @@ check('Part별 개수 15/8/7', counts.join(',') === 'Part 5=15,Part 6=8,Part 7=7
 check('초기 타이머 25:00', timerBar.querySelector('.practice-time').textContent === '25:00');
 check('중간에 정답 표시 없음', !area.querySelector('.correct') && !area.querySelector('.answer-right'));
 
-const expected = { p5: 0, p6: 0, p7: 0 }; let answered = 0; let ruleAnswered = 0; const seenP5 = new Set(); const p7Groups = new Map();
+const expected = { p5: 0, p6: 0, p7: 0 }; let answered = 0; let ruleAnswered = 0; const seenP5 = new Set(); const p7Groups = new Map(); const p6Groups = new Map();
 let firstChoiceWasCorrect = 0;
 for (let i = 0; i < 30; i++) {
   mockStage.querySelector('.practice-omr').querySelectorAll('.practice-omr-cell')[i].click();
@@ -144,9 +144,10 @@ for (let i = 0; i < 30; i++) {
   if (!meta.includes(' ' + (i + 1) + ' / 30')) check('OMR ' + (i + 1) + '번 이동', false, meta);
   const cur = mockStage.querySelector('.practice-omr').querySelectorAll('.practice-omr-cell.is-current');
   if (cur.length !== 1 || !cur[0].textContent.startsWith(String(i + 1))) check('현재 칸 표시 ' + (i + 1), false);
-  const { part, q } = currentAnswer(a);
+  const { part, q, set } = currentAnswer(a);
   if (!q) { check('문항 원본 찾기 ' + (i + 1), false, meta); continue; }
   if (part === 'p5') seenP5.add(q.question);
+  if (part === 'p6') p6Groups.set(set.id, (p6Groups.get(set.id) || 0) + 1);
   if (part === 'p7') { const key = a.querySelector('.reading-passage-type').textContent; p7Groups.set(key, (p7Groups.get(key) || 0) + 1); }
   if (i % 5 === 0) continue; // 미응답
   const choice = i % 3 === 0 ? (q.answer + 1) % 4 : q.answer;
@@ -156,6 +157,14 @@ for (let i = 0; i < 30; i++) {
   if (choice === q.answer) expected[part]++;
 }
 check('Part 5 중복 없음', seenP5.size === 15);
+// Part 6도 같은 방식: 마지막 세트 앞까지는 4문항 전부, 합계 8문항.
+const p6Ids = [...p6Groups.keys()];
+const p6Used = p6Ids.map(id => p6Groups.get(id));
+const p6Full = p6Ids.map(id => W.PART6.find(s => s.id === id).questions.length);
+check('Part 6 세트 구성', p6Used.reduce((s, n) => s + n, 0) === 8 &&
+  p6Used.slice(0, -1).every((n, i) => n === p6Full[i]) &&
+  p6Used.slice(0, -1).reduce((s, n) => s + n, 0) < 8,
+  'P6 세트 ' + p6Ids.join('+') + ' (사용 문항 ' + p6Used.join('+') + ')');
 // 지문을 출제 순서대로 문항 수가 찰 때까지 담고 마지막 지문만 잘라 쓴다.
 // → 마지막 지문 앞까지는 전 문항 사용, 그 합은 7 미만(불필요한 지문 없음), 마지막 지문은 1문항 이상 원래 문항 수 이하.
 const p7Titles = [...p7Groups.keys()];
@@ -255,6 +264,39 @@ for (let [part, cards] of [['p5', 10], ['p6', 4], ['p7', 3]]) {
   check(part + ' 선택지 잠김', drills[0].querySelectorAll('.quiz-option').every(o => o.disabled));
   if (part === 'p6') check('p6 지문 빈칸 4개', partStage.querySelectorAll('.practice-blank').length === 4);
 }
+
+// --- Part 6 전 세트: 파트별 연습을 반복해 모든 세트를 한 번씩 렌더링·채점한다 ---
+console.log('\n[Part 6 전 세트 렌더링·채점]');
+const p6Checked = new Set();
+for (let tries = 0; tries < 300 && p6Checked.size < W.PART6.length; tries++) {
+  partSelect.value = 'p6'; partForm.dispatch('submit');
+  const title = partStage.querySelector('.reading-passage-type').textContent.replace(/^Part 6 · /, '');
+  const set = W.PART6.find(s => s.title === title);
+  if (!set) { check('Part 6 세트 찾기', false, title); break; }
+  if (p6Checked.has(set.id)) continue;
+  p6Checked.add(set.id);
+  const problems = [];
+  const text = partStage.querySelector('.practice-drill-passage').textContent;
+  const blanks = partStage.querySelectorAll('.practice-blank');
+  if (blanks.length !== set.questions.length) problems.push('빈칸 ' + blanks.length);
+  set.blocks.filter(b => b.type === 'text').forEach(b => { if (!text.includes(b.en.trim())) problems.push('본문 누락'); });
+  const drills = partStage.querySelectorAll('.practice-drill-card');
+  if (drills.length !== set.questions.length) problems.push('문항 ' + drills.length);
+  drills.forEach((card, i) => {
+    card.querySelectorAll('.quiz-option')[set.questions[i].answer].click();
+    if (!card.querySelector('.answer-right')) problems.push((i + 1) + '번 정답 처리 안 됨');
+    if (!card.querySelector('.practice-drill-explanation')) problems.push((i + 1) + '번 해설 없음');
+  });
+  const translation = partStage.querySelector('.practice-translation');
+  const toggle = partStage.querySelectorAll('.button').find(b => b.textContent === '📖 해석 보기');
+  if (!translation || !toggle) problems.push('해석 토글 없음');
+  else {
+    toggle.click();
+    if (translation.hidden || translation.textContent !== set.ko) problems.push('해석 표시 안 됨');
+  }
+  check(set.id + ' ' + set.title, problems.length === 0, problems.length ? problems.join(', ') : '빈칸 ' + blanks.length + '개, 4문항 정답 처리, 해석 토글');
+}
+check('Part 6 전 세트 확인', p6Checked.size === W.PART6.length, p6Checked.size + ' / ' + W.PART6.length);
 
 console.log(failures ? `\n실패 ${failures}건` : '\n전부 통과');
 process.exit(failures ? 1 : 0);

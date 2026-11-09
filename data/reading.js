@@ -452,5 +452,93 @@ window.PART6 = [
       { n: 3, choices: ["We are closing our store next month.", "You may also want to subscribe to our newsletter.", "Your refund has been processed.", "Please return the item within 7 days."], answer: 1, explanation: "뒤 문장이 소식지 구독 혜택을 설명하므로 소식지를 언급하는 문장이 앞에 와야 한다.", ruleId: null },
       { n: 4, choices: ["next", "nearest", "later", "following"], answer: 0, explanation: "'다음 주문'이라는 뜻이므로 next order가 자연스럽다.", ruleId: null }
     ]
+  },
+  {
+    id: "p603", title: "사무실 이전 안내", recommendedSec: 120,
+    header: ["To all staff:"],
+    blocks: [
+      { type: "text", en: "Our Chicago office will " },
+      { type: "blank", n: 1 },
+      { type: "text", en: " to a new building on October 2. The new address is 410 Lakeside Drive, just two blocks from the current location. " },
+      { type: "blank", n: 2 },
+      { type: "text", en: " Movers will pack all equipment on October 1, so please clear your desk by the end of that day. Personal items " },
+      { type: "blank", n: 3 },
+      { type: "text", en: " be labeled with your name. If you have questions about the move, " },
+      { type: "blank", n: 4 },
+      { type: "text", en: " contact the operations team." }
+    ],
+    ko: "전 직원에게 알립니다. 시카고 사무소가 10월 2일에 새 건물로 이전합니다. 새 주소는 레이크사이드 드라이브 410번지로, 현재 위치에서 두 블록 거리입니다. 이전으로 영업시간이 달라지지는 않습니다. 이삿짐 업체가 10월 1일에 모든 장비를 포장하므로, 그날까지 책상을 비워 주세요. 개인 물품에는 이름을 표시해야 합니다. 이전에 관한 문의는 운영팀으로 연락해 주세요.",
+    questions: [
+      { n: 1, choices: ["relocate", "relocates", "relocating", "relocated"], answer: 0, explanation: "조동사 will 뒤에는 동사원형이 온다.", ruleId: "g01" },
+      { n: 2, choices: ["The move will not affect business hours.", "The building will be demolished next year.", "All staff will work remotely from now on.", "The company is closing its Chicago branch."], answer: 0, explanation: "문장 삽입 문제다. 앞뒤가 이전 안내이므로 영업에 영향이 없다는 안내가 자연스럽다. 나머지는 이전 안내와 모순된다.", ruleId: null },
+      { n: 3, choices: ["should", "are", "having", "to be"], answer: 0, explanation: "뒤에 동사원형 be가 오므로 조동사 should가 필요하다.", ruleId: "g01" },
+      { n: 4, choices: ["please", "pleased", "pleasing", "pleasure"], answer: 0, explanation: "명령문 앞의 정중 표현은 please다. 뒤에 동사원형 contact가 온다.", ruleId: "g12" }
+    ]
+  },
+  {
+    id: "p604", title: "제품 리콜 안내", recommendedSec: 120,
+    header: ["Dear Customer,"],
+    blocks: [
+      { type: "text", en: "We are writing to inform you of a voluntary recall of our model X20 kettle. A small number of units " },
+      { type: "blank", n: 1 },
+      { type: "text", en: " with a faulty power switch. " },
+      { type: "blank", n: 2 },
+      { type: "text", en: " If you own one, stop using it immediately and return it to any store location. You will receive a full refund " },
+      { type: "blank", n: 3 },
+      { type: "text", en: " a replacement, whichever you prefer. We apologize for the " },
+      { type: "blank", n: 4 },
+      { type: "text", en: " and thank you for your understanding." }
+    ],
+    ko: "고객님께, 저희 X20 모델 주전자의 자발적 리콜을 알려드립니다. 일부 제품이 전원 스위치 결함이 있는 상태로 출고되었습니다. 현재까지 부상 사례는 보고되지 않았습니다. 해당 제품을 보유하고 계시면 즉시 사용을 중단하시고 가까운 매장으로 반납해 주세요. 원하시는 대로 전액 환불 또는 교환을 받으실 수 있습니다. 불편을 드려 죄송하며 양해해 주셔서 감사합니다.",
+    questions: [
+      { n: 1, choices: ["ship", "shipped", "were shipped", "shipping"], answer: 2, explanation: "제품은 출고되는 쪽이므로 수동태다. 빈칸 뒤에 목적어가 없다.", ruleId: "g04" },
+      { n: 2, choices: ["No injuries have been reported so far.", "The product has been discontinued since 2010.", "Our stores will close permanently next month.", "The kettle won a design award last year."], answer: 0, explanation: "리콜 안내 문맥에서 피해 여부를 알리는 문장이 자연스럽다.", ruleId: null },
+      { n: 3, choices: ["and", "or", "but", "nor"], answer: 1, explanation: "whichever you prefer(둘 중 원하시는 대로)가 뒤에 오므로 선택을 뜻하는 or가 맞다.", ruleId: null },
+      { n: 4, choices: ["inconvenience", "inconvenient", "inconveniently", "inconveniences"], answer: 0, explanation: "the 뒤는 명사 자리다. inconvenience는 셀 수 없는 명사로 쓴다.", ruleId: "g01" }
+    ]
+  },
+  {
+    id: "p605", title: "구독 갱신 안내", recommendedSec: 120,
+    header: ["Dear Ms. Patel,"],
+    blocks: [
+      { type: "text", en: "Your subscription to Modern Design Monthly " },
+      { type: "blank", n: 1 },
+      { type: "text", en: " on December 31. To continue receiving the magazine without interruption, please renew " },
+      { type: "blank", n: 2 },
+      { type: "text", en: " December 15. Renewing online is the " },
+      { type: "blank", n: 3 },
+      { type: "text", en: " option, and it takes less than two minutes. " },
+      { type: "blank", n: 4 },
+      { type: "text", en: " We value your readership and hope to serve you for another year." }
+    ],
+    ko: "파텔 님께, 모던 디자인 먼슬리 구독이 12월 31일에 만료됩니다. 잡지를 끊김 없이 계속 받아보시려면 12월 15일까지 갱신해 주세요. 온라인 갱신이 가장 빠른 방법이며 2분도 걸리지 않습니다. 일찍 갱신하신 구독자께는 무료 에코백을 드립니다. 저희 잡지를 읽어주셔서 감사드리며 내년에도 함께하기를 바랍니다.",
+    questions: [
+      { n: 1, choices: ["expire", "expires", "expired", "expiring"], answer: 1, explanation: "주어 Your subscription이 단수이고 예정된 일을 말하므로 현재형 expires.", ruleId: "g02" },
+      { n: 2, choices: ["by", "until", "during", "since"], answer: 0, explanation: "12월 15일까지 갱신을 끝내라는 마감 의미이므로 by.", ruleId: "g06" },
+      { n: 3, choices: ["fast", "faster", "fastest", "more fast"], answer: 2, explanation: "the와 함께 쓰였으므로 최상급 fastest.", ruleId: "g10" },
+      { n: 4, choices: ["Subscribers who renew early receive a free tote bag.", "Our office will be closed for the holidays.", "The magazine will stop publishing next year.", "Please return the damaged issue to us."], answer: 0, explanation: "갱신을 권하는 문맥이므로 조기 갱신 혜택을 알리는 문장이 자연스럽다.", ruleId: null }
+    ]
+  },
+  {
+    id: "p606", title: "신입 직원 환영 안내", recommendedSec: 120,
+    header: ["Welcome to Barton & Co."],
+    blocks: [
+      { type: "text", en: "We are " },
+      { type: "blank", n: 1 },
+      { type: "text", en: " to have you join our marketing team. Your first day will begin with an orientation in Room 2A at nine o'clock. " },
+      { type: "blank", n: 2 },
+      { type: "text", en: " Your manager, Ms. Ortiz, will meet you afterward to review your " },
+      { type: "blank", n: 3 },
+      { type: "text", en: " for the first month. Please bring a photo ID so that we can issue your building pass. If you need " },
+      { type: "blank", n: 4 },
+      { type: "text", en: " before Monday, email hr@bartonco.com." }
+    ],
+    ko: "바튼 앤 코에 오신 것을 환영합니다. 마케팅팀에 합류하게 되어 기쁩니다. 첫날은 9시에 2A룸에서 오리엔테이션으로 시작합니다. 점심은 직원 휴게실에서 제공됩니다. 그 후 매니저인 오르티스 씨가 첫 달 목표를 함께 검토할 예정입니다. 출입증 발급을 위해 사진이 있는 신분증을 지참해 주세요. 월요일 전에 도움이 필요하시면 hr@bartonco.com으로 메일 주세요.",
+    questions: [
+      { n: 1, choices: ["delight", "delighted", "delighting", "delightful"], answer: 1, explanation: "사람이 기쁨을 느끼는 쪽이므로 -ed 형태인 delighted. We are delighted to ~ 는 환영 인사의 정형 표현이다.", ruleId: "g01" },
+      { n: 2, choices: ["Lunch will be provided in the staff lounge.", "You must submit your resignation in advance.", "The orientation has been canceled.", "Parking is not available for employees."], answer: 0, explanation: "첫날 일정을 안내하는 문맥이므로 점심 제공 안내가 자연스럽다.", ruleId: null },
+      { n: 3, choices: ["goal", "goals", "goaled", "goaling"], answer: 1, explanation: "your 뒤는 명사 자리이고 첫 달 목표는 보통 복수로 쓴다.", ruleId: "g01" },
+      { n: 4, choices: ["assist", "assistance", "assistant", "assisted"], answer: 1, explanation: "need의 목적어 자리이므로 명사가 필요하다. assistance(도움)는 셀 수 없는 명사, assistant는 사람이다.", ruleId: "g01" }
+    ]
   }
 ];
