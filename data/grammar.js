@@ -129,7 +129,7 @@ window.GRAMMAR = [
       { good: "We canceled it because of the rain.", bad: "We canceled it because the rain.", note: "뒤에 명사만 → 전치사" },
       { good: "Although he was late, he finished.", bad: "Despite he was late, he finished.", note: "despite 뒤에는 문장이 못 온다" }
     ],
-    trap: "despite of는 존재하지 않는 표현이다. despite 또는 in spite of 둘 중 하나만 쓴다.",
+    trap: "despite of는 존재하지 않는 표현이다. despite 또는 in spite of 둘 중 하나만 쓴다.\n\n접속사 뒤에서 '주어 + be동사'가 생략되면 -ing나 p.p.가 바로 온다.\np.p.가 바로 오면 접속사다. although delayed (although it was delayed), despite delayed ❌\n-ing는 전치사 뒤에도 올 수 있으니 짝을 봐라. while waiting ⭕ / during waiting ❌ / despite being late ⭕",
     toeicPattern: "빈칸 뒤를 보고 1초 만에 가른다. 주어+동사가 보이면 접속사, 명사만 보이면 전치사. Part 5에서 품사 자리 다음으로 많이 나온다."
   },
   {
