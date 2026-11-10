@@ -405,6 +405,96 @@ window.PASSAGES = [
       { q: "When will interviews take place?", choices: ["Before March 15", "During the last week of March", "In early April", "On March 20"], answer: 1, explanation: "Interviews will be held during the last week of March." },
       { q: "What did Ms. Haddad include with her email?", choices: ["A cover letter", "References", "Her resume", "A portfolio"], answer: 2, explanation: "My resume is attached." }
     ]
+  },
+  {
+    id: "rp14", type: "이메일", title: "누락된 배송품 문의", strategyId: "r01", recommendedSec: 150,
+    header: ["From: Victor Nunes <v.nunes@claremont.co>", "To: orders@pinecrestfurniture.com", "Subject: Order #7742 — Missing Items"],
+    sentences: [
+      { en: "Dear Pinecrest Team,", ko: "파인크레스트 담당자님께," },
+      { en: "We received our order this morning, but two of the six desk chairs are missing from the shipment.", ko: "오늘 아침에 주문품을 받았는데, 책상 의자 여섯 개 중 두 개가 빠져 있습니다." },
+      { en: "The packing slip lists six chairs, so they may have been left at your warehouse.", ko: "포장 명세서에는 의자 여섯 개가 적혀 있으니, 창고에 남아 있을 수도 있을 것 같습니다." },
+      { en: "We need all six by next Monday, when our new staff begin work.", ko: "신입 직원이 근무를 시작하는 다음 주 월요일까지 여섯 개가 모두 필요합니다." },
+      { en: "If the missing chairs cannot arrive by then, please let us know so we can rent temporary seating.", ko: "그때까지 도착이 어렵다면 임시 좌석을 빌릴 수 있도록 알려주세요." },
+      { en: "We would also like to confirm that the delivery fee will be adjusted.", ko: "배송비가 조정되는지도 확인하고 싶습니다." },
+      { en: "Thank you for your quick attention.", ko: "신속한 처리 부탁드립니다." },
+      { en: "Victor Nunes, Office Manager", ko: "빅터 누네스, 사무 관리자" }
+    ],
+    vocab: [
+      { w: "shipment", m: "배송품" },
+      { w: "packing slip", m: "포장 명세서" },
+      { w: "warehouse", m: "창고" },
+      { w: "temporary", m: "임시의" },
+      { w: "adjust", m: "조정하다" }
+    ],
+    questions: [
+      { q: "Why did Mr. Nunes write the email?", choices: ["To cancel an order", "To report missing items", "To request a catalog", "To change a delivery address"], answer: 1, explanation: "two of the six desk chairs are missing from the shipment." },
+      { q: "How many chairs did the company receive?", choices: ["Two", "Four", "Six", "Eight"], answer: 1, explanation: "여섯 개 중 두 개가 빠졌으므로 네 개를 받았다. 숫자 계산 문제는 반드시 나온다." },
+      { q: "What does Mr. Nunes say he may do?", choices: ["Visit the warehouse", "Rent temporary seating", "Hire fewer staff", "Return the order"], answer: 1, explanation: "so we can rent temporary seating." },
+      { q: "What else does Mr. Nunes ask about?", choices: ["The delivery fee", "The warranty period", "The product color", "The store hours"], answer: 0, explanation: "confirm that the delivery fee will be adjusted." }
+    ]
+  },
+  {
+    id: "rp15", type: "기사", title: "쇼핑몰 실내 정원 조성", strategyId: "r05", recommendedSec: 130,
+    header: ["Riverside Mall to Add Indoor Garden"],
+    sentences: [
+      { en: "Riverside Mall will open a 2,000-square-meter indoor garden on its top floor in September, mall manager Tomas Reyes said last week.", ko: "리버사이드 몰이 9월에 최상층에 2,000제곱미터 규모의 실내 정원을 연다고 쇼핑몰 매니저 토마스 레예스가 지난주 밝혔습니다." },
+      { en: "The space will include seating, a small café, and more than fifty plant species.", ko: "이 공간에는 좌석과 작은 카페, 50종이 넘는 식물이 들어섭니다." },
+      { en: "Mr. Reyes said the project is meant to attract visitors who stay longer and shop more.", ko: "레예스 씨는 이 사업이 더 오래 머물며 더 많이 구매하는 방문객을 끌어들이기 위한 것이라고 말했습니다." },
+      { en: "Construction began in March and is now about 70 percent complete.", ko: "공사는 3월에 시작해 현재 약 70퍼센트 진행됐습니다." },
+      { en: "The garden will be free to enter and open during regular mall hours.", ko: "정원은 무료로 입장할 수 있으며 쇼핑몰 영업시간에 맞춰 운영됩니다." }
+    ],
+    vocab: [
+      { w: "indoor", m: "실내의" },
+      { w: "species", m: "(생물의) 종" },
+      { w: "attract", m: "끌어들이다" },
+      { w: "construction", m: "공사" },
+      { w: "free to enter", m: "입장 무료인" }
+    ],
+    questions: [
+      { q: "What will open in September?", choices: ["A new shopping mall", "An indoor garden", "A parking garage", "A restaurant chain"], answer: 1, explanation: "첫 문장에 실내 정원 개장이 나온다. 기사는 첫 문단이 요약이다." },
+      { q: "According to Mr. Reyes, what is the goal of the project?", choices: ["To reduce energy costs", "To keep visitors in the mall longer", "To create new jobs", "To expand the parking area"], answer: 1, explanation: "attract visitors who stay longer and shop more." },
+      { q: "What is indicated about the garden?", choices: ["There is no entry fee", "It opens only on weekends", "It is already finished", "It is for members only"], answer: 0, explanation: "The garden will be free to enter." }
+    ]
+  },
+  {
+    id: "rp16", type: "이중 지문", title: "자전거 수리점 광고와 후기", strategyId: "r06", recommendedSec: 190,
+    parts: [
+      {
+        label: "지문 1 — 광고",
+        header: ["GRAND OPENING — Milltown Cycle Repair"],
+        sentences: [
+          { en: "Open Monday to Saturday, 8 a.m. to 6 p.m.", ko: "월요일부터 토요일까지, 오전 8시부터 오후 6시까지 영업합니다." },
+          { en: "Basic tune-up: $35 | Full service: $75 | Flat tire repair: $15", ko: "기본 점검 35달러 | 종합 정비 75달러 | 펑크 수리 15달러" },
+          { en: "Bring this ad for 10 percent off any service during our first month.", ko: "개업 첫 달 동안 이 광고를 가져오시면 모든 서비스 10퍼센트 할인됩니다." },
+          { en: "Walk-ins welcome, but appointments are recommended on weekends.", ko: "예약 없이 오셔도 되지만 주말에는 예약을 권장합니다." }
+        ]
+      },
+      {
+        label: "지문 2 — 고객 이메일",
+        header: ["From: Grace Oduya", "To: info@milltowncycle.com", "Subject: Thank you"],
+        sentences: [
+          { en: "Hello,", ko: "안녕하세요," },
+          { en: "I brought my bicycle in on Saturday for a full service and was very pleased with the result.", ko: "토요일에 자전거를 종합 정비 맡겼는데 결과가 아주 만족스러웠습니다." },
+          { en: "Your mechanic finished the work in under an hour, even though I arrived without an appointment.", ko: "예약 없이 갔는데도 정비사분이 한 시간이 안 되어 작업을 마쳐 주셨습니다." },
+          { en: "I used the coupon from your newspaper ad, which made the price very reasonable.", ko: "신문 광고의 쿠폰을 사용해서 가격도 아주 합리적이었습니다." },
+          { en: "I will recommend your shop to my cycling club.", ko: "제 자전거 동호회에 이 가게를 추천하겠습니다." },
+          { en: "Best regards, Grace Oduya", ko: "감사합니다. 그레이스 오두야 드림" }
+        ]
+      }
+    ],
+    vocab: [
+      { w: "tune-up", m: "점검, 정비" },
+      { w: "walk-in", m: "예약 없이 오는 손님" },
+      { w: "appointment", m: "예약" },
+      { w: "mechanic", m: "정비사" },
+      { w: "reasonable", m: "합리적인" }
+    ],
+    questions: [
+      { q: "What is indicated about Milltown Cycle Repair?", choices: ["It is newly opened", "It is closing soon", "It only serves members", "It operates every day"], answer: 0, explanation: "GRAND OPENING과 during our first month로 보아 새로 문을 연 가게다. 일요일은 쉬므로 매일 영업도 아니다." },
+      { q: "How much was the regular price of Ms. Oduya's service?", choices: ["$15", "$35", "$75", "$110"], answer: 2, explanation: "연계 문제다. 이메일에서 full service를 받았고, 광고에서 그 가격은 75달러다." },
+      { q: "What does Ms. Oduya mention about her visit?", choices: ["She waited for two hours", "She did not have an appointment", "She came on a weekday", "She paid the full price"], answer: 1, explanation: "even though I arrived without an appointment." },
+      { q: "What does Ms. Oduya say she will do?", choices: ["Return next month", "Write a newspaper review", "Recommend the shop to others", "Buy a new bicycle"], answer: 2, explanation: "I will recommend your shop to my cycling club." }
+    ]
   }
 ];
 
