@@ -407,6 +407,58 @@ window.PASSAGES = [
     ]
   },
   {
+    id: "rp13", type: "삼중 지문", title: "워크숍 신청", strategyId: "r06", recommendedSec: 260,
+    parts: [
+      {
+        label: "지문 1 — 공고",
+        header: ["PROFESSIONAL DEVELOPMENT WORKSHOPS — Spring Series", "Northgate Business Center"],
+        sentences: [
+          { en: "Our spring workshops are open to all member companies.", ko: "저희 봄 워크숍은 모든 회원사에 열려 있습니다." },
+          { en: "Each session lasts two hours and costs $40 per participant.", ko: "각 과정은 두 시간 진행되며 참가자 1인당 40달러입니다." },
+          { en: "Members who register for three or more sessions receive a 20 percent discount.", ko: "세 과정 이상 신청한 회원은 20퍼센트 할인을 받습니다." },
+          { en: "Registration closes two weeks before each session.", ko: "신청은 각 과정 2주 전에 마감됩니다." },
+          { en: "To register, email training@northgatebc.org with your name and chosen sessions.", ko: "신청하시려면 성함과 선택한 과정을 적어 training@northgatebc.org로 메일 주세요." }
+        ]
+      },
+      {
+        label: "지문 2 — 일정표",
+        header: ["Spring Workshop Schedule"],
+        sentences: [
+          { en: "March 5 — Effective Business Writing (Room 101)", ko: "3월 5일 — 효과적인 비즈니스 글쓰기 (101호)" },
+          { en: "March 19 — Data Analysis Basics (Room 204)", ko: "3월 19일 — 데이터 분석 기초 (204호)" },
+          { en: "April 2 — Public Speaking (Room 101)", ko: "4월 2일 — 대중 연설 (101호)" },
+          { en: "April 16 — Project Management (Room 204)", ko: "4월 16일 — 프로젝트 관리 (204호)" }
+        ]
+      },
+      {
+        label: "지문 3 — 신청 이메일",
+        header: ["From: Hana Suzuki", "To: training@northgatebc.org", "Subject: Workshop Registration"],
+        sentences: [
+          { en: "Dear Training Team,", ko: "교육팀께," },
+          { en: "I would like to register for three sessions: Effective Business Writing, Public Speaking, and Project Management.", ko: "세 과정을 신청하고 싶습니다. 효과적인 비즈니스 글쓰기, 대중 연설, 프로젝트 관리입니다." },
+          { en: "Could you confirm whether the discount applies to my total?", ko: "할인이 제 총액에 적용되는지 확인해 주시겠어요?" },
+          { en: "I will be traveling on March 19, so I would not be able to attend that session anyway.", ko: "3월 19일에는 출장 중이라 어차피 그날 과정에는 참석할 수 없습니다." },
+          { en: "Please send the invoice to our accounting department.", ko: "청구서는 저희 회계부로 보내주세요." },
+          { en: "Thank you, Hana Suzuki", ko: "감사합니다. 하나 스즈키 드림" }
+        ]
+      }
+    ],
+    vocab: [
+      { w: "session", m: "과정, 회차" },
+      { w: "participant", m: "참가자" },
+      { w: "register for", m: "~에 신청하다" },
+      { w: "registration closes", m: "신청이 마감되다" },
+      { w: "invoice", m: "청구서" }
+    ],
+    questions: [
+      { q: "What is the purpose of the first notice?", choices: ["To announce a series of workshops", "To report a schedule change", "To request payment", "To introduce a new building"], answer: 0, explanation: "봄 워크숍 안내와 신청 방법을 알리는 공고다." },
+      { q: "In which room will Ms. Suzuki's first session be held?", choices: ["Room 101", "Room 204", "Room 305", "Room 410"], answer: 0, explanation: "연계 문제다. 이메일에서 신청한 세 과정 중 가장 빠른 것은 3월 5일 Effective Business Writing이고, 일정표에서 그 과정은 101호다." },
+      { q: "Which session is Ms. Suzuki NOT registering for?", choices: ["Effective Business Writing", "Data Analysis Basics", "Public Speaking", "Project Management"], answer: 1, explanation: "이메일에 세 과정만 적혀 있고 Data Analysis Basics는 빠져 있다." },
+      { q: "Why is Ms. Suzuki likely to receive a discount?", choices: ["She is a new member", "She registered for three sessions", "She paid in advance", "She works at the center"], answer: 1, explanation: "연계 문제다. 공고에 세 과정 이상 신청 시 20퍼센트 할인이라고 했고, 이메일에서 세 과정을 신청했다." },
+      { q: "What does Ms. Suzuki ask the training team to do?", choices: ["Change a session date", "Send the invoice to accounting", "Reserve a larger room", "Add a new workshop"], answer: 1, explanation: "Please send the invoice to our accounting department." }
+    ]
+  },
+  {
     id: "rp14", type: "이메일", title: "누락된 배송품 문의", strategyId: "r01", recommendedSec: 150,
     header: ["From: Victor Nunes <v.nunes@claremont.co>", "To: orders@pinecrestfurniture.com", "Subject: Order #7742 — Missing Items"],
     sentences: [

@@ -122,7 +122,12 @@ function currentAnswer(area) {
 // --- 2~5. 미니 모의고사 (수동 제출) ---
 console.log('\n[미니 모의고사 — 수동 제출]');
 const startBtn = mockStage.querySelectorAll('.button').find(b => b.textContent === '모의고사 시작');
-check('시작 화면 문항 구성 안내', /Part 5 15문항 \+ Part 6 8문항 \+ Part 7 7문항/.test(mockStage.textContent));
+// Part 7은 지문을 자르지 않으므로 7~8문항, 총 30~31문항이다. 시작 화면에 보인 구성이 실제 시험과 같아야 한다.
+const introMatch = /Part 5 15문항 \+ Part 6 8문항 \+ Part 7 (\d+)문항/.exec(mockStage.textContent);
+const P7 = introMatch ? Number(introMatch[1]) : -1;
+const TOTAL = 15 + 8 + P7;
+check('시작 화면 문항 구성 안내 (Part 7 7~8문항)', P7 === 7 || P7 === 8, introMatch ? introMatch[0] : mockStage.textContent);
+check('시작 화면 총 문항 수', mockStage.textContent.includes('RC 미니 모의고사 · ' + TOTAL + '문항'), 'TOTAL=' + TOTAL);
 startBtn.click();
 const startedAt = now;
 const area = mockStage.querySelector('.practice-question-area');
@@ -130,18 +135,18 @@ const omr = mockStage.querySelector('.practice-omr');
 const timerBar = mockStage.querySelector('.practice-timer-bar');
 const sections = omr.querySelectorAll('.practice-omr-section');
 const counts = sections.map(s => s.querySelector('.practice-omr-part').textContent + '=' + s.querySelectorAll('.practice-omr-cell').length);
-check('OMR 30칸', omr.querySelectorAll('.practice-omr-cell').length === 30);
-check('Part별 개수 15/8/7', counts.join(',') === 'Part 5=15,Part 6=8,Part 7=7', counts.join(', '));
+check('OMR ' + TOTAL + '칸 (시작 화면과 같은 수)', omr.querySelectorAll('.practice-omr-cell').length === TOTAL);
+check('Part별 개수 15/8/' + P7, counts.join(',') === 'Part 5=15,Part 6=8,Part 7=' + P7, counts.join(', '));
 check('초기 타이머 25:00', timerBar.querySelector('.practice-time').textContent === '25:00');
 check('중간에 정답 표시 없음', !area.querySelector('.correct') && !area.querySelector('.answer-right'));
 
 const expected = { p5: 0, p6: 0, p7: 0 }; let answered = 0; let ruleAnswered = 0; const seenP5 = new Set(); const p7Groups = new Map(); const p6Groups = new Map();
 let firstChoiceWasCorrect = 0;
-for (let i = 0; i < 30; i++) {
+for (let i = 0; i < TOTAL; i++) {
   mockStage.querySelector('.practice-omr').querySelectorAll('.practice-omr-cell')[i].click();
   const a = mockStage.querySelector('.practice-question-area');
   const meta = a.querySelector('.practice-question-meta').textContent;
-  if (!meta.includes(' ' + (i + 1) + ' / 30')) check('OMR ' + (i + 1) + '번 이동', false, meta);
+  if (!meta.includes(' ' + (i + 1) + ' / ' + TOTAL)) check('OMR ' + (i + 1) + '번 이동', false, meta);
   const cur = mockStage.querySelector('.practice-omr').querySelectorAll('.practice-omr-cell.is-current');
   if (cur.length !== 1 || !cur[0].textContent.startsWith(String(i + 1))) check('현재 칸 표시 ' + (i + 1), false);
   const { part, q, set } = currentAnswer(a);
@@ -165,28 +170,29 @@ check('Part 6 세트 구성', p6Used.reduce((s, n) => s + n, 0) === 8 &&
   p6Used.slice(0, -1).every((n, i) => n === p6Full[i]) &&
   p6Used.slice(0, -1).reduce((s, n) => s + n, 0) < 8,
   'P6 세트 ' + p6Ids.join('+') + ' (사용 문항 ' + p6Used.join('+') + ')');
-// 지문을 출제 순서대로 문항 수가 찰 때까지 담고 마지막 지문만 잘라 쓴다.
-// → 마지막 지문 앞까지는 전 문항 사용, 그 합은 7 미만(불필요한 지문 없음), 마지막 지문은 1문항 이상 원래 문항 수 이하.
+// Part 7은 지문 2~3개를 통째로 낸다. 합은 7~8문항.
 const p7Titles = [...p7Groups.keys()];
-const p7Full = p7Titles.map(t => W.PASSAGES.find(p => p.type + ' · ' + p.title === t).questions.length);
+const p7Passages = p7Titles.map(t => W.PASSAGES.find(p => p.type + ' · ' + p.title === t));
+const p7Full = p7Passages.map(p => p.questions.length);
 const p7Used = p7Titles.map(t => p7Groups.get(t));
-const p7BeforeLast = p7Used.slice(0, -1).reduce((s, n) => s + n, 0);
-check('Part 7 지문 구성', p7Used.length >= 1 &&
-  p7Used.reduce((s, n) => s + n, 0) === 7 &&
-  p7Used.slice(0, -1).every((n, i) => n === p7Full[i]) &&
-  p7BeforeLast < 7 && p7Used[p7Used.length - 1] <= p7Full[p7Full.length - 1],
+check('Part 7 지문 구성', p7Used.length >= 2 && p7Used.length <= 3 &&
+  p7Used.reduce((s, n) => s + n, 0) === P7,
   p7Titles.join(' | ') + ' (사용 문항 ' + p7Used.join('+') + ' / 지문별 문항 ' + p7Full.join('+') + ')');
+// 지문을 자른 흔적이 있으면 실패: 출제된 각 지문의 문항 수 = 데이터의 문항 수
+check('Part 7 지문을 자르지 않음', p7Used.every((n, i) => n === p7Full[i]),
+  p7Titles.map((t, i) => p7Passages[i].id + ' ' + p7Used[i] + '/' + p7Full[i]).join(', '));
+console.log('  P7STAT ' + JSON.stringify({ p7: P7, total: TOTAL, ids: p7Passages.map(p => p.id), multi: p7Passages.some(p => Array.isArray(p.parts) && p.parts.length > 1) }));
 const filled = mockStage.querySelector('.practice-omr').querySelectorAll('.practice-omr-cell.is-answered').length;
 check('푼 문제 OMR 색 채움', filled === answered, filled + '/' + answered);
-check('진행 표시', timerBar.querySelector('.practice-progress').textContent === '푼 문제 ' + answered + ' / 30');
+check('진행 표시', timerBar.querySelector('.practice-progress').textContent === '푼 문제 ' + answered + ' / ' + TOTAL);
 // 이전/다음
 mockStage.querySelector('.practice-omr').querySelectorAll('.practice-omr-cell')[0].click();
 let navBtns = mockStage.querySelector('.practice-question-area').querySelectorAll('.button');
 check('1번에서 이전 비활성', navBtns[0].disabled === true);
 navBtns[1].click();
-check('다음 → 2번', mockStage.querySelector('.practice-question-meta').textContent.includes(' 2 / 30'));
+check('다음 → 2번', mockStage.querySelector('.practice-question-meta').textContent.includes(' 2 / ' + TOTAL));
 mockStage.querySelector('.practice-question-area').querySelectorAll('.button')[0].click();
-check('이전 → 1번', mockStage.querySelector('.practice-question-meta').textContent.includes(' 1 / 30'));
+check('이전 → 1번', mockStage.querySelector('.practice-question-meta').textContent.includes(' 1 / ' + TOTAL));
 
 // 3. 타이머 색
 now = startedAt + (25 * 60 - 600) * 1000; intervalFn();
@@ -200,17 +206,18 @@ mockStage.querySelector('.practice-question-area').querySelectorAll('.button').f
 const total = expected.p5 + expected.p6 + expected.p7;
 const result = mockStage.querySelector('.practice-result');
 check('결과 화면 표시', !!result);
-check('총점', result.querySelector('.practice-result-score').textContent === '총점 ' + total + ' / 30', result.querySelector('.practice-result-score').textContent);
+check('총점', result.querySelector('.practice-result-score').textContent === '총점 ' + total + ' / ' + TOTAL, result.querySelector('.practice-result-score').textContent);
 const partScores = result.querySelectorAll('.practice-part-score').map(e => e.textContent);
-check('파트별 성적', partScores.join(',') === `Part 5${expected.p5} / 15,Part 6${expected.p6} / 8,Part 7${expected.p7} / 7`, partScores.join(', '));
+check('파트별 성적', partScores.join(',') === `Part 5${expected.p5} / 15,Part 6${expected.p6} / 8,Part 7${expected.p7} / ${P7}`, partScores.join(', '));
 const bands = [[0, 9, '100~200'], [10, 14, '200~300'], [15, 19, '300~350'], [20, 23, '350~400'], [24, 26, '400~450'], [27, 30, '450~495']];
-const band = bands.find(b => total >= b[0] && total <= b[1])[2];
-check('환산 점수대', result.querySelector('.practice-band-value').textContent === band + '점대', result.querySelector('.practice-band-value').textContent);
+const scaledTotal = TOTAL === 30 ? total : Math.round(total / TOTAL * 30); // 30문항 기준 환산
+const band = bands.find(b => scaledTotal >= b[0] && scaledTotal <= b[1])[2];
+check('환산 점수대 (30문항 기준 ' + scaledTotal + ')', result.querySelector('.practice-band-value').textContent === band + '점대', result.querySelector('.practice-band-value').textContent);
 check('참고용 문구', result.textContent.includes('실제 토익 점수와 다를 수 있는 참고용 추정치입니다.'));
 check('소요 시간 16:40, 제한 내', result.querySelector('.practice-result-time').textContent.startsWith('소요 시간 16:40') && !result.querySelector('.practice-result-time').classList.contains('is-timeout'));
 const misses = result.querySelectorAll('.practice-miss');
-check('틀린 문제 수 = 30 - 맞은 수', misses.length === 30 - total, misses.length);
-check('미응답 표시', misses.filter(m => m.textContent.includes('내 답: 미응답')).length === 30 - answered);
+check('틀린 문제 수 = 총 문항 - 맞은 수', misses.length === TOTAL - total, misses.length);
+check('미응답 표시', misses.filter(m => m.textContent.includes('내 답: 미응답')).length === TOTAL - answered);
 const links = result.querySelectorAll('.grammar-note-link');
 check('노트 링크 형식', links.length > 0 && links.every(l => /^grammar\.html#grammar-note-g\d{2}$/.test(l.href)), links.length + '개');
 check('정답 노출은 결과에서만', result.querySelectorAll('.practice-miss-answer.is-correct').length === misses.length);
@@ -219,7 +226,7 @@ check('정답 노출은 결과에서만', result.querySelectorAll('.practice-mis
 let saved = JSON.parse(store.get('englishLabProgress'));
 check('practiceStats 1회 저장', saved.practiceStats.attempts.length === 1);
 const at = saved.practiceStats.attempts[0];
-check('저장값', at.correct === total && at.total === 30 && at.elapsedSec === 1000 && at.timedOut === false &&
+check('저장값', at.correct === total && at.total === TOTAL && at.elapsedSec === 1000 && at.timedOut === false &&
   at.partScores.p5 === expected.p5 && at.partScores.p6 === expected.p6 && at.partScores.p7 === expected.p7, JSON.stringify(at));
 const solvedSum = Object.values(saved.grammarStats).reduce((s, g) => s + g.solved, 0);
 check('grammarStats 반영 (응답한 ruleId 문항 수)', solvedSum === ruleAnswered, solvedSum + '/' + ruleAnswered);

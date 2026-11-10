@@ -2,9 +2,12 @@
   "use strict";
 
   // 미니 모의고사 구성. 데이터가 모자라면 있는 만큼만 출제한다.
-  var EXAM = { p5: 15, p6: 8, p7: 7, seconds: 25 * 60, warnSec: 10 * 60, dangerSec: 3 * 60 };
+  // Part 7은 지문을 자르지 않고 통째로 내므로 문항 수가 7~8로 달라진다 (총 30~31문항).
+  var EXAM = { p5: 15, p6: 8, seconds: 25 * 60, warnSec: 10 * 60, dangerSec: 3 * 60 };
+  var PART7_TARGETS = [7, 8];
+  var PART7_MULTI_PREFERENCE = 0.7; // 이중·삼중 지문이 든 조합을 우선 고를 확률
   var PART_LABELS = { p5: "Part 5", p6: "Part 6", p7: "Part 7" };
-  // 30문항 기준 맞은 개수 → RC 예상 점수대 (참고용)
+  // 30문항 기준 맞은 개수 → RC 예상 점수대 (참고용). 30문항이 아니면 30문항 기준으로 환산한다.
   var SCORE_BANDS = [
     { min: 0, max: 9, label: "100~200점대" },
     { min: 10, max: 14, label: "200~300점대" },
@@ -89,9 +92,10 @@
       });
     }
 
-    function part7Items(passage, limit) {
+    // Part 7은 지문의 문항을 전부 낸다 (연계 문제가 빠지지 않게 자르지 않는다).
+    function part7Items(passage) {
       var group = { kind: "p7", passage: passage };
-      return passage.questions.slice(0, limit).map(function (question) {
+      return passage.questions.map(function (question) {
         return {
           part: "p7", prompt: question.q, choices: question.choices, answer: question.answer,
           explanation: question.explanation, ruleId: question.ruleId || null, group: group
@@ -110,10 +114,59 @@
       return items;
     }
 
+    function isMultiPassage(passage) {
+      return Array.isArray(passage.parts) && passage.parts.length > 1;
+    }
+
+    function questionCount(combo) {
+      return combo.reduce(function (sum, passage) { return sum + passage.questions.length; }, 0);
+    }
+
+    // 지문 2~3개로 만들 수 있는 모든 조합
+    function passageCombos(list) {
+      var combos = [];
+      for (var a = 0; a < list.length; a += 1) {
+        for (var b = a + 1; b < list.length; b += 1) {
+          combos.push([list[a], list[b]]);
+          for (var c = b + 1; c < list.length; c += 1) combos.push([list[a], list[b], list[c]]);
+        }
+      }
+      return combos;
+    }
+
+    function randomOf(list) {
+      return list[Math.floor(Math.random() * list.length)];
+    }
+
+    // 문항 수 합이 7~8인 지문 조합 중 하나를 무작위로 고른다.
+    // 70% 확률로 이중·삼중 지문이 든 조합만 놓고 고른다 (없으면 전체에서 고른다).
+    // 그런 조합이 없으면 합이 7에 가장 가까운 조합으로 대체하고 경고를 남긴다.
+    function pickPart7Passages(list) {
+      var usable = list.filter(function (passage) { return passage && Array.isArray(passage.questions) && passage.questions.length; });
+      if (usable.length < 2) {
+        if (usable.length) console.warn("Part 7: 지문이 " + usable.length + "개뿐이라 조합 없이 출제합니다.");
+        return usable.slice();
+      }
+      var combos = passageCombos(shuffle(usable));
+      var pool = combos.filter(function (combo) { return PART7_TARGETS.indexOf(questionCount(combo)) !== -1; });
+      if (!pool.length) {
+        var distance = function (combo) { return Math.abs(questionCount(combo) - PART7_TARGETS[0]); };
+        var best = Math.min.apply(null, combos.map(distance));
+        pool = combos.filter(function (combo) { return distance(combo) === best; });
+        console.warn("Part 7: 문항 수 합이 " + PART7_TARGETS.join("~") + "인 지문 조합이 없어 " +
+          questionCount(pool[0]) + "문항 조합으로 대체합니다.");
+      }
+      var withMulti = pool.filter(function (combo) { return combo.some(isMultiPassage); });
+      if (withMulti.length && Math.random() < PART7_MULTI_PREFERENCE) pool = withMulti;
+      return shuffle(randomOf(pool));
+    }
+
     function buildExam() {
+      var part7 = [];
+      pickPart7Passages(passages).forEach(function (passage) { part7 = part7.concat(part7Items(passage)); });
       var items = part5Items(shuffle(grammarQuiz).slice(0, EXAM.p5))
         .concat(fillFromGroups(part6Sets, EXAM.p6, part6Items))
-        .concat(fillFromGroups(passages, EXAM.p7, part7Items));
+        .concat(part7);
       items.forEach(function (item, index) {
         item.number = index + 1;
         if (item.part === "p6") item.group.numbers[item.blank] = item.number;
@@ -202,8 +255,12 @@
 
     // ---------- 미니 모의고사 ----------
 
+    // 시작 화면에 보여준 문항 구성 그대로 시험을 시작하려고, 시작 화면에서 만든 시험을 보관한다.
+    var preparedItems = null;
+
     function renderMockIntro() {
-      var totals = partTotals(buildExam());
+      preparedItems = buildExam();
+      var totals = partTotals(preparedItems);
       var total = totals.p5 + totals.p6 + totals.p7;
       var intro = element("div", "panel practice-intro");
       intro.append(
@@ -216,7 +273,8 @@
     }
 
     function startExam() {
-      var items = buildExam();
+      var items = preparedItems || buildExam();
+      preparedItems = null;
       if (!items.length) {
         mockStage.replaceChildren(element("div", "placeholder", "출제할 문제가 없어요."));
         return;
