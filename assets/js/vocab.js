@@ -42,41 +42,61 @@
       return labels[track] || track;
     }
 
+    // 한 단어의 활용형 목록(원형 제외): -s/-es/-ies, -d/-ed/-ied, -ing, -er/-est, 끝 자음 겹침
+    function wordForms(word) {
+      var lower = word.toLowerCase();
+      var last = word.slice(-1);
+      var consonantY = /[^aeiou]y$/i.test(word);
+      var consonantVowelConsonant = /[^aeiou][aeiou][^aeiou]$/i.test(word);
+      var forms = [];
+
+      forms.push(word + "s", word + "es");
+      if (consonantY) forms.push(word.slice(0, -1) + "ies");
+
+      forms.push(word + "d", word + "ed");
+      if (consonantY) forms.push(word.slice(0, -1) + "ied");
+      if (consonantVowelConsonant && !/[wxy]$/i.test(word)) forms.push(word + last + "ed");
+
+      if (last.toLowerCase() === "e") forms.push(word.slice(0, -1) + "ing");
+      else {
+        forms.push(word + "ing");
+        if (consonantVowelConsonant && !/[wxy]$/i.test(word)) forms.push(word + last + "ing");
+      }
+
+      if (consonantY) forms.push(word.slice(0, -1) + "ier", word.slice(0, -1) + "iest");
+      else if (last.toLowerCase() === "e") forms.push(word + "r", word + "st");
+      else forms.push(word + "er", word + "est");
+      if (consonantVowelConsonant && !/[wxy]$/i.test(word)) {
+        forms.push(word + last + "er", word + last + "est");
+      }
+      return forms.filter(function (form, index) {
+        return form && forms.indexOf(form) === index && form.toLowerCase() !== lower;
+      });
+    }
+
+    // 빈칸 후보: 원형 먼저, 한 단어는 그 단어의 활용형.
+    // 여러 단어는 마지막 단어를 변형(raw materials)하고, 동사구(v.)는 첫 단어 변형(logged in)도 찾는다.
+    function blankVariants(target, pos) {
+      var parts = target.split(/\s+/);
+      var variants = [target];
+      var lastIndex = parts.length - 1;
+      wordForms(parts[lastIndex]).forEach(function (form) {
+        variants.push(parts.slice(0, lastIndex).concat(form).join(" "));
+      });
+      if (lastIndex > 0 && /(^|\/)v\./.test(pos || "")) {
+        wordForms(parts[0]).forEach(function (form) {
+          variants.push([form].concat(parts.slice(1)).join(" "));
+        });
+      }
+      return variants.filter(function (variant, index) {
+        return variants.indexOf(variant) === index;
+      });
+    }
+
     function blankExample(item) {
       if (Object.prototype.hasOwnProperty.call(blankCache, item.id)) return blankCache[item.id];
       var target = item.word.replace(/~/g, " ").trim().replace(/[?!.,;:]+$/, "");
-      var isPhrase = /\s/.test(target);
-      var variants = [target];
-      if (!isPhrase) {
-        var lower = target.toLowerCase();
-        var last = target.slice(-1);
-        var consonantY = /[^aeiou]y$/i.test(target);
-        var consonantVowelConsonant = /[^aeiou][aeiou][^aeiou]$/i.test(target);
-
-        variants.push(target + "s", target + "es");
-        if (consonantY) variants.push(target.slice(0, -1) + "ies");
-
-        variants.push(target + "d", target + "ed");
-        if (consonantY) variants.push(target.slice(0, -1) + "ied");
-        if (consonantVowelConsonant && !/[wxy]$/i.test(target)) variants.push(target + last + "ed");
-
-        if (last.toLowerCase() === "e") variants.push(target.slice(0, -1) + "ing");
-        else {
-          variants.push(target + "ing");
-          if (consonantVowelConsonant && !/[wxy]$/i.test(target)) variants.push(target + last + "ing");
-        }
-
-        if (consonantY) variants.push(target.slice(0, -1) + "ier", target.slice(0, -1) + "iest");
-        else if (last.toLowerCase() === "e") variants.push(target + "r", target + "st");
-        else variants.push(target + "er", target + "est");
-        if (consonantVowelConsonant && !/[wxy]$/i.test(target)) {
-          variants.push(target + last + "er", target + last + "est");
-        }
-        variants = variants.filter(function (variant, index) {
-          return variant && variants.indexOf(variant) === index && variant.toLowerCase() !== lower;
-        });
-        variants.unshift(target);
-      }
+      var variants = blankVariants(target, item.pos);
 
       for (var index = 0; index < variants.length; index += 1) {
         var expression = variants[index].trim().split(/\s+/).map(function (part) {
