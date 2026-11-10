@@ -786,5 +786,93 @@ window.PART6 = [
       { n: 3, choices: ["goal", "goals", "goaled", "goaling"], answer: 1, explanation: "three main 뒤이므로 복수 명사 goals가 와야 한다.", ruleId: "g01" },
       { n: 4, choices: ["assist", "assistance", "assistant", "assisted"], answer: 1, explanation: "need의 목적어 자리이므로 명사가 필요하다. assistance(도움)는 셀 수 없는 명사, assistant는 사람이다.", ruleId: "g01" }
     ]
+  },
+  {
+    id: "p607", title: "주차장 보수 공사", recommendedSec: 120,
+    header: ["To: All Employees", "Subject: Parking Lot Repairs"],
+    blocks: [
+      { type: "text", en: "The east parking lot will be closed from Monday, May 4, " },
+      { type: "blank", n: 1 },
+      { type: "text", en: " Friday, May 8. During this period, crews will resurface the pavement and repaint the lane markings. Employees who normally park there should use the west lot instead. " },
+      { type: "blank", n: 2 },
+      { type: "text", en: " The west lot has about forty extra spaces, so there should be enough " },
+      { type: "blank", n: 3 },
+      { type: "text", en: " for everyone. We " },
+      { type: "blank", n: 4 },
+      { type: "text", en: " apologize for the inconvenience. If you have questions, please contact the facilities office at extension 212." }
+    ],
+    ko: "수신: 전 직원 / 제목: 주차장 보수 공사 — 동쪽 주차장이 5월 4일 월요일부터 5월 8일 금요일까지 폐쇄됩니다. 이 기간 동안 작업자들이 노면을 재포장하고 차선 표시를 다시 칠합니다. 평소 그곳에 주차하는 직원은 대신 서쪽 주차장을 이용해 주세요. 양쪽 입구에 안내 표지판이 설치될 예정입니다. 서쪽 주차장에는 여유 공간이 40면 정도 있어 모두 주차할 공간이 충분할 것입니다. 불편을 드려 진심으로 사과드립니다. 문의 사항은 내선 212번 시설 관리실로 연락해 주세요.",
+    questions: [
+      { n: 1, choices: ["among", "through", "along", "across"], answer: 1, explanation: "from A through B는 'A부터 B까지(B 포함)'. 기간을 나타내는 짝 표현이다.", ruleId: "g06" },
+      { n: 2, choices: ["The repairs were completed last year.", "Parking fees will increase in June.", "Signs will be posted at both entrances.", "Please return your badge to the front desk."], answer: 2, explanation: "문장 삽입 문제다. 서쪽 주차장을 쓰라는 안내 뒤에 안내 표지 설치가 자연스럽게 이어진다. 공사는 아직 시작 전이라 '작년에 끝났다'는 시제가 맞지 않고, 요금이나 출입증 이야기는 나오지 않는다.", ruleId: null },
+      { n: 3, choices: ["room", "amount", "number", "size"], answer: 0, explanation: "enough room = 충분한 공간. room은 '공간'이라는 뜻의 불가산명사다.", ruleId: null },
+      { n: 4, choices: ["sincere", "sincerely", "sincerity", "sincerest"], answer: 1, explanation: "동사 apologize를 꾸미므로 부사가 와야 한다.", ruleId: "g01" }
+    ]
+  },
+  {
+    id: "p608", title: "카페 4호점 개점", recommendedSec: 120,
+    header: ["Bellport Roasters to Open Fourth Café"],
+    blocks: [
+      { type: "text", en: "Bellport Roasters will open its fourth location next month at 15 Canal Street. The company, " },
+      { type: "blank", n: 1 },
+      { type: "text", en: " in 2014, began as a single shop near the harbor and now employs more than sixty people. The new café will seat forty guests and " },
+      { type: "blank", n: 2 },
+      { type: "text", en: " a small bakery counter. " },
+      { type: "blank", n: 3 },
+      { type: "text", en: " Owner Marisol Vega said the extra space will allow the company to bake its pastries on site for the first time. Customers " },
+      { type: "blank", n: 4 },
+      { type: "text", en: " previously bought bread from a partner bakery can expect a wider selection." }
+    ],
+    ko: "벨포트 로스터스, 네 번째 카페 개점 — 벨포트 로스터스가 다음 달 커낼 스트리트 15번지에 네 번째 매장을 엽니다. 2014년에 설립된 이 회사는 항구 근처의 매장 하나로 시작해 현재 60명이 넘는 직원을 두고 있습니다. 새 카페는 40명을 수용하며 작은 베이커리 코너도 갖춥니다. 베이커리 코너는 이 회사로서는 처음입니다. 대표 마리솔 베가는 늘어난 공간 덕분에 처음으로 페이스트리를 매장에서 직접 구울 수 있게 됐다고 말했습니다. 그동안 협력 제과점에서 빵을 사 온 고객들은 더 다양한 제품을 기대할 수 있습니다.",
+    questions: [
+      { n: 1, choices: ["founding", "founds", "founded", "to found"], answer: 2, explanation: "회사는 '설립되는' 쪽이므로 수동 의미의 과거분사가 와야 한다.", ruleId: "g04" },
+      { n: 2, choices: ["include", "including", "includes", "to include"], answer: 0, explanation: "will seat ... and (will) include. 조동사 will을 공유하는 병렬이라 동사원형이 온다.", ruleId: "g01" },
+      { n: 3, choices: ["The original shop closed in 2014.", "The company plans to reduce its staff.", "Canal Street will be closed to traffic.", "The bakery counter will be the company's first."], answer: 3, explanation: "문장 삽입 문제다. 뒤 문장이 '처음으로 직접 굽는다'로 이어지므로 '첫 베이커리 코너'가 맞다. 2014년은 설립 연도이고, 직원이 60명 이상으로 늘고 있어 감원 이야기도 맞지 않는다.", ruleId: null },
+      { n: 4, choices: ["whose", "who", "which", "whom"], answer: 1, explanation: "뒤에 동사 bought가 바로 오므로 주격 관계대명사다. 선행사가 사람이라 which는 안 된다.", ruleId: "g08" }
+    ]
+  },
+  {
+    id: "p609", title: "학습 플랫폼 점검 안내", recommendedSec: 120,
+    header: ["Notice to All Users"],
+    blocks: [
+      { type: "text", en: "Our online learning platform will undergo scheduled maintenance this Saturday from 1:00 A.M. to 5:00 A.M. During the " },
+      { type: "blank", n: 1 },
+      { type: "text", en: ", you will not be able to log in or submit assignments. Work saved before 1:00 A.M. will not be affected. " },
+      { type: "blank", n: 2 },
+      { type: "text", en: " We recommend downloading any files you may need over the weekend. The maintenance will improve loading speed and " },
+      { type: "blank", n: 3 },
+      { type: "text", en: " the problems some users have reported with video playback. Thank you for your " },
+      { type: "blank", n: 4 },
+      { type: "text", en: "." }
+    ],
+    ko: "전체 사용자 공지 — 온라인 학습 플랫폼이 이번 토요일 오전 1시부터 5시까지 정기 점검을 진행합니다. 점검 중에는 로그인하거나 과제를 제출할 수 없습니다. 오전 1시 이전에 저장한 작업은 영향을 받지 않습니다. 다만 그 네 시간 동안에는 플랫폼을 전혀 이용할 수 없습니다. 주말 동안 필요할 수 있는 파일은 미리 내려받아 두시기를 권합니다. 이번 점검으로 로딩 속도가 빨라지고, 일부 사용자가 알려 주신 동영상 재생 문제가 해결됩니다. 양해해 주셔서 감사합니다.",
+    questions: [
+      { n: 1, choices: ["outcome", "outlook", "outage", "output"], answer: 2, explanation: "outage는 서비스가 중단된 시간을 말한다. 철자가 비슷한 단어들과 구분해야 한다.", ruleId: null },
+      { n: 2, choices: ["The maintenance has been postponed until next month.", "However, the platform will be completely unavailable during those four hours.", "Please register for an account before Saturday.", "Assignments are graded within two business days."], answer: 1, explanation: "문장 삽입 문제다. '저장한 내용은 영향 없다' 다음에 However로 뒤집으며 4시간 중단을 알린다. 1시~5시가 네 시간이라는 점도 근거다. 점검은 이번 토요일이라 연기 이야기는 맞지 않는다.", ruleId: null },
+      { n: 3, choices: ["resolves", "resolving", "resolved", "resolve"], answer: 3, explanation: "will improve ... and (will) resolve. will을 공유하는 병렬이라 동사원형이 온다.", ruleId: "g01" },
+      { n: 4, choices: ["patient", "patience", "patiently", "patientness"], answer: 1, explanation: "your 뒤에는 명사가 온다. Thank you for your patience는 공지문 마무리 관용구다.", ruleId: "g01" }
+    ]
+  },
+  {
+    id: "p610", title: "면접 일정 안내", recommendedSec: 120,
+    header: ["From: Gilles Moreau", "To: Ms. Arnault", "Subject: Interview Invitation", "Dear Ms. Arnault,"],
+    blocks: [
+      { type: "text", en: "Thank you for applying for the position of logistics coordinator. We were impressed by your experience and would like to " },
+      { type: "blank", n: 1 },
+      { type: "text", en: " you for an interview at our Lyon office. We have reserved Tuesday, September 9, at 10:00 A.M. Please reply by Friday to " },
+      { type: "blank", n: 2 },
+      { type: "text", en: " this time. " },
+      { type: "blank", n: 3 },
+      { type: "text", en: " The interview will last about an hour and will include a short written exercise. You do not need to prepare anything in " },
+      { type: "blank", n: 4 },
+      { type: "text", en: ". Sincerely, Gilles Moreau, Human Resources" }
+    ],
+    ko: "보낸 사람: 질 모로 / 받는 사람: 아르노 님 / 제목: 면접 안내 — 아르노 님께, 물류 담당자 직에 지원해 주셔서 감사합니다. 경력이 인상적이어서 리옹 사무소로 면접에 모시고자 합니다. 9월 9일 화요일 오전 10시로 일정을 잡아 두었습니다. 이 시간을 확정하시려면 금요일까지 회신해 주세요. 그 날짜가 어려우시면 다른 날짜를 제안해 드릴 수 있습니다. 면접은 약 한 시간 동안 진행되며 짧은 필기 과제가 포함됩니다. 미리 준비하실 것은 없습니다. 인사부 질 모로 드림",
+    questions: [
+      { n: 1, choices: ["invite", "inviting", "invited", "invitation"], answer: 0, explanation: "would like to 뒤에는 동사원형이 온다.", ruleId: "g05" },
+      { n: 2, choices: ["conform", "confirm", "confine", "consume"], answer: 1, explanation: "confirm은 '확정하다, 확인해 주다'. 철자가 비슷한 단어와 구분해야 한다.", ruleId: null },
+      { n: 3, choices: ["We have already filled the position.", "Your first day will be September 9.", "If that date is not convenient, we can suggest another.", "Please send two letters of reference by Monday."], answer: 2, explanation: "문장 삽입 문제다. 날짜 확정 요청 바로 뒤에 '안 되면 다른 날짜'를 제안하는 것이 자연스럽다. 면접을 제안하는 메일이라 '이미 채용했다'는 모순이고, 9월 9일은 면접일이며, 뒤에서 미리 준비할 것이 없다고 했다.", ruleId: null },
+      { n: 4, choices: ["advanced", "advancing", "advance", "advancement"], answer: 2, explanation: "in advance = 미리. 굳어진 전치사구다.", ruleId: null }
+    ]
   }
 ];

@@ -138,15 +138,51 @@
       return list[Math.floor(Math.random() * list.length)];
     }
 
-    // 문항 수 합이 7~8인 지문 조합 중 하나를 무작위로 고른다.
-    // 70% 확률로 이중·삼중 지문이 든 조합만 놓고 고른다 (없으면 전체에서 고른다).
-    // 그런 조합이 없으면 합이 7에 가장 가까운 조합으로 대체하고 경고를 남긴다.
+    var PART7_MAX_PASSAGES = 3;
+    var PART7_ANCHOR_TRIES = 20;
+
+    // 남은 문항 수(need)를 채울 지문을 하나씩 고른다. 후보를 섞은 뒤 처음으로 끝까지 채워지는 지문을 쓰므로,
+    // 다음 지문은 '채울 수 있는 지문들' 중에서 균등하게 뽑힌다.
+    function completePart7(chosen, need, rest) {
+      if (need === 0) return chosen;
+      if (need < 0 || chosen.length >= PART7_MAX_PASSAGES) return null;
+      var candidates = shuffle(rest).filter(function (passage) { return passage.questions.length <= need; });
+      for (var index = 0; index < candidates.length; index += 1) {
+        var next = candidates[index];
+        var done = completePart7(chosen.concat([next]), need - next.questions.length,
+          rest.filter(function (passage) { return passage !== next; }));
+        if (done) return done;
+      }
+      return null;
+    }
+
+    // 지문을 먼저 뽑는다: 기준 지문 하나를 지문 단위로 균등하게 고르고 (70%는 이중·삼중 지문 중에서),
+    // 남은 지문으로 합 7~8을 채운다. 못 채우면 기준 지문을 다시 뽑는다 (최대 20회).
+    // 조합 단위로 뽑으면 문항 수가 적은 지문만 자주 나오는 편중이 생겨서 이렇게 한다.
     function pickPart7Passages(list) {
       var usable = list.filter(function (passage) { return passage && Array.isArray(passage.questions) && passage.questions.length; });
       if (usable.length < 2) {
         if (usable.length) console.warn("Part 7: 지문이 " + usable.length + "개뿐이라 조합 없이 출제합니다.");
         return usable.slice();
       }
+      var multi = usable.filter(isMultiPassage);
+      for (var attempt = 0; attempt < PART7_ANCHOR_TRIES; attempt += 1) {
+        var anchor = multi.length && Math.random() < PART7_MULTI_PREFERENCE ? randomOf(multi) : randomOf(usable);
+        var rest = usable.filter(function (passage) { return passage !== anchor; });
+        var targets = shuffle(PART7_TARGETS);
+        for (var t = 0; t < targets.length; t += 1) {
+          var picked = completePart7([anchor], targets[t] - anchor.questions.length, rest);
+          if (picked && picked.length >= 2) return shuffle(picked);
+        }
+      }
+      console.warn("Part 7: 기준 지문을 " + PART7_ANCHOR_TRIES + "번 뽑아도 7~8문항을 채우지 못해 조합 방식으로 대체합니다.");
+      return pickPart7ByCombos(usable);
+    }
+
+    // 대체 경로: 문항 수 합이 7~8인 지문 조합 중 하나를 무작위로 고른다.
+    // 70% 확률로 이중·삼중 지문이 든 조합만 놓고 고른다 (없으면 전체에서 고른다).
+    // 그런 조합이 없으면 합이 7에 가장 가까운 조합으로 대체하고 경고를 남긴다.
+    function pickPart7ByCombos(usable) {
       var combos = passageCombos(shuffle(usable));
       var pool = combos.filter(function (combo) { return PART7_TARGETS.indexOf(questionCount(combo)) !== -1; });
       if (!pool.length) {
