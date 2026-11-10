@@ -360,13 +360,18 @@ function loadPracticePage(opts = {}) {
   padd('form', 'practice-part-form'); padd('select', 'practice-part-select'); padd('div', 'practice-part-stage'); padd('div', 'practice-history');
   const pready = [];
   const env = { stage, tick: null, errors: [], warns: [] };
+  const docListeners = {};
   const pdoc = {
-    readyState: 'loading', documentElement: new El('html'),
+    readyState: 'loading', documentElement: new El('html'), hidden: false,
     createElement: t => new El(t),
     getElementById: id => pbody.all().find(e => e.id === id) || null,
     querySelectorAll: s => pbody.querySelectorAll(s),
-    addEventListener: (t, f) => { if (t === 'DOMContentLoaded') pready.push(f); }
+    addEventListener: (t, f) => { if (t === 'DOMContentLoaded') pready.push(f); else (docListeners[t] = docListeners[t] || []).push(f); }
   };
+  // 화면 숨김/복귀 (폰 잠금·다른 앱 전환)
+  env.hide = () => { pdoc.hidden = true; (docListeners.visibilitychange || []).forEach(f => f({})); };
+  env.show = () => { pdoc.hidden = false; (docListeners.visibilitychange || []).forEach(f => f({})); };
+  env.byId = id => pdoc.getElementById(id);
   pdoc.documentElement.hasAttribute = () => false;
   const pwin = {
     document: pdoc, location: { pathname: '/english-lab/pages/practice.html', hash: '' },
@@ -496,8 +501,13 @@ function answerUpTo(env, from, to) {
     if (!storedSave() || storedSave().answers[i] !== choice) saveOnAnswerMisses++; // 답을 고르면 바로 저장
     chosen[i] = choice;
     if (choice === info.q.answer) expectedCorrect++;
+    fullAnswered[i] = {
+      label: info.label, correct: choice === info.q.answer, ruleId: info.q.ruleId || null,
+      p6type: info.set ? info.q.type : null, strategy: info.passage ? info.passage.strategyId : null
+    };
   }
 }
+const fullAnswered = [];
 answerUpTo(s1, 0, 40);
 check('답을 고를 때마다 바로 저장', saveOnAnswerMisses === 0, saveOnAnswerMisses + '건 누락');
 check('문항을 옮길 때마다 바로 저장', saveOnMoveMisses === 0, saveOnMoveMisses + '건 누락');
@@ -524,13 +534,106 @@ check('이어서: 40번에서 시작', resumedCells[39].classList.contains('is-c
 now += 1000; s2.tick();
 check('이어서: 타이머가 다시 돎 (72:59)', s2.stage.querySelector('.practice-time').textContent === '72:59');
 answerUpTo(s2, 40, 100);
+const grammarBefore = s2.window.Progress.getGrammarStats();
+const miniHistoryBefore = s2.window.Progress.getPracticeHistory().length;
 byText(s2.stage, '제출').click();
 const scoreText = s2.stage.querySelector('.practice-result-score');
 check('이어서 푼 100문항 채점', scoreText && scoreText.textContent === '총점 ' + expectedCorrect + ' / 100', (scoreText && scoreText.textContent) + ' (예상 ' + expectedCorrect + ')');
 check('제출 후 저장된 세트 삭제', !store.has(FULL_KEY));
-const lastAttempt = s2.window.Progress.getPracticeHistory().slice(-1)[0];
-check('기록에 100문항 응시로 남음', lastAttempt && lastAttempt.total === 100 && lastAttempt.correct === expectedCorrect && lastAttempt.elapsedSec === 120 + 1,
-  lastAttempt && (lastAttempt.correct + '/' + lastAttempt.total + ', ' + lastAttempt.elapsedSec + '초'));
+const FULL_HISTORY_KEY = 'englishLabFullSetHistory';
+const fullHistory = () => JSON.parse(store.get(FULL_HISTORY_KEY) || '[]');
+const lastAttempt = fullHistory().slice(-1)[0];
+const scoreFor = s2.window.PracticeFullSet.scoreFor;
+check('풀세트 기록에 남음 (날짜·맞은 개수·환산 점수·소요 시간·파트별)', lastAttempt && lastAttempt.total === 100 && lastAttempt.correct === expectedCorrect &&
+  lastAttempt.score === scoreFor(expectedCorrect) && lastAttempt.elapsedSec === 120 + 1 && !Number.isNaN(Date.parse(lastAttempt.date)) &&
+  Object.values(lastAttempt.sections).reduce((s, x) => s + x.correct, 0) === expectedCorrect,
+  lastAttempt && (lastAttempt.correct + '/' + lastAttempt.total + ', ' + lastAttempt.score + '점, ' + lastAttempt.elapsedSec + '초'));
+check('미니 모의고사 기록과 섞이지 않음', s2.window.Progress.getPracticeHistory().length === miniHistoryBefore &&
+  s2.window.Progress.getPracticeHistory().every(a => a.total !== 100));
+// 학습 기록 반영: 답한 Part 5·6 문항 중 ruleId가 있는 것만큼 grammarStats가 는다
+const grammarAfter = s2.window.Progress.getGrammarStats();
+const expectedRuleDelta = {};
+fullAnswered.forEach(a => { if (a.ruleId && (a.label === 'Part 5' || a.label === 'Part 6')) expectedRuleDelta[a.ruleId] = (expectedRuleDelta[a.ruleId] || [0, 0]).map((v, k) => v + (k === 0 ? 1 : a.correct ? 1 : 0)); });
+const ruleDeltaOk = Object.keys(expectedRuleDelta).every(id => grammarAfter[id].solved - (grammarBefore[id] ? grammarBefore[id].solved : 0) === expectedRuleDelta[id][0] &&
+  grammarAfter[id].correct - (grammarBefore[id] ? grammarBefore[id].correct : 0) === expectedRuleDelta[id][1]);
+check('풀세트 결과가 grammarStats에 반영', ruleDeltaOk, Object.keys(expectedRuleDelta).length + '개 유형, ' +
+  Object.values(expectedRuleDelta).reduce((s, v) => s + v[0], 0) + '문항');
+
+// --- 채점 화면: 환산 점수 · 파트별 정답률 · 약점 3종 ---
+console.log('\n[RC 풀세트 — 채점 화면]');
+const resultCard = s2.stage.querySelector('.practice-result');
+const scoreBox = resultCard.querySelector('.practice-full-score');
+check('환산 점수 표시', scoreBox && scoreBox.textContent.includes('예상 RC 점수 약 ' + scoreFor(expectedCorrect) + '점') &&
+  scoreBox.textContent.includes('실제 시험은 회차마다 난이도 보정이 달라 ±25점 정도 차이가 날 수 있습니다'), scoreBox && scoreBox.textContent);
+const rowsOf = cls => { const sec = resultCard.querySelector('.' + cls); return sec ? sec.querySelectorAll('.practice-stat-row') : []; };
+const sectionRows = rowsOf('practice-analysis-sections');
+const expectedBySection = {};
+fullAnswered.forEach(a => { expectedBySection[a.label] = expectedBySection[a.label] || [0, 0]; expectedBySection[a.label][0] += a.correct ? 1 : 0; expectedBySection[a.label][1] += 1; });
+const sectionLabels = ['Part 5', 'Part 6', 'Part 7 단일', 'Part 7 이중', 'Part 7 삼중'];
+check('파트별 정답률 5줄 · 문항 수 30/16/29/10/15', sectionRows.length === 5 && sectionRows.map(r => r.dataset.total).join('/') === '30/16/29/10/15',
+  sectionRows.map(r => r.querySelector('.practice-stat-value').textContent).join(' | '));
+check('파트별 맞은 개수가 실제와 같고 합이 전체와 같음', sectionRows.every((r, i) => Number(r.dataset.correct) === expectedBySection[sectionLabels[i]][0]) &&
+  sectionRows.reduce((s, r) => s + Number(r.dataset.correct), 0) === expectedCorrect);
+check('파트별 막대', sectionRows.every(r => r.querySelector('.practice-stat-fill') && /width: \d+%/.test(r.querySelector('.practice-stat-fill').getAttribute('style'))));
+const ruleRows = rowsOf('practice-analysis-rules');
+const p5Rates = {};
+fullAnswered.filter(a => a.label === 'Part 5').forEach(a => { p5Rates[a.ruleId] = p5Rates[a.ruleId] || [0, 0]; p5Rates[a.ruleId][0] += a.correct ? 1 : 0; p5Rates[a.ruleId][1] += 1; });
+const pct = v => Math.round(v[0] / v[1] * 100);
+const shownRules = ruleRows.map(r => r.dataset.id);
+const hiddenRules = Object.keys(p5Rates).filter(id => !shownRules.includes(id));
+check('Part 5 약한 유형 3개 · 낮은 순 · 노트 링크', ruleRows.length === 3 &&
+  ruleRows.every(r => { const a = r.querySelector('.grammar-note-link'); return a && a.href === 'grammar.html#grammar-note-' + r.dataset.id; }) &&
+  shownRules.every((id, i) => i === 0 || pct(p5Rates[shownRules[i - 1]]) <= pct(p5Rates[id])) &&
+  hiddenRules.every(id => pct(p5Rates[id]) >= pct(p5Rates[shownRules[2]])),
+  ruleRows.map(r => r.dataset.id + ' ' + r.querySelector('.practice-stat-value').textContent).join(' | '));
+const p6Rows = rowsOf('practice-analysis-p6');
+const p6Expected = {};
+fullAnswered.filter(a => a.label === 'Part 6').forEach(a => { p6Expected[a.p6type] = p6Expected[a.p6type] || [0, 0]; p6Expected[a.p6type][0] += a.correct ? 1 : 0; p6Expected[a.p6type][1] += 1; });
+check('Part 6 유형별 (문법·어휘·문장 삽입)', p6Rows.map(r => r.dataset.id).join(',') === 'grammar,vocab,sentence' &&
+  p6Rows.every(r => { const e = p6Expected[r.dataset.id] || [0, 0]; return Number(r.dataset.correct) === e[0] && Number(r.dataset.total) === e[1]; }) &&
+  p6Rows.reduce((s, r) => s + Number(r.dataset.total), 0) === 16,
+  p6Rows.map(r => r.querySelector('.practice-stat-label').textContent + ' ' + r.querySelector('.practice-stat-value').textContent).join(' | '));
+const p7Rows = rowsOf('practice-analysis-p7');
+const p7Expected = {};
+fullAnswered.filter(a => a.label.startsWith('Part 7')).forEach(a => { p7Expected[a.strategy] = p7Expected[a.strategy] || [0, 0]; p7Expected[a.strategy][0] += a.correct ? 1 : 0; p7Expected[a.strategy][1] += 1; });
+check('Part 7 지문 유형별 · 낮은 순 · 전략 링크', p7Rows.length === Object.keys(p7Expected).length &&
+  p7Rows.every(r => { const e = p7Expected[r.dataset.id]; const a = r.querySelector('.grammar-note-link');
+    return e && Number(r.dataset.correct) === e[0] && Number(r.dataset.total) === e[1] && a && a.href === 'reading.html#reading-strategy-' + r.dataset.id; }) &&
+  p7Rows.every((r, i) => i === 0 || pct(p7Expected[p7Rows[i - 1].dataset.id]) <= pct(p7Expected[r.dataset.id])),
+  p7Rows.map(r => r.dataset.id + ' ' + r.querySelector('.practice-stat-value').textContent).join(' | '));
+
+// --- 오답 복습 ---
+console.log('\n[RC 풀세트 — 오답 복습]');
+const reviewButton = resultCard.querySelectorAll('.button').find(b => b.textContent.startsWith('오답 복습'));
+check('오답 복습 버튼', !!reviewButton && reviewButton.textContent === '오답 복습 (' + (100 - expectedCorrect) + '문항)', reviewButton && reviewButton.textContent);
+reviewButton.click();
+const review = s2.stage.querySelector('.practice-review');
+const reviewMisses = review ? review.querySelectorAll('.practice-review-miss') : [];
+check('오답 복습 문항 수 = 100 - 맞은 개수', reviewMisses.length === 100 - expectedCorrect, reviewMisses.length + ' / ' + (100 - expectedCorrect));
+check('오답 번호가 실제 틀린 문항과 같음', reviewMisses.map(m => Number(m.dataset.number)).join(',') ===
+  fullAnswered.map((a, i) => a.correct ? null : i + 1).filter(Boolean).join(','));
+const groupsAll = review.querySelectorAll('.practice-review-group');
+const groupKeys = groupsAll.map(g => g.dataset.group);
+const reviewP7Groups = groupsAll.filter(g => g.dataset.group.startsWith('p7:'));
+const reviewP6Groups = groupsAll.filter(g => g.dataset.group.startsWith('p6:'));
+check('같은 지문·세트가 두 번 나오지 않음', new Set(groupKeys).size === groupKeys.length, groupKeys.length + '묶음');
+const p7MissCount = fullAnswered.filter(a => !a.correct && a.label.startsWith('Part 7')).length;
+check('Part 7 오답은 지문 단위로 묶임', reviewP7Groups.reduce((s, g) => s + g.querySelectorAll('.practice-review-miss').length, 0) === p7MissCount &&
+  reviewP7Groups.every(g => g.querySelectorAll('.practice-passage').length === 1) && reviewP7Groups.some(g => g.querySelectorAll('.practice-review-miss').length > 1),
+  reviewP7Groups.length + '개 지문에 ' + p7MissCount + '문항');
+const reviewTranslateOk = [...reviewP7Groups, ...reviewP6Groups].every(g => {
+  const kos = g.querySelectorAll('.practice-review-ko');
+  const toggle = g.querySelector('.practice-review-translate');
+  if (!kos.length || !toggle || !kos.every(k => k.hidden)) return false;
+  toggle.click();
+  return kos.every(k => !k.hidden);
+});
+check('Part 6·7 복습: 지문 전문 + 해석 토글', reviewTranslateOk);
+check('Part 6·7 복습: 어휘 목록', [...reviewP7Groups, ...reviewP6Groups].every(g => g.querySelectorAll('.reading-vocab-section').length === 1));
+check('Part 5 복습: 문법 노트 링크', groupsAll.filter(g => g.dataset.group.startsWith('p5:')).every(g => {
+  const a = g.querySelector('.grammar-note-link'); return a && a.href.startsWith('grammar.html#grammar-note-'); }));
+byText(review, '← 채점 결과로').click();
+check('복습에서 채점 화면으로 돌아감', !!s2.stage.querySelector('.practice-full-score'));
 
 // --- 3. 깨진 저장값: 지우고 새로 시작, 다른 학습 기록은 그대로 ---
 console.log('\n[RC 풀세트 — 깨진 저장값]');
@@ -568,8 +671,21 @@ now += 1000; t.tick();
 check('10분 알림', !alertBox().hidden && alertBox().textContent.includes('남은 시간 10분') && bar().classList.contains('is-warning'), alertBox().textContent);
 for (let k = 0; k < 20; k++) { now += 1000; t.tick(); }
 check('알림은 잠시 뒤 사라짐', alertBox().hidden === true);
-now += 60 * 1000; t.tick(); // 화면이 1분 멈췄다 돌아옴
-check('멈춘 틈은 최대 5초만 깎음', t.stage.querySelector('.practice-time').textContent === '09:35', t.stage.querySelector('.practice-time').textContent);
+const timeText = () => t.stage.querySelector('.practice-time') && t.stage.querySelector('.practice-time').textContent;
+check('이탈 전 09:40', timeText() === '09:40', timeText());
+t.hide(); now += 60 * 1000; t.tick(); t.show(); // 1분 이탈 (숨겨진 동안 틱이 와도 이중으로 깎지 않아야 함)
+check('1분 이탈 후 복귀 → 60초 차감 (08:40)', timeText() === '08:40' && !t.stage.querySelector('.practice-suspended-notice'), timeText());
+t.hide(); now += 3 * 60 * 1000; t.show(); // 3분 이탈
+const notice = t.stage.querySelector('.practice-suspended-notice');
+check('3분 이탈 후 복귀 → 중단 처리, 이어서 풀기 화면', !!notice && notice.textContent === '시험이 중단되었습니다. 남은 시간 08:40부터 이어서 풀 수 있습니다.' &&
+  !!byText(t.stage, '이어서 풀기') && t.tick === null, notice && notice.textContent);
+check('중단 시 남은 시간 = 이탈 직전 값 (520초)', JSON.parse(store.get(FULL_KEY)).remainingSec === 520, JSON.parse(store.get(FULL_KEY)).remainingSec);
+byText(t.stage, '이어서 풀기').click();
+check('이어서 풀면 08:40부터', timeText() === '08:40', timeText());
+now += 150 * 1000; t.tick(); // 숨김 알림 없이 브라우저가 2분 넘게 멈췄다 깨어남
+check('틱 사이 2분 초과도 중단 처리 (직전 값 08:40)', !!t.stage.querySelector('.practice-suspended-notice') &&
+  t.stage.querySelector('.practice-suspended-notice').textContent.includes('08:40'));
+byText(t.stage, '이어서 풀기').click();
 while (t.stage.querySelector('.practice-time') && t.stage.querySelector('.practice-time').textContent !== '05:01') { now += 1000; t.tick(); }
 now += 1000; t.tick();
 check('5분 알림', !alertBox().hidden && alertBox().textContent.includes('남은 시간 5분') && bar().classList.contains('is-danger'), alertBox().textContent);
@@ -577,6 +693,69 @@ for (let k = 0; k < 400 && t.tick; k++) { now += 1000; t.tick(); }
 const timeoutResult = t.stage.querySelector('.practice-result');
 check('0이 되면 자동 제출', !!timeoutResult && timeoutResult.textContent.includes('시간 초과로 자동 제출') && timeoutResult.textContent.includes('/ 100'));
 check('자동 제출 후 저장값 삭제·타이머 정지', !store.has(FULL_KEY) && t.tick === null);
+
+// --- 환산표 ---
+console.log('\n[RC 풀세트 — 환산표]');
+const scoreTableArr = s2.window.PracticeFullSet.scoreTable;
+const allScores = Array.from({ length: 101 }, (_, n) => scoreFor(n));
+check('0~100 모든 값에 점수', scoreTableArr.length === 101 && allScores.every(v => Number.isInteger(v) && v >= 5 && v <= 495));
+check('단조 증가 (맞은 개수가 늘면 점수가 줄지 않음)', allScores.every((v, n) => n === 0 || v >= allScores[n - 1]));
+check('표 값 확인 (100→495, 88→435, 66→290, 16→5, 15 이하→5)', scoreFor(100) === 495 && scoreFor(88) === 435 && scoreFor(66) === 290 && scoreFor(16) === 5 && scoreFor(15) === 5 && scoreFor(0) === 5);
+let outOfRangeOk = true;
+[-5, 150, NaN, 'abc', null, undefined, 50.4, Infinity].forEach(v => { try { const r = scoreFor(v); if (!Number.isInteger(r)) outOfRangeOk = false; } catch (e) { outOfRangeOk = false; } });
+check('범위를 벗어난 입력에서 터지지 않음', outOfRangeOk && scoreFor(-5) === 5 && scoreFor(150) === 495 && scoreFor(NaN) === 5);
+
+// --- 다시 열기도 2분 규칙, 미니 모의고사 타이머는 그대로 ---
+console.log('\n[RC 풀세트 — 다시 열기 · 미니 모의고사 타이머]');
+store.delete(FULL_KEY);
+const r1 = loadPracticePage();
+startFull(r1);
+now += 30 * 1000; // 30초 뒤 다시 열기 (그 사이 저장은 시작할 때 75:00)
+const r2 = loadPracticePage();
+const r2note = r2.stage.querySelector('.practice-mode-saved');
+check('2분 이내에 다시 열면 흐른 시간 차감 (74:30)', r2note && r2note.textContent.includes('남은 시간 74:30'), r2note && r2note.textContent);
+byText(r2.stage, 'RC 풀세트 선택').click();
+check('2분 이내 재개는 중단 안내 없음', !r2.stage.querySelector('.practice-suspended-notice'));
+now += 200 * 1000;
+const r3 = loadPracticePage();
+byText(r3.stage, 'RC 풀세트 선택').click();
+const r3notice = r3.stage.querySelector('.practice-suspended-notice');
+check('2분 넘게 지나 다시 열면 중단 안내 + 저장된 시간 그대로', r3notice && r3notice.textContent === '시험이 중단되었습니다. 남은 시간 75:00부터 이어서 풀 수 있습니다.', r3notice && r3notice.textContent);
+store.delete(FULL_KEY);
+const m = loadPracticePage();
+byText(m.stage, '미니 모의고사 선택').click();
+byText(m.stage, '모의고사 시작').click();
+m.hide(); now += 3 * 60 * 1000; m.show(); m.tick();
+check('미니 모의고사: 3분 이탈해도 중단 없이 실제 시간대로 (22:00)', m.stage.querySelector('.practice-time').textContent === '22:00' &&
+  !m.stage.querySelector('.practice-suspended-notice') && m.tick !== null, m.stage.querySelector('.practice-time').textContent);
+check('미니 모의고사는 저장하지 않음', !store.has(FULL_KEY));
+
+// --- 응시 기록: 최근 20회, 21회째에 가장 오래된 것부터 삭제, 표와 추이 막대 ---
+console.log('\n[RC 풀세트 — 응시 기록]');
+const seeded = Array.from({ length: 20 }, (_, i) => ({ date: new Date(Date.UTC(2026, 0, 1 + i)).toISOString(), correct: 50 + i, total: 100,
+  score: scoreFor(50 + i), elapsedSec: 4000, timedOut: false, sections: { p5: { correct: 10, total: 30 } } }));
+store.set(FULL_HISTORY_KEY, JSON.stringify(seeded));
+const h = loadPracticePage();
+startFull(h);
+byText(h.stage, '제출').click(); // 21회째 (전부 미응답)
+const afterHistory = fullHistory();
+check('21회째에 가장 오래된 것부터 삭제', afterHistory.length === 20 && afterHistory[0].correct === 51 && afterHistory[19].correct === 0 &&
+  afterHistory[18].correct === 69, afterHistory.length + '개, 첫 ' + afterHistory[0].correct + ' / 끝 ' + afterHistory[19].correct);
+h.byId('practice-tab-history').click();
+const fullHistorySection = h.byId('practice-history').querySelector('.practice-full-history');
+const trendCols = fullHistorySection ? fullHistorySection.querySelectorAll('.practice-full-trend-col') : [];
+// 가짜 DOM은 태그 선택자를 지원하지 않아 태그 이름으로 직접 찾는다.
+const byTag = (el, tag) => el ? el.all().filter(e => e.tagName === tag) : [];
+const fullTbody = byTag(fullHistorySection, 'TBODY')[0];
+const fullThead = byTag(fullHistorySection, 'THEAD')[0];
+const fullRows = byTag(fullTbody, 'TR');
+check('기록 표 (날짜/점수/맞은 개수/소요 시간)', fullRows.length === 20 && !!fullThead &&
+  fullThead.textContent === '날짜점수맞은 개수소요 시간' && fullRows[0].textContent.includes('0 / 100'), fullRows.length + '줄, 머리 ' + (fullThead && fullThead.textContent));
+check('점수 추이 막대 20개 (높이 = 점수/495)', trendCols.length === 20 &&
+  trendCols[19].querySelector('.practice-full-trend-bar').getAttribute('style') === 'height: 2%' &&
+  trendCols[18].querySelector('.practice-full-trend-bar').getAttribute('style') === 'height: ' + Math.round(scoreFor(69) / 495 * 100) + '%');
+check('미니 모의고사 기록 표에는 100문항 응시가 없음', h.byId('practice-history').querySelectorAll('.practice-history-scoreTableArr')
+  .filter(tb => !tb.classList.contains('practice-full-history-scoreTableArr')).every(tb => !tb.textContent.includes('/ 100')));
 
 // --- 5. 데이터가 모자라면 오류를 띄우고 세트를 만들지 않는다 ---
 console.log('\n[RC 풀세트 — 데이터 부족]');

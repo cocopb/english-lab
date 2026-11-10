@@ -1062,10 +1062,10 @@ window.PART6 = [
       { w: "facilities manager", m: "시설 관리자" }
     ],
     questions: [
-      { n: 1, choices: ["adopt", "adopts", "adopting", "adopted"], answer: 0, explanation: "조동사 will 뒤에는 동사원형이 온다.", ruleId: "g01" },
-      { n: 2, choices: ["because", "in response to", "although", "despite"], answer: 1, explanation: "빈칸 뒤가 명사(feedback)이므로 전치사가 필요하다. 의견을 반영했다는 뜻이므로 in response to.", ruleId: "g07" },
-      { n: 3, choices: ["The new hours will be posted at the entrance.", "The cafeteria will be closed permanently.", "Employees must bring their own lunch.", "The manager has resigned."], answer: 0, explanation: "문장 삽입 문제다. 앞뒤가 운영 시간 변경 안내이므로 게시 안내가 자연스럽다. 나머지는 문맥과 맞지 않는다.", ruleId: null },
-      { n: 4, choices: ["to", "at", "for", "with"], answer: 0, explanation: "direct A to B(A를 B에게 보내다) 형태다.", ruleId: "g06" }
+      { n: 1, type: "grammar", choices: ["adopt", "adopts", "adopting", "adopted"], answer: 0, explanation: "조동사 will 뒤에는 동사원형이 온다.", ruleId: "g01" },
+      { n: 2, type: "grammar", choices: ["because", "in response to", "although", "despite"], answer: 1, explanation: "빈칸 뒤가 명사(feedback)이므로 전치사가 필요하다. 의견을 반영했다는 뜻이므로 in response to.", ruleId: "g07" },
+      { n: 3, type: "sentence", choices: ["The new hours will be posted at the entrance.", "The cafeteria will be closed permanently.", "Employees must bring their own lunch.", "The manager has resigned."], answer: 0, explanation: "문장 삽입 문제다. 앞뒤가 운영 시간 변경 안내이므로 게시 안내가 자연스럽다. 나머지는 문맥과 맞지 않는다.", ruleId: null },
+      { n: 4, type: "grammar", choices: ["to", "at", "for", "with"], answer: 0, explanation: "direct A to B(A를 B에게 보내다) 형태다.", ruleId: "g06" }
     ]
   },
   {
@@ -1091,10 +1091,10 @@ window.PART6 = [
       { w: "discount", m: "할인" }
     ],
     questions: [
-      { n: 1, choices: ["to ship", "shipper", "was shipped", "shipping"], answer: 2, explanation: "주문품은 발송되는 쪽이므로 수동태다. 빈칸 뒤에 목적어가 없다.", ruleId: "g04" },
-      { n: 2, choices: ["by", "until", "during", "since"], answer: 0, explanation: "금요일 전까지 연락하라는 마감 의미이므로 by.", ruleId: "g06" },
-      { n: 3, choices: ["We are closing our store next month.", "You may also want to subscribe to our newsletter.", "Your refund has been processed.", "Please return the item within 7 days."], answer: 1, explanation: "뒤 문장이 소식지 구독 혜택을 설명하므로 소식지를 언급하는 문장이 앞에 와야 한다.", ruleId: null },
-      { n: 4, choices: ["next", "nearest", "later", "following"], answer: 0, explanation: "'다음 주문'이라는 뜻이므로 next order가 자연스럽다.", ruleId: null }
+      { n: 1, type: "grammar", choices: ["to ship", "shipper", "was shipped", "shipping"], answer: 2, explanation: "주문품은 발송되는 쪽이므로 수동태다. 빈칸 뒤에 목적어가 없다.", ruleId: "g04" },
+      { n: 2, type: "grammar", choices: ["by", "until", "during", "since"], answer: 0, explanation: "금요일 전까지 연락하라는 마감 의미이므로 by.", ruleId: "g06" },
+      { n: 3, type: "sentence", choices: ["We are closing our store next month.", "You may also want to subscribe to our newsletter.", "Your refund has been processed.", "Please return the item within 7 days."], answer: 1, explanation: "뒤 문장이 소식지 구독 혜택을 설명하므로 소식지를 언급하는 문장이 앞에 와야 한다.", ruleId: null },
+      { n: 4, type: "vocab", choices: ["next", "nearest", "later", "following"], answer: 0, explanation: "'다음 주문'이라는 뜻이므로 next order가 자연스럽다.", ruleId: null }
     ]
   },
   {
@@ -1120,10 +1120,10 @@ window.PART6 = [
       { w: "operations team", m: "운영팀" }
     ],
     questions: [
-      { n: 1, choices: ["relocate", "relocates", "relocating", "relocated"], answer: 0, explanation: "조동사 will 뒤에는 동사원형이 온다.", ruleId: "g01" },
-      { n: 2, choices: ["The move will not affect business hours.", "The building will be demolished next year.", "All staff will work remotely from now on.", "The company is closing its Chicago branch."], answer: 0, explanation: "문장 삽입 문제다. 앞뒤가 이전 안내이므로 영업에 영향이 없다는 안내가 자연스럽다. 나머지는 이전 안내와 모순된다.", ruleId: null },
-      { n: 3, choices: ["should", "are", "having", "to be"], answer: 0, explanation: "뒤에 동사원형 be가 오므로 조동사 should가 필요하다.", ruleId: null },
-      { n: 4, choices: ["please", "pleased", "pleasing", "pleasure"], answer: 0, explanation: "명령문 앞의 정중 표현은 please다. 뒤에 동사원형 contact가 온다.", ruleId: "g12" }
+      { n: 1, type: "grammar", choices: ["relocate", "relocates", "relocating", "relocated"], answer: 0, explanation: "조동사 will 뒤에는 동사원형이 온다.", ruleId: "g01" },
+      { n: 2, type: "sentence", choices: ["The move will not affect business hours.", "The building will be demolished next year.", "All staff will work remotely from now on.", "The company is closing its Chicago branch."], answer: 0, explanation: "문장 삽입 문제다. 앞뒤가 이전 안내이므로 영업에 영향이 없다는 안내가 자연스럽다. 나머지는 이전 안내와 모순된다.", ruleId: null },
+      { n: 3, type: "grammar", choices: ["should", "are", "having", "to be"], answer: 0, explanation: "뒤에 동사원형 be가 오므로 조동사 should가 필요하다.", ruleId: null },
+      { n: 4, type: "grammar", choices: ["please", "pleased", "pleasing", "pleasure"], answer: 0, explanation: "명령문 앞의 정중 표현은 please다. 뒤에 동사원형 contact가 온다.", ruleId: "g12" }
     ]
   },
   {
@@ -1149,10 +1149,10 @@ window.PART6 = [
       { w: "replacement", m: "교환품, 대체품" }
     ],
     questions: [
-      { n: 1, choices: ["ship", "shipper", "were shipped", "shipping"], answer: 2, explanation: "제품은 출고되는 쪽이므로 수동태다. 빈칸 뒤에 목적어가 없다.", ruleId: "g04" },
-      { n: 2, choices: ["No injuries have been reported so far.", "The product has been discontinued since 2010.", "Our stores will close permanently next month.", "The kettle won a design award last year."], answer: 0, explanation: "리콜 안내 문맥에서 피해 여부를 알리는 문장이 자연스럽다.", ruleId: null },
-      { n: 3, choices: ["and", "or", "but", "nor"], answer: 1, explanation: "whichever you prefer(둘 중 원하시는 대로)가 뒤에 오므로 선택을 뜻하는 or가 맞다.", ruleId: null },
-      { n: 4, choices: ["inconvenience", "inconvenient", "inconveniently", "inconveniences"], answer: 0, explanation: "the 뒤는 명사 자리다. inconvenience는 셀 수 없는 명사로 쓴다.", ruleId: "g01" }
+      { n: 1, type: "grammar", choices: ["ship", "shipper", "were shipped", "shipping"], answer: 2, explanation: "제품은 출고되는 쪽이므로 수동태다. 빈칸 뒤에 목적어가 없다.", ruleId: "g04" },
+      { n: 2, type: "sentence", choices: ["No injuries have been reported so far.", "The product has been discontinued since 2010.", "Our stores will close permanently next month.", "The kettle won a design award last year."], answer: 0, explanation: "리콜 안내 문맥에서 피해 여부를 알리는 문장이 자연스럽다.", ruleId: null },
+      { n: 3, type: "grammar", choices: ["and", "or", "but", "nor"], answer: 1, explanation: "whichever you prefer(둘 중 원하시는 대로)가 뒤에 오므로 선택을 뜻하는 or가 맞다.", ruleId: null },
+      { n: 4, type: "grammar", choices: ["inconvenience", "inconvenient", "inconveniently", "inconveniences"], answer: 0, explanation: "the 뒤는 명사 자리다. inconvenience는 셀 수 없는 명사로 쓴다.", ruleId: "g01" }
     ]
   },
   {
@@ -1178,10 +1178,10 @@ window.PART6 = [
       { w: "readership", m: "독자층, 독자 수" }
     ],
     questions: [
-      { n: 1, choices: ["expire", "expires", "expired", "expiring"], answer: 1, explanation: "주어 Your subscription이 단수이고 예정된 일을 말하므로 현재형 expires.", ruleId: "g02" },
-      { n: 2, choices: ["by", "until", "during", "since"], answer: 0, explanation: "12월 15일까지 갱신을 끝내라는 마감 의미이므로 by.", ruleId: "g06" },
-      { n: 3, choices: ["fast", "faster", "fastest", "more fast"], answer: 2, explanation: "the와 함께 쓰였으므로 최상급 fastest.", ruleId: "g10" },
-      { n: 4, choices: ["Subscribers who renew early receive a free tote bag.", "Our office will be closed for the holidays.", "The magazine will stop publishing next year.", "Please return the damaged issue to us."], answer: 0, explanation: "갱신을 권하는 문맥이므로 조기 갱신 혜택을 알리는 문장이 자연스럽다.", ruleId: null }
+      { n: 1, type: "grammar", choices: ["expire", "expires", "expired", "expiring"], answer: 1, explanation: "주어 Your subscription이 단수이고 예정된 일을 말하므로 현재형 expires.", ruleId: "g02" },
+      { n: 2, type: "grammar", choices: ["by", "until", "during", "since"], answer: 0, explanation: "12월 15일까지 갱신을 끝내라는 마감 의미이므로 by.", ruleId: "g06" },
+      { n: 3, type: "grammar", choices: ["fast", "faster", "fastest", "more fast"], answer: 2, explanation: "the와 함께 쓰였으므로 최상급 fastest.", ruleId: "g10" },
+      { n: 4, type: "sentence", choices: ["Subscribers who renew early receive a free tote bag.", "Our office will be closed for the holidays.", "The magazine will stop publishing next year.", "Please return the damaged issue to us."], answer: 0, explanation: "갱신을 권하는 문맥이므로 조기 갱신 혜택을 알리는 문장이 자연스럽다.", ruleId: null }
     ]
   },
   {
@@ -1207,10 +1207,10 @@ window.PART6 = [
       { w: "building pass", m: "건물 출입증" }
     ],
     questions: [
-      { n: 1, choices: ["delight", "delighted", "delighting", "delightful"], answer: 1, explanation: "사람이 기쁨을 느끼는 쪽이므로 -ed 형태인 delighted. We are delighted to ~ 는 환영 인사의 정형 표현이다.", ruleId: "g01" },
-      { n: 2, choices: ["Lunch will be provided in the staff lounge.", "You must submit your resignation in advance.", "The orientation has been canceled.", "Parking is not available for employees."], answer: 0, explanation: "첫날 일정을 안내하는 문맥이므로 점심 제공 안내가 자연스럽다.", ruleId: null },
-      { n: 3, choices: ["goal", "goals", "goaled", "goaling"], answer: 1, explanation: "three main 뒤이므로 복수 명사 goals가 와야 한다.", ruleId: "g01" },
-      { n: 4, choices: ["assist", "assistance", "assistant", "assisted"], answer: 1, explanation: "need의 목적어 자리이므로 명사가 필요하다. assistance(도움)는 셀 수 없는 명사, assistant는 사람이다.", ruleId: "g01" }
+      { n: 1, type: "grammar", choices: ["delight", "delighted", "delighting", "delightful"], answer: 1, explanation: "사람이 기쁨을 느끼는 쪽이므로 -ed 형태인 delighted. We are delighted to ~ 는 환영 인사의 정형 표현이다.", ruleId: "g01" },
+      { n: 2, type: "sentence", choices: ["Lunch will be provided in the staff lounge.", "You must submit your resignation in advance.", "The orientation has been canceled.", "Parking is not available for employees."], answer: 0, explanation: "첫날 일정을 안내하는 문맥이므로 점심 제공 안내가 자연스럽다.", ruleId: null },
+      { n: 3, type: "grammar", choices: ["goal", "goals", "goaled", "goaling"], answer: 1, explanation: "three main 뒤이므로 복수 명사 goals가 와야 한다.", ruleId: "g01" },
+      { n: 4, type: "grammar", choices: ["assist", "assistance", "assistant", "assisted"], answer: 1, explanation: "need의 목적어 자리이므로 명사가 필요하다. assistance(도움)는 셀 수 없는 명사, assistant는 사람이다.", ruleId: "g01" }
     ]
   },
   {
@@ -1236,10 +1236,10 @@ window.PART6 = [
       { w: "extension", m: "내선 번호" }
     ],
     questions: [
-      { n: 1, choices: ["among", "through", "along", "across"], answer: 1, explanation: "from A through B는 'A부터 B까지(B 포함)'. 기간을 나타내는 짝 표현이다.", ruleId: "g06" },
-      { n: 2, choices: ["The repairs were completed last year.", "Parking fees will increase in June.", "Signs will be posted at both entrances.", "Please return your badge to the front desk."], answer: 2, explanation: "문장 삽입 문제다. 서쪽 주차장을 쓰라는 안내 뒤에 안내 표지 설치가 자연스럽게 이어진다. 공사는 아직 시작 전이라 '작년에 끝났다'는 시제가 맞지 않고, 요금이나 출입증 이야기는 나오지 않는다.", ruleId: null },
-      { n: 3, choices: ["room", "amount", "number", "size"], answer: 0, explanation: "enough room = 충분한 공간. room은 '공간'이라는 뜻의 불가산명사다.", ruleId: null },
-      { n: 4, choices: ["sincere", "sincerely", "sincerity", "sincerest"], answer: 1, explanation: "동사 apologize를 꾸미므로 부사가 와야 한다.", ruleId: "g01" }
+      { n: 1, type: "grammar", choices: ["among", "through", "along", "across"], answer: 1, explanation: "from A through B는 'A부터 B까지(B 포함)'. 기간을 나타내는 짝 표현이다.", ruleId: "g06" },
+      { n: 2, type: "sentence", choices: ["The repairs were completed last year.", "Parking fees will increase in June.", "Signs will be posted at both entrances.", "Please return your badge to the front desk."], answer: 2, explanation: "문장 삽입 문제다. 서쪽 주차장을 쓰라는 안내 뒤에 안내 표지 설치가 자연스럽게 이어진다. 공사는 아직 시작 전이라 '작년에 끝났다'는 시제가 맞지 않고, 요금이나 출입증 이야기는 나오지 않는다.", ruleId: null },
+      { n: 3, type: "vocab", choices: ["room", "amount", "number", "size"], answer: 0, explanation: "enough room = 충분한 공간. room은 '공간'이라는 뜻의 불가산명사다.", ruleId: null },
+      { n: 4, type: "grammar", choices: ["sincere", "sincerely", "sincerity", "sincerest"], answer: 1, explanation: "동사 apologize를 꾸미므로 부사가 와야 한다.", ruleId: "g01" }
     ]
   },
   {
@@ -1265,10 +1265,10 @@ window.PART6 = [
       { w: "a wider selection", m: "더 다양한 종류" }
     ],
     questions: [
-      { n: 1, choices: ["founding", "founds", "founded", "to found"], answer: 2, explanation: "회사는 '설립되는' 쪽이므로 수동 의미의 과거분사가 와야 한다.", ruleId: "g04" },
-      { n: 2, choices: ["include", "including", "includes", "to include"], answer: 0, explanation: "will seat ... and (will) include. 조동사 will을 공유하는 병렬이라 동사원형이 온다.", ruleId: "g01" },
-      { n: 3, choices: ["The original shop closed in 2014.", "The company plans to reduce its staff.", "Canal Street will be closed to traffic.", "The bakery counter will be the company's first."], answer: 3, explanation: "문장 삽입 문제다. 뒤 문장이 '처음으로 직접 굽는다'로 이어지므로 '첫 베이커리 코너'가 맞다. 2014년은 설립 연도이고, 직원이 60명 이상으로 늘고 있어 감원 이야기도 맞지 않는다.", ruleId: null },
-      { n: 4, choices: ["whose", "who", "which", "whom"], answer: 1, explanation: "뒤에 동사 bought가 바로 오므로 주격 관계대명사다. 선행사가 사람이라 which는 안 된다.", ruleId: "g08" }
+      { n: 1, type: "grammar", choices: ["founding", "founds", "founded", "to found"], answer: 2, explanation: "회사는 '설립되는' 쪽이므로 수동 의미의 과거분사가 와야 한다.", ruleId: "g04" },
+      { n: 2, type: "grammar", choices: ["include", "including", "includes", "to include"], answer: 0, explanation: "will seat ... and (will) include. 조동사 will을 공유하는 병렬이라 동사원형이 온다.", ruleId: "g01" },
+      { n: 3, type: "sentence", choices: ["The original shop closed in 2014.", "The company plans to reduce its staff.", "Canal Street will be closed to traffic.", "The bakery counter will be the company's first."], answer: 3, explanation: "문장 삽입 문제다. 뒤 문장이 '처음으로 직접 굽는다'로 이어지므로 '첫 베이커리 코너'가 맞다. 2014년은 설립 연도이고, 직원이 60명 이상으로 늘고 있어 감원 이야기도 맞지 않는다.", ruleId: null },
+      { n: 4, type: "grammar", choices: ["whose", "who", "which", "whom"], answer: 1, explanation: "뒤에 동사 bought가 바로 오므로 주격 관계대명사다. 선행사가 사람이라 which는 안 된다.", ruleId: "g08" }
     ]
   },
   {
@@ -1294,10 +1294,10 @@ window.PART6 = [
       { w: "assignment", m: "과제" }
     ],
     questions: [
-      { n: 1, choices: ["outcome", "outlook", "outage", "output"], answer: 2, explanation: "outage는 서비스가 중단된 시간을 말한다. 철자가 비슷한 단어들과 구분해야 한다.", ruleId: null },
-      { n: 2, choices: ["The maintenance has been postponed until next month.", "However, the platform will be completely unavailable during those four hours.", "Please register for an account before Saturday.", "Assignments are graded within two business days."], answer: 1, explanation: "문장 삽입 문제다. '저장한 내용은 영향 없다' 다음에 However로 뒤집으며 4시간 중단을 알린다. 1시~5시가 네 시간이라는 점도 근거다. 점검은 이번 토요일이라 연기 이야기는 맞지 않는다.", ruleId: null },
-      { n: 3, choices: ["resolves", "resolving", "resolved", "resolve"], answer: 3, explanation: "will improve ... and (will) resolve. will을 공유하는 병렬이라 동사원형이 온다.", ruleId: "g01" },
-      { n: 4, choices: ["patient", "patience", "patiently", "patientness"], answer: 1, explanation: "your 뒤에는 명사가 온다. Thank you for your patience는 공지문 마무리 관용구다.", ruleId: "g01" }
+      { n: 1, type: "vocab", choices: ["outcome", "outlook", "outage", "output"], answer: 2, explanation: "outage는 서비스가 중단된 시간을 말한다. 철자가 비슷한 단어들과 구분해야 한다.", ruleId: null },
+      { n: 2, type: "sentence", choices: ["The maintenance has been postponed until next month.", "However, the platform will be completely unavailable during those four hours.", "Please register for an account before Saturday.", "Assignments are graded within two business days."], answer: 1, explanation: "문장 삽입 문제다. '저장한 내용은 영향 없다' 다음에 However로 뒤집으며 4시간 중단을 알린다. 1시~5시가 네 시간이라는 점도 근거다. 점검은 이번 토요일이라 연기 이야기는 맞지 않는다.", ruleId: null },
+      { n: 3, type: "grammar", choices: ["resolves", "resolving", "resolved", "resolve"], answer: 3, explanation: "will improve ... and (will) resolve. will을 공유하는 병렬이라 동사원형이 온다.", ruleId: "g01" },
+      { n: 4, type: "grammar", choices: ["patient", "patience", "patiently", "patientness"], answer: 1, explanation: "your 뒤에는 명사가 온다. Thank you for your patience는 공지문 마무리 관용구다.", ruleId: "g01" }
     ]
   },
   {
@@ -1323,10 +1323,10 @@ window.PART6 = [
       { w: "reserve", m: "일정을 잡아 두다" }
     ],
     questions: [
-      { n: 1, choices: ["invite", "inviting", "invited", "invitation"], answer: 0, explanation: "would like to 뒤에는 동사원형이 온다.", ruleId: "g05" },
-      { n: 2, choices: ["conform", "confirm", "confine", "consume"], answer: 1, explanation: "confirm은 '확정하다, 확인해 주다'. 철자가 비슷한 단어와 구분해야 한다.", ruleId: null },
-      { n: 3, choices: ["We have already filled the position.", "Your first day will be September 9.", "If that date is not convenient, we can suggest another.", "Please send two letters of reference by Monday."], answer: 2, explanation: "문장 삽입 문제다. 날짜 확정 요청 바로 뒤에 '안 되면 다른 날짜'를 제안하는 것이 자연스럽다. 면접을 제안하는 메일이라 '이미 채용했다'는 모순이고, 9월 9일은 면접일이며, 뒤에서 미리 준비할 것이 없다고 했다.", ruleId: null },
-      { n: 4, choices: ["advanced", "advancing", "advance", "advancement"], answer: 2, explanation: "in advance = 미리. 굳어진 전치사구다.", ruleId: null }
+      { n: 1, type: "grammar", choices: ["invite", "inviting", "invited", "invitation"], answer: 0, explanation: "would like to 뒤에는 동사원형이 온다.", ruleId: "g05" },
+      { n: 2, type: "vocab", choices: ["conform", "confirm", "confine", "consume"], answer: 1, explanation: "confirm은 '확정하다, 확인해 주다'. 철자가 비슷한 단어와 구분해야 한다.", ruleId: null },
+      { n: 3, type: "sentence", choices: ["We have already filled the position.", "Your first day will be September 9.", "If that date is not convenient, we can suggest another.", "Please send two letters of reference by Monday."], answer: 2, explanation: "문장 삽입 문제다. 날짜 확정 요청 바로 뒤에 '안 되면 다른 날짜'를 제안하는 것이 자연스럽다. 면접을 제안하는 메일이라 '이미 채용했다'는 모순이고, 9월 9일은 면접일이며, 뒤에서 미리 준비할 것이 없다고 했다.", ruleId: null },
+      { n: 4, type: "vocab", choices: ["advanced", "advancing", "advance", "advancement"], answer: 2, explanation: "in advance = 미리. 굳어진 전치사구다.", ruleId: null }
     ]
   }
 ];

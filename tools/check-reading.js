@@ -154,6 +154,15 @@ part6.forEach(function (set, index) {
     if (typeof question.explanation !== "string" || !question.explanation.trim()) {
       failures.invalidPart6.push({ id: label, question: question.n, reason: "해설 없음" });
     }
+    // type: 풀세트 채점의 Part 6 유형별 정답률에 쓴다. 문장 선택지 ⇔ sentence, ruleId가 있으면 grammar.
+    var isSentenceChoice = (question.choices || []).every(function (choice) { return /[.!?]$/.test(String(choice).trim()); });
+    if (["grammar", "vocab", "sentence"].indexOf(question.type) === -1) {
+      failures.invalidPart6.push({ id: label, question: question.n, reason: "type은 grammar/vocab/sentence 중 하나", type: question.type });
+    } else if ((question.type === "sentence") !== isSentenceChoice) {
+      failures.invalidPart6.push({ id: label, question: question.n, reason: "문장 선택지 여부와 type 불일치", type: question.type });
+    } else if (question.ruleId && question.type !== "grammar") {
+      failures.invalidPart6.push({ id: label, question: question.n, reason: "ruleId가 있는데 type이 grammar가 아님", type: question.type });
+    }
   });
 });
 
@@ -237,7 +246,8 @@ FakeElement.prototype.querySelectorAll = function (selector) {
 };
 FakeElement.prototype.querySelector = function (selector) { return this.querySelectorAll(selector)[0] || null; };
 
-function runReadingPage() {
+// hash를 주면 그 주소(#reading-strategy-r03 등)로 연 페이지의 document를 돌려준다.
+function runReadingPage(hash) {
   var body = new FakeElement("body");
   ["reading-strategy-list", "reading-expand-toggle", "reading-passage-select", "reading-exercise", "reading-review-list",
     "reading-open-passage", "reading-panel-strategy", "reading-panel-passages", "reading-panel-review"].forEach(function (id) {
@@ -261,6 +271,7 @@ function runReadingPage() {
   };
   var window = {
     document: document,
+    location: { hash: hash || "" },
     addEventListener: function () {},
     setInterval: function () { return 1; },
     clearInterval: function () {},
@@ -272,6 +283,7 @@ function runReadingPage() {
     vm.runInContext(fs.readFileSync(filePath, "utf8"), context, { filename: filePath });
   });
   ready();
+  if (hash) return document;
 
   var renderFailures = [];
   var strategyCount = document.getElementById("reading-strategy-list").querySelectorAll(".reading-strategy").length;
@@ -317,6 +329,21 @@ try {
   renderFailures = runReadingPage();
 } catch (error) {
   renderFailures = [{ reason: "실행 오류", message: error.message }];
+}
+// 실전 채점 화면의 "전략 보기" 링크: 해당 전략만 펼쳐진 채로 열려야 한다.
+try {
+  strategies.forEach(function (strategy) {
+    var linked = runReadingPage("#reading-strategy-" + strategy.id);
+    var openIds = strategies.filter(function (other) {
+      var panel = linked.getElementById("reading-strategy-panel-" + other.id);
+      return panel && !panel.hidden;
+    }).map(function (other) { return other.id; });
+    if (openIds.join(",") !== strategy.id) renderFailures.push({ reason: "전략 링크로 열기", hash: "#reading-strategy-" + strategy.id, open: openIds });
+  });
+  console.log("  전략 링크(#reading-strategy-r01~r0" + strategies.length + "): 해당 전략만 펼쳐짐 → " +
+    (renderFailures.some(function (f) { return f.reason === "전략 링크로 열기"; }) ? "실패" : "OK"));
+} catch (error) {
+  renderFailures.push({ reason: "전략 링크 검사 오류", message: error.message });
 }
 console.log("renderFailures (" + renderFailures.length + ")");
 renderFailures.forEach(function (failure) { console.log("  " + JSON.stringify(failure)); });

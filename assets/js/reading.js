@@ -444,5 +444,18 @@
       });
     });
     window.addEventListener("beforeunload", stopTimer);
+
+    // 실전 채점 화면의 "독해 전략 보기" 링크(#reading-strategy-r03 등)로 들어오면 그 전략을 펼쳐 보여 준다.
+    var strategyHash = /^#reading-strategy-(r\d+)$/.exec((window.location && window.location.hash) || "");
+    if (strategyHash) {
+      var targetArticle = document.getElementById("reading-strategy-" + strategyHash[1]);
+      var targetTrigger = strategyList.querySelector('[aria-controls="reading-strategy-panel-' + strategyHash[1] + '"]');
+      var targetPanel = document.getElementById("reading-strategy-panel-" + strategyHash[1]);
+      if (targetArticle && targetTrigger && targetPanel) {
+        showTab("strategy");
+        setStrategyExpanded(strategyHash[1], targetTrigger, targetPanel, true);
+        if (targetArticle.scrollIntoView) targetArticle.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
   });
 }());

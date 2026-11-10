@@ -34,7 +34,36 @@
   };
   var FULL_SAVE_KEY = "englishLabFullSetSave"; // 학습 기록(englishLabProgress)과 별도 키
   var FULL_SAVE_EVERY_TICKS = 10; // 답을 고르지 않고 있어도 10초마다 남은 시간을 저장
-  var FULL_MAX_TICK_SEC = 5; // 화면이 멈췄다 돌아온 틈(폰 잠김 등)은 남은 시간에서 깎지 않는다
+  // 풀세트에서 화면을 떠났을 때: 2분 이내로 돌아오면 흐른 시간을 그대로 깎고(실제 시험처럼),
+  // 2분을 넘기면 시험을 중단 처리하고 떠나기 직전의 남은 시간으로 이어서 풀게 한다.
+  var FULL_AWAY_LIMIT_SEC = 2 * 60;
+  var FULL_HISTORY_KEY = "englishLabFullSetHistory"; // 미니 모의고사 기록(practiceStats)과 섞지 않는다
+  var FULL_HISTORY_LIMIT = 20;
+  // 풀세트 전용 환산표: 맞은 개수(0~100) → RC 495점 기준 예상 점수. 15개 이하는 5점.
+  var FULL_SCORE_TABLE = (function () {
+    var fromTop = [ // 100개부터 16개까지
+      495, 495, 490, 485, 480, 475, 470, 465, 460, 455,
+      450, 445, 435, 430, 425, 415, 410, 405, 395, 390,
+      385, 375, 370, 365, 355, 350, 340, 335, 330, 320,
+      315, 310, 300, 295, 290, 280, 275, 270, 260, 255,
+      250, 240, 235, 230, 220, 215, 210, 200, 195, 190,
+      180, 175, 170, 160, 155, 150, 140, 135, 130, 125,
+      115, 110, 105, 100, 95, 90, 85, 80, 75, 70,
+      65, 60, 55, 50, 45, 40, 35, 30, 25, 20,
+      15, 15, 10, 10, 5
+    ];
+    var table = [];
+    for (var correct = 0; correct <= 100; correct += 1) table[correct] = correct >= 16 ? fromTop[100 - correct] : 5;
+    return table;
+  }());
+  // 범위를 벗어나거나 숫자가 아닌 값도 0~100으로 맞춰서 점수를 돌려준다.
+  function fullSetScore(correct) {
+    var count = Math.round(Number(correct));
+    if (!isFinite(count)) count = 0;
+    return FULL_SCORE_TABLE[Math.min(100, Math.max(0, count))];
+  }
+  window.PracticeFullSet = { scoreFor: fullSetScore, scoreTable: FULL_SCORE_TABLE.slice() };
+  var PART6_TYPE_LABELS = { grammar: "문법", vocab: "어휘", sentence: "문장 삽입" };
   var SECTION_LABELS = { p5: "Part 5", p6: "Part 6", p7: "Part 7", p7s: "Part 7 단일", p7d: "Part 7 이중", p7t: "Part 7 삼중" };
 
   document.addEventListener("DOMContentLoaded", function () {
@@ -105,7 +134,7 @@
       var group = { kind: "p6", set: set, numbers: {} };
       return set.questions.slice(0, limit).map(function (question) {
         return {
-          part: "p6", blank: question.n, choices: question.choices, answer: question.answer,
+          part: "p6", blank: question.n, type: question.type || null, choices: question.choices, answer: question.answer,
           explanation: question.explanation, ruleId: question.ruleId || null, group: group
         };
       });
@@ -348,6 +377,10 @@
           typeof saved.startedAt === "number";
         if (!valid) throw new Error("형식이 맞지 않음");
         saved.items = assembleFullSet(plan); // 데이터가 바뀌어 세트를 다시 만들 수 없어도 깨진 저장으로 본다
+        // 페이지를 닫았다 다시 연 경우도 화면 이탈과 같은 규칙: 2분 이내면 흐른 시간을 깎고, 넘으면 중단으로 본다.
+        var away = typeof saved.savedAt === "number" ? (Date.now() - saved.savedAt) / 1000 : Infinity;
+        saved.interrupted = !(away >= 0 && away <= FULL_AWAY_LIMIT_SEC);
+        if (!saved.interrupted) saved.remainingSec = Math.max(1, saved.remainingSec - away);
         return saved;
       } catch (error) {
         console.warn("저장된 RC 풀세트가 깨져 있어 지우고 새로 시작합니다.", error.message);
@@ -378,6 +411,83 @@
         localStorage.removeItem(FULL_SAVE_KEY);
       } catch (error) {
         console.warn("저장된 RC 풀세트를 지우지 못했습니다.", error);
+      }
+    }
+
+    // ---------- RC 풀세트 분석 ----------
+
+    function rate(correct, total) {
+      return { correct: correct, total: total, percent: percent(correct, total) };
+    }
+
+    // 정답률이 낮은 순 → 문항이 많은 순 → id 순
+    function byWeakness(a, b) {
+      return a.percent - b.percent || b.total - a.total || String(a.id).localeCompare(String(b.id));
+    }
+
+    function analyzeFullSet(items, answers) {
+      var sections = {}, rules = {}, p6Types = {}, strategies = {};
+      function bump(map, id, isCorrect) {
+        map[id] = map[id] || { id: id, correct: 0, total: 0 };
+        map[id].total += 1;
+        if (isCorrect) map[id].correct += 1;
+      }
+      items.forEach(function (item, index) {
+        var isCorrect = answers[index] === item.answer;
+        bump(sections, item.section || item.part, isCorrect);
+        if (item.part === "p5" && item.ruleId) bump(rules, item.ruleId, isCorrect);
+        if (item.part === "p6") bump(p6Types, item.type || "grammar", isCorrect);
+        if (item.part === "p7") bump(strategies, item.group.passage.strategyId || "기타", isCorrect);
+      });
+      function list(map) {
+        return Object.keys(map).map(function (id) { return Object.assign({ id: id }, rate(map[id].correct, map[id].total)); });
+      }
+      return {
+        sections: ["p5", "p6", "p7s", "p7d", "p7t"].map(function (id) {
+          return Object.assign({ id: id }, rate(sections[id] ? sections[id].correct : 0, sections[id] ? sections[id].total : 0));
+        }),
+        weakRules: list(rules).sort(byWeakness).slice(0, 3),
+        p6Types: ["grammar", "vocab", "sentence"].map(function (id) {
+          return Object.assign({ id: id }, rate(p6Types[id] ? p6Types[id].correct : 0, p6Types[id] ? p6Types[id].total : 0));
+        }),
+        strategies: list(strategies).sort(byWeakness)
+      };
+    }
+
+    // ---------- RC 풀세트 응시 기록 (최근 20회, 미니 모의고사와 별도 키) ----------
+
+    function readFullHistory() {
+      try {
+        var parsed = JSON.parse(localStorage.getItem(FULL_HISTORY_KEY) || "[]");
+        if (!Array.isArray(parsed)) throw new Error("배열이 아님");
+        return parsed.filter(function (entry) {
+          return entry && typeof entry.date === "string" && !Number.isNaN(Date.parse(entry.date)) &&
+            Number.isInteger(entry.correct) && Number.isInteger(entry.score) && entry.sections && typeof entry.sections === "object";
+        }).slice(-FULL_HISTORY_LIMIT);
+      } catch (error) {
+        console.warn("RC 풀세트 기록이 깨져 있어 지웁니다.", error.message);
+        try { localStorage.removeItem(FULL_HISTORY_KEY); } catch (removeError) { /* 무시 */ }
+        return [];
+      }
+    }
+
+    function recordFullHistory(result) {
+      var sections = {};
+      result.analysis.sections.forEach(function (section) { sections[section.id] = { correct: section.correct, total: section.total }; });
+      var history = readFullHistory();
+      history.push({
+        date: new Date().toISOString(),
+        correct: result.correct,
+        total: result.total,
+        score: result.score,
+        elapsedSec: result.elapsedSec,
+        timedOut: result.timedOut,
+        sections: sections
+      });
+      try {
+        localStorage.setItem(FULL_HISTORY_KEY, JSON.stringify(history.slice(-FULL_HISTORY_LIMIT)));
+      } catch (error) {
+        console.warn("RC 풀세트 기록을 저장하지 못했습니다.", error);
       }
     }
 
@@ -503,12 +613,20 @@
     }
 
     // 풀세트 첫 화면: 저장된 세트가 있으면 이어서 풀기 / 새로 시작을 고른다.
-    function renderFullIntro() {
+    // notice: 시험이 중단되어 이 화면으로 왔을 때 보여 줄 안내 (버튼 클릭으로 부르면 이벤트 객체가 오므로 문자열만 쓴다).
+    function renderFullIntro(notice) {
       preparedItems = null;
       var saved = readFullSave();
       var intro = element("div", "panel practice-intro practice-full-intro");
       if (saved) {
         var answered = saved.answers.filter(function (answer) { return answer !== null; }).length;
+        var message = typeof notice === "string" ? notice
+          : saved.interrupted ? "시험이 중단되었습니다. 남은 시간 " + formatTime(saved.remainingSec) + "부터 이어서 풀 수 있습니다." : "";
+        if (message) {
+          var noticeBox = element("p", "practice-suspended-notice", message);
+          noticeBox.setAttribute("role", "status");
+          intro.appendChild(noticeBox);
+        }
         intro.append(
           element("h3", "", "진행 중인 RC 풀세트가 있어요"),
           element("p", "", "푼 문제 " + answered + " / " + FULL_SET.total + " · 남은 시간 " + formatTime(saved.remainingSec) +
@@ -594,6 +712,8 @@
         endsAt: now + config.seconds * 1000,
         remainingSec: resumed ? saved.remainingSec : config.seconds,
         lastTick: now,
+        hiddenAt: null,
+        remainingAtHide: null,
         ticksSinceSave: 0,
         alertTicks: 0,
         timerHandle: null,
@@ -641,13 +761,49 @@
       return Math.max(0, Math.ceil((exam.endsAt - Date.now()) / 1000));
     }
 
-    // 풀세트: 지난 틱 이후 흐른 시간만큼 깎되, 화면이 멈췄던 긴 틈(폰 잠김·다른 앱)은 깎지 않는다.
+    // 풀세트: 지난 틱 이후 흐른 실제 시간만큼 깎는다. 틱 사이가 2분을 넘으면(화면 숨김 알림 없이
+    // 브라우저가 멈췄다 깨어난 경우) 그 직전 남은 시간으로 중단 처리한다. 중단했으면 true.
     function tickFullSet() {
       var now = Date.now();
       var delta = (now - exam.lastTick) / 1000;
       exam.lastTick = now;
-      var hidden = typeof document.hidden === "boolean" && document.hidden;
-      if (!hidden && delta > 0) exam.remainingSec = Math.max(0, exam.remainingSec - Math.min(delta, FULL_MAX_TICK_SEC));
+      if (exam.hiddenAt !== null) return false; // 숨겨진 동안은 돌아왔을 때 한꺼번에 계산한다
+      if (delta > FULL_AWAY_LIMIT_SEC) {
+        suspendFullSet(exam.remainingSec);
+        return true;
+      }
+      if (delta > 0) exam.remainingSec = Math.max(0, exam.remainingSec - delta);
+      return false;
+    }
+
+    // 2분 넘게 떠났다 돌아옴: 떠나기 직전의 남은 시간으로 저장하고 이어서 풀기 화면으로 보낸다.
+    function suspendFullSet(remaining) {
+      exam.remainingSec = remaining;
+      writeFullSave();
+      stopTimer();
+      exam = null;
+      renderFullIntro("시험이 중단되었습니다. 남은 시간 " + formatTime(remaining) + "부터 이어서 풀 수 있습니다.");
+    }
+
+    function handleVisibilityChange() {
+      if (!exam || exam.submitted || exam.config.mode !== "full") return;
+      if (document.hidden) {
+        exam.hiddenAt = Date.now();
+        exam.remainingAtHide = exam.remainingSec;
+        writeFullSave();
+        return;
+      }
+      if (exam.hiddenAt === null) return;
+      var away = (Date.now() - exam.hiddenAt) / 1000;
+      exam.hiddenAt = null;
+      exam.lastTick = Date.now();
+      if (away > FULL_AWAY_LIMIT_SEC) {
+        suspendFullSet(exam.remainingAtHide);
+        return;
+      }
+      exam.remainingSec = Math.max(0, exam.remainingAtHide - Math.max(0, away)); // 짧은 이탈은 그대로 깎는다
+      writeFullSave();
+      updateTimer();
     }
 
     function showTimeAlert(text) {
@@ -661,7 +817,7 @@
       if (!exam || exam.submitted) return;
       var config = exam.config;
       var before = remainingSeconds();
-      if (config.mode === "full") tickFullSet();
+      if (config.mode === "full" && tickFullSet()) return;
       var remaining = remainingSeconds();
       exam.timeOutput.textContent = formatTime(remaining);
       exam.timerBar.classList.toggle("is-warning", remaining <= config.warnSec && remaining > config.dangerSec);
@@ -813,10 +969,24 @@
         correct: correct, total: exam.items.length, elapsedSec: elapsedSec, timedOut: timedOut,
         partScores: scores, partTotals: totals, ruleAnswers: ruleAnswers
       };
-      try {
-        window.Progress.recordPracticeAttempt(result);
-      } catch (error) {
-        console.warn("모의고사 기록을 저장하지 못했습니다.", error);
+      if (exam.config.mode === "full") {
+        // 풀세트는 미니 모의고사 기록(practiceStats)과 따로 보관한다. 문법 유형 통계(grammarStats)에는 똑같이 반영한다.
+        result.score = fullSetScore(correct);
+        result.analysis = analyzeFullSet(exam.items, exam.answers);
+        ruleAnswers.forEach(function (entry) {
+          try {
+            window.Progress.recordGrammarAnswer(entry.ruleId, entry.correct);
+          } catch (error) {
+            console.warn("문법 기록을 저장하지 못했습니다.", error);
+          }
+        });
+        recordFullHistory(result);
+      } else {
+        try {
+          window.Progress.recordPracticeAttempt(result);
+        } catch (error) {
+          console.warn("모의고사 기록을 저장하지 못했습니다.", error);
+        }
       }
       renderResult(result, misses);
       renderHistory();
@@ -828,13 +998,18 @@
     }
 
     function renderResult(result, misses) {
+      var config = exam.config;
       var card = element("section", "panel practice-result");
       card.setAttribute("aria-live", "polite");
       card.append(
-        element("p", "eyebrow", exam.config.mode === "full" ? "RC FULL SET RESULT" : "MOCK TEST RESULT"),
+        element("p", "eyebrow", config.mode === "full" ? "RC FULL SET RESULT" : "MOCK TEST RESULT"),
         element("h3", "practice-result-score", "총점 " + result.correct + " / " + result.total),
         element("p", "practice-result-rate", "정답률 " + percent(result.correct, result.total) + "%")
       );
+      if (config.mode === "full") {
+        renderFullResult(card, result, misses, config);
+        return;
+      }
 
       var band = element("div", "practice-band");
       band.append(
@@ -882,13 +1057,235 @@
 
       var actions = element("div", "practice-result-actions");
       actions.append(
-        button("button button-primary", "다시 응시", exam.config.mode === "full" ? renderFullIntro : startExam),
+        button("button button-primary", "다시 응시", startExam),
         button("button button-quiet", "기록 보기", function () { showTab("history"); }),
         button("button button-quiet", "모드 선택", renderModeSelect)
       );
       card.appendChild(actions);
       mockStage.replaceChildren(card);
       if (card.scrollIntoView) card.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    // ---------- RC 풀세트 채점 화면 ----------
+
+    // 막대 한 줄: 이름 · 막대 · "맞은 개수 / 문항 수 (NN%)"
+    function statRow(label, stat, extra) {
+      var row = element("div", "practice-stat-row");
+      row.dataset.id = stat.id;
+      row.dataset.correct = String(stat.correct);
+      row.dataset.total = String(stat.total);
+      var bar = element("span", "practice-stat-bar");
+      var fill = element("span", "practice-stat-fill");
+      fill.setAttribute("style", "width: " + (stat.total ? stat.percent : 0) + "%");
+      bar.appendChild(fill);
+      row.append(
+        element("span", "practice-stat-label", label),
+        bar,
+        element("span", "practice-stat-value", stat.total ? stat.correct + " / " + stat.total + " (" + stat.percent + "%)" : "출제 없음")
+      );
+      if (extra) row.appendChild(extra);
+      return row;
+    }
+
+    function statSection(className, title, note) {
+      var section = element("section", "practice-analysis " + className);
+      section.appendChild(element("h4", "", title));
+      if (note) section.appendChild(element("p", "practice-analysis-note", note));
+      return section;
+    }
+
+    function strategyLink(strategyId) {
+      var strategy = (window.READING_STRATEGY || []).find(function (entry) { return entry.id === strategyId; });
+      if (!strategy) return null;
+      var link = element("a", "grammar-note-link", "📗 " + strategy.title + " 전략 보기");
+      link.href = "reading.html#reading-strategy-" + strategyId;
+      return link;
+    }
+
+    var lastFullResult = null; // 오답 복습에서 채점 화면으로 돌아올 때 쓴다
+
+    function renderFullResult(card, result, misses, config) {
+      lastFullResult = { result: result, misses: misses, config: config };
+      var analysis = result.analysis;
+      var score = element("div", "practice-band practice-full-score");
+      score.append(
+        element("strong", "practice-band-value", "예상 RC 점수 약 " + result.score + "점"),
+        element("p", "practice-band-note", "실제 시험은 회차마다 난이도 보정이 달라 ±25점 정도 차이가 날 수 있습니다")
+      );
+      card.appendChild(score);
+      card.appendChild(element("p", "practice-result-time" + (result.timedOut ? " is-timeout" : ""),
+        "소요 시간 " + formatTime(result.elapsedSec) + " / 제한 " + formatTime(config.seconds) + " · " +
+        (result.timedOut ? "시간 초과로 자동 제출됐어요." : "제한 시간 안에 제출했어요.")));
+
+      // (a) 파트별 정답률
+      var sections = statSection("practice-analysis-sections", "파트별 정답률");
+      analysis.sections.forEach(function (stat) { sections.appendChild(statRow(SECTION_LABELS[stat.id], stat)); });
+      card.appendChild(sections);
+
+      // (b) Part 5 약한 문법 유형 (이번 시험 기준, 낮은 순 3개)
+      var rules = statSection("practice-analysis-rules", "Part 5 약한 문법 유형", "이번 시험에서 정답률이 낮은 순서예요. 노트로 바로 복습할 수 있어요.");
+      analysis.weakRules.forEach(function (stat) {
+        var topic = topicById[stat.id];
+        rules.appendChild(statRow(topic ? topic.title : stat.id, stat, noteLink(stat.id)));
+      });
+      card.appendChild(rules);
+
+      // (c) Part 6 유형별 정답률
+      var p6 = statSection("practice-analysis-p6", "Part 6 유형별 정답률");
+      analysis.p6Types.forEach(function (stat) { p6.appendChild(statRow(PART6_TYPE_LABELS[stat.id], stat)); });
+      card.appendChild(p6);
+
+      // (d) Part 7 약한 지문 유형 (독해 전략별, 낮은 순)
+      var p7 = statSection("practice-analysis-p7", "Part 7 지문 유형별 정답률", "정답률이 낮은 순서예요.");
+      analysis.strategies.forEach(function (stat) {
+        var strategy = (window.READING_STRATEGY || []).find(function (entry) { return entry.id === stat.id; });
+        p7.appendChild(statRow(strategy ? strategy.title : stat.id, stat, strategyLink(stat.id)));
+      });
+      card.appendChild(p7);
+
+      var actions = element("div", "practice-result-actions");
+      var review = button("button button-primary", misses.length ? "오답 복습 (" + misses.length + "문항)" : "오답 없음", function () { renderFullReview(); });
+      review.disabled = !misses.length;
+      actions.append(
+        review,
+        button("button button-quiet", "다시 응시", renderFullIntro),
+        button("button button-quiet", "기록 보기", function () { showTab("history"); }),
+        button("button button-quiet", "모드 선택", renderModeSelect)
+      );
+      card.appendChild(actions);
+      mockStage.replaceChildren(card);
+      if (card.scrollIntoView) card.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    // ---------- RC 풀세트 오답 복습 ----------
+
+    // 복습용 Part 7 지문: 문장마다 해석을 붙여 두고 토글로 연다.
+    function renderPart7Review(passage) {
+      var box = element("div", "practice-passage");
+      box.appendChild(element("p", "reading-passage-type", passage.type + " · " + passage.title));
+      var parts = Array.isArray(passage.parts) && passage.parts.length
+        ? passage.parts
+        : [{ header: passage.header, sentences: passage.sentences }];
+      parts.forEach(function (part, partIndex) {
+        var container = box;
+        if (part.label) {
+          container = element("section", "reading-passage-part");
+          if (partIndex > 0) container.classList.add("has-divider");
+          container.appendChild(element("p", "reading-part-label", part.label));
+          box.appendChild(container);
+        }
+        if (Array.isArray(part.header) && part.header.length) {
+          var header = element("div", "reading-passage-header en");
+          part.header.forEach(function (line) { header.appendChild(element("p", "", line)); });
+          container.appendChild(header);
+        }
+        var body = element("div", "reading-sentences");
+        (part.sentences || []).forEach(function (line) {
+          body.appendChild(element("p", "practice-sentence en", line.en));
+          if (line.ko) {
+            var ko = element("p", "practice-review-ko", line.ko);
+            ko.hidden = true;
+            body.appendChild(ko);
+          }
+        });
+        container.appendChild(body);
+      });
+      return box;
+    }
+
+    function translationToggle(container) {
+      var toggle = button("button button-quiet practice-review-translate", "📖 해석 보기", function () {
+        var show = toggle.getAttribute("aria-expanded") !== "true";
+        container.querySelectorAll(".practice-review-ko").forEach(function (node) { node.hidden = !show; });
+        toggle.textContent = show ? "해석 숨기기" : "📖 해석 보기";
+        toggle.setAttribute("aria-expanded", String(show));
+      });
+      toggle.setAttribute("aria-expanded", "false");
+      return toggle;
+    }
+
+    function missDetail(miss) {
+      var item = miss.item;
+      var entry = element("div", "practice-review-miss");
+      entry.dataset.number = String(item.number);
+      entry.append(
+        element("p", "practice-miss-meta", item.number + "번 · " + SECTION_LABELS[item.section || item.part]),
+        element("p", "practice-miss-question" + (item.part === "p6" ? "" : " en"),
+          item.part === "p6" ? "빈칸 (" + item.number + ")" : item.prompt),
+        element("p", "practice-miss-answer", "내 답: " + (miss.answer === null ? "미응답" : "(" + letter(miss.answer) + ") " + item.choices[miss.answer])),
+        element("p", "practice-miss-answer is-correct", "정답: (" + letter(item.answer) + ") " + item.choices[item.answer]),
+        element("p", "practice-review-explanation", item.explanation)
+      );
+      var link = item.ruleId ? noteLink(item.ruleId) : null;
+      if (link) entry.appendChild(link);
+      return entry;
+    }
+
+    // 오답을 지문·세트 단위로 묶어 보여 준다. 같은 지문은 한 번만 싣는다.
+    function renderFullReview() {
+      if (!lastFullResult) return;
+      var misses = lastFullResult.misses;
+      var groups = [];
+      var byKey = {};
+      misses.forEach(function (miss) {
+        var item = miss.item;
+        var key = item.part === "p5" ? "p5:" + item.number : item.part === "p6" ? "p6:" + item.group.set.id : "p7:" + item.group.passage.id;
+        if (!byKey[key]) {
+          byKey[key] = { key: key, item: item, misses: [] };
+          groups.push(byKey[key]);
+        }
+        byKey[key].misses.push(miss);
+      });
+      var view = element("section", "panel practice-review");
+      view.append(
+        element("p", "eyebrow", "WRONG ANSWER REVIEW"),
+        element("h3", "", "오답 복습 · " + misses.length + "문항"),
+        element("p", "practice-analysis-note", "지문은 한 번씩만 싣고, 그 지문에서 틀린 문항을 모아 보여 줘요. 이제 복습이니 해석과 어휘도 볼 수 있어요.")
+      );
+      var back = button("button button-quiet", "← 채점 결과로", function () {
+        var card = element("section", "panel practice-result");
+        card.append(
+          element("p", "eyebrow", "RC FULL SET RESULT"),
+          element("h3", "practice-result-score", "총점 " + lastFullResult.result.correct + " / " + lastFullResult.result.total),
+          element("p", "practice-result-rate", "정답률 " + percent(lastFullResult.result.correct, lastFullResult.result.total) + "%")
+        );
+        renderFullResult(card, lastFullResult.result, lastFullResult.misses, lastFullResult.config);
+      });
+      view.appendChild(back);
+      groups.forEach(function (group) {
+        var item = group.item;
+        var article = element("article", "practice-review-group");
+        article.dataset.group = group.key;
+        if (item.part === "p5") {
+          article.appendChild(missDetail(group.misses[0]));
+        } else if (item.part === "p6") {
+          var set = item.group.set;
+          article.appendChild(element("p", "practice-review-title", "Part 6 · " + set.title + " · 틀린 빈칸 " +
+            group.misses.map(function (miss) { return "(" + miss.item.number + ")"; }).join(" ")));
+          article.appendChild(renderPart6Text(set, item.group.numbers, null));
+          var vocab6 = renderVocab(set.vocab);
+          if (vocab6) article.appendChild(vocab6);
+          if (set.ko) {
+            var ko6 = element("p", "practice-review-ko practice-translation", set.ko);
+            ko6.hidden = true;
+            article.append(translationToggle(article), ko6);
+          }
+          group.misses.forEach(function (miss) { article.appendChild(missDetail(miss)); });
+        } else {
+          var passage = item.group.passage;
+          article.appendChild(element("p", "practice-review-title", SECTION_LABELS[item.section || item.part] + " · " + passage.title + " · 틀린 문항 " +
+            group.misses.map(function (miss) { return miss.item.number + "번"; }).join(", ")));
+          article.appendChild(renderPart7Review(passage));
+          var vocab7 = renderVocab(passage.vocab);
+          if (vocab7) article.appendChild(vocab7);
+          article.appendChild(translationToggle(article));
+          group.misses.forEach(function (miss) { article.appendChild(missDetail(miss)); });
+        }
+        view.appendChild(article);
+      });
+      view.appendChild(button("button button-quiet", "← 채점 결과로", function () { back.click(); }));
+      mockStage.replaceChildren(view);
+      if (view.scrollIntoView) view.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
     // ---------- 파트별 연습 (즉시 채점) ----------
@@ -1000,11 +1397,64 @@
         String(date.getHours()).padStart(2, "0") + ":" + String(date.getMinutes()).padStart(2, "0");
     }
 
+    // RC 풀세트 기록: 점수 추이 막대 + 표 (최근 20회). 미니 모의고사 기록 아래에 따로 그린다.
+    function renderFullHistory() {
+      var history = readFullHistory();
+      if (!history.length) return;
+      var section = element("section", "panel practice-full-history");
+      section.appendChild(element("h3", "", "RC 풀세트 기록 (최근 " + history.length + "회)"));
+      section.appendChild(element("p", "practice-trend-note", "예상 RC 점수 추이 · 오래된 순 → 최신 순 (495점 만점)"));
+      var chart = element("div", "practice-full-trend");
+      chart.setAttribute("role", "img");
+      chart.setAttribute("aria-label", "예상 RC 점수 추이: " + history.map(function (entry) { return entry.score + "점"; }).join(", "));
+      history.forEach(function (entry) {
+        var column = element("div", "practice-full-trend-col");
+        var track = element("span", "practice-full-trend-track");
+        var bar = element("span", "practice-full-trend-bar");
+        bar.setAttribute("style", "height: " + Math.max(2, Math.round(entry.score / 495 * 100)) + "%");
+        track.appendChild(bar);
+        var date = new Date(entry.date);
+        column.append(
+          element("span", "practice-full-trend-score", String(entry.score)),
+          track,
+          element("span", "practice-full-trend-date", (date.getMonth() + 1) + "/" + date.getDate())
+        );
+        chart.appendChild(column);
+      });
+      section.appendChild(chart);
+
+      var table = element("table", "practice-history-table practice-full-history-table");
+      var head = element("thead");
+      var headRow = element("tr");
+      ["날짜", "점수", "맞은 개수", "소요 시간"].forEach(function (label) {
+        var th = element("th", "", label);
+        th.setAttribute("scope", "col");
+        headRow.appendChild(th);
+      });
+      head.appendChild(headRow);
+      var body = element("tbody");
+      history.slice().reverse().forEach(function (entry) {
+        var row = element("tr");
+        [["날짜", formatDate(entry.date)], ["점수", "약 " + entry.score + "점"], ["맞은 개수", entry.correct + " / " + (entry.total || FULL_SET.total)],
+          ["소요 시간", formatTime(entry.elapsedSec || 0) + (entry.timedOut ? " (시간 초과)" : "")]].forEach(function (cell) {
+          var td = element("td", "", cell[1]);
+          td.setAttribute("data-label", cell[0]);
+          row.appendChild(td);
+        });
+        body.appendChild(row);
+      });
+      table.append(element("caption", "", "응시 이력 (" + history.length + "회)"), head, body);
+      section.appendChild(table);
+      historyRoot.appendChild(section);
+    }
+
     function renderHistory() {
-      var attempts = window.Progress.getPracticeHistory();
+      // 이전 버전에서 미니 모의고사 기록에 섞여 들어간 풀세트(100문항) 응시는 미니 기록에서 뺀다.
+      var attempts = window.Progress.getPracticeHistory().filter(function (attempt) { return attempt.total !== FULL_SET.total; });
       historyRoot.replaceChildren();
       if (!attempts.length) {
         historyRoot.appendChild(element("div", "placeholder", "아직 응시한 모의고사가 없어요. 미니 모의고사를 풀면 여기에 기록돼요."));
+        renderFullHistory();
         return;
       }
 
@@ -1058,6 +1508,7 @@
       });
       table.append(caption, head, body);
       historyRoot.appendChild(table);
+      renderFullHistory();
     }
 
     // ---------- 탭 ----------
@@ -1101,13 +1552,9 @@
       event.preventDefault();
       event.returnValue = "";
     });
-    // 폰 잠김·다른 앱으로 전환·탭 닫기 직전에 남은 시간을 저장한다. 돌아오면 멈춘 동안의 시간은 깎지 않는다.
+    // 폰 잠김·다른 앱으로 전환·탭 닫기 직전에 남은 시간을 저장한다. 돌아오면 2분 규칙으로 처리한다.
     window.addEventListener("pagehide", writeFullSave);
-    document.addEventListener("visibilitychange", function () {
-      if (!exam || exam.submitted || exam.config.mode !== "full") return;
-      if (document.hidden) writeFullSave();
-      else exam.lastTick = Date.now();
-    });
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     renderModeSelect();
     renderHistory();

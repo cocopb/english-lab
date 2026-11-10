@@ -516,6 +516,30 @@ h1, h2, h3, p { overflow-wrap: anywhere; }
 .practice-omr.is-full .practice-omr-section { padding-top: 8px; border-top: 1px dashed var(--line); }
 .practice-omr.is-full .practice-omr-section:first-of-type { padding-top: 0; border-top: 0; }
 .practice-omr-section.is-current-section .practice-omr-part { color: var(--blue); }
+.practice-suspended-notice { margin: 0 0 10px; padding: 10px 12px; border: 1px solid var(--red); border-radius: 9px; color: var(--red); font-size: 13px; font-weight: 700; }
+.practice-full-score .practice-band-value { font-size: 24px; }
+.practice-analysis { margin-top: 18px; }
+.practice-analysis h4 { margin: 0 0 6px; font-size: 14px; }
+.practice-analysis-note { margin: 0 0 8px; color: var(--ink-faint); font-size: 11px; }
+.practice-stat-row { display: grid; grid-template-columns: minmax(0, 7.5em) minmax(0, 1fr) auto; align-items: center; gap: 4px 10px; padding: 5px 0; font-size: 12px; }
+.practice-stat-row .grammar-note-link { grid-column: 1 / -1; font-size: 11px; }
+.practice-stat-label { overflow-wrap: anywhere; color: var(--ink-soft); font-weight: 600; }
+.practice-stat-bar { display: block; height: 8px; overflow: hidden; border-radius: 99px; background: var(--surface-2); }
+.practice-stat-fill { display: block; height: 100%; border-radius: 99px; background: var(--blue); }
+.practice-stat-value { font-family: "IBM Plex Mono", monospace; font-size: 11px; white-space: nowrap; }
+.practice-review-group { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
+.practice-review-title { margin: 0 0 8px; color: var(--blue); font-size: 13px; font-weight: 700; }
+.practice-review-ko { margin: 2px 0 8px; color: var(--ink-soft); font-size: 12px; }
+.practice-review-translate { margin: 8px 0; }
+.practice-review-miss { margin-top: 10px; padding: 10px 12px; border-radius: 9px; background: var(--surface-2); font-size: 13px; }
+.practice-review-miss p { margin: 0 0 5px; }
+.practice-full-history { margin-top: 14px; }
+.practice-full-history h3 { margin: 0 0 4px; font-size: 15px; }
+.practice-full-trend { display: flex; align-items: stretch; gap: 4px; height: 150px; margin: 8px 0 14px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+.practice-full-trend-col { display: flex; flex: 1 1 0; flex-direction: column; align-items: center; min-width: 0; gap: 3px; }
+.practice-full-trend-score, .practice-full-trend-date { color: var(--ink-faint); font-family: "IBM Plex Mono", monospace; font-size: 9px; }
+.practice-full-trend-track { display: flex; flex: 1 1 auto; align-items: flex-end; width: 100%; max-width: 28px; }
+.practice-full-trend-bar { display: block; width: 100%; border-radius: 4px 4px 0 0; background: var(--blue); }
 .practice-result { max-width: 760px; margin-inline: auto; }
 .practice-result-score { margin: 0; font-size: 26px; }
 .practice-result-rate { margin: 2px 0 16px; color: var(--green); font-weight: 600; }
