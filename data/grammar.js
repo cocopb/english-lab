@@ -98,7 +98,7 @@ window.GRAMMAR = [
       { good: "She finished writing the report.", bad: "She finished to write the report.", note: "finish 뒤에는 -ing" }
     ],
     trap: "이 표는 '빈칸 바로 뒤'에 무엇이 오는지를 가리는 기준이다. that절처럼 다른 구조를 따로 갖는 동사도 있다.\n그리고 to 뒤에는 보통 동사원형이지만, look forward to / be used to / contribute to의 to는 전치사라서 -ing가 온다.\nI look forward to meeting you. (to meet ❌)\nneed처럼 -ing도 가능한 동사가 있다. The car needs washing.",
-    toeicPattern: "빈칸 앞 동사를 먼저 본다. 표에 있는 동사면 바로 풀린다. 단 look forward to, be used to처럼 to가 전치사인 경우는 뒤에 -ing가 오므로 따로 외워야 한다."
+    toeicPattern: "빈칸 앞 동사를 먼저 본다. 표에 있는 동사면 대부분 바로 풀린다. 단 look forward to, be used to처럼 to가 전치사인 경우는 뒤에 -ing가 오므로 따로 외워야 한다."
   },
   {
     id: "g06", order: 6, title: "전치사", weight: "빈출",
@@ -202,7 +202,8 @@ window.GRAMMAR = [
     table: { headers: ["항목", "규칙"], rows: [
       ["기본 어순", "주어 + 동사 + 목적어"],
       ["빈도부사", "be동사 뒤 / 일반동사 앞 / 조동사 뒤 (always, often, never)"],
-      ["간접의문문", "의문사 + 주어 + 동사 (의문문 어순이 아님)"]
+      ["간접의문문", "의문사 + 주어 + 동사 (의문문 어순이 아님)"],
+      ["간접의문문 (의문사가 주어)", "의문사 + 동사 — Do you know who called?"]
     ] },
     examples: [
       { good: "She is always late.", bad: "She always is late.", note: "be동사 뒤" },
