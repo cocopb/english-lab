@@ -845,7 +845,7 @@ window.PASSAGES = [
     parts: [
       {
         label: "지문 1 — 사내 규정",
-        header: ["TRAVEL EXPENSE POLICY — Halvorsen Engineering"],
+        header: ["TRAVEL EXPENSE POLICY — Brantley Engineering"],
         sentences: [
           { en: "Employees may claim meals up to $45 per day while traveling.", ko: "직원은 출장 중 식비를 1일 45달러까지 청구할 수 있습니다." },
           { en: "Hotel costs are reimbursed up to $160 per night within the country and $210 abroad.", ko: "숙박비는 국내 출장은 1박 160달러, 해외 출장은 210달러까지 환급됩니다." },
@@ -868,14 +868,14 @@ window.PASSAGES = [
       },
       {
         label: "지문 3 — 회계팀 이메일",
-        header: ["From: Ingrid Sollie, Accounting", "To: Teodor Vasilev", "Subject: Form 7B — Oslo trip"],
+        header: ["From: Diane Keller, Accounting", "To: Teodor Vasilev", "Subject: Form 7B — Oslo trip"],
         sentences: [
           { en: "Dear Teodor,", ko: "테오도르 씨께," },
           { en: "Your claim arrived in time, so it will be included in the May payment.", ko: "청구가 기한 안에 접수되어 5월 지급에 포함됩니다." },
           { en: "Your hotel came to $195 per night, which is below the limit for trips abroad, so that part is approved in full.", ko: "숙박비는 1박 195달러로 해외 출장 한도보다 낮아 전액 승인됩니다." },
           { en: "However, your meal total exceeds the daily allowance for one of the three days.", ko: "다만 식비가 사흘 중 하루는 1일 한도를 초과합니다." },
           { en: "Please send me the receipts for April 7 so I can check it.", ko: "확인할 수 있도록 4월 7일 영수증을 보내주세요." },
-          { en: "Everything else is approved. Ingrid", ko: "그 외는 모두 승인되었습니다. 잉그리드" }
+          { en: "Everything else is approved. Diane", ko: "그 외는 모두 승인되었습니다. 다이앤" }
         ]
       }
     ],
@@ -890,7 +890,7 @@ window.PASSAGES = [
       { q: "What is the purpose of the first notice?", choices: ["To explain rules for claiming travel costs", "To announce a change in salaries", "To report a budget shortage", "To introduce a new accounting system"], answer: 0, explanation: "식비, 숙박비, 택시, 제출 기한 등 경비 청구 규정을 안내하는 글이다." },
       { q: "What is indicated about Mr. Vasilev's taxi fare?", choices: ["It was below the amount that needs a receipt", "It was not approved", "A receipt was required for it", "It was paid by the client"], answer: 2, explanation: "연계 문제다. 규정에 20달러 미만은 영수증이 필요 없다고 했고, 신청서의 택시 요금은 34달러다." },
       { q: "Why is the hotel cost approved in full?", choices: ["It was paid in advance", "The client agreed to share the cost", "He stayed only two nights", "The trip was outside the country"], answer: 3, explanation: "연계 문제다. 1박 195달러는 국내 한도 160달러를 넘지만 해외 한도 210달러보다는 낮다. 오슬로 출장이라 해외 한도가 적용된다." },
-      { q: "What does Ms. Sollie ask Mr. Vasilev to do?", choices: ["Resubmit the whole form", "Send receipts for one day's meals", "Return part of the payment", "Book a cheaper hotel next time"], answer: 1, explanation: "Please send me the receipts for April 7." },
+      { q: "What does Ms. Keller ask Mr. Vasilev to do?", choices: ["Resubmit the whole form", "Send receipts for one day's meals", "Return part of the payment", "Book a cheaper hotel next time"], answer: 1, explanation: "Please send me the receipts for April 7." },
       { q: "When will Mr. Vasilev receive the money?", choices: ["Within fourteen days", "On April 11", "With his May salary", "After the next client visit"], answer: 2, explanation: "연계 문제다. 규정에 다음 달 급여와 함께 지급된다고 했고, 4월에 제출했으므로 5월 지급이다. 이메일에서도 확인된다." }
     ]
   },
@@ -944,8 +944,96 @@ window.PASSAGES = [
       { q: "What is the course mainly about?", choices: ["Using spreadsheets", "Managing databases", "Writing business reports", "Designing web pages"], answer: 0, explanation: "수식, 차트, 피벗 테이블 등 스프레드시트 활용을 다룬다. 데이터베이스는 가을 후속 강좌다." },
       { q: "Which session did Mr. Lim miss?", choices: ["Charts", "Data cleaning", "Macros", "Final project"], answer: 2, explanation: "연계 문제다. 게시글에서 5회차를 놓쳤다고 했고, 안내문에서 5회차는 매크로다." },
       { q: "How much did Mr. Lim most likely pay?", choices: ["$90", "$120", "$180", "$210"], answer: 0, explanation: "연계 문제다. 할인된 수강료를 냈다고 했고, 안내문에서 학생 할인가는 90달러다." },
-      { q: "What problem does Mr. Lim report?", choices: ["A session started late", "Some exercise files were missing", "A recording would not play", "The fee was charged twice"], answer: 1, explanation: "the exercise files for Session 4 were not in the download folder." },
+      { q: "Which session's exercise files did Ms. Nunes add to the folder?", choices: ["Formulas", "Charts", "Data cleaning", "Macros"], answer: 2, explanation: "세 지문을 모두 봐야 하는 연계 문제다. 게시글에서 4회차 파일이 빠졌다고 했고, 답변에서 그 파일을 올렸다고 했고, 안내문에서 4회차는 데이터 정리다." },
       { q: "What does Ms. Nunes say she plans to do?", choices: ["Extend the recording period", "Offer another course", "Lower the course fee", "Add a seventh session"], answer: 1, explanation: "planning a follow-up course on databases for the autumn. 녹화 기간은 원래부터 3개월이라 연장이 아니다." }
+    ]
+  },
+  {
+    id: "rp29", type: "이중 지문", title: "사무실 임대 문의", strategyId: "r06", recommendedSec: 230,
+    parts: [
+      {
+        label: "지문 1 — 임대 광고",
+        header: ["OFFICE SPACE FOR LEASE — Trenton Works Building"],
+        sentences: [
+          { en: "Third floor, 240 square meters, divided into eight rooms.", ko: "3층, 240제곱미터, 여덟 개의 방으로 나뉘어 있습니다." },
+          { en: "Monthly rent: $4,200, including water and building maintenance.", ko: "월 임대료 4,200달러로 수도 요금과 건물 관리비가 포함됩니다." },
+          { en: "Electricity and internet are billed separately.", ko: "전기와 인터넷은 별도로 청구됩니다." },
+          { en: "Minimum lease: two years.", ko: "최소 임대 기간은 2년입니다." },
+          { en: "Two parking spaces are included; extra spaces are $70 each per month.", ko: "주차 두 면이 포함되며, 추가 주차는 1면당 월 70달러입니다." },
+          { en: "Available from July 1. Viewings by appointment: call Marcia Delgado at 555-0188.", ko: "7월 1일부터 입주 가능합니다. 방문은 예약제이며 마르시아 델가도에게 555-0188로 전화하세요." }
+        ]
+      },
+      {
+        label: "지문 2 — 문의 이메일",
+        header: ["From: Soo-jin Han", "To: m.delgado@trentonworks.com", "Subject: Third-floor office"],
+        sentences: [
+          { en: "Dear Ms. Delgado,", ko: "델가도 씨께," },
+          { en: "Our design studio is looking for space from August, and the third floor sounds suitable.", ko: "저희 디자인 스튜디오는 8월부터 쓸 공간을 찾고 있는데 3층이 적합해 보입니다." },
+          { en: "We have fourteen employees, six of whom drive to work.", ko: "직원은 14명이고 그중 6명이 차로 출근합니다." },
+          { en: "Could you tell me whether the eight rooms can be combined into fewer, larger spaces?", ko: "여덟 개의 방을 더 적고 넓은 공간으로 합칠 수 있는지 알려주시겠어요?" },
+          { en: "We would also like to know if a one-year lease is possible, as we may expand again soon.", ko: "또 곧 다시 확장할 수도 있어서 1년 임대가 가능한지도 알고 싶습니다." },
+          { en: "I am free to visit on Thursday or Friday afternoon.", ko: "저는 목요일이나 금요일 오후에 방문할 수 있습니다." },
+          { en: "Soo-jin Han", ko: "한수진" }
+        ]
+      }
+    ],
+    vocab: [
+      { w: "lease", m: "임대 계약" },
+      { w: "rent", m: "임대료" },
+      { w: "be billed separately", m: "별도로 청구되다" },
+      { w: "viewing", m: "(매물) 방문, 둘러보기" },
+      { w: "combine", m: "합치다" }
+    ],
+    questions: [
+      { q: "What is included in the monthly rent?", choices: ["Electricity", "Internet service", "Water and building maintenance", "Office furniture"], answer: 2, explanation: "including water and building maintenance. 전기와 인터넷은 별도 청구다." },
+      { q: "How many additional parking spaces would Ms. Han's company need?", choices: ["Two", "Four", "Six", "Eight"], answer: 1, explanation: "연계 문제다. 직원 6명이 차로 출근하고 광고에 주차 두 면이 포함되므로 4면이 더 필요하다." },
+      { q: "What does Ms. Han ask about the rooms?", choices: ["Whether they can be joined together", "Whether they have windows", "How they are heated", "Who cleans them"], answer: 0, explanation: "whether the eight rooms can be combined into fewer, larger spaces." },
+      { q: "What does Ms. Han request that differs from the advertised terms?", choices: ["A lower monthly rent", "An earlier move-in date", "Extra storage space", "A shorter lease period"], answer: 3, explanation: "연계 문제다. 광고는 최소 2년인데 이메일에서 1년 임대가 가능한지 물었다. 입주는 8월을 원하므로 7월보다 이른 것이 아니다." },
+      { q: "What does Ms. Han offer to do?", choices: ["Sign a contract this week", "Send a deposit in advance", "Visit the building later in the week", "Call Ms. Delgado on Monday"], answer: 2, explanation: "I am free to visit on Thursday or Friday afternoon." }
+    ]
+  },
+  {
+    id: "rp30", type: "이중 지문", title: "신제품 출시와 도매 주문", strategyId: "r06", recommendedSec: 235,
+    parts: [
+      {
+        label: "지문 1 — 보도자료",
+        header: ["FOR IMMEDIATE RELEASE — Kestrel Audio"],
+        sentences: [
+          { en: "Kestrel Audio will begin shipping its new WR-9 wireless headphones on October 1.", ko: "케스트렐 오디오는 10월 1일부터 신제품 WR-9 무선 헤드폰의 출하를 시작합니다." },
+          { en: "The WR-9 offers thirty hours of battery life and folds flat for travel.", ko: "WR-9은 30시간의 배터리 사용 시간을 제공하며 휴대를 위해 납작하게 접힙니다." },
+          { en: "Retail price: $149.", ko: "소비자 가격은 149달러입니다." },
+          { en: "Retailers ordering before September 15 receive a 15 percent wholesale discount.", ko: "9월 15일 전에 주문하는 소매업체는 도매가에서 15퍼센트 할인을 받습니다." },
+          { en: "Minimum order: fifty units.", ko: "최소 주문량은 50대입니다." },
+          { en: "Orders placed in advance will ship on October 1 in the order received.", ko: "사전 주문은 접수된 순서대로 10월 1일에 출하됩니다." }
+        ]
+      },
+      {
+        label: "지문 2 — 주문 이메일",
+        header: ["From: Dmitri Ivanov, Northline Electronics", "To: orders@kestrelaudio.com", "Subject: WR-9 order"],
+        sentences: [
+          { en: "Hello,", ko: "안녕하세요," },
+          { en: "We would like to order one hundred WR-9 units for our three stores.", ko: "저희 매장 세 곳을 위해 WR-9 100대를 주문하고 싶습니다." },
+          { en: "I am sending this on September 10, so I expect the early-order discount to apply.", ko: "9월 10일에 보내므로 사전 주문 할인이 적용될 것으로 생각합니다." },
+          { en: "Our customers often ask about battery life, so the thirty-hour figure will help us sell them.", ko: "저희 고객들이 배터리 사용 시간을 자주 묻기 때문에 30시간이라는 수치가 판매에 도움이 될 것입니다." },
+          { en: "Please confirm the delivery date.", ko: "배송 날짜를 확인해 주세요." },
+          { en: "We hope to have the units on our shelves on the day shipping begins.", ko: "출하가 시작되는 날에 제품을 진열대에 올리고 싶습니다." },
+          { en: "Dmitri Ivanov", ko: "드미트리 이바노프" }
+        ]
+      }
+    ],
+    vocab: [
+      { w: "wholesale", m: "도매의" },
+      { w: "retailer", m: "소매업체" },
+      { w: "minimum order", m: "최소 주문량" },
+      { w: "unit", m: "(제품) 대, 개" },
+      { w: "on our shelves", m: "진열대에" }
+    ],
+    questions: [
+      { q: "What is mentioned as a feature of the WR-9?", choices: ["It is waterproof", "It comes in three colors", "It charges in ten minutes", "It folds flat"], answer: 3, explanation: "folds flat for travel." },
+      { q: "Why is Northline Electronics likely to receive a discount?", choices: ["Its order was placed before September 15", "It is a long-time customer", "It ordered more than one product", "It paid in advance"], answer: 0, explanation: "연계 문제다. 보도자료에 9월 15일 전 주문은 15퍼센트 할인이라고 했고, 이메일은 9월 10일에 보냈다." },
+      { q: "What is indicated about Northline's order?", choices: ["It is below the minimum", "It will be split between two dates", "It is twice the minimum order", "It includes other Kestrel products"], answer: 2, explanation: "연계 문제다. 최소 주문량은 50대이고 100대를 주문했으므로 두 배다." },
+      { q: "What does Mr. Ivanov say his customers ask about?", choices: ["The retail price", "Battery life", "Repair services", "Color options"], answer: 1, explanation: "Our customers often ask about battery life." },
+      { q: "What does Mr. Ivanov hope will happen?", choices: ["The price will be lowered", "A free sample will be sent", "The units will arrive by October 1", "The order will be delivered in three parts"], answer: 2, explanation: "연계 문제다. 출하가 시작되는 날에 진열하고 싶다고 했고, 보도자료에서 그날은 10월 1일이다." }
     ]
   }
 ];
