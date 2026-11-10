@@ -154,6 +154,7 @@
 
     function stopPlayback() {
       currentUtteranceToken += 1;
+      showNowSpeaking("");
       if (currentPlaybackButton) currentPlaybackButton.disabled = false;
       currentPlaybackButton = null;
       window.Speech.stop();
@@ -342,8 +343,24 @@
       // 단어 경계를 둔다. 경계가 없으면 "Female"·"Samantha"(sa-man-tha) 같은 여성 음성이 남성으로 잡힌다.
       M: /\bmale\b|\bman\b|daniel|david|alex|george|fred|james|tom|guy|siri.*\bmale/i
     };
-    // 같은 음성을 같은 성별의 두 번째·세 번째 화자가 나눠 쓸 때 pitch·속도로 구분한다. 첫 화자는 보정 없음(기존과 같음).
-    var SHARED_VOICE_VARIANTS = [{ pitch: null, rateScale: null }, { pitch: 1.3, rateScale: 0.92 }, { pitch: 0.8, rateScale: 1.08 }];
+    // 한 음성을 두 화자 이상이 나눠 쓸 때, 두 번째 화자부터 pitch·속도 배율로 구분한다. 처음 쓰는 화자는 보정 없음.
+    // 여성 화자는 높게·조금 느리게, 남성 화자는 낮게·조금 빠르게. 한 음성 안에서 같은 보정은 두 번 쓰지 않는다.
+    var SHARED_VOICE_VARIANTS = {
+      W: [{ pitch: 1.3, rateScale: 0.92 }, { pitch: 1.5, rateScale: 0.88 }, { pitch: 0.8, rateScale: 1.08 }],
+      M: [{ pitch: 0.75, rateScale: 1.08 }, { pitch: 0.6, rateScale: 1.12 }, { pitch: 1.3, rateScale: 0.92 }]
+    };
+
+    function voiceGender(voice) {
+      var name = voice && voice.name || "";
+      if (VOICE_HINTS.W.test(name)) return "W";
+      if (VOICE_HINTS.M.test(name)) return "M";
+      return null;
+    }
+
+    function voiceKey(voice) {
+      if (voice && typeof voice === "object") return "voice:" + (voice.voiceURI || voice.name + "|" + voice.lang);
+      return "default:" + (voice || "");
+    }
 
     function speakerGender(label) {
       return /^W/i.test(label) ? "W" : "M";
@@ -354,44 +371,73 @@
     }
 
     // 대화마다 화자별 목소리를 한 번 정한다. 같은 화자는 대화 내내 같은 목소리다.
-    // 같은 성별에 음성이 여러 개면 서로 다른 음성을, 모자라면 같은 음성에 pitch·속도를 달리 준다.
+    // - 발음을 골랐으면 그 억양의 음성 안에서, 안 골랐으면 영어 음성 전체(en-US 먼저)에서 고른다.
+    // - W·W1·W2는 여성 음성, M·M1·M2는 남성 음성. 같은 성별 화자가 여럿이면 서로 다른 음성을 쓴다.
+    // - 음성이 모자라 한 음성을 나눠 쓰면 두 번째 화자부터 pitch·속도로 구분한다(남녀 사이도 마찬가지).
     function speakerProfiles(dialogue) {
-      var order = { W: [], M: [] };
-      dialogue.script.forEach(function (line) {
-        var gender = speakerGender(line.speaker);
-        if (order[gender].indexOf(line.speaker) === -1) order[gender].push(line.speaker);
+      var labels = [];
+      dialogue.script.forEach(function (line) { if (labels.indexOf(line.speaker) === -1) labels.push(line.speaker); });
+      var selected = voiceSettings.voiceSelected;
+      var voices = supportedVoices().filter(function (voice) {
+        return !window.Speech.isVoiceUnavailable(voice) &&
+          (!selected || (voice.lang || "").toLowerCase() === voiceSettings.locale.toLowerCase());
       });
-      var voices = voiceSettings.voiceSelected ? supportedVoices().filter(function (voice) {
-        return (voice.lang || "").toLowerCase() === voiceSettings.locale.toLowerCase() &&
-          !window.Speech.isVoiceUnavailable(voice);
-      }) : [];
+      // speech.js는 원격 음성을 고르면 같은 억양의 로컬 음성으로 바꿔 재생한다(성별 무관).
+      // 그러면 배정이 어긋나므로 로컬 음성이 있으면 로컬 음성 안에서만 나눈다.
+      var localVoices = voices.filter(function (voice) { return voice.localService === true; });
+      if (localVoices.length) voices = localVoices;
+      var pools = {
+        W: voices.filter(function (voice) { return voiceGender(voice) === "W"; }),
+        M: voices.filter(function (voice) { return voiceGender(voice) === "M"; })
+      };
+      var unknown = voices.filter(function (voice) { return voiceGender(voice) === null; });
+      var rank = { W: 0, M: 0 };
+      var usage = {};
       var profiles = {};
-      ["W", "M"].forEach(function (gender) {
-        var other = gender === "W" ? "M" : "W";
-        var pool = voices.filter(function (voice) {
-          return VOICE_HINTS[gender].test(voice.name || "") && !(gender === "M" && VOICE_HINTS.W.test(voice.name || ""));
-        });
-        if (!pool.length) pool = voices.filter(function (voice) { return !VOICE_HINTS[other].test(voice.name || ""); });
-        if (!pool.length) pool = voices;
-        // speech.js는 원격 음성을 고르면 같은 억양의 로컬 음성으로 바꿔 재생한다(성별 무관).
-        // 그러면 배정이 어긋나므로 로컬 음성이 있으면 로컬 음성 안에서만 나눈다.
-        var localPool = pool.filter(function (voice) { return voice.localService === true; });
-        if (localPool.length) pool = localPool;
-        order[gender].forEach(function (label, rank) {
-          var size = Math.max(pool.length, 1);
-          var variant = SHARED_VOICE_VARIANTS[Math.floor(rank / size) % SHARED_VOICE_VARIANTS.length];
-          profiles[label] = {
-            voice: pool.length ? pool[rank % pool.length] : (voiceSettings.voiceSelected ? voiceSettings.locale : null),
-            pitch: variant.pitch,
-            rateScale: variant.rateScale
-          };
-        });
+      function assign(label, voice) {
+        var key = voiceKey(voice);
+        var used = usage[key] = usage[key] || [];
+        var variant = null;
+        if (used.length) {
+          // 이 음성에 아직 쓰지 않은 보정 가운데 화자 성별에 맞는 것을 먼저 고른다.
+          variant = SHARED_VOICE_VARIANTS[speakerGender(label)].filter(function (candidate) {
+            return used.indexOf(candidate.pitch + "/" + candidate.rateScale) === -1;
+          })[0] || null;
+        }
+        used.push(variant ? variant.pitch + "/" + variant.rateScale : "plain");
+        profiles[label] = { voice: voice, pitch: variant ? variant.pitch : null, rateScale: variant ? variant.rateScale : null };
+      }
+      // 1차: 성별에 맞는 음성이 있는 화자부터 배정한다.
+      labels.forEach(function (label) {
+        var pool = pools[speakerGender(label)];
+        if (!pool.length) return;
+        assign(label, pool[rank[speakerGender(label)]++ % pool.length]);
+      });
+      // 2차: 성별을 알 수 있는 음성이 없는 화자. 발음을 골랐으면 그 억양의 다른 음성을,
+      // 아니면 상대 성별 음성(없으면 브라우저 기본 음성)을 빌려 쓰고 pitch·속도로 구분한다.
+      labels.forEach(function (label) {
+        if (profiles[label]) return;
+        var gender = speakerGender(label);
+        var other = pools[gender === "W" ? "M" : "W"];
+        var borrowed = selected
+          ? (unknown[rank[gender]++ % Math.max(unknown.length, 1)] || other[0] || voices[0] || voiceSettings.locale)
+          : (other[0] || null);
+        assign(label, borrowed);
       });
       return profiles;
     }
 
+    // "다시 듣기"에서만 지금 읽는 대사의 화자 이름을 보여 준다(대사 내용은 보여 주지 않는다).
+    function showNowSpeaking(text) {
+      var node = document.getElementById("part3-now-speaking");
+      if (!node) return;
+      node.textContent = text || "";
+      node.hidden = !text;
+    }
+
     function renderDialogue() {
       var dialogue = currentDialogue();
+      showNowSpeaking("");
       document.getElementById("part3-counter").textContent =
         "대화 " + (dialogueIndex % window.PART3.length + 1) + " / " + window.PART3.length + " · " + dialogue.title;
       part3Ready = false;
@@ -428,13 +474,14 @@
       }
     }
 
-    function playDialogue(button) {
+    function playDialogue(button, showSpeakers) {
       if (!window.Speech.isSupported()) {
         messageAt("part3-message", window.Speech.UNSUPPORTED_MESSAGE);
         return Promise.resolve();
       }
       var dialogue = currentDialogue();
       var token = ++currentUtteranceToken;
+      showNowSpeaking("");
       if (currentPlaybackButton && currentPlaybackButton !== button) currentPlaybackButton.disabled = false;
       currentPlaybackButton = button;
       button.disabled = true;
@@ -444,6 +491,7 @@
       function speakLine(line) {
         if (token !== currentUtteranceToken) return undefined;
         var profile = profiles[line.speaker];
+        if (showSpeakers) showNowSpeaking("지금 말하는 사람: " + speakerName(dialogue, line.speaker));
         return window.Speech.speak(line.text, {
           rate: voiceSettings.rate,
           voice: profile.voice,
@@ -471,6 +519,7 @@
         if (token === currentUtteranceToken) {
           button.disabled = false;
           currentPlaybackButton = null;
+          showNowSpeaking("");
         }
       });
     }
@@ -603,7 +652,7 @@
     });
     document.getElementById("part3-replay").addEventListener("click", function () {
       document.getElementById("listening-fallback-note").hidden = true;
-      playDialogue(this);
+      playDialogue(this, true);
     });
     document.getElementById("part3-start-questions").addEventListener("click", function () {
       if (!part3Ready) return;

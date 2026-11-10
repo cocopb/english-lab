@@ -336,6 +336,7 @@ h1, h2, h3, p { overflow-wrap: anywhere; }
 .listening-transcript { margin-top: 12px; padding: 12px 14px; border-radius: 9px; background: var(--surface-2); }
 .listening-transcript-line { margin: 6px 0; font-size: 12px; overflow-wrap: anywhere; }
 .listening-speaker { color: var(--blue); font-weight: 700; }
+.listening-now-speaking { margin: 8px 0 0; color: var(--blue); font-size: 13px; font-weight: 700; }
 .reading-strategy-list { display: grid; gap: 10px; }
 .reading-strategy-trigger { align-items: flex-start; }
 .reading-strategy-summary { display: grid; min-width: 0; gap: 3px; }
