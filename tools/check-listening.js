@@ -515,6 +515,46 @@ async function runSpeechScenarios() {
   check(p2Order.length === 0, "[데스크톱] Part 2 재생 순서(질문→A→B→C) 불일치 — " + p2Order.join(" ; "));
   console.log("음성: Part 2 " + p2Items.length + "문항 질문·선택지 재생 순서 확인" + (p2Order.length ? " — 불일치 " + p2Order.length + "개" : " — 이상 없음"));
 
+  // --- Part 3 전 대화: 대화 듣기·다시 듣기가 대사 한 줄씩(화자별로 끊어) 순서대로 읽고, 끝나면 문제를 풀 수 있는지 ---
+  var p3Items = d.window.PART3;
+  var p3Problems = [];
+  async function playDialogueOnce(buttonId) {
+    var texts = [];
+    d.synth.queue = [];
+    $(buttonId).click();
+    for (var guard = 0; guard < 50 && d.synth.queue.length; guard += 1) {
+      var utterance = d.synth.queue.shift();
+      texts.push(utterance.text);
+      if (utterance.onend) utterance.onend();
+      await flush();
+      await flush();
+    }
+    return texts;
+  }
+  for (var p3 = 0; p3 < p3Items.length; p3 += 1) {
+    var dialogue3 = p3Items[p3];
+    var lines3 = dialogue3.script.map(function (line) { return line.text; }).join("|");
+    var first = await playDialogueOnce("part3-play");
+    if (first.join("|") !== lines3) p3Problems.push(dialogue3.id + " 대화 듣기 " + first.length + "/" + dialogue3.script.length + "줄");
+    if ($("part3-start-questions").disabled) p3Problems.push(dialogue3.id + " 재생 후 문제 시작 비활성");
+    var again = await playDialogueOnce("part3-replay");
+    if (again.join("|") !== lines3) p3Problems.push(dialogue3.id + " 다시 듣기 " + again.length + "/" + dialogue3.script.length + "줄");
+    $("part3-start-questions").click();
+    dialogue3.questions.forEach(function (question, qIndex) {
+      $("part3-choices").querySelectorAll(".listening-choice-answer")[question.answer].click();
+      if ($("part3-feedback").textContent.indexOf("정답이에요!") !== 0) p3Problems.push(dialogue3.id + " Q" + (qIndex + 1) + " 정답 처리");
+      $("part3-script-toggle").click();
+      var shown = $("part3-script").querySelectorAll(".listening-transcript-line").map(function (line) { return line.textContent; });
+      var expectedLines = dialogue3.script.map(function (line) { return line.speaker + ": " + line.text; });
+      if ($("part3-script").hidden || shown.join("|") !== expectedLines.join("|")) p3Problems.push(dialogue3.id + " Q" + (qIndex + 1) + " 스크립트 토글");
+      $("part3-next").click();
+    });
+    $("part3-next-dialogue").click();
+  }
+  check(p3Problems.length === 0, "[데스크톱] Part 3 재생·채점 — " + p3Problems.join(" ; "));
+  console.log("음성: Part 3 대화 " + p3Items.length + "개 대화 듣기·다시 듣기 한 줄씩 재생, 채점, 스크립트 토글 확인" +
+    (p3Problems.length ? " — 문제 " + p3Problems.length + "개" : " — 이상 없음"));
+
   // --- speechSynthesis 자체가 없는 브라우저 ---
   var n = loadListeningWithRealSpeech("none");
   $ = n.$;
