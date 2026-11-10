@@ -35,7 +35,8 @@ var failures = {
   invalidAnswer: [],
   missingTranslation: [],
   duplicateIds: [],
-  invalidPart6: []
+  invalidPart6: [],
+  invalidPart6Vocab: []
 };
 
 var strategyIds = Object.create(null);
@@ -84,6 +85,30 @@ passages.forEach(function (passage, index) {
   });
 });
 
+// Part 6 어휘: 있으면 w·m이 비어 있지 않고, w가 그 세트의 영어 본문(빈칸 제외)이나 header에 실제로 나와야 한다.
+// 대소문자는 무시하고 부분 문자열로 찾는다(어형 변화 허용). "be ~" 표현은 is/was/were 등 be동사 활용형도 인정한다.
+var BE_FORMS = ["be", "am", "is", "are", "was", "were", "been", "being"];
+function checkPart6Vocab(set, label) {
+  if (set.vocab === undefined) return;
+  if (!Array.isArray(set.vocab) || !set.vocab.length) {
+    return failures.invalidPart6Vocab.push({ id: label, reason: "vocab은 비어 있지 않은 배열이어야 함" });
+  }
+  var text = (set.header || []).concat((set.blocks || []).filter(function (block) { return block.type === "text"; })
+    .map(function (block) { return block.en || ""; })).join(" ").replace(/\s+/g, " ").toLowerCase();
+  set.vocab.forEach(function (entry, vIndex) {
+    var w = entry && typeof entry.w === "string" ? entry.w.trim() : "";
+    var m = entry && typeof entry.m === "string" ? entry.m.trim() : "";
+    if (!w || !m) {
+      return failures.invalidPart6Vocab.push({ id: label, vocab: vIndex + 1, word: w || "(없음)", reason: "w 또는 m이 비어 있음" });
+    }
+    var lower = w.toLowerCase().replace(/\s+/g, " ");
+    var forms = /^be /.test(lower) ? BE_FORMS.map(function (be) { return be + lower.slice(2); }) : [lower];
+    if (!forms.some(function (form) { return text.indexOf(form) !== -1; })) {
+      failures.invalidPart6Vocab.push({ id: label, word: w, reason: "본문/header에 없는 단어" });
+    }
+  });
+}
+
 part6.forEach(function (set, index) {
   var label = (set && set.id) || "PART6 #" + (index + 1);
   checkId(set && set.id, label);
@@ -92,6 +117,7 @@ part6.forEach(function (set, index) {
   if (!blanks.length || blanks.slice().sort().join(",") !== numbers.slice().sort().join(",") || new Set(blanks).size !== blanks.length) {
     failures.invalidPart6.push({ id: label, reason: "빈칸 번호와 문항 번호 불일치", blanks: blanks, questions: numbers });
   }
+  checkPart6Vocab(set, label);
   (set.questions || []).forEach(function (question, qIndex) {
     checkQuestion(label, question, qIndex);
     if (question.ruleId !== null && !grammarIds[question.ruleId]) {

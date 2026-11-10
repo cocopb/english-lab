@@ -287,6 +287,15 @@ for (let tries = 0; tries < 300 && p6Checked.size < W.PART6.length; tries++) {
   const blanks = partStage.querySelectorAll('.practice-blank');
   if (blanks.length !== set.questions.length) problems.push('빈칸 ' + blanks.length);
   set.blocks.filter(b => b.type === 'text').forEach(b => { if (!text.includes(b.en.trim())) problems.push('본문 누락'); });
+  // 어휘 목록: 독해 탭 Part 7처럼 채점 전부터 보여야 하고, vocab이 없으면 영역 자체가 없어야 한다.
+  const vocabSections = partStage.querySelectorAll('.reading-vocab-section');
+  if (Array.isArray(set.vocab) && set.vocab.length) {
+    const items = vocabSections.length === 1 ? vocabSections[0].querySelector('.reading-vocab-list').children : [];
+    if (vocabSections.length !== 1 || vocabSections[0].hidden) problems.push('어휘 영역 없음/숨김');
+    else if (items.length !== set.vocab.length || set.vocab.some((v, i) =>
+      items[i].querySelector('.reading-vocab-word').textContent !== v.w ||
+      items[i].querySelector('.reading-vocab-meaning').textContent !== v.m)) problems.push('어휘 ' + items.length + '/' + set.vocab.length);
+  } else if (vocabSections.length) problems.push('vocab 없는데 어휘 영역이 그려짐');
   const drills = partStage.querySelectorAll('.practice-drill-card');
   if (drills.length !== set.questions.length) problems.push('문항 ' + drills.length);
   drills.forEach((card, i) => {
@@ -301,7 +310,7 @@ for (let tries = 0; tries < 300 && p6Checked.size < W.PART6.length; tries++) {
     toggle.click();
     if (translation.hidden || translation.textContent !== set.ko) problems.push('해석 표시 안 됨');
   }
-  check(set.id + ' ' + set.title, problems.length === 0, problems.length ? problems.join(', ') : '빈칸 ' + blanks.length + '개, 4문항 정답 처리, 해석 토글');
+  check(set.id + ' ' + set.title, problems.length === 0, problems.length ? problems.join(', ') : '빈칸 ' + blanks.length + '개, 어휘 ' + (set.vocab ? set.vocab.length + '개' : '없음') + ', 4문항 정답 처리, 해석 토글');
 }
 check('Part 6 전 세트 확인', p6Checked.size === W.PART6.length, p6Checked.size + ' / ' + W.PART6.length);
 

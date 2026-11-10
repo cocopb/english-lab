@@ -593,6 +593,21 @@
       return card;
     }
 
+    // 독해 탭 Part 7 지문과 같은 모양(같은 클래스)으로, 처음부터 보이게 그린다. 어휘가 없으면 아무것도 그리지 않는다.
+    function renderVocab(vocab) {
+      if (!Array.isArray(vocab) || !vocab.length) return null;
+      var section = element("section", "reading-vocab-section");
+      section.appendChild(element("h3", "", "핵심 어휘"));
+      var list = element("ul", "reading-vocab-list");
+      vocab.forEach(function (entry) {
+        var item = element("li", "");
+        item.append(element("span", "reading-vocab-word en", entry.w), element("span", "reading-vocab-meaning", entry.m));
+        list.appendChild(item);
+      });
+      section.appendChild(list);
+      return section;
+    }
+
     function startPartPractice(part) {
       partStage.replaceChildren();
       var list = element("div", "practice-drill-list");
@@ -607,6 +622,8 @@
         if (!set) return partStage.replaceChildren(element("div", "placeholder", "출제할 세트가 없어요."));
         var passageCard = element("article", "panel practice-drill-passage");
         passageCard.append(element("p", "reading-passage-type", "Part 6 · " + set.title), renderPart6Text(set, null, null));
+        var vocabSection = renderVocab(set.vocab);
+        if (vocabSection) passageCard.appendChild(vocabSection);
         if (set.ko) {
           var translation = element("p", "practice-translation", set.ko);
           translation.hidden = true;

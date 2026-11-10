@@ -651,6 +651,70 @@ window.PASSAGES = [
       { q: "What is indicated about the tours?", choices: ["They run only in summer", "They are offered in two languages", "They last three hours", "They are free for children"], answer: 1, explanation: "commentary in English and Spanish. 아동도 11달러를 내므로 무료가 아니고, 투어는 90분이다." },
       { q: "What are large groups advised to do?", choices: ["Pay in cash", "Reserve several days ahead", "Arrive at 9 A.M.", "Bring their own guide"], answer: 1, explanation: "should book at least three days in advance." }
     ]
+  },
+  {
+    id: "rp21", type: "문자 메시지", title: "회의실 프로젝터 고장", strategyId: "r03", recommendedSec: 80,
+    header: ["Text Message", "From: Hugo Lindqvist (8:40 A.M.)"],
+    sentences: [
+      { en: "Good morning. The conference room projector is showing a blue screen.", ko: "좋은 아침입니다. 회의실 프로젝터에 파란 화면만 떠요." },
+      { en: "I've already tried both cables, but nothing changed.", ko: "케이블 두 개를 다 바꿔 봤는데 달라지지 않았어요." },
+      { en: "Could someone from IT come up before the ten o'clock client meeting?", ko: "10시 고객 회의 전에 IT 담당자가 올라와 주실 수 있을까요?" },
+      { en: "I can move the meeting to Room B if that would be easier.", ko: "그게 더 편하면 회의를 B 회의실로 옮길 수도 있어요." }
+    ],
+    vocab: [
+      { w: "conference room", m: "회의실" },
+      { w: "cable", m: "케이블, 연결선" },
+      { w: "come up", m: "(위층으로) 올라오다" },
+      { w: "client", m: "고객" },
+      { w: "move a meeting", m: "회의 장소나 시간을 옮기다" }
+    ],
+    questions: [
+      { q: "Why did Mr. Lindqvist send the message?", choices: ["To cancel a client meeting", "To report a problem with equipment", "To request a new cable order", "To reserve a conference room"], answer: 1, explanation: "프로젝터가 작동하지 않는다고 알리며 IT 지원을 요청하고 있다. 회의를 취소하지는 않았다." },
+      { q: "What does Mr. Lindqvist offer to do?", choices: ["Change the meeting location", "Repair the projector himself", "Postpone the meeting until noon", "Contact the client directly"], answer: 0, explanation: "I can move the meeting to Room B. 시간을 미루는 것이 아니라 장소를 바꾸겠다는 제안이다." }
+    ]
+  },
+  {
+    id: "rp22", type: "공지", title: "수영장 청소 안내", strategyId: "r02", recommendedSec: 75,
+    header: ["NOTICE — Riverside Fitness Center"],
+    sentences: [
+      { en: "The swimming pool will be drained for cleaning on Thursday, July 10, and will reopen Friday morning.", ko: "수영장은 7월 10일 목요일에 청소를 위해 물을 빼며, 금요일 아침에 다시 엽니다." },
+      { en: "Members may use the pool at our Oakfield branch that day at no extra charge.", ko: "회원은 그날 오크필드 지점 수영장을 추가 요금 없이 이용할 수 있습니다." },
+      { en: "Please bring your membership card to the front desk there.", ko: "그곳 안내 데스크에 회원 카드를 가져와 주세요." },
+      { en: "All other facilities will remain open as usual.", ko: "그 외 시설은 평소대로 운영됩니다." }
+    ],
+    vocab: [
+      { w: "drain", m: "물을 빼다" },
+      { w: "reopen", m: "다시 열다" },
+      { w: "branch", m: "지점" },
+      { w: "at no extra charge", m: "추가 요금 없이" },
+      { w: "facility", m: "시설" }
+    ],
+    questions: [
+      { q: "What will happen on July 10?", choices: ["A new branch will open", "A pool will be closed for cleaning", "Membership fees will change", "The fitness center will close all day"], answer: 1, explanation: "수영장만 청소로 닫히고 다른 시설은 평소대로 운영된다." },
+      { q: "What are members asked to bring to the Oakfield branch?", choices: ["An extra payment", "Their membership card", "A towel and swimsuit", "A printed copy of the notice"], answer: 1, explanation: "Please bring your membership card. 추가 요금은 없다고 했다." }
+    ]
+  },
+  {
+    id: "rp23", type: "광고", title: "카페 점심 할인", strategyId: "r04", recommendedSec: 70,
+    header: ["LUNCH SPECIAL — Café Verdant"],
+    sentences: [
+      { en: "Monday through Thursday, 11:30 A.M. to 2:00 P.M.", ko: "월요일부터 목요일까지, 오전 11시 30분부터 오후 2시까지." },
+      { en: "Soup, sandwich, and a drink for $9.50.", ko: "수프, 샌드위치, 음료를 9.50달러에." },
+      { en: "Add a dessert for $2 more.", ko: "2달러를 더하면 디저트를 추가할 수 있습니다." },
+      { en: "Present this coupon to your server. One coupon per table.", ko: "이 쿠폰을 담당 직원에게 보여주세요. 한 테이블당 쿠폰 한 장입니다." },
+      { en: "Not valid on holidays.", ko: "공휴일에는 사용할 수 없습니다." }
+    ],
+    vocab: [
+      { w: "present", m: "제시하다, 보여주다" },
+      { w: "server", m: "(식당의) 담당 직원" },
+      { w: "per", m: "~당" },
+      { w: "valid", m: "유효한" },
+      { w: "holiday", m: "공휴일" }
+    ],
+    questions: [
+      { q: "What is NOT included in the $9.50 price?", choices: ["A soup", "A sandwich", "A drink", "A dessert"], answer: 3, explanation: "디저트는 2달러를 더 내야 한다." },
+      { q: "What is stated about the coupon?", choices: ["It is valid on weekends", "It may not be used on holidays", "It must be ordered online", "It expires in one week"], answer: 1, explanation: "Not valid on holidays. 월~목 한정이라 주말도 안 된다." }
+    ]
   }
 ];
 
@@ -670,6 +734,13 @@ window.PART6 = [
       { type: "text", en: " the facilities manager." }
     ],
     ko: "전 직원 안내: 다음 달부터 구내식당 운영 시간이 바뀝니다. 오전 7시 30분에 열고 오후 7시에 닫습니다. 이번 변경은 이른 교대 근무 직원들의 의견을 반영한 것입니다. 새 운영 시간은 입구에 게시될 예정입니다. 전환 기간 동안 양해해 주셔서 감사합니다. 문의 사항은 시설 관리자에게 전달해 주세요.",
+    vocab: [
+      { w: "operating hours", m: "운영 시간" },
+      { w: "feedback", m: "의견, 피드백" },
+      { w: "early shift", m: "아침 일찍 시작하는 근무" },
+      { w: "transition", m: "전환 기간" },
+      { w: "facilities manager", m: "시설 관리자" }
+    ],
     questions: [
       { n: 1, choices: ["adopt", "adopts", "adopting", "adopted"], answer: 0, explanation: "조동사 will 뒤에는 동사원형이 온다.", ruleId: "g01" },
       { n: 2, choices: ["because", "in response to", "although", "despite"], answer: 1, explanation: "빈칸 뒤가 명사(feedback)이므로 전치사가 필요하다. 의견을 반영했다는 뜻이므로 in response to.", ruleId: "g07" },
@@ -692,6 +763,13 @@ window.PART6 = [
       { type: "text", en: " order." }
     ],
     ko: "알바레즈 님께, 최근 구매해 주셔서 감사합니다. 주문하신 물품은 11월 3일에 발송되었으며 영업일 기준 5일 이내에 도착할 예정입니다. 배송지를 변경하셔야 한다면 금요일까지 연락 주세요. 저희 소식지도 구독해 보세요. 소식지를 신청하신 고객은 다음 주문 시 10퍼센트 할인을 받으십니다.",
+    vocab: [
+      { w: "purchase", m: "구매" },
+      { w: "business day", m: "영업일" },
+      { w: "delivery address", m: "배송 주소" },
+      { w: "sign up for", m: "~에 가입하다, 신청하다" },
+      { w: "discount", m: "할인" }
+    ],
     questions: [
       { n: 1, choices: ["to ship", "shipper", "was shipped", "shipping"], answer: 2, explanation: "주문품은 발송되는 쪽이므로 수동태다. 빈칸 뒤에 목적어가 없다.", ruleId: "g04" },
       { n: 2, choices: ["by", "until", "during", "since"], answer: 0, explanation: "금요일 전까지 연락하라는 마감 의미이므로 by.", ruleId: "g06" },
@@ -714,6 +792,13 @@ window.PART6 = [
       { type: "text", en: " contact the operations team." }
     ],
     ko: "전 직원에게 알립니다. 시카고 사무소가 10월 2일에 새 건물로 이전합니다. 새 주소는 레이크사이드 드라이브 410번지로, 현재 위치에서 두 블록 거리입니다. 이전으로 영업시간이 달라지지는 않습니다. 이삿짐 업체가 10월 1일에 모든 장비를 포장하므로, 그날까지 책상을 비워 주세요. 개인 물품에는 이름을 표시해야 합니다. 이전에 관한 문의는 운영팀으로 연락해 주세요.",
+    vocab: [
+      { w: "mover", m: "이삿짐 업체 직원" },
+      { w: "pack", m: "(짐을) 싸다, 포장하다" },
+      { w: "clear your desk", m: "책상을 비우다" },
+      { w: "label", m: "이름표를 붙이다" },
+      { w: "operations team", m: "운영팀" }
+    ],
     questions: [
       { n: 1, choices: ["relocate", "relocates", "relocating", "relocated"], answer: 0, explanation: "조동사 will 뒤에는 동사원형이 온다.", ruleId: "g01" },
       { n: 2, choices: ["The move will not affect business hours.", "The building will be demolished next year.", "All staff will work remotely from now on.", "The company is closing its Chicago branch."], answer: 0, explanation: "문장 삽입 문제다. 앞뒤가 이전 안내이므로 영업에 영향이 없다는 안내가 자연스럽다. 나머지는 이전 안내와 모순된다.", ruleId: null },
@@ -736,6 +821,13 @@ window.PART6 = [
       { type: "text", en: " and thank you for your understanding." }
     ],
     ko: "고객님께, 저희 X20 모델 주전자의 자발적 리콜을 알려드립니다. 일부 제품이 전원 스위치 결함이 있는 상태로 출고되었습니다. 현재까지 부상 사례는 보고되지 않았습니다. 해당 제품을 보유하고 계시면 즉시 사용을 중단하시고 가까운 매장으로 반납해 주세요. 원하시는 대로 전액 환불 또는 교환을 받으실 수 있습니다. 불편을 드려 죄송하며 양해해 주셔서 감사합니다.",
+    vocab: [
+      { w: "voluntary recall", m: "자발적 리콜(회수)" },
+      { w: "unit", m: "(제품) 한 대, 한 개" },
+      { w: "faulty", m: "결함이 있는" },
+      { w: "full refund", m: "전액 환불" },
+      { w: "replacement", m: "교환품, 대체품" }
+    ],
     questions: [
       { n: 1, choices: ["ship", "shipper", "were shipped", "shipping"], answer: 2, explanation: "제품은 출고되는 쪽이므로 수동태다. 빈칸 뒤에 목적어가 없다.", ruleId: "g04" },
       { n: 2, choices: ["No injuries have been reported so far.", "The product has been discontinued since 2010.", "Our stores will close permanently next month.", "The kettle won a design award last year."], answer: 0, explanation: "리콜 안내 문맥에서 피해 여부를 알리는 문장이 자연스럽다.", ruleId: null },
@@ -758,6 +850,13 @@ window.PART6 = [
       { type: "text", en: " We value your readership and hope to serve you for another year." }
     ],
     ko: "파텔 님께, 모던 디자인 먼슬리 구독이 12월 31일에 만료됩니다. 잡지를 끊김 없이 계속 받아보시려면 12월 15일까지 갱신해 주세요. 온라인 갱신이 가장 빠른 방법이며 2분도 걸리지 않습니다. 일찍 갱신하신 구독자께는 무료 에코백을 드립니다. 저희 잡지를 읽어주셔서 감사드리며 내년에도 함께하기를 바랍니다.",
+    vocab: [
+      { w: "subscription", m: "구독" },
+      { w: "without interruption", m: "중단 없이" },
+      { w: "renew", m: "(구독을) 갱신하다" },
+      { w: "option", m: "방법, 선택지" },
+      { w: "readership", m: "꾸준히 읽어 주심, 애독" }
+    ],
     questions: [
       { n: 1, choices: ["expire", "expires", "expired", "expiring"], answer: 1, explanation: "주어 Your subscription이 단수이고 예정된 일을 말하므로 현재형 expires.", ruleId: "g02" },
       { n: 2, choices: ["by", "until", "during", "since"], answer: 0, explanation: "12월 15일까지 갱신을 끝내라는 마감 의미이므로 by.", ruleId: "g06" },
@@ -780,6 +879,13 @@ window.PART6 = [
       { type: "text", en: " before Monday, email hr@bartonco.com." }
     ],
     ko: "바튼 앤 코에 오신 것을 환영합니다. 마케팅팀에 합류하게 되어 기쁩니다. 첫날은 9시에 2A룸에서 오리엔테이션으로 시작합니다. 점심은 직원 휴게실에서 제공됩니다. 그 후 매니저인 오르티스 씨가 첫 달의 주요 목표 세 가지를 함께 검토할 예정입니다. 출입증 발급을 위해 사진이 있는 신분증을 지참해 주세요. 월요일 전에 도움이 필요하시면 hr@bartonco.com으로 메일 주세요.",
+    vocab: [
+      { w: "orientation", m: "오리엔테이션, 신입 교육" },
+      { w: "afterward", m: "그 후에" },
+      { w: "photo ID", m: "사진이 있는 신분증" },
+      { w: "issue", m: "발급하다" },
+      { w: "building pass", m: "건물 출입증" }
+    ],
     questions: [
       { n: 1, choices: ["delight", "delighted", "delighting", "delightful"], answer: 1, explanation: "사람이 기쁨을 느끼는 쪽이므로 -ed 형태인 delighted. We are delighted to ~ 는 환영 인사의 정형 표현이다.", ruleId: "g01" },
       { n: 2, choices: ["Lunch will be provided in the staff lounge.", "You must submit your resignation in advance.", "The orientation has been canceled.", "Parking is not available for employees."], answer: 0, explanation: "첫날 일정을 안내하는 문맥이므로 점심 제공 안내가 자연스럽다.", ruleId: null },
@@ -802,6 +908,13 @@ window.PART6 = [
       { type: "text", en: " apologize for the inconvenience. If you have questions, please contact the facilities office at extension 212." }
     ],
     ko: "수신: 전 직원 / 제목: 주차장 보수 공사 — 동쪽 주차장이 5월 4일 월요일부터 5월 8일 금요일까지 폐쇄됩니다. 이 기간 동안 작업자들이 노면을 재포장하고 차선 표시를 다시 칠합니다. 평소 그곳에 주차하는 직원은 대신 서쪽 주차장을 이용해 주세요. 양쪽 입구에 안내 표지판이 설치될 예정입니다. 서쪽 주차장에는 여유 공간이 40면 정도 있어 모두 주차할 공간이 충분할 것입니다. 불편을 드려 진심으로 사과드립니다. 문의 사항은 내선 212번 시설 관리실로 연락해 주세요.",
+    vocab: [
+      { w: "resurface", m: "재포장하다" },
+      { w: "pavement", m: "포장 노면" },
+      { w: "lane marking", m: "차선 표시" },
+      { w: "inconvenience", m: "불편" },
+      { w: "extension", m: "내선 번호" }
+    ],
     questions: [
       { n: 1, choices: ["among", "through", "along", "across"], answer: 1, explanation: "from A through B는 'A부터 B까지(B 포함)'. 기간을 나타내는 짝 표현이다.", ruleId: "g06" },
       { n: 2, choices: ["The repairs were completed last year.", "Parking fees will increase in June.", "Signs will be posted at both entrances.", "Please return your badge to the front desk."], answer: 2, explanation: "문장 삽입 문제다. 서쪽 주차장을 쓰라는 안내 뒤에 안내 표지 설치가 자연스럽게 이어진다. 공사는 아직 시작 전이라 '작년에 끝났다'는 시제가 맞지 않고, 요금이나 출입증 이야기는 나오지 않는다.", ruleId: null },
@@ -824,6 +937,13 @@ window.PART6 = [
       { type: "text", en: " previously bought bread from a partner bakery can expect a wider selection." }
     ],
     ko: "벨포트 로스터스, 네 번째 카페 개점 — 벨포트 로스터스가 다음 달 커낼 스트리트 15번지에 네 번째 매장을 엽니다. 2014년에 설립된 이 회사는 항구 근처의 매장 하나로 시작해 현재 60명이 넘는 직원을 두고 있습니다. 새 카페는 40명을 수용하며 작은 베이커리 코너도 갖춥니다. 베이커리 코너는 이 회사로서는 처음입니다. 대표 마리솔 베가는 늘어난 공간 덕분에 처음으로 페이스트리를 매장에서 직접 구울 수 있게 됐다고 말했습니다. 그동안 협력 제과점에서 빵을 사 온 고객들은 더 다양한 제품을 기대할 수 있습니다.",
+    vocab: [
+      { w: "location", m: "지점" },
+      { w: "harbor", m: "항구" },
+      { w: "seat", m: "~명을 수용하다" },
+      { w: "on site", m: "현장에서" },
+      { w: "a wider selection", m: "더 다양한 종류" }
+    ],
     questions: [
       { n: 1, choices: ["founding", "founds", "founded", "to found"], answer: 2, explanation: "회사는 '설립되는' 쪽이므로 수동 의미의 과거분사가 와야 한다.", ruleId: "g04" },
       { n: 2, choices: ["include", "including", "includes", "to include"], answer: 0, explanation: "will seat ... and (will) include. 조동사 will을 공유하는 병렬이라 동사원형이 온다.", ruleId: "g01" },
@@ -846,6 +966,12 @@ window.PART6 = [
       { type: "text", en: "." }
     ],
     ko: "전체 사용자 공지 — 온라인 학습 플랫폼이 이번 토요일 오전 1시부터 5시까지 정기 점검을 진행합니다. 점검 중에는 로그인하거나 과제를 제출할 수 없습니다. 오전 1시 이전에 저장한 작업은 영향을 받지 않습니다. 다만 그 네 시간 동안에는 플랫폼을 전혀 이용할 수 없습니다. 주말 동안 필요할 수 있는 파일은 미리 내려받아 두시기를 권합니다. 이번 점검으로 로딩 속도가 빨라지고, 일부 사용자가 알려 주신 동영상 재생 문제가 해결됩니다. 양해해 주셔서 감사합니다.",
+    vocab: [
+      { w: "undergo", m: "겪다, 받다" },
+      { w: "scheduled maintenance", m: "정기 점검" },
+      { w: "be affected", m: "영향을 받다" },
+      { w: "playback", m: "재생" }
+    ],
     questions: [
       { n: 1, choices: ["outcome", "outlook", "outage", "output"], answer: 2, explanation: "outage는 서비스가 중단된 시간을 말한다. 철자가 비슷한 단어들과 구분해야 한다.", ruleId: null },
       { n: 2, choices: ["The maintenance has been postponed until next month.", "However, the platform will be completely unavailable during those four hours.", "Please register for an account before Saturday.", "Assignments are graded within two business days."], answer: 1, explanation: "문장 삽입 문제다. '저장한 내용은 영향 없다' 다음에 However로 뒤집으며 4시간 중단을 알린다. 1시~5시가 네 시간이라는 점도 근거다. 점검은 이번 토요일이라 연기 이야기는 맞지 않는다.", ruleId: null },
@@ -868,6 +994,11 @@ window.PART6 = [
       { type: "text", en: ". Sincerely, Gilles Moreau, Human Resources" }
     ],
     ko: "보낸 사람: 질 모로 / 받는 사람: 아르노 님 / 제목: 면접 안내 — 아르노 님께, 물류 담당자 직에 지원해 주셔서 감사합니다. 경력이 인상적이어서 리옹 사무소로 면접에 모시고자 합니다. 9월 9일 화요일 오전 10시로 일정을 잡아 두었습니다. 이 시간을 확정하시려면 금요일까지 회신해 주세요. 그 날짜가 어려우시면 다른 날짜를 제안해 드릴 수 있습니다. 면접은 약 한 시간 동안 진행되며 짧은 필기 과제가 포함됩니다. 미리 준비하실 것은 없습니다. 인사부 질 모로 드림",
+    vocab: [
+      { w: "logistics coordinator", m: "물류 담당자" },
+      { w: "be impressed by", m: "~에 좋은 인상을 받다" },
+      { w: "written exercise", m: "필기 과제" }
+    ],
     questions: [
       { n: 1, choices: ["invite", "inviting", "invited", "invitation"], answer: 0, explanation: "would like to 뒤에는 동사원형이 온다.", ruleId: "g05" },
       { n: 2, choices: ["conform", "confirm", "confine", "consume"], answer: 1, explanation: "confirm은 '확정하다, 확인해 주다'. 철자가 비슷한 단어와 구분해야 한다.", ruleId: null },
