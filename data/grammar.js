@@ -11,7 +11,8 @@ window.GRAMMAR = [
         ["the ___ / a ___ / 형용사 ___", "명사"],
         ["주어 ___ 목적어", "동사"],
         ["___ + 명사", "형용사"],
-        ["일반동사 ___ / 문장 맨 앞 ___", "부사"]
+        ["일반동사 ___ / 문장 맨 앞 ___", "부사"],
+        ["be ___ -ing / be ___ p.p.", "부사"]
       ]
     },
     examples: [
@@ -19,7 +20,7 @@ window.GRAMMAR = [
       { good: "She works carefully.", bad: "She works careful.", note: "일반동사 뒤 → 부사" },
       { good: "This is an effective plan.", bad: "This is an effect plan.", note: "명사 앞 → 형용사" }
     ],
-    trap: "very, so 같은 수식어에 속지 마라. 꾸밈 받는 대상을 봐야 한다.\nShe is very careful. (be동사 뒤 → 형용사)\nShe works very carefully. (일반동사 뒤 → 부사)",
+    trap: "very, so 같은 수식어에 속지 마라. 꾸밈 받는 대상을 봐야 한다.\nShe is very careful. (be동사 뒤 → 형용사)\nShe works very carefully. (일반동사 뒤 → 부사)\nbe동사 바로 뒤는 형용사 자리지만, be ___ -ing나 be ___ p.p.처럼 뒤에 동사가 이어지면 그 사이는 부사 자리다.\nThe office is currently undergoing renovation.",
     toeicPattern: "선택지가 decide / decision / decisive / decisively 처럼 한 뿌리의 네 품사로 나오면 거의 이 유형이다. 먼저 빈칸 앞뒤로 품사를 정하고, 같은 품사가 둘 이상 남을 때만 뜻으로 가른다."
   },
   {
@@ -87,9 +88,9 @@ window.GRAMMAR = [
       ["둘 다 가능", "like, love, start, begin, continue"]
     ] },
     examples: [
-      { good: "I want to go.", bad: "I want going.", note: "want는 to만" },
+      { good: "I want to go.", bad: "I want going.", note: "want 뒤에는 to부정사" },
       { good: "We recommend taking the earlier train.", bad: "We recommend to take the earlier train.", note: "recommend 뒤에는 to부정사가 바로 못 온다" },
-      { good: "She finished writing the report.", bad: "She finished to write the report.", note: "finish는 -ing만" }
+      { good: "She finished writing the report.", bad: "She finished to write the report.", note: "finish 뒤에는 -ing" }
     ],
     trap: "이 표는 '빈칸 바로 뒤'에 무엇이 오는지를 가리는 기준이다. that절처럼 다른 구조를 따로 갖는 동사도 있다.\n그리고 to 뒤에는 보통 동사원형이지만, look forward to / be used to / contribute to의 to는 전치사라서 -ing가 온다.\nI look forward to meeting you. (to meet ❌)",
     toeicPattern: "빈칸 앞 동사만 보면 된다. 해석할 필요가 없다. 위 표의 동사 목록을 외워두면 3초 안에 풀린다."
@@ -140,7 +141,7 @@ window.GRAMMAR = [
       { good: "the company whose office is downtown", bad: "the company which office is downtown", note: "소유 관계 → whose" }
     ],
     trap: "순서대로 가른다.\n① 빈칸 뒤에 명사가 바로 오고 소유 관계면 whose\n② 그렇지 않고 뒤에 주어가 없으면 주격 (who / which / that)\n③ 뒤에 주어가 있으면 목적격이고, 이때는 생략할 수 있다\n   the report (that) I sent",
-    toeicPattern: "빈칸 앞 명사가 사람인지 사물인지 먼저 보고, 빈칸 뒤에 주어가 있는지로 주격과 목적격을 가른다."
+    toeicPattern: "빈칸 뒤부터 본다. 동사가 바로 오면 주격, '주어 + 동사'인데 목적어가 빠져 있으면 목적격, '명사 + 동사'로 문장이 완전하고 그 명사가 앞 명사의 것이면 whose다. 그다음 앞 명사가 사람인지 사물인지로 who와 which를 가른다."
   },
   {
     id: "g09", order: 9, title: "대명사", weight: "보통",
@@ -250,15 +251,15 @@ window.GRAMMAR_QUIZ = [
   { id: "q038", ruleId: "g04", question: "The technician ____ the equipment yesterday.", choices: ["repaired", "was repaired", "repairing", "repair"], answer: 0, explanation: "빈칸 뒤에 목적어 the equipment가 있으므로 능동태다.", difficulty: "easy" },
   { id: "q039", ruleId: "g04", question: "The invoice ____ to your email address.", choices: ["has sent", "has been sent", "sending", "send"], answer: 1, explanation: "청구서는 보내지는 쪽이다. 현재완료 수동은 has been + p.p.", difficulty: "hard" },
   { id: "q040", ruleId: "g04", question: "The manager ____ the schedule to accommodate the change.", choices: ["revised", "was revised", "revising", "revision"], answer: 0, explanation: "빈칸 뒤에 목적어 the schedule이 있으므로 능동태다.", difficulty: "medium" },
-  { id: "q041", ruleId: "g05", question: "We decided ____ the meeting until next week.", choices: ["postpone", "to postpone", "postponing", "postponed"], answer: 1, explanation: "decide는 뒤에 to부정사만 온다. decide to + 동사원형.", difficulty: "easy" },
+  { id: "q041", ruleId: "g05", question: "We decided ____ the meeting until next week.", choices: ["postpone", "to postpone", "postponing", "postponed"], answer: 1, explanation: "decide 뒤에는 to부정사가 온다. decide to + 동사원형.", difficulty: "easy" },
   { id: "q042", ruleId: "g05", question: "The manager recommended ____ the deadline.", choices: ["extend", "to extend", "extending", "extended"], answer: 2, explanation: "recommend 뒤에는 to부정사가 바로 올 수 없다. recommend -ing 또는 recommend that + 주어 + 동사원형 형태로 쓴다.", difficulty: "medium" },
-  { id: "q043", ruleId: "g05", question: "She finished ____ the report yesterday.", choices: ["write", "to write", "writing", "written"], answer: 2, explanation: "finish는 뒤에 -ing만 온다.", difficulty: "easy" },
-  { id: "q044", ruleId: "g05", question: "They agreed ____ the contract next month.", choices: ["renew", "to renew", "renewing", "renewed"], answer: 1, explanation: "agree는 뒤에 to부정사만 온다.", difficulty: "easy" },
-  { id: "q045", ruleId: "g05", question: "Please avoid ____ during the presentation.", choices: ["talk", "to talk", "talking", "talked"], answer: 2, explanation: "avoid는 뒤에 -ing만 온다.", difficulty: "medium" },
+  { id: "q043", ruleId: "g05", question: "She finished ____ the report yesterday.", choices: ["write", "to write", "writing", "written"], answer: 2, explanation: "finish 뒤에는 -ing가 온다.", difficulty: "easy" },
+  { id: "q044", ruleId: "g05", question: "They agreed ____ the contract next month.", choices: ["renew", "to renew", "renewing", "renewed"], answer: 1, explanation: "agree 뒤에는 to부정사가 온다.", difficulty: "easy" },
+  { id: "q045", ruleId: "g05", question: "Please avoid ____ during the presentation.", choices: ["talk", "to talk", "talking", "talked"], answer: 2, explanation: "avoid 뒤에는 -ing가 온다.", difficulty: "medium" },
   { id: "q046", ruleId: "g05", question: "We look forward to ____ from you soon.", choices: ["hear", "to hear", "hearing", "heard"], answer: 2, explanation: "look forward to의 to는 전치사라서 뒤에 -ing가 온다. 토익이 노리는 대표 함정이다.", difficulty: "hard" },
-  { id: "q047", ruleId: "g05", question: "He offered ____ us with the project.", choices: ["help", "to help", "helping", "helped"], answer: 1, explanation: "offer는 뒤에 to부정사만 온다.", difficulty: "medium" },
-  { id: "q048", ruleId: "g05", question: "The company plans ____ a new branch.", choices: ["open", "to open", "opening", "opened"], answer: 1, explanation: "plan은 뒤에 to부정사만 온다.", difficulty: "easy" },
-  { id: "q049", ruleId: "g05", question: "Would you mind ____ the door?", choices: ["close", "to close", "closing", "closed"], answer: 2, explanation: "mind는 뒤에 -ing만 온다. Would you mind -ing? 는 정중한 요청이다.", difficulty: "medium" },
+  { id: "q047", ruleId: "g05", question: "He offered ____ us with the project.", choices: ["help", "to help", "helping", "helped"], answer: 1, explanation: "offer 뒤에는 to부정사가 온다.", difficulty: "medium" },
+  { id: "q048", ruleId: "g05", question: "The company plans ____ a new branch.", choices: ["open", "to open", "opening", "opened"], answer: 1, explanation: "plan 뒤에는 to부정사가 온다.", difficulty: "easy" },
+  { id: "q049", ruleId: "g05", question: "Would you mind ____ the door?", choices: ["close", "to close", "closing", "closed"], answer: 2, explanation: "mind 뒤에는 -ing가 온다. Would you mind -ing? 는 정중한 요청이다.", difficulty: "medium" },
   { id: "q050", ruleId: "g05", question: "I am used to ____ early.", choices: ["get up", "to get up", "getting up", "got up"], answer: 2, explanation: "be used to의 to도 전치사다. 뒤에 -ing가 온다. used to + 동사원형(과거의 습관)과 구분해야 한다.", difficulty: "hard" },
   { id: "q051", ruleId: "g06", question: "The report is due ____ Friday.", choices: ["in", "on", "at", "to"], answer: 1, explanation: "요일 앞에는 on을 쓴다.", difficulty: "easy" },
   { id: "q052", ruleId: "g06", question: "Please submit it ____ 5 p.m.", choices: ["by", "until", "during", "for"], answer: 0, explanation: "by는 마감 시점(그 전에 끝내라), until은 지속(그때까지 계속). 제출 마감이므로 by.", difficulty: "medium" },
