@@ -11,7 +11,7 @@ window.GRAMMAR = [
         ["the ___ / a ___ / 형용사 ___", "명사"],
         ["주어 ___ 목적어", "동사"],
         ["___ + 명사", "형용사"],
-        ["동사 ___ / 문장 맨 앞 ___", "부사"]
+        ["일반동사 ___ / 문장 맨 앞 ___", "부사"]
       ]
     },
     examples: [
@@ -59,7 +59,7 @@ window.GRAMMAR = [
       { good: "He will call you tomorrow.", bad: "He called you tomorrow.", note: "tomorrow는 미래" }
     ],
     trap: "since와 for를 구분하라.\nsince + 시점 (since 2020)\nfor + 기간 (for three years)\n둘 다 현재완료와 짝을 이룬다.",
-    toeicPattern: "빈칸이 동사이고 선택지가 같은 동사의 시제 변형이면, 문장에서 시간 표시어를 먼저 찾아라. yesterday·last·ago가 보이면 과거, since·for가 보이면 현재완료다."
+    toeicPattern: "빈칸이 동사이고 선택지가 같은 동사의 시제 변형이면, 문장에서 시간 표시어를 먼저 찾아라. yesterday·last·ago가 보이면 과거다. since와 for는 조금 더 봐야 한다. 지금까지 이어지면 현재완료, 과거에 끝났으면 과거형이다."
   },
   {
     id: "g04", order: 4, title: "능동 / 수동", weight: "빈출",
@@ -83,7 +83,7 @@ window.GRAMMAR = [
     oneLine: "동사 뒤에 어떤 형태가 오는지는 앞의 동사가 정한다.",
     table: { headers: ["뒤에 오는 형태", "해당 동사"], rows: [
       ["to + 동사원형", "want, plan, decide, hope, agree, need, offer, afford"],
-      ["-ing", "enjoy, finish, avoid, consider, recommend, suggest, mind, keep"],
+      ["-ing (to부정사가 바로 못 옴)", "enjoy, finish, avoid, consider, recommend, suggest, mind, keep"],
       ["둘 다 가능", "like, love, start, begin, continue"]
     ] },
     examples: [
@@ -219,7 +219,7 @@ window.GRAMMAR_QUIZ = [
   { id: "q007", ruleId: "g01", question: "The instructions were written very ____.", choices: ["simple", "simply", "simplify", "simplicity"], answer: 1, explanation: "written(동사)을 꾸미는 자리이므로 부사 simply. very에 속지 말고 꾸밈 받는 대상을 봐라.", difficulty: "medium" },
   { id: "q008", ruleId: "g01", question: "Our team achieved ____ results this year.", choices: ["impress", "impressed", "impressive", "impressively"], answer: 2, explanation: "명사 results 앞이므로 형용사 impressive. impressed는 '감명받은'으로 사람에게 쓴다.", difficulty: "medium" },
   { id: "q009", ruleId: "g01", question: "The ____ of the project depends on teamwork.", choices: ["succeed", "success", "successful", "successfully"], answer: 1, explanation: "The ____ of 구조에서 the 뒤는 명사 자리다. success가 명사다.", difficulty: "easy" },
-  { id: "q010", ruleId: "g01", question: "He responded ____ to the customer's complaint.", choices: ["prompt", "promptly", "promptness", "prompted"], answer: 1, explanation: "동사 responded를 꾸미므로 부사 promptly. 동사 뒤에 바로 오는 수식어는 부사다.", difficulty: "easy" },
+  { id: "q010", ruleId: "g01", question: "He responded ____ to the customer's complaint.", choices: ["prompt", "promptly", "promptness", "prompted"], answer: 1, explanation: "동사 responded를 꾸미므로 부사 promptly. 일반동사 뒤에 오는 수식어는 부사다. 단 be동사나 seem 뒤에는 형용사가 온다.", difficulty: "easy" },
   { id: "q011", ruleId: "g02", question: "The reports on the sales figures ____ ready for review.", choices: ["is", "are", "was", "has"], answer: 1, explanation: "주어는 reports(복수)다. on the sales figures는 꾸밈말이므로 가리고 봐야 한다.", difficulty: "medium" },
   { id: "q012", ruleId: "g02", question: "Each of the applicants ____ required to submit a resume.", choices: ["is", "are", "were", "have"], answer: 0, explanation: "each는 항상 단수 취급한다. of the applicants에 속지 마라.", difficulty: "medium" },
   { id: "q013", ruleId: "g02", question: "The information in these files ____ confidential.", choices: ["is", "are", "were", "have"], answer: 0, explanation: "information은 셀 수 없는 명사로 항상 단수 취급한다.", difficulty: "easy" },
@@ -251,7 +251,7 @@ window.GRAMMAR_QUIZ = [
   { id: "q039", ruleId: "g04", question: "The invoice ____ to your email address.", choices: ["has sent", "has been sent", "sending", "send"], answer: 1, explanation: "청구서는 보내지는 쪽이다. 현재완료 수동은 has been + p.p.", difficulty: "hard" },
   { id: "q040", ruleId: "g04", question: "The manager ____ the schedule to accommodate the change.", choices: ["revised", "was revised", "revising", "revision"], answer: 0, explanation: "빈칸 뒤에 목적어 the schedule이 있으므로 능동태다.", difficulty: "medium" },
   { id: "q041", ruleId: "g05", question: "We decided ____ the meeting until next week.", choices: ["postpone", "to postpone", "postponing", "postponed"], answer: 1, explanation: "decide는 뒤에 to부정사만 온다. decide to + 동사원형.", difficulty: "easy" },
-  { id: "q042", ruleId: "g05", question: "The manager recommended ____ the deadline.", choices: ["extend", "to extend", "extending", "extended"], answer: 2, explanation: "recommend는 뒤에 -ing만 온다. recommend to extend는 틀린 표현이다.", difficulty: "medium" },
+  { id: "q042", ruleId: "g05", question: "The manager recommended ____ the deadline.", choices: ["extend", "to extend", "extending", "extended"], answer: 2, explanation: "recommend 뒤에는 to부정사가 바로 올 수 없다. recommend -ing 또는 recommend that + 주어 + 동사원형 형태로 쓴다.", difficulty: "medium" },
   { id: "q043", ruleId: "g05", question: "She finished ____ the report yesterday.", choices: ["write", "to write", "writing", "written"], answer: 2, explanation: "finish는 뒤에 -ing만 온다.", difficulty: "easy" },
   { id: "q044", ruleId: "g05", question: "They agreed ____ the contract next month.", choices: ["renew", "to renew", "renewing", "renewed"], answer: 1, explanation: "agree는 뒤에 to부정사만 온다.", difficulty: "easy" },
   { id: "q045", ruleId: "g05", question: "Please avoid ____ during the presentation.", choices: ["talk", "to talk", "talking", "talked"], answer: 2, explanation: "avoid는 뒤에 -ing만 온다.", difficulty: "medium" },

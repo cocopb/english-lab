@@ -69,9 +69,9 @@ window.PATTERNS = [
     tip: "소요 시간을 묻는 표준 문장. 통째로 외워서 바로 나와야 한다.",
     drills: [
       { ko: "거기까지 얼마나 걸리나요?", en: "How long does it take to get there?" },
-      { ko: "배송이 얼마나 걸리나요?", en: "How long does it take to ship?" },
-      { ko: "공항까지 얼마나 걸리나요?", en: "How long does it take to the airport?" },
-      { ko: "수리하는 데 얼마나 걸리나요?", en: "How long does it take to repair?" }
+      { ko: "배송이 얼마나 걸리나요?", en: "How long does shipping take?" },
+      { ko: "공항까지 얼마나 걸리나요?", en: "How long does it take to get to the airport?" },
+      { ko: "수리하는 데 얼마나 걸리나요?", en: "How long does it take to repair it?" }
     ]
   },
   {
@@ -96,7 +96,7 @@ window.PATTERNS = [
   },
   {
     id: "sp10", pattern: "It depends on ~", meaning: "~에 따라 달라요",
-    tip: "바로 답하기 어려운 질문에 쓰는 만능 표현. on 뒤에는 명사나 -ing가 온다.",
+    tip: "on 뒤에는 명사, -ing, 또는 의문사절(when·what·how ~)이 온다.",
     drills: [
       { ko: "날씨에 따라 달라요.", en: "It depends on the weather." },
       { ko: "가격에 따라 달라요.", en: "It depends on the price." },
@@ -119,7 +119,7 @@ window.PATTERNS = [
     tip: "Can I보다 조심스러운 표현. 상대에게 영향이 가는 일을 물을 때 쓴다.",
     drills: [
       { ko: "창문 좀 열어도 괜찮을까요?", en: "Is it okay if I open the window?" },
-      { ko: "조금 늦어도 괜찮을까요?", en: "Is it okay if I am a little late?" },
+      { ko: "조금 늦어도 괜찮을까요?", en: "Is it okay if I'm a little late?" },
       { ko: "여기 앉아도 괜찮을까요?", en: "Is it okay if I sit here?" },
       { ko: "내일 다시 연락드려도 괜찮을까요?", en: "Is it okay if I call you back tomorrow?" }
     ]
@@ -171,7 +171,7 @@ window.PATTERNS = [
       { ko: "여기 앉아도 될까요?", en: "Do you mind if I sit here?" },
       { ko: "사진 좀 찍어도 될까요?", en: "Do you mind if I take a photo?" },
       { ko: "에어컨 좀 켜도 될까요?", en: "Do you mind if I turn on the air conditioner?" },
-      { ko: "먼저 가도 될까요?", en: "Do you mind if I leave early?" }
+      { ko: "일찍 나가도 될까요?", en: "Do you mind if I leave early?" }
     ]
   },
   {
@@ -186,7 +186,7 @@ window.PATTERNS = [
   },
   {
     id: "sp19", pattern: "That sounds ~", meaning: "~하겠네요 (상대 말에 반응)",
-    tip: "뒤에 형용사가 온다. That's와 동사가 겹치지 않게 주의한다. That's sounds good은 틀린 표현이다.",
+    tip: "뒤에 형용사가 온다. 명사를 쓰려면 That sounds like a good idea처럼 like를 넣는다.",
     drills: [
       { ko: "좋네요.", en: "That sounds good." },
       { ko: "재밌겠네요.", en: "That sounds fun." },
@@ -211,7 +211,7 @@ window.PATTERNS = [
       { ko: "더 빨리 받을 방법이 있을까요?", en: "Is there any way to get it faster?" },
       { ko: "예약을 바꿀 방법이 있을까요?", en: "Is there any way to change the reservation?" },
       { ko: "환불받을 방법이 있을까요?", en: "Is there any way to get a refund?" },
-      { ko: "연락할 방법이 있을까요?", en: "Is there any way to contact him?" }
+      { ko: "그에게 연락할 방법이 있을까요?", en: "Is there any way to contact him?" }
     ]
   },
   {
@@ -231,7 +231,7 @@ window.PATTERNS = [
       { ko: "꼭 여권 챙기세요.", en: "Make sure you bring your passport." },
       { ko: "꼭 확인하세요.", en: "Make sure you check it." },
       { ko: "꼭 제시간에 오세요.", en: "Make sure you arrive on time." },
-      { ko: "꼭 저장하세요.", en: "Make sure you save the file." }
+      { ko: "파일 꼭 저장하세요.", en: "Make sure you save the file." }
     ]
   },
   {
@@ -275,7 +275,7 @@ window.ROLEPLAYS = [
     id: "rp_hotel", title: "호텔 체크인", situation: "호텔 프런트. 당신은 투숙객입니다.",
     turns: [
       { who: "other", en: "Good evening! Welcome to the Grand Hotel. Checking in?", ko: "안녕하세요! 그랜드 호텔입니다. 체크인하시나요?" },
-      { who: "me", instruction: "예약했다고 말하세요.", model: "Yes, I have a reservation.", alts: ["I have a reservation.", "Yes, I booked a room."], comment: "예약을 실제로 갖고 있으므로 have가 맞다. 표를 사려는 상황과 구분하라." },
+      { who: "me", instruction: "예약했다고 말하세요.", model: "Yes, I have a reservation.", alts: ["I have a reservation.", "Yes, I booked a room."], comment: "예약을 실제로 가지고 있으므로 have가 맞다. 표를 사려는 상황에서는 I have a ticket이 아니라 Can I get a ticket이라고 해야 한다." },
       { who: "other", en: "Great. Can I have your name, please?", ko: "네. 성함을 알려주시겠어요?" },
       { who: "me", instruction: "이름을 말하고 철자도 불러주세요.", model: "It's under Jeong. J-E-O-N-G.", alts: ["My name is Jeong. J-E-O-N-G.", "Jeong. That's J-E-O-N-G."], comment: "under + 성 = ~이름으로 예약된. 한국 이름은 처음부터 철자를 같이 말하면 훨씬 빠르다." },
       { who: "other", en: "Thank you. I see a reservation for three nights. Here's your key card, room 512.", ko: "감사합니다. 3박 예약 확인됐습니다. 키카드 여기 있습니다, 512호입니다." },
@@ -305,7 +305,7 @@ window.ROLEPLAYS = [
       { who: "other", en: "Hi there! Do you need any help?", ko: "안녕하세요! 도움이 필요하신가요?" },
       { who: "me", instruction: "어제 산 셔츠를 교환하고 싶다고 말하세요.", model: "I'd like to exchange this shirt I bought yesterday.", alts: ["I want to exchange this shirt.", "Can I exchange this shirt?"], comment: "교환은 exchange, 환불은 refund다. 둘을 구분해서 말해야 한다." },
       { who: "other", en: "No problem. Do you have the receipt?", ko: "문제없습니다. 영수증 가지고 계신가요?" },
-      { who: "me", instruction: "영수증이 있다고 하고, 사이즈가 작다고 말하세요.", model: "Yes, here it is. The size is too small.", alts: ["Yes, I have it. It's too small.", "Here you go. It doesn't fit."], comment: "It doesn't fit(저한테 안 맞아요)도 아주 자주 쓴다." },
+      { who: "me", instruction: "영수증이 있다고 하고, 사이즈가 작다고 말하세요.", model: "Yes, here it is. It's too small.", alts: ["Yes, I have it. It doesn't fit.", "Here you go. It's too small for me."], comment: "The size is too small은 한국어 직역 투다. 영어는 그냥 It's too small이라고 한다." },
       { who: "other", en: "Let me check if we have a larger size. What size do you need?", ko: "더 큰 사이즈가 있는지 확인해 볼게요. 어떤 사이즈가 필요하세요?" },
       { who: "me", instruction: "라지 사이즈가 있는지 물어보세요.", model: "Do you have this in a large?", alts: ["Do you have a large?", "Is there a large size?"], comment: "Do you have this in + 사이즈·색 은 쇼핑에서 쓰는 만능 표현이다." },
       { who: "other", en: "We do, but only in blue. Is that okay?", ko: "있습니다. 다만 파란색만 있어요. 괜찮으세요?" },
@@ -331,7 +331,7 @@ window.ROLEPLAYS = [
     id: "rp_directions", title: "길 묻기", situation: "낯선 도시의 길거리. 중앙 도서관을 찾고 있다.",
     turns: [
       { who: "other", en: "(A passerby is walking by.)", ko: "(행인이 지나가고 있다.)" },
-      { who: "me", instruction: "지나가는 사람에게 말을 거세요.", model: "Excuse me, could you help me?", alts: ["Excuse me, can I ask you something?", "Excuse me, sorry to bother you."], comment: "모르는 사람을 부를 때는 Excuse me가 유일한 정답이다. Hey나 Hello는 실례다." },
+      { who: "me", instruction: "지나가는 사람에게 말을 거세요.", model: "Excuse me, could you help me?", alts: ["Excuse me, can I ask you something?", "Excuse me, sorry to bother you."], comment: "모르는 사람에게 말을 걸 때 Excuse me가 가장 무난하다. Hey는 무례하게 들릴 수 있다." },
       { who: "other", en: "Sure, what do you need?", ko: "네, 무엇을 도와드릴까요?" },
       { who: "me", instruction: "중앙 도서관에 어떻게 가는지 물어보세요.", model: "How do I get to the central library?", alts: ["Where is the central library?", "Could you tell me how to get to the central library?"], comment: "How do I get to ~? 가 길 묻기의 표준 문장이다." },
       { who: "other", en: "Go straight for three blocks, then turn right at the bank. It's on your left.", ko: "세 블록 직진하신 다음 은행에서 우회전하세요. 왼편에 있습니다." },

@@ -87,7 +87,7 @@ window.PASSAGES = [
       { en: "I am writing to let you know that your shipment will be delayed by three business days.", ko: "배송이 영업일 기준 3일 지연될 예정임을 알려드리고자 메일을 드립니다." },
       { en: "Our warehouse is currently moving to a larger facility, and this has slowed down our processing times.", ko: "저희 창고가 현재 더 큰 시설로 이전 중이어서 처리 시간이 지연되고 있습니다." },
       { en: "Your order is now scheduled to arrive on March 14 instead of March 11.", ko: "주문하신 물품은 3월 11일이 아닌 3월 14일에 도착할 예정입니다." },
-      { en: "To apologize for the inconvenience, we have added a 10 percent discount to your next purchase.", ko: "불편을 끼쳐드린 데 사과드리며, 다음 구매 시 10퍼센트 할인을 적용해 드렸습니다." },
+      { en: "To apologize for the inconvenience, we have applied a 10 percent discount to your next purchase.", ko: "불편을 끼쳐드린 데 사과드리며, 다음 구매 시 10퍼센트 할인을 적용해 드렸습니다." },
       { en: "If you need the items sooner, please reply to this message and we will arrange express delivery at no extra charge.", ko: "더 빨리 받으셔야 한다면 이 메일에 회신해 주세요. 추가 비용 없이 특급 배송을 준비해 드리겠습니다." },
       { en: "Best regards,", ko: "감사합니다," },
       { en: "Daniel Cho, Customer Service, Bright Supply", ko: "대니얼 조, 고객 서비스, 브라이트 서플라이" }
@@ -183,7 +183,7 @@ window.PASSAGES = [
     sentences: [
       { en: "Rosewood Bakery will open a second shop on Pine Avenue next month, owner Elena Marsh announced Tuesday.", ko: "로즈우드 베이커리가 다음 달 파인 애비뉴에 2호점을 연다고 소유주 엘레나 마시가 화요일에 발표했습니다." },
       { en: "The original store, which opened in 2019, has seen steady growth in demand for its bread and pastries.", ko: "2019년에 문을 연 1호점은 빵과 페이스트리 수요가 꾸준히 늘어왔습니다." },
-      { en: "\"We simply ran out of space,\" Marsh said.", ko: "\"공간이 부족했을 뿐입니다\"라고 마시는 말했습니다." },
+      { en: "\"We simply ran out of space,\" Marsh said.", ko: "\"그냥 공간이 모자랐어요\"라고 마시는 말했습니다." },
       { en: "\"Customers were waiting outside on weekends.\"", ko: "\"주말에는 손님들이 밖에서 기다리셨어요.\"" },
       { en: "The new location will be twice the size of the current one and will include seating for forty people.", ko: "새 매장은 현재의 두 배 규모이며 40석의 좌석을 갖출 예정입니다." },
       { en: "Marsh plans to hire about fifteen additional staff members before the opening.", ko: "마시는 개업 전에 약 15명의 직원을 추가로 채용할 계획입니다." },
@@ -471,7 +471,7 @@ window.PART6 = [
     questions: [
       { n: 1, choices: ["relocate", "relocates", "relocating", "relocated"], answer: 0, explanation: "조동사 will 뒤에는 동사원형이 온다.", ruleId: "g01" },
       { n: 2, choices: ["The move will not affect business hours.", "The building will be demolished next year.", "All staff will work remotely from now on.", "The company is closing its Chicago branch."], answer: 0, explanation: "문장 삽입 문제다. 앞뒤가 이전 안내이므로 영업에 영향이 없다는 안내가 자연스럽다. 나머지는 이전 안내와 모순된다.", ruleId: null },
-      { n: 3, choices: ["should", "are", "having", "to be"], answer: 0, explanation: "뒤에 동사원형 be가 오므로 조동사 should가 필요하다.", ruleId: "g01" },
+      { n: 3, choices: ["should", "are", "having", "to be"], answer: 0, explanation: "뒤에 동사원형 be가 오므로 조동사 should가 필요하다.", ruleId: null },
       { n: 4, choices: ["please", "pleased", "pleasing", "pleasure"], answer: 0, explanation: "명령문 앞의 정중 표현은 please다. 뒤에 동사원형 contact가 온다.", ruleId: "g12" }
     ]
   },
