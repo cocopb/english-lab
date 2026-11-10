@@ -34,7 +34,10 @@ window.GRAMMAR = [
       rows: [
         ["단수 (he, she, it, the report)", "works / is / has"],
         ["복수 (they, we, the reports)", "work / are / have"],
-        ["셀 수 없는 명사 (information)", "단수 취급"]
+        ["셀 수 없는 명사 (information)", "단수 취급"],
+        ["each / every / neither + 명사", "단수 취급"],
+        ["the number of ~", "단수 (a number of ~ 는 복수)"],
+        ["There is / There are", "뒤에 오는 명사가 주어"]
       ]
     },
     examples: [
@@ -54,7 +57,7 @@ window.GRAMMAR = [
       ["현재완료", "have worked", "since, recently, already, yet, for(지금까지 이어질 때)"],
       ["미래", "will work", "tomorrow, next week"],
       ["현재진행", "am working", "now, at the moment"],
-      ["과거진행", "was working", "when + 과거 문장"]
+      ["과거진행", "was working", "when + 과거 문장 (단순과거와도 쓰임)"]
     ] },
     examples: [
       { good: "I worked there last year.", bad: "I have worked there last year.", note: "last year가 있으면 현재완료를 쓸 수 없다" },
@@ -95,7 +98,7 @@ window.GRAMMAR = [
       { good: "She finished writing the report.", bad: "She finished to write the report.", note: "finish 뒤에는 -ing" }
     ],
     trap: "이 표는 '빈칸 바로 뒤'에 무엇이 오는지를 가리는 기준이다. that절처럼 다른 구조를 따로 갖는 동사도 있다.\n그리고 to 뒤에는 보통 동사원형이지만, look forward to / be used to / contribute to의 to는 전치사라서 -ing가 온다.\nI look forward to meeting you. (to meet ❌)\nneed처럼 -ing도 가능한 동사가 있다. The car needs washing.",
-    toeicPattern: "빈칸 앞 동사만 보면 된다. 해석할 필요가 없다. 위 표의 동사 목록을 외워두면 3초 안에 풀린다."
+    toeicPattern: "빈칸 앞 동사를 먼저 본다. 표에 있는 동사면 바로 풀린다. 단 look forward to, be used to처럼 to가 전치사인 경우는 뒤에 -ing가 오므로 따로 외워야 한다."
   },
   {
     id: "g06", order: 6, title: "전치사", weight: "빈출",
@@ -159,7 +162,7 @@ window.GRAMMAR = [
       { good: "He did it himself.", bad: "He did it him.", note: "주어와 같은 대상 → 재귀대명사" }
     ],
     trap: "its와 it's를 구분하라.\nits = 그것의 (소유격)\nit's = it is의 줄임\n아포스트로피가 있으면 it is다. 위 ①~④로 풀리지 않고 '~이다'로 해석되면 it's를 의심하라.\nIt's a good idea. (It is a good idea.)",
-    toeicPattern: "순서대로 보면 된다.\n① 빈칸 바로 뒤에 관사(a/the) 없이 명사가 오면 소유격 (my, its, their)\n② 목적어가 주어와 같은 사람이면 재귀대명사 (himself)\n③ 그 밖에 주어 자리면 주격, 동사·전치사의 목적어 자리면 목적격\n④ 명사 없이 '~의 것'을 뜻하면 소유대명사 (mine, theirs)"
+    toeicPattern: "순서대로 보면 된다.\n① 빈칸 바로 뒤에 관사(a/the) 없이 명사가 오면 소유격 (my, its, their)\n② 목적어가 주어와 같은 사람이면 재귀대명사 (himself)\n③ 그 밖에 주어 자리면 주격, 동사·전치사의 목적어 자리면 목적격 (be동사 뒤는 목적어가 아니다)\n④ 명사 없이 '~의 것'을 뜻하면 소유대명사 (mine, theirs)"
   },
   {
     id: "g10", order: 10, title: "비교급 / 최상급", weight: "보통",
@@ -186,7 +189,7 @@ window.GRAMMAR = [
       ["과거 사실의 반대", "If + had p.p.", "would have p.p."]
     ] },
     examples: [
-      { good: "If it rains tomorrow, we will cancel.", bad: "If it will rain tomorrow, we will cancel.", note: "if절 안에는 will을 쓰지 않는다" },
+      { good: "If it rains tomorrow, we will cancel.", bad: "If it will rain tomorrow, we will cancel.", note: "조건의 if절 안에는 will을 쓰지 않는다" },
       { good: "If I had time, I would help you.", bad: "If I have time, I would help you.", note: "현재 사실의 반대 → 과거형" },
       { good: "If I had known, I would have told you.", bad: "If I knew, I would have told you.", note: "과거 사실의 반대 → had p.p." }
     ],
