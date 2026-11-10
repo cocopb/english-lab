@@ -507,19 +507,25 @@
     // 유사도 가드: 두 뜻이 같거나, 한쪽이 다른 쪽을 포함하거나,
     // 쉼표·슬래시로 나눈 조각(괄호 설명 제외) 중 같은 것이 있으면 '너무 비슷하다'고 본다.
     // 예) "고객" ⊂ "고객, 의뢰인" / "이익, 수익"과 "수익, 매출"은 "수익"이 겹친다.
+    // 비교 전에 조각 끝의 어미(하다·되다·시키다·하기·되기)를 뗀다. 예) "보존하다"와 "보존, 절약"은 "보존"이 겹친다.
+    function stemMeaningPiece(piece) {
+      return piece.replace(/(시키다|하다|되다|하기|되기)$/, "") || piece;
+    }
+
     function meaningPieces(meaning) {
       return String(meaning).split(/[,/]/).map(function (piece) {
-        return piece.replace(/\([^)]*\)/g, "").replace(/\s+/g, " ").trim();
+        return stemMeaningPiece(piece.replace(/\([^)]*\)/g, "").replace(/\s+/g, " ").trim());
       }).filter(Boolean);
     }
 
     function meaningsTooSimilar(a, b) {
-      var left = String(a).replace(/\s+/g, " ").trim();
-      var right = String(b).replace(/\s+/g, " ").trim();
+      var leftPieces = meaningPieces(a);
+      var rightPieces = meaningPieces(b);
+      var left = leftPieces.join(", ");
+      var right = rightPieces.join(", ");
       if (!left || !right) return false;
       if (left === right || left.indexOf(right) !== -1 || right.indexOf(left) !== -1) return true;
-      var rightPieces = meaningPieces(right);
-      return meaningPieces(left).some(function (piece) { return rightPieces.indexOf(piece) !== -1; });
+      return leftPieces.some(function (piece) { return rightPieces.indexOf(piece) !== -1; });
     }
 
     function shuffle(items) {

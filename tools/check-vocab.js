@@ -107,19 +107,25 @@ function blankExample(item) {
 // 뜻 시험 선택지 규칙 (assets/js/vocab.js와 동일):
 // 정답 뜻 + 같은 Day·상황의 다른 단어 뜻 → 부족하면 같은 트랙 전체.
 // 유사도 가드(같음 / 포함 / 쉼표·슬래시 조각 겹침)를 통과한 뜻만, 서로도 겹치지 않게 4개를 만든다.
+// 비교 전에 조각 끝의 어미(하다·되다·시키다·하기·되기)를 뗀다. 예) "보존하다"와 "보존, 절약"은 "보존"이 겹친다.
+function stemMeaningPiece(piece) {
+  return piece.replace(/(시키다|하다|되다|하기|되기)$/, "") || piece;
+}
+
 function meaningPieces(meaning) {
   return String(meaning).split(/[,/]/).map(function (piece) {
-    return piece.replace(/\([^)]*\)/g, "").replace(/\s+/g, " ").trim();
+    return stemMeaningPiece(piece.replace(/\([^)]*\)/g, "").replace(/\s+/g, " ").trim());
   }).filter(Boolean);
 }
 
 function meaningsTooSimilar(a, b) {
-  var left = String(a).replace(/\s+/g, " ").trim();
-  var right = String(b).replace(/\s+/g, " ").trim();
+  var leftPieces = meaningPieces(a);
+  var rightPieces = meaningPieces(b);
+  var left = leftPieces.join(", ");
+  var right = rightPieces.join(", ");
   if (!left || !right) return false;
   if (left === right || left.indexOf(right) !== -1 || right.indexOf(left) !== -1) return true;
-  var rightPieces = meaningPieces(right);
-  return meaningPieces(left).some(function (piece) { return rightPieces.indexOf(piece) !== -1; });
+  return leftPieces.some(function (piece) { return rightPieces.indexOf(piece) !== -1; });
 }
 
 function guardedMeaningChoices(item) {
