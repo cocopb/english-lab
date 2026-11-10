@@ -69,7 +69,7 @@ window.PATTERNS = [
     tip: "소요 시간을 묻는 표준 문장. 통째로 외워서 바로 나와야 한다.",
     drills: [
       { ko: "거기까지 얼마나 걸리나요?", en: "How long does it take to get there?" },
-      { ko: "배송이 얼마나 걸리나요?", en: "How long does shipping take?" },
+      { ko: "배송하는 데 얼마나 걸리나요?", en: "How long does it take to ship it?" },
       { ko: "공항까지 얼마나 걸리나요?", en: "How long does it take to get to the airport?" },
       { ko: "수리하는 데 얼마나 걸리나요?", en: "How long does it take to repair it?" }
     ]

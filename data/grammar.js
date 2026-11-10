@@ -16,10 +16,10 @@ window.GRAMMAR = [
     },
     examples: [
       { good: "The decision was final.", bad: "The decide was final.", note: "the 뒤 → 명사" },
-      { good: "She works carefully.", bad: "She works careful.", note: "동사 뒤 → 부사" },
+      { good: "She works carefully.", bad: "She works careful.", note: "일반동사 뒤 → 부사" },
       { good: "This is an effective plan.", bad: "This is an effect plan.", note: "명사 앞 → 형용사" }
     ],
-    trap: "very, so 같은 수식어에 속지 마라. 꾸밈 받는 대상을 봐야 한다.\nShe is very careful. (be동사 뒤 → 형용사)\nShe works very carefully. (동사 뒤 → 부사)",
+    trap: "very, so 같은 수식어에 속지 마라. 꾸밈 받는 대상을 봐야 한다.\nShe is very careful. (be동사 뒤 → 형용사)\nShe works very carefully. (일반동사 뒤 → 부사)",
     toeicPattern: "선택지가 decide / decision / decisive / decisively 처럼 한 뿌리의 네 품사로 나오면 100% 이 유형이다. 해석하지 말고 빈칸 앞뒤만 봐라. 5초면 풀린다."
   },
   {
@@ -49,7 +49,7 @@ window.GRAMMAR = [
     oneLine: "문장에 있는 시간 표시어가 시제를 결정한다.",
     table: { headers: ["시제", "형태", "같이 오는 말"], rows: [
       ["과거", "worked", "yesterday, last week, in 2020, ago"],
-      ["현재완료", "have worked", "since, for, recently, already, yet"],
+      ["현재완료", "have worked", "since, recently, already, yet, for(지금까지 이어질 때)"],
       ["미래", "will work", "tomorrow, next week"],
       ["현재진행", "am working", "now, at the moment"]
     ] },
@@ -58,7 +58,7 @@ window.GRAMMAR = [
       { good: "I have worked here for three years.", bad: "I work here for three years.", note: "for + 기간, 과거부터 지금까지 이어짐" },
       { good: "He will call you tomorrow.", bad: "He called you tomorrow.", note: "tomorrow는 미래" }
     ],
-    trap: "since와 for를 구분하라.\nsince + 시점 (since 2020)\nfor + 기간 (for three years)\n둘 다 현재완료와 짝을 이룬다.",
+    trap: "since + 시점 (since 2020), for + 기간 (for three years).\nsince는 현재완료와만 쓴다. for는 지금까지 이어지면 현재완료, 과거에 끝났으면 과거형이다.",
     toeicPattern: "빈칸이 동사이고 선택지가 같은 동사의 시제 변형이면, 문장에서 시간 표시어를 먼저 찾아라. yesterday·last·ago가 보이면 과거다. since와 for는 조금 더 봐야 한다. 지금까지 이어지면 현재완료, 과거에 끝났으면 과거형이다."
   },
   {
@@ -88,7 +88,7 @@ window.GRAMMAR = [
     ] },
     examples: [
       { good: "I want to go.", bad: "I want going.", note: "want는 to만" },
-      { good: "We recommend taking the earlier train.", bad: "We recommend to take the earlier train.", note: "recommend는 -ing만" },
+      { good: "We recommend taking the earlier train.", bad: "We recommend to take the earlier train.", note: "recommend 뒤에는 to부정사가 바로 못 온다" },
       { good: "She finished writing the report.", bad: "She finished to write the report.", note: "finish는 -ing만" }
     ],
     trap: "to 뒤에는 동사원형이지만, look forward to / be used to / contribute to 의 to는 전치사다. 이때는 -ing가 온다.\nI look forward to meeting you. (to meet ❌)",
