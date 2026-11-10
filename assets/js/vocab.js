@@ -138,7 +138,9 @@
     }
 
     // 단어장 상세의 "혼동 단어" 뜻: VOCAB_DISTRACTOR_MEANINGS → 같은 단어의 표제어 뜻 순으로 찾고, 없으면 단어만 보여준다.
+    // VOCAB_WRONG_FORMS(일부러 틀리게 만든 오답 표현)는 뜻 대신 "✕ 틀린 표현"으로 표시한다.
     var distractorMeanings = window.VOCAB_DISTRACTOR_MEANINGS || {};
+    var wrongForms = new Set(window.VOCAB_WRONG_FORMS || []);
     var headwordMeanings = Object.create(null);
     vocabulary.forEach(function (entry) {
       var key = String(entry.word || "").toLocaleLowerCase();
@@ -167,11 +169,19 @@
       );
       var tip = makeElement("p", "vocab-detail-section", "💡 학습 팁 · " + item.tip);
       var recall = makeElement("div", "vocab-recall-row");
+      var distractorLine = makeElement("span", "vocab-detail-section", "혼동 단어 · ");
+      item.distractors.forEach(function (word, index) {
+        if (index > 0) distractorLine.appendChild(makeElement("span", "", ", "));
+        if (wrongForms.has(word)) {
+          distractorLine.appendChild(makeElement("span", "", word));
+          distractorLine.appendChild(makeElement("span", "vocab-wrong-form", "(✕ 틀린 표현)"));
+          return;
+        }
+        var meaning = distractorMeaning(word);
+        distractorLine.appendChild(makeElement("span", "", meaning ? word + "(" + meaning + ")" : word));
+      });
       recall.append(
-        makeElement("span", "vocab-detail-section", "혼동 단어 · " + item.distractors.map(function (word) {
-          var meaning = distractorMeaning(word);
-          return meaning ? word + "(" + meaning + ")" : word;
-        }).join(", ")),
+        distractorLine,
         makeElement("span", "vocab-inline-tags", item.tags.join(" · "))
       );
       panel.append(example, tip, recall);

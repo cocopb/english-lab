@@ -183,6 +183,7 @@ h1, h2, h3, p { overflow-wrap: anywhere; }
 .vocab-tags { margin-top: 0; }
 .vocab-recall-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
 .vocab-inline-tags { flex: 0 0 auto; color: var(--ink-faint); font-size: 10px; text-align: right; }
+.vocab-wrong-form { margin-left: 2px; color: var(--red); font-size: 10px; font-weight: 600; white-space: nowrap; }
 .vocab-tabs { display: flex; gap: 5px; margin-bottom: 18px; border-bottom: 1px solid var(--line); }
 .vocab-tab { padding: 10px 14px; border: 0; border-bottom: 2px solid transparent; color: var(--ink-soft); background: transparent; cursor: pointer; font-size: 13px; }
 .vocab-tab[aria-selected="true"] { border-bottom-color: var(--blue); color: var(--blue); font-weight: 700; }

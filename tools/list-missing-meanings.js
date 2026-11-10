@@ -34,13 +34,19 @@ if (distractorMeanings && typeof distractorMeanings === "object") {
   });
 }
 
+// 일부러 틀리게 만든 오답 표현은 뜻을 붙이지 않으므로 누락으로 보지 않는다.
+var wrongFormSet = Object.create(null);
+(context.window.VOCAB_WRONG_FORMS || []).forEach(function (form) {
+  wrongFormSet[normalizeWord(form)] = true;
+});
+
 var missingMeanings = Object.create(null);
 vocabulary.forEach(function (item) {
   if (!item || !Array.isArray(item.distractors)) return;
   item.distractors.forEach(function (word) {
     if (typeof word !== "string" || !word.trim()) return;
     var normalizedWord = normalizeWord(word);
-    if (!meanings[normalizedWord]) missingMeanings[normalizedWord] = word.trim();
+    if (!meanings[normalizedWord] && !wrongFormSet[normalizedWord]) missingMeanings[normalizedWord] = word.trim();
   });
 });
 

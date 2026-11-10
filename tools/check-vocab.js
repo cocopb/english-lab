@@ -149,8 +149,21 @@ var failures = {
   duplicateIds: [],
   answerAsDistractor: [],
   meaningChoiceCount: [],
-  trackMetadata: []
+  trackMetadata: [],
+  wrongFormHasMeaning: []
 };
+// 일부러 틀리게 만든 오답 표현(VOCAB_WRONG_FORMS)에는 뜻을 붙이지 않는다.
+// 둘 다에 있으면 틀린 영어가 자연스러운 한국어 뜻과 함께 보여 맞는 표현으로 오해할 수 있다.
+var wrongForms = Array.isArray(context.window.VOCAB_WRONG_FORMS) ? context.window.VOCAB_WRONG_FORMS : [];
+var wrongFormSet = Object.create(null);
+wrongForms.forEach(function (form) {
+  wrongFormSet[normalizeWord(form)] = true;
+  if (distractorMeanings && typeof distractorMeanings === "object" &&
+      (Object.prototype.hasOwnProperty.call(distractorMeanings, form) ||
+       Object.prototype.hasOwnProperty.call(distractorMeanings, normalizeWord(form)))) {
+    failures.wrongFormHasMeaning.push({ form: form, meaning: distractorMeanings[form] || distractorMeanings[normalizeWord(form)] });
+  }
+});
 var seenIds = Object.create(null);
 var seenMissingDistractorMeanings = Object.create(null);
 // 경고: 혼동 단어 뜻 누락 (단어장 상세 표시용이라 앱 동작에는 영향이 없다)
@@ -188,7 +201,7 @@ vocabulary.forEach(function (item, index) {
     item.distractors.forEach(function (distractor) {
       if (typeof distractor !== "string" || !distractor.trim()) return;
       var normalizedWord = normalizeWord(distractor);
-      if (!meanings[normalizedWord] && !seenMissingDistractorMeanings[normalizedWord]) {
+      if (!meanings[normalizedWord] && !wrongFormSet[normalizedWord] && !seenMissingDistractorMeanings[normalizedWord]) {
         seenMissingDistractorMeanings[normalizedWord] = true;
         missingDistractorMeanings.push(distractor.trim());
       }
