@@ -547,6 +547,110 @@ window.PASSAGES = [
       { q: "What does Ms. Oduya mention about her visit?", choices: ["She waited for two hours", "She did not have an appointment", "She came on a weekday", "She paid the full price"], answer: 1, explanation: "even though I arrived without an appointment." },
       { q: "What does Ms. Oduya say she will do?", choices: ["Return next month", "Write a newspaper review", "Recommend the shop to others", "Buy a new bicycle"], answer: 2, explanation: "I will recommend your shop to my cycling club." }
     ]
+  },
+  {
+    id: "rp17", type: "문자 메시지", title: "배송 차량 고장", strategyId: "r03", recommendedSec: 150,
+    header: ["Text Message Conversation"],
+    sentences: [
+      { en: "Dana Whitfield (10:12 A.M.): The delivery van won't start. I'm still at the depot.", ko: "다나 휘트필드 (오전 10시 12분): 배송 차량이 시동이 안 걸려요. 저 아직 물류 창고에 있어요." },
+      { en: "Omar Haddad (10:14 A.M.): How long until the mechanic arrives?", ko: "오마르 하다드 (오전 10시 14분): 정비사가 오기까지 얼마나 걸려요?" },
+      { en: "Dana Whitfield (10:15 A.M.): He said twenty minutes, but I've heard that before.", ko: "다나 휘트필드 (오전 10시 15분): 20분이라고 했는데, 전에도 그 말 들었어요." },
+      { en: "Omar Haddad (10:17 A.M.): Our first stop expects the order by eleven. Can you take the smaller truck?", ko: "오마르 하다드 (오전 10시 17분): 첫 배송지가 11시까지 주문품을 받기로 돼 있어요. 작은 트럭으로 갈 수 있어요?" },
+      { en: "Dana Whitfield (10:18 A.M.): It only holds half the boxes. I'd have to make two trips.", ko: "다나 휘트필드 (오전 10시 18분): 거기엔 상자가 절반밖에 안 들어가요. 두 번 왕복해야 해요." },
+      { en: "Omar Haddad (10:20 A.M.): Do that for now. I'll call the afternoon customers and push their times back.", ko: "오마르 하다드 (오전 10시 20분): 우선 그렇게 해주세요. 오후 고객들에게는 제가 전화해서 시간을 뒤로 미룰게요." },
+      { en: "Dana Whitfield (10:21 A.M.): Loading it now.", ko: "다나 휘트필드 (오전 10시 21분): 지금 싣고 있어요." }
+    ],
+    vocab: [
+      { w: "depot", m: "물류 창고, 차고지" },
+      { w: "mechanic", m: "정비사" },
+      { w: "hold", m: "(용량을) 담다, 수용하다" },
+      { w: "make two trips", m: "두 번 왕복하다" },
+      { w: "push back", m: "(일정을) 뒤로 미루다" }
+    ],
+    questions: [
+      { q: "Where most likely is Ms. Whitfield?", choices: ["At a repair shop", "At a delivery depot", "At a customer's office", "At a parking garage"], answer: 1, explanation: "I'm still at the depot." },
+      { q: "At 10:15 A.M., what does Ms. Whitfield most likely mean when she writes, \"but I've heard that before\"?", choices: ["She has not met the mechanic", "She doubts the mechanic will arrive on time", "She wants to call a different mechanic", "She already repaired the van"], answer: 1, explanation: "의도 파악 문제다. 전에도 같은 말을 들었다는 건 그 말을 믿지 못한다는 뜻이다." },
+      { q: "What problem does Ms. Whitfield mention about the smaller truck?", choices: ["It is also broken", "It cannot carry all of the boxes", "It needs to be cleaned", "Another driver is using it"], answer: 1, explanation: "It only holds half the boxes." },
+      { q: "What does Mr. Haddad say he will do?", choices: ["Drive the van himself", "Reschedule some deliveries", "Cancel the first stop", "Hire a new mechanic"], answer: 1, explanation: "call the afternoon customers and push their times back." }
+    ]
+  },
+  {
+    id: "rp18", type: "온라인 채팅", title: "프린터 토너 문제", strategyId: "r03", recommendedSec: 160,
+    header: ["Online Chat Discussion"],
+    sentences: [
+      { en: "Priya Raman (2:02 P.M.): The printer on the third floor is out of toner again.", ko: "프리야 라만 (오후 2시 2분): 3층 프린터 토너가 또 다 됐어요." },
+      { en: "Luis Ferreira (2:03 P.M.): Again? We replaced the cartridge last week.", ko: "루이스 페레이라 (오후 2시 3분): 또요? 지난주에 카트리지를 갈았는데요." },
+      { en: "Priya Raman (2:04 P.M.): I think the marketing team printed the full catalog on it.", ko: "프리야 라만 (오후 2시 4분): 마케팅팀이 거기서 카탈로그 전체를 출력한 것 같아요." },
+      { en: "Anna Kowalski (2:05 P.M.): That's right, they did. Three hundred copies.", ko: "안나 코발스키 (오후 2시 5분): 맞아요, 그랬어요. 300부였어요." },
+      { en: "Luis Ferreira (2:06 P.M.): Large print jobs are supposed to go to the copy center downstairs.", ko: "루이스 페레이라 (오후 2시 6분): 대량 출력은 아래층 복사실에서 하기로 되어 있어요." },
+      { en: "Anna Kowalski (2:07 P.M.): I'll remind everyone at tomorrow's staff meeting.", ko: "안나 코발스키 (오후 2시 7분): 내일 직원 회의에서 모두에게 다시 알릴게요." },
+      { en: "Priya Raman (2:08 P.M.): Thanks. Can someone order toner today? We have none in the supply closet.", ko: "프리야 라만 (오후 2시 8분): 고마워요. 오늘 누가 토너 주문해 줄 수 있어요? 비품실에 하나도 없어요." },
+      { en: "Luis Ferreira (2:09 P.M.): I'll put in the order before I leave.", ko: "루이스 페레이라 (오후 2시 9분): 퇴근 전에 제가 주문 넣을게요." }
+    ],
+    vocab: [
+      { w: "be out of", m: "~이 다 떨어지다" },
+      { w: "cartridge", m: "카트리지" },
+      { w: "be supposed to", m: "~하기로 되어 있다" },
+      { w: "supply closet", m: "비품실" },
+      { w: "put in an order", m: "주문을 넣다" }
+    ],
+    questions: [
+      { q: "What is the main topic of the discussion?", choices: ["A printer supply problem", "A change to a meeting time", "A new marketing campaign", "An office relocation"], answer: 0, explanation: "프린터 토너가 떨어진 문제로 시작해 주문까지 이어진다." },
+      { q: "What does Ms. Kowalski confirm?", choices: ["The printer is broken", "The marketing team made a large number of copies", "The supply closet is locked", "A new printer was purchased"], answer: 1, explanation: "That's right, they did. Three hundred copies." },
+      { q: "At 2:06 P.M., why does Mr. Ferreira mention the copy center?", choices: ["To recommend buying a new machine", "To point out where large print jobs should be done", "To complain about printing costs", "To ask for directions"], answer: 1, explanation: "의도 파악 문제다. 대량 출력은 복사실에서 해야 한다는 규칙을 지적하는 것이다." },
+      { q: "What will Mr. Ferreira most likely do today?", choices: ["Order supplies", "Repair the printer", "Lead a staff meeting", "Visit the marketing team"], answer: 0, explanation: "I'll put in the order before I leave. 내일 회의에서 공지하는 사람은 코발스키 씨다." }
+    ]
+  },
+  {
+    id: "rp19", type: "양식/청구서", title: "사무용품 청구서", strategyId: "r02", recommendedSec: 110,
+    header: ["BRIGHTWAY OFFICE SUPPLIES — INVOICE #4418"],
+    sentences: [
+      { en: "Billed to: Carlton Dental Clinic, 88 Harrow Road", ko: "청구 대상: 칼턴 치과, 해로 로 88번지" },
+      { en: "Invoice date: June 3 | Payment due: June 17", ko: "청구 일자: 6월 3일 | 납기일: 6월 17일" },
+      { en: "Printer paper (10 boxes) — $120.00", ko: "프린터 용지 (10박스) — 120.00달러" },
+      { en: "Desk lamps (4 units) — $96.00", ko: "책상 램프 (4개) — 96.00달러" },
+      { en: "Ink cartridges (6 units) — $150.00", ko: "잉크 카트리지 (6개) — 150.00달러" },
+      { en: "Subtotal: $366.00 | Delivery: $0.00 (free on orders over $300)", ko: "소계: 366.00달러 | 배송비: 0.00달러 (300달러 초과 주문 시 무료)" },
+      { en: "Total due: $366.00", ko: "총 청구액: 366.00달러" },
+      { en: "A 2 percent late fee is added to invoices paid after the due date.", ko: "납기일 이후에 결제된 청구서에는 2퍼센트의 연체료가 붙습니다." },
+      { en: "Questions? Call 555-0142 or reply to this invoice by e-mail.", ko: "문의 사항은 555-0142로 전화하시거나 이 청구서에 이메일로 답장해 주세요." }
+    ],
+    vocab: [
+      { w: "invoice", m: "청구서, 송장" },
+      { w: "billed to", m: "청구 대상" },
+      { w: "payment due", m: "납기일" },
+      { w: "subtotal", m: "소계" },
+      { w: "late fee", m: "연체료" }
+    ],
+    questions: [
+      { q: "What is suggested about the order?", choices: ["It was delivered late", "It qualified for free delivery", "It was partly canceled", "It included a discount on lamps"], answer: 1, explanation: "소계가 366달러이고 300달러 초과 주문은 배송비가 무료라서 배송비가 0달러다." },
+      { q: "By when should the clinic pay?", choices: ["June 3", "June 17", "July 3", "July 17"], answer: 1, explanation: "Payment due: June 17. June 3은 청구 일자다." },
+      { q: "What happens if the invoice is paid late?", choices: ["The order is canceled", "An extra charge is added", "Delivery is delayed", "The account is closed"], answer: 1, explanation: "A 2 percent late fee is added." }
+    ]
+  },
+  {
+    id: "rp20", type: "웹페이지", title: "보트 투어 회사 소개", strategyId: "r04", recommendedSec: 120,
+    header: ["www.harborlinetours.com — About Us"],
+    sentences: [
+      { en: "Harborline Tours has operated guided boat trips along the north coast since 2009.", ko: "하버라인 투어는 2009년부터 북부 해안을 따라 가이드 보트 여행을 운영해 왔습니다." },
+      { en: "Our ninety-minute tours depart from Pier 4 every hour between 9 A.M. and 5 P.M.", ko: "90분짜리 투어는 오전 9시부터 오후 5시까지 매시간 4번 부두에서 출발합니다." },
+      { en: "All tours are led by a licensed guide and include commentary in English and Spanish.", ko: "모든 투어는 자격을 갖춘 가이드가 진행하며 영어와 스페인어 해설이 포함됩니다." },
+      { en: "Tickets are $22 for adults and $11 for children under twelve.", ko: "요금은 성인 22달러, 12세 미만 아동 11달러입니다." },
+      { en: "Groups of ten or more should book at least three days in advance.", ko: "10인 이상 단체는 최소 3일 전에 예약해야 합니다." },
+      { en: "Tours may be canceled in poor weather; in that case, customers receive a full refund.", ko: "날씨가 좋지 않으면 투어가 취소될 수 있으며, 그 경우 고객은 전액 환불을 받습니다." }
+    ],
+    vocab: [
+      { w: "operate", m: "운영하다" },
+      { w: "depart from", m: "~에서 출발하다" },
+      { w: "licensed", m: "자격을 갖춘, 면허가 있는" },
+      { w: "in advance", m: "미리, 사전에" },
+      { w: "full refund", m: "전액 환불" }
+    ],
+    questions: [
+      { q: "What does Harborline Tours offer?", choices: ["Boat repairs", "Guided boat tours", "Fishing lessons", "Hotel bookings"], answer: 1, explanation: "guided boat trips along the north coast." },
+      { q: "What is indicated about the tours?", choices: ["They run only in summer", "They are offered in two languages", "They last three hours", "They are free for children"], answer: 1, explanation: "commentary in English and Spanish. 아동도 11달러를 내므로 무료가 아니고, 투어는 90분이다." },
+      { q: "What are large groups advised to do?", choices: ["Pay in cash", "Reserve several days ahead", "Arrive at 9 A.M.", "Bring their own guide"], answer: 1, explanation: "should book at least three days in advance." }
+    ]
   }
 ];
 
