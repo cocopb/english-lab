@@ -1480,6 +1480,10 @@ Object.keys(distractorSwapMeanings).forEach(function (word) {
 // 혼동 단어 뜻 일괄 보충 (기존 키는 덮어쓰지 않는다)
 // 일부러 틀리게 만든 오답 표현(I'll having ~ 등)은 뜻을 붙이지 않는다.
 var bulkDistractorMeanings = {
+  "eco-tourism": "생태 관광",
+  "isolation": "고립, 분리",
+  "returnable": "반납 가능한",
+  "suspicious": "의심스러운",
   "admission": "입장, 인정",
   "assumption": "가정",
   "biannual": "연 2회의",
