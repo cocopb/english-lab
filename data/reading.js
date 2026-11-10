@@ -753,7 +753,7 @@ window.PASSAGES = [
     questions: [
       { q: "What is one responsibility of the position?", choices: ["Repairing damaged books", "Scanning photographs", "Leading school tours", "Managing a budget"], answer: 1, explanation: "Responsibilities include cataloguing documents, scanning photographs, and assisting researchers." },
       { q: "How did Ms. Bello learn about the job?", choices: ["From a newspaper", "From the library's website", "From a former colleague", "At a job fair"], answer: 1, explanation: "the archivist position advertised on your website." },
-      { q: "What is suggested about Ms. Bello's availability?", choices: ["She can work the occasional Saturday shifts", "She can work only on weekday mornings", "She needs a full-time schedule", "She is unavailable until April"], answer: 0, explanation: "연계 문제다. 공고에 간혹 토요일 근무가 있다고 했고, 이메일에서 주말에도 가능하다고 했다." },
+      { q: "What is suggested about Ms. Bello's availability?", choices: ["She can work on Saturdays when needed", "She can work only on weekday mornings", "She needs a full-time schedule", "She is unavailable until April"], answer: 0, explanation: "연계 문제다. 공고에 간혹 토요일 근무가 있다고 했고, 이메일에서 주말에도 가능하다고 했다." },
       { q: "What does Ms. Bello offer to provide?", choices: ["A photograph sample", "References", "A writing sample", "A university transcript"], answer: 1, explanation: "I would be glad to provide references if needed." }
     ]
   },

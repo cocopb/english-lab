@@ -489,6 +489,32 @@ async function runSpeechScenarios() {
   gb && gb.onend();
   await flush();
 
+  // --- Part 2 전 문항: 질문 → (A) → (B) → (C) 순서로 각 버튼이 해당 문장만 읽는지 ---
+  var p2Items = d.window.PART2;
+  var p2Order = [];
+  for (var p2 = 0; p2 < p2Items.length; p2 += 1) {
+    var item2 = p2Items[p2];
+    var spoken = [];
+    var playOne = async function (button) {
+      d.synth.queue = [];
+      button.click();
+      var utterance = d.synth.queue[0];
+      spoken.push(d.synth.queue.length === 1 && utterance ? utterance.text : "(재생 " + d.synth.queue.length + "회)");
+      if (utterance && utterance.onend) utterance.onend();
+      await flush();
+    };
+    await playOne($("part2-play-question"));
+    var plays = $("part2-choices").querySelectorAll(".listening-choice-play");
+    for (var c2 = 0; c2 < plays.length; c2 += 1) await playOne(plays[c2]);
+    var expectedOrder = [item2.question].concat(item2.choices);
+    if (spoken.join("|") !== expectedOrder.join("|")) p2Order.push(item2.id + ": " + spoken.join(" / "));
+    var answers2 = $("part2-choices").querySelectorAll(".listening-choice-answer");
+    answers2[item2.answer].click();
+    $("part2-next").click();
+  }
+  check(p2Order.length === 0, "[데스크톱] Part 2 재생 순서(질문→A→B→C) 불일치 — " + p2Order.join(" ; "));
+  console.log("음성: Part 2 " + p2Items.length + "문항 질문·선택지 재생 순서 확인" + (p2Order.length ? " — 불일치 " + p2Order.length + "개" : " — 이상 없음"));
+
   // --- speechSynthesis 자체가 없는 브라우저 ---
   var n = loadListeningWithRealSpeech("none");
   $ = n.$;
