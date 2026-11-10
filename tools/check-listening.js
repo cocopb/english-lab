@@ -76,6 +76,14 @@ part3.forEach(function (dialogue, index) {
   if (!scriptOk || !questionsOk) {
     failures.part3Structure.push({ id: label, script: scriptOk ? "OK" : "없음/형식 오류", questions: questionsOk ? "OK" : "없음" });
   }
+  // 화자 라벨은 W/M 또는 W1·W2·M1·M2 형식. speakers(이름 지도)가 있으면 쓰인 라벨마다 이름이 있어야 한다.
+  (dialogue.script || []).forEach(function (line, lIndex) {
+    if (line && !/^[WM][1-9]?$/.test(line.speaker)) {
+      failures.part3Structure.push({ id: label, line: lIndex + 1, reason: "화자 라벨 형식 오류", speaker: line.speaker });
+    } else if (line && dialogue.speakers !== undefined && !nonEmpty((dialogue.speakers || {})[line.speaker])) {
+      failures.part3Structure.push({ id: label, line: lIndex + 1, reason: "speakers에 이름 없음", speaker: line.speaker });
+    }
+  });
   (dialogue.questions || []).forEach(function (question, qIndex) {
     question = question || {};
     var qLabel = label + " Q" + (qIndex + 1);
@@ -333,7 +341,7 @@ function createFakeSynth(voices) {
 
 function FakeUtterance(text) { this.text = text; this.volume = 1; this.lang = ""; this.voice = null; this.rate = 1; }
 
-function loadListeningWithRealSpeech(mode) {
+function loadListeningWithRealSpeech(mode, customVoices) {
   var body = new FakeElement("body");
   var html = fs.readFileSync(path.join(root, "pages", "listening.html"), "utf8");
   var tagPattern = /<(\w+)([^>]*?)\sid="([^"]+)"([^>]*)>/g;
@@ -369,7 +377,7 @@ function loadListeningWithRealSpeech(mode) {
     { name: "Microsoft Hazel", lang: "en-GB", voiceURI: "hazel", localService: true },
     { name: "Microsoft Heami", lang: "ko-KR", voiceURI: "heami", localService: true }
   ];
-  var synth = mode === "none" ? null : createFakeSynth(mode === "desktop" ? desktopVoices : []);
+  var synth = mode === "none" ? null : createFakeSynth(customVoices || (mode === "desktop" ? desktopVoices : []));
   var store = new Map();
   var window = {
     document: document,
@@ -545,7 +553,7 @@ async function runSpeechScenarios() {
       if ($("part3-feedback").textContent.indexOf("정답이에요!") !== 0) p3Problems.push(dialogue3.id + " Q" + (qIndex + 1) + " 정답 처리");
       $("part3-script-toggle").click();
       var shown = $("part3-script").querySelectorAll(".listening-transcript-line").map(function (line) { return line.textContent; });
-      var expectedLines = dialogue3.script.map(function (line) { return line.speaker + ": " + line.text; });
+      var expectedLines = dialogue3.script.map(function (line) { return ((dialogue3.speakers || {})[line.speaker] || line.speaker) + ": " + line.text; });
       if ($("part3-script").hidden || shown.join("|") !== expectedLines.join("|")) p3Problems.push(dialogue3.id + " Q" + (qIndex + 1) + " 스크립트 토글");
       $("part3-next").click();
     });
@@ -554,6 +562,73 @@ async function runSpeechScenarios() {
   check(p3Problems.length === 0, "[데스크톱] Part 3 재생·채점 — " + p3Problems.join(" ; "));
   console.log("음성: Part 3 대화 " + p3Items.length + "개 대화 듣기·다시 듣기 한 줄씩 재생, 채점, 스크립트 토글 확인" +
     (p3Problems.length ? " — 문제 " + p3Problems.length + "개" : " — 이상 없음"));
+
+  // --- 화자별 음성 배정: 같은 화자는 늘 같은 목소리, 같은 성별의 두 화자는 서로 다른 목소리 ---
+  // 목소리 = 음성 이름 + pitch + 속도. 기존 W/M 대화에는 pitch·속도 보정이 붙지 않아야 한다(하위 호환).
+  var voiceScenarios = [
+    { name: "음성 선택 안 함(기본값, 브라우저 기본 음성)", select: null,
+      voices: [{ name: "Microsoft Zira", lang: "en-US", voiceURI: "zira", localService: true }, { name: "Microsoft David", lang: "en-US", voiceURI: "david", localService: true }] },
+    { name: "영어 여성 음성 1개", select: "en-US",
+      voices: [{ name: "Microsoft Zira", lang: "en-US", voiceURI: "zira", localService: true }, { name: "Microsoft David", lang: "en-US", voiceURI: "david", localService: true }] },
+    { name: "영어 여성 음성 2개", select: "en-US",
+      voices: [{ name: "Microsoft Zira", lang: "en-US", voiceURI: "zira", localService: true }, { name: "Samantha", lang: "en-US", voiceURI: "samantha", localService: true },
+        { name: "Microsoft David", lang: "en-US", voiceURI: "david", localService: true }] },
+    // Mac·Chrome 이름: Samantha·Female에 "man"·"male"이 들어 있어도 남성으로 잡히면 안 된다.
+    // Tom은 이름순으로 Samantha 뒤라, 규칙이 틀리면 Samantha가 남성 자리에 먼저 잡힌다.
+    // Google 음성은 원격이라 speech.js가 로컬 음성으로 바꿔 재생한다 — 이 음성을 W2에 배정하면 안 된다.
+    { name: "Samantha·Tom·Google Female(원격)", select: "en-US", expectMale: "Tom",
+      voices: [{ name: "Samantha", lang: "en-US", voiceURI: "samantha", localService: true }, { name: "Google US English Female", lang: "en-US", voiceURI: "gfemale", localService: false },
+        { name: "Tom", lang: "en-US", voiceURI: "tom", localService: true }] }
+  ];
+  var assignmentReport = [];
+  for (var vs = 0; vs < voiceScenarios.length; vs += 1) {
+    var scenario = voiceScenarios[vs];
+    var env = loadListeningWithRealSpeech("custom", scenario.voices);
+    var $v = env.$;
+    if (scenario.select) {
+      $v("listening-locale").value = scenario.select;
+      ($v("listening-locale").listeners.change || []).forEach(function (fn) { fn({}); });
+    }
+    var problems = [];
+    var p308Signatures = null;
+    for (var di = 0; di < env.window.PART3.length; di += 1) {
+      var dlg = env.window.PART3[di];
+      var signatures = {};
+      for (var round = 0; round < 2; round += 1) {
+        env.synth.queue = [];
+        $v(round === 0 ? "part3-play" : "part3-replay").click();
+        for (var li = 0; li < dlg.script.length && env.synth.queue.length; li += 1) {
+          var u = env.synth.queue.shift();
+          var line = dlg.script[li];
+          var sig = (u.voice ? u.voice.name : "기본 음성") + " / pitch " + (u.pitch === undefined ? 1 : u.pitch) + " / rate " + u.rate;
+          if (u.text !== line.text) problems.push(dlg.id + " " + (li + 1) + "번째 줄 순서");
+          if (signatures[line.speaker] && signatures[line.speaker] !== sig) problems.push(dlg.id + " " + line.speaker + " 목소리가 바뀜 (" + signatures[line.speaker] + " → " + sig + ")");
+          signatures[line.speaker] = signatures[line.speaker] || sig;
+          if (u.onend) u.onend();
+          await flush(); await flush();
+        }
+      }
+      var labels = Object.keys(signatures);
+      ["W", "M"].forEach(function (gender) {
+        var same = labels.filter(function (l) { return l[0] === gender; });
+        var distinct = new Set(same.map(function (l) { return signatures[l]; }));
+        if (distinct.size !== same.length) problems.push(dlg.id + " " + same.join("·") + " 목소리가 같음");
+      });
+      var legacy = labels.every(function (l) { return l === "W" || l === "M"; });
+      if (legacy && labels.some(function (l) { return / pitch (?!1 )/.test(signatures[l]); })) problems.push(dlg.id + " 기존 W/M 대화에 pitch 보정이 붙음");
+      if (dlg.id === "p308") p308Signatures = signatures;
+      if (scenario.expectMale) labels.forEach(function (l) {
+        var usesMale = signatures[l].indexOf(scenario.expectMale + " /") === 0;
+        if (l[0] === "M" && !usesMale) problems.push(dlg.id + " " + l + " 남성 음성 아님 (" + signatures[l] + ")");
+        if (l[0] === "W" && usesMale) problems.push(dlg.id + " " + l + " 여성 화자에 남성 음성 (" + signatures[l] + ")");
+      });
+      $v("part3-next-dialogue").click();
+    }
+    check(problems.length === 0, "[음성 배정: " + scenario.name + "] " + problems.join(" ; "));
+    assignmentReport.push(scenario.name + " → " + (p308Signatures ? Object.keys(p308Signatures).map(function (l) { return l + "=" + p308Signatures[l]; }).join(" | ") : "p308 없음"));
+  }
+  console.log("음성 배정: 시나리오 " + voiceScenarios.length + "개 × 대화 " + p3Items.length + "개 (같은 화자 같은 목소리, 같은 성별 화자끼리 구분)" +
+    "\n  " + assignmentReport.join("\n  "));
 
   // --- speechSynthesis 자체가 없는 브라우저 ---
   var n = loadListeningWithRealSpeech("none");

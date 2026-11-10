@@ -85,7 +85,7 @@ window.PART2 = [
   { id: "p236", question: "Have you signed the contract yet?", choices: ["It's a three-year lease.", "Not until the lawyer reviews it.", "Yes, the printer is out of paper."], answer: 1, explanation: "Not until ~ = ~하기 전에는 아니다. 아직 안 했다는 뜻의 자연스러운 응답이다. (A)는 계약 관련어지만 질문에 답하지 않는다.", ko: "계약서에 벌써 서명하셨어요? — 변호사가 검토하기 전에는 안 해요." },
   { id: "p237", question: "Is the cafeteria open on Sundays?", choices: ["Only until two in the afternoon.", "The food is quite good.", "Please leave your tray on the counter."], answer: 0, explanation: "Yes를 생략하고 바로 조건을 말하는 응답이다. Part 2에 자주 나온다.", ko: "구내식당은 일요일에도 여나요? — 오후 2시까지만요." },
   { id: "p238", question: "I can't find the key to the supply closet.", choices: ["The supplies arrived on Monday.", "About twenty boxes of paper.", "Try asking at the front desk."], answer: 2, explanation: "평서문으로 문제를 말하면 해결책을 제안하는 응답이 정답이 되는 경우가 많다. (A)는 supply라는 같은 단어를 쓴 함정이다.", ko: "비품실 열쇠를 못 찾겠어요. — 안내 데스크에 물어보세요." },
-  { id: "p239", question: "This printer keeps jamming.", choices: ["In black and white, please.", "Let me try clearing the paper tray.", "Yes, I printed two copies."], answer: 1, explanation: "jam = (종이가) 걸리다. 종이 걸림이라는 구체적인 문제에 맞춰 직접 조치해 보겠다고 제안하는 응답이 정답이다.", ko: "이 프린터는 자꾸 종이가 걸려요. — 제가 용지함을 한번 정리해 볼게요." },
+  { id: "p239", question: "This printer keeps jamming.", choices: ["In black and white, please.", "Let me try clearing the jam.", "Yes, I printed two copies."], answer: 1, explanation: "jam = (종이가) 걸리다, clear the jam = 걸린 종이를 빼다. 종이 걸림이라는 구체적인 문제에 맞춰 직접 조치해 보겠다고 제안하는 응답이 정답이다.", ko: "이 프린터는 자꾸 종이가 걸려요. — 제가 걸린 종이를 빼 볼게요." },
   { id: "p240", question: "Would you rather meet on Tuesday or Thursday?", choices: ["Thursday is better for me.", "Yes, that works for me.", "In the small conference room."], answer: 0, explanation: "둘 중 하나를 고르는 질문에는 Yes/No로 답할 수 없다. 가장 잘 나오는 함정이다.", ko: "화요일과 목요일 중 언제 만나는 게 좋으세요? — 저는 목요일이 좋아요." },
   { id: "p241", question: "Should I send the invoice by e-mail or by post?", choices: ["E-mail is faster.", "It was three hundred dollars.", "Yes, I sent it already."], answer: 0, explanation: "선택의문문이라 Yes는 안 된다. (B)는 금액이라 방법과 무관하다.", ko: "청구서를 이메일로 보낼까요, 우편으로 보낼까요? — 이메일이 더 빨라요." },
   { id: "p242", question: "You've met our new director, haven't you?", choices: ["The directions are on the website.", "It starts at eight.", "Only briefly, at the staff lunch."], answer: 2, explanation: "부가의문문이다. (A)는 director와 directions의 발음이 비슷한 함정이다.", ko: "새로 온 이사님 만나 보셨죠? — 직원 점심 때 잠깐만요." },
@@ -210,8 +210,27 @@ window.PART3 = [
     ],
     questions: [
       { q: "Why is the man at the store?", choices: ["To return a damaged item", "To exchange an item for a different size", "To ask about a sale", "To pick up an online order"], answer: 1, explanation: "반 사이즈가 작아서 교환하려 한다. 환불이 아니라 교환이다." },
-      { q: "What does the woman ask the man for?", choices: ["A membership card", "A phone number", "A photo ID", "A receipt"], answer: 3, explanation: "Do you have the receipt with you?" },
+      { q: "What does the man mention about the boots?", choices: ["He bought them online", "They are the wrong color", "He has already worn them outdoors", "They were on sale"], answer: 2, explanation: "I've already worn them outside once, on a short trail. 손상되지 않았다면 교환이 된다는 점으로 이어진다." },
       { q: "What does the woman say about ordering a pair?", choices: ["There is no shipping charge", "It requires a deposit", "It takes about two weeks", "It must be done online"], answer: 0, explanation: "shipping to the store is free. 기간은 영업일 4일이라 2주가 아니다." }
+    ]
+  },
+  {
+    id: "p308",
+    title: "회의 일정 조정",
+    speakers: { W1: "Claudia", M1: "Ravi", W2: "Hana" },
+    script: [
+      { speaker: "W1", text: "We need to move Thursday's budget meeting. The finance director is flying back from Singapore that day." },
+      { speaker: "M1", text: "Could we do it Friday morning instead? Hana, are you free then?" },
+      { speaker: "W2", text: "Friday morning I'm leading the new-hire orientation until eleven." },
+      { speaker: "W1", text: "What about Friday at two, then?" },
+      { speaker: "M1", text: "That works for me. Hana, does the conference room have a projector now? Last time we had to borrow one." },
+      { speaker: "W2", text: "It does. They installed one last week." },
+      { speaker: "W1", text: "Good. I'll send out a new invitation this afternoon." }
+    ],
+    questions: [
+      { q: "Why does the meeting need to be rescheduled?", choices: ["The budget has not been approved", "The conference room is unavailable", "A client canceled", "A colleague will be traveling"], answer: 3, explanation: "재무 이사가 그날 비행기로 돌아온다고 했다." },
+      { q: "What will Hana do on Friday morning?", choices: ["Lead an orientation session", "Attend a budget meeting", "Travel to Singapore", "Install equipment"], answer: 0, explanation: "I'm leading the new-hire orientation until eleven. 라비가 'Hana, are you free then?'이라고 물은 데 대한 답이다." },
+      { q: "What does Hana say about the conference room?", choices: ["It is too small for the group", "It now has a projector", "It must be reserved in advance", "It will be painted next week"], answer: 1, explanation: "They installed one last week. 지난번에는 빌려야 했다는 말과 대비된다." }
     ]
   }
 ];

@@ -217,6 +217,13 @@
           ? Number(settings.rate)
           : defaultSettings.rate;
       }
+      // 3인 대화에서 같은 음성을 두 화자가 나눠 쓸 때 구분하는 보정값. 넘기지 않으면 기존과 똑같이 재생한다.
+      var rateScale = Number(opts.rateScale);
+      if (isFinite(rateScale) && rateScale > 0 && rateScale !== 1) {
+        requestedRate = Math.min(1.5, Math.max(0.5, Math.round(requestedRate * rateScale * 100) / 100));
+      }
+      var pitch = Number(opts.pitch);
+      var hasPitch = isFinite(pitch) && pitch > 0 && pitch <= 2;
 
       function clearPlaybackState() {
         if (keepAliveTimer !== null) {
@@ -269,6 +276,7 @@
           utterance.lang = voice && voice.lang ? voice.lang : (language || defaultLang);
           if (voice) utterance.voice = voice;
           utterance.rate = rate;
+          if (hasPitch) utterance.pitch = pitch;
         } catch (error) {
           console.warn("Speech playback utterance setup failed", {
             attempt: attemptNumber,

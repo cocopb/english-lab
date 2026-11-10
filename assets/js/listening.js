@@ -336,19 +336,58 @@
       return window.PART3[dialogueIndex % window.PART3.length];
     }
 
-    function voiceForLine(speaker, lineIndex) {
-      if (!voiceSettings.voiceSelected) return null;
-      var voices = supportedVoices().filter(function (voice) {
+    // 화자 라벨: W / M (기존) 또는 W1·W2·M1·M2 (3인 대화). 첫 글자가 성별이다.
+    var VOICE_HINTS = {
+      W: /female|woman|samantha|victoria|karen|susan|tessa|serena|zira|ava|allison|siri.*female/i,
+      // 단어 경계를 둔다. 경계가 없으면 "Female"·"Samantha"(sa-man-tha) 같은 여성 음성이 남성으로 잡힌다.
+      M: /\bmale\b|\bman\b|daniel|david|alex|george|fred|james|tom|guy|siri.*\bmale/i
+    };
+    // 같은 음성을 같은 성별의 두 번째·세 번째 화자가 나눠 쓸 때 pitch·속도로 구분한다. 첫 화자는 보정 없음(기존과 같음).
+    var SHARED_VOICE_VARIANTS = [{ pitch: null, rateScale: null }, { pitch: 1.3, rateScale: 0.92 }, { pitch: 0.8, rateScale: 1.08 }];
+
+    function speakerGender(label) {
+      return /^W/i.test(label) ? "W" : "M";
+    }
+
+    function speakerName(dialogue, label) {
+      return (dialogue.speakers && dialogue.speakers[label]) || label;
+    }
+
+    // 대화마다 화자별 목소리를 한 번 정한다. 같은 화자는 대화 내내 같은 목소리다.
+    // 같은 성별에 음성이 여러 개면 서로 다른 음성을, 모자라면 같은 음성에 pitch·속도를 달리 준다.
+    function speakerProfiles(dialogue) {
+      var order = { W: [], M: [] };
+      dialogue.script.forEach(function (line) {
+        var gender = speakerGender(line.speaker);
+        if (order[gender].indexOf(line.speaker) === -1) order[gender].push(line.speaker);
+      });
+      var voices = voiceSettings.voiceSelected ? supportedVoices().filter(function (voice) {
         return (voice.lang || "").toLowerCase() === voiceSettings.locale.toLowerCase() &&
           !window.Speech.isVoiceUnavailable(voice);
+      }) : [];
+      var profiles = {};
+      ["W", "M"].forEach(function (gender) {
+        var other = gender === "W" ? "M" : "W";
+        var pool = voices.filter(function (voice) {
+          return VOICE_HINTS[gender].test(voice.name || "") && !(gender === "M" && VOICE_HINTS.W.test(voice.name || ""));
+        });
+        if (!pool.length) pool = voices.filter(function (voice) { return !VOICE_HINTS[other].test(voice.name || ""); });
+        if (!pool.length) pool = voices;
+        // speech.js는 원격 음성을 고르면 같은 억양의 로컬 음성으로 바꿔 재생한다(성별 무관).
+        // 그러면 배정이 어긋나므로 로컬 음성이 있으면 로컬 음성 안에서만 나눈다.
+        var localPool = pool.filter(function (voice) { return voice.localService === true; });
+        if (localPool.length) pool = localPool;
+        order[gender].forEach(function (label, rank) {
+          var size = Math.max(pool.length, 1);
+          var variant = SHARED_VOICE_VARIANTS[Math.floor(rank / size) % SHARED_VOICE_VARIANTS.length];
+          profiles[label] = {
+            voice: pool.length ? pool[rank % pool.length] : (voiceSettings.voiceSelected ? voiceSettings.locale : null),
+            pitch: variant.pitch,
+            rateScale: variant.rateScale
+          };
+        });
       });
-      if (!voices.length) return voiceSettings.locale;
-      var hints = speaker === "W"
-        ? /female|woman|samantha|victoria|karen|susan|tessa|serena|zira|ava|allison|siri.*female/i
-        : /male|man|daniel|david|alex|george|fred|james|tom|guy|siri.*male/i;
-      var matched = voices.filter(function (voice) { return hints.test(voice.name || ""); });
-      if (matched.length) return matched[0];
-      return voices[lineIndex % voices.length];
+      return profiles;
     }
 
     function renderDialogue() {
@@ -372,7 +411,7 @@
         paragraph.className = "listening-transcript-line en";
         var speaker = document.createElement("span");
         speaker.className = "listening-speaker";
-        speaker.textContent = line.speaker + ": ";
+        speaker.textContent = speakerName(dialogue, line.speaker) + ": ";
         paragraph.appendChild(speaker);
         paragraph.appendChild(document.createTextNode(line.text));
         transcript.appendChild(paragraph);
@@ -401,11 +440,15 @@
       button.disabled = true;
       document.getElementById("part3-start-questions").disabled = true;
       messageAt("part3-message", "");
-      function speakLine(line, index) {
+      var profiles = speakerProfiles(dialogue);
+      function speakLine(line) {
         if (token !== currentUtteranceToken) return undefined;
+        var profile = profiles[line.speaker];
         return window.Speech.speak(line.text, {
           rate: voiceSettings.rate,
-          voice: voiceForLine(line.speaker, index),
+          voice: profile.voice,
+          pitch: profile.pitch,
+          rateScale: profile.rateScale,
           lang: voiceSettings.voiceSelected ? voiceSettings.locale : "en-US",
           fallbackLang: "en-US",
           onVoiceUnavailable: handleVoiceUnavailable,
