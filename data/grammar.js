@@ -3,7 +3,7 @@ window.GRAMMAR = [
     id: "g01",
     order: 1,
     title: "품사 자리",
-    oneLine: "빈칸 앞뒤를 보면 품사가 정해진다. 뜻은 몰라도 된다.",
+    oneLine: "빈칸 앞뒤를 보면 품사가 정해진다. 품사로 좁힌 뒤, 남으면 그때 뜻을 본다.",
     weight: "최다 빈출",
     table: {
       headers: ["빈칸 위치", "들어갈 품사"],
@@ -20,7 +20,7 @@ window.GRAMMAR = [
       { good: "This is an effective plan.", bad: "This is an effect plan.", note: "명사 앞 → 형용사" }
     ],
     trap: "very, so 같은 수식어에 속지 마라. 꾸밈 받는 대상을 봐야 한다.\nShe is very careful. (be동사 뒤 → 형용사)\nShe works very carefully. (일반동사 뒤 → 부사)",
-    toeicPattern: "선택지가 decide / decision / decisive / decisively 처럼 한 뿌리의 네 품사로 나오면 100% 이 유형이다. 해석하지 말고 빈칸 앞뒤만 봐라. 5초면 풀린다."
+    toeicPattern: "선택지가 decide / decision / decisive / decisively 처럼 한 뿌리의 네 품사로 나오면 거의 이 유형이다. 먼저 빈칸 앞뒤로 품사를 정하고, 같은 품사가 둘 이상 남을 때만 뜻으로 가른다."
   },
   {
     id: "g02",
@@ -58,7 +58,7 @@ window.GRAMMAR = [
       { good: "I have worked here for three years.", bad: "I work here for three years.", note: "for + 기간, 과거부터 지금까지 이어짐" },
       { good: "He will call you tomorrow.", bad: "He called you tomorrow.", note: "tomorrow는 미래" }
     ],
-    trap: "since + 시점 (since 2020), for + 기간 (for three years).\nsince는 현재완료와만 쓴다. for는 지금까지 이어지면 현재완료, 과거에 끝났으면 과거형이다.",
+    trap: "since + 시점(~이래로)은 현재완료와 짝을 이룬다. for + 기간은 지금까지 이어지면 현재완료, 과거에 끝났으면 과거형이다.\n(접속사 since '~때문에'는 다른 쓰임이다. g07 참고)",
     toeicPattern: "빈칸이 동사이고 선택지가 같은 동사의 시제 변형이면, 문장에서 시간 표시어를 먼저 찾아라. yesterday·last·ago가 보이면 과거다. since와 for는 조금 더 봐야 한다. 지금까지 이어지면 현재완료, 과거에 끝났으면 과거형이다."
   },
   {
@@ -82,8 +82,8 @@ window.GRAMMAR = [
     id: "g05", order: 5, title: "to부정사 vs 동명사", weight: "빈출",
     oneLine: "동사 뒤에 어떤 형태가 오는지는 앞의 동사가 정한다.",
     table: { headers: ["뒤에 오는 형태", "해당 동사"], rows: [
-      ["to + 동사원형", "want, plan, decide, hope, agree, need, offer, afford"],
-      ["-ing (to부정사가 바로 못 옴)", "enjoy, finish, avoid, consider, recommend, suggest, mind, keep"],
+      ["뒤에 to부정사가 오는 동사", "want, plan, decide, hope, agree, need, offer, afford"],
+      ["뒤에 -ing가 오는 동사", "enjoy, finish, avoid, consider, recommend, suggest, mind, keep"],
       ["둘 다 가능", "like, love, start, begin, continue"]
     ] },
     examples: [
@@ -91,16 +91,16 @@ window.GRAMMAR = [
       { good: "We recommend taking the earlier train.", bad: "We recommend to take the earlier train.", note: "recommend 뒤에는 to부정사가 바로 못 온다" },
       { good: "She finished writing the report.", bad: "She finished to write the report.", note: "finish는 -ing만" }
     ],
-    trap: "to 뒤에는 동사원형이지만, look forward to / be used to / contribute to 의 to는 전치사다. 이때는 -ing가 온다.\nI look forward to meeting you. (to meet ❌)",
+    trap: "이 표는 '빈칸 바로 뒤'에 무엇이 오는지를 가리는 기준이다. that절처럼 다른 구조를 따로 갖는 동사도 있다.\n그리고 to 뒤에는 보통 동사원형이지만, look forward to / be used to / contribute to의 to는 전치사라서 -ing가 온다.\nI look forward to meeting you. (to meet ❌)",
     toeicPattern: "빈칸 앞 동사만 보면 된다. 해석할 필요가 없다. 위 표의 동사 목록을 외워두면 3초 안에 풀린다."
   },
   {
     id: "g06", order: 6, title: "전치사", weight: "빈출",
     oneLine: "in(넓음) → on(면·날짜) → at(점·시각) 순으로 범위가 좁아진다.",
     table: { headers: ["전치사", "시간", "장소"], rows: [
-      ["in", "월·연도·계절 (in May)", "넓은 공간 (in Seoul)"],
-      ["on", "날짜·요일 (on Monday)", "표면 (on the desk)"],
-      ["at", "시각 (at 7 p.m.)", "지점 (at the station)"]
+      ["in", "월·연도·계절 (in May)", "넓은 공간·건물 안 (in Seoul, in the room)"],
+      ["on", "날짜·요일 (on Monday)", "표면 위 (on the desk, on Main Street)"],
+      ["at", "시각 (at 7 p.m.)", "지점·특정 위치 (at the station, at the corner)"]
     ] },
     examples: [
       { good: "The meeting is on Monday.", bad: "The meeting is in Monday.", note: "요일은 on" },
@@ -139,7 +139,7 @@ window.GRAMMAR = [
       { good: "the report that I sent", bad: "the report what I sent", note: "what은 앞에 명사를 못 둔다" },
       { good: "the company whose office is downtown", bad: "the company which office is downtown", note: "소유 관계 → whose" }
     ],
-    trap: "관계대명사 뒤에 주어가 없으면 주격, 주어가 있으면 목적격이다.\n목적격은 생략할 수 있다. the report (that) I sent",
+    trap: "순서대로 가른다.\n① 빈칸 뒤에 명사가 바로 오고 소유 관계면 whose\n② 그렇지 않고 뒤에 주어가 없으면 주격 (who / which / that)\n③ 뒤에 주어가 있으면 목적격이고, 이때는 생략할 수 있다\n   the report (that) I sent",
     toeicPattern: "빈칸 앞 명사가 사람인지 사물인지 먼저 보고, 빈칸 뒤에 주어가 있는지로 주격과 목적격을 가른다."
   },
   {
@@ -169,16 +169,16 @@ window.GRAMMAR = [
     examples: [
       { good: "This is cheaper than that.", bad: "This is more cheap than that.", note: "짧은 단어는 -er" },
       { good: "the most efficient method", bad: "the efficientest method", note: "긴 단어는 most" },
-      { good: "as soon as possible", bad: "as soon as possibly", note: "as ~ as 사이에는 원급" }
+      { good: "as soon as possible", bad: "as soon as possibly", note: "as soon as possible은 통째로 외우는 표현이다. possibly(부사)는 들어가지 않는다." }
     ],
     trap: "비교급을 강조할 때는 very를 쓰지 않는다.\nmuch better / far better / even better (⭕)\nvery better (❌)",
     toeicPattern: "문장에 than이 보이면 무조건 비교급, the와 함께 of all·in the company가 보이면 최상급이다."
   },
   {
     id: "g11", order: 11, title: "가정법", weight: "낮음",
-    oneLine: "실제와 반대되는 상황을 말할 때 시제를 한 칸 뒤로 민다.",
+    oneLine: "if절의 시제가 핵심이다. 실제로 가능한 조건이면 현재형, 실제와 반대면 한 칸 뒤로 민다.",
     table: { headers: ["종류", "if절", "주절"], rows: [
-      ["단순 조건 (실제 가능)", "If + 현재", "will + 동사원형"],
+      ["단순 조건 (실제 가능)", "If + 현재", "will + 동사원형 (또는 명령문)"],
       ["현재 사실의 반대", "If + 과거", "would + 동사원형"],
       ["과거 사실의 반대", "If + had p.p.", "would have p.p."]
     ] },
@@ -236,7 +236,7 @@ window.GRAMMAR_QUIZ = [
   { id: "q024", ruleId: "g03", question: "I ____ the report when the manager called.", choices: ["was writing", "am writing", "have written", "write"], answer: 0, explanation: "과거의 한 시점에 진행 중이던 일은 과거진행형(was/were -ing)으로 쓴다.", difficulty: "medium" },
   { id: "q025", ruleId: "g03", question: "The team ____ the project two weeks ago.", choices: ["completes", "completed", "has completed", "will complete"], answer: 1, explanation: "ago가 있으면 무조건 과거형이다. 현재완료와 절대 함께 쓰지 않는다.", difficulty: "easy" },
   { id: "q026", ruleId: "g03", question: "Mr. Lee ____ in Seoul for ten years before moving to Busan.", choices: ["lives", "lived", "has lived", "will live"], answer: 1, explanation: "before moving으로 이미 끝난 일임이 드러난다. for가 있어도 과거에 끝났으면 과거형이다.", difficulty: "hard" },
-  { id: "q027", ruleId: "g03", question: "The office is ____ undergoing renovation.", choices: ["current", "currently", "currency", "current time"], answer: 1, explanation: "현재진행형과 어울리는 부사 currently가 와야 한다. 동사를 꾸미므로 부사형이다.", difficulty: "medium" },
+  { id: "q027", ruleId: "g01", question: "The office is ____ undergoing renovation.", choices: ["current", "currently", "currency", "current time"], answer: 1, explanation: "현재진행형과 어울리는 부사 currently가 와야 한다. 동사를 꾸미므로 부사형이다.", difficulty: "medium" },
   { id: "q028", ruleId: "g03", question: "We have not received your payment ____.", choices: ["already", "yet", "ago", "soon"], answer: 1, explanation: "yet은 부정문에서 '아직'이라는 뜻으로 현재완료와 짝을 이룬다.", difficulty: "medium" },
   { id: "q029", ruleId: "g03", question: "The store ____ at nine every morning.", choices: ["open", "opens", "opened", "is opening"], answer: 1, explanation: "every morning은 반복되는 일이므로 현재형을 쓴다. 주어가 3인칭 단수라 -s가 붙는다.", difficulty: "easy" },
   { id: "q030", ruleId: "g03", question: "He ____ the documents yesterday afternoon.", choices: ["sends", "sent", "has sent", "will send"], answer: 1, explanation: "yesterday는 끝난 과거 시점이므로 과거형 sent.", difficulty: "easy" },
@@ -329,5 +329,5 @@ window.GRAMMAR_QUIZ = [
   { id: "q117", ruleId: "g12", question: "____ you please confirm the date?", choices: ["Could", "Must", "Should", "Shall"], answer: 0, explanation: "정중한 요청은 Could you ~? 로 시작한다.", difficulty: "easy" },
   { id: "q118", ruleId: "g12", question: "She ____ to the conference every year.", choices: ["goes often", "often goes", "going often", "often going"], answer: 1, explanation: "빈도부사 often은 일반동사 앞에 온다.", difficulty: "medium" },
   { id: "q119", ruleId: "g12", question: "Please let me know ____ the report is ready.", choices: ["does when", "when", "when does", "that when"], answer: 1, explanation: "뒤에 주어+동사가 이어지므로 접속사 when 하나면 된다.", difficulty: "medium" },
-  { id: "q120", ruleId: "g12", question: "____ there any questions about the agenda?", choices: ["Is", "Are", "Do", "Does"], answer: 1, explanation: "There 구문은 뒤의 명사가 주어다. questions가 복수이므로 Are.", difficulty: "medium" }
+  { id: "q120", ruleId: "g02", question: "____ there any questions about the agenda?", choices: ["Is", "Are", "Do", "Does"], answer: 1, explanation: "There 구문은 뒤의 명사가 주어다. questions가 복수이므로 Are.", difficulty: "medium" }
 ];
