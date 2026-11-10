@@ -839,6 +839,114 @@ window.PASSAGES = [
       { q: "Which session did Ms. Marchetti find most useful?", choices: ["Finding Your Customers", "Low-Cost Online Advertising", "Measuring Results", "The lunch discussion"], answer: 1, explanation: "연계 문제다. 설문에서 두 번째 강의라고 했고, 일정표에서 2강은 저비용 온라인 광고다." },
       { q: "What does Ms. Marchetti suggest?", choices: ["Serving a hot lunch", "Allowing more time for questions", "Moving the seminar to a weekday", "Reducing the number of sessions"], answer: 1, explanation: "Please allow more time for questions." }
     ]
+  },
+  {
+    id: "rp27", type: "삼중 지문", title: "출장 경비 정산", strategyId: "r06", recommendedSec: 270,
+    parts: [
+      {
+        label: "지문 1 — 사내 규정",
+        header: ["TRAVEL EXPENSE POLICY — Halvorsen Engineering"],
+        sentences: [
+          { en: "Employees may claim meals up to $45 per day while traveling.", ko: "직원은 출장 중 식비를 1일 45달러까지 청구할 수 있습니다." },
+          { en: "Hotel costs are reimbursed up to $160 per night within the country and $210 abroad.", ko: "숙박비는 국내 출장은 1박 160달러, 해외 출장은 210달러까지 환급됩니다." },
+          { en: "Taxi fares require a receipt; rides under $20 do not.", ko: "택시 요금은 영수증이 필요하며, 20달러 미만은 필요하지 않습니다." },
+          { en: "Submit all claims within fourteen days of returning.", ko: "모든 청구는 복귀 후 14일 안에 제출하십시오." },
+          { en: "Approved claims are paid with the following month's salary.", ko: "승인된 청구는 다음 달 급여와 함께 지급됩니다." }
+        ]
+      },
+      {
+        label: "지문 2 — 경비 신청서",
+        header: ["EXPENSE CLAIM — Form 7B"],
+        sentences: [
+          { en: "Name: Teodor Vasilev | Department: Structural Design", ko: "이름: 테오도르 바실레프 | 부서: 구조 설계" },
+          { en: "Trip: Client visit, Oslo | Dates: April 6-8", ko: "출장: 고객 방문, 오슬로 | 기간: 4월 6일~8일" },
+          { en: "Hotel (2 nights, Oslo): $390", ko: "숙박 (오슬로 2박): 390달러" },
+          { en: "Meals (3 days): $128", ko: "식비 (3일): 128달러" },
+          { en: "Taxi (airport, with receipt): $34", ko: "택시 (공항, 영수증 첨부): 34달러" },
+          { en: "Total claimed: $552 | Submitted: April 11", ko: "청구 총액: 552달러 | 제출일: 4월 11일" }
+        ]
+      },
+      {
+        label: "지문 3 — 회계팀 이메일",
+        header: ["From: Ingrid Sollie, Accounting", "To: Teodor Vasilev", "Subject: Form 7B — Oslo trip"],
+        sentences: [
+          { en: "Dear Teodor,", ko: "테오도르 씨께," },
+          { en: "Your claim arrived in time, so it will be included in the May payment.", ko: "청구가 기한 안에 접수되어 5월 지급에 포함됩니다." },
+          { en: "Your hotel came to $195 per night, which is below the limit for trips abroad, so that part is approved in full.", ko: "숙박비는 1박 195달러로 해외 출장 한도보다 낮아 전액 승인됩니다." },
+          { en: "However, your meal total exceeds the daily allowance for one of the three days.", ko: "다만 식비가 사흘 중 하루는 1일 한도를 초과합니다." },
+          { en: "Please send me the receipts for April 7 so I can check it.", ko: "확인할 수 있도록 4월 7일 영수증을 보내주세요." },
+          { en: "Everything else is approved. Ingrid", ko: "그 외는 모두 승인되었습니다. 잉그리드" }
+        ]
+      }
+    ],
+    vocab: [
+      { w: "claim", m: "청구하다, 청구" },
+      { w: "reimburse", m: "환급하다" },
+      { w: "allowance", m: "허용 한도" },
+      { w: "exceed", m: "초과하다" },
+      { w: "in full", m: "전액으로" }
+    ],
+    questions: [
+      { q: "What is the purpose of the first notice?", choices: ["To explain rules for claiming travel costs", "To announce a change in salaries", "To report a budget shortage", "To introduce a new accounting system"], answer: 0, explanation: "식비, 숙박비, 택시, 제출 기한 등 경비 청구 규정을 안내하는 글이다." },
+      { q: "What is indicated about Mr. Vasilev's taxi fare?", choices: ["It was below the amount that needs a receipt", "It was not approved", "A receipt was required for it", "It was paid by the client"], answer: 2, explanation: "연계 문제다. 규정에 20달러 미만은 영수증이 필요 없다고 했고, 신청서의 택시 요금은 34달러다." },
+      { q: "Why is the hotel cost approved in full?", choices: ["It was paid in advance", "The client agreed to share the cost", "He stayed only two nights", "The trip was outside the country"], answer: 3, explanation: "연계 문제다. 1박 195달러는 국내 한도 160달러를 넘지만 해외 한도 210달러보다는 낮다. 오슬로 출장이라 해외 한도가 적용된다." },
+      { q: "What does Ms. Sollie ask Mr. Vasilev to do?", choices: ["Resubmit the whole form", "Send receipts for one day's meals", "Return part of the payment", "Book a cheaper hotel next time"], answer: 1, explanation: "Please send me the receipts for April 7." },
+      { q: "When will Mr. Vasilev receive the money?", choices: ["Within fourteen days", "On April 11", "With his May salary", "After the next client visit"], answer: 2, explanation: "연계 문제다. 규정에 다음 달 급여와 함께 지급된다고 했고, 4월에 제출했으므로 5월 지급이다. 이메일에서도 확인된다." }
+    ]
+  },
+  {
+    id: "rp28", type: "삼중 지문", title: "온라인 강좌 수강", strategyId: "r06", recommendedSec: 265,
+    parts: [
+      {
+        label: "지문 1 — 강좌 안내",
+        header: ["PRACTICAL SPREADSHEETS — Online Course"],
+        sentences: [
+          { en: "Six weekly sessions, Wednesdays 7:00-8:30 P.M.", ko: "6주간 매주 수요일 오후 7시부터 8시 30분까지." },
+          { en: "Session 1 Formulas | Session 2 Charts | Session 3 Pivot tables", ko: "1회차 수식 | 2회차 차트 | 3회차 피벗 테이블" },
+          { en: "Session 4 Data cleaning | Session 5 Macros | Session 6 Final project", ko: "4회차 데이터 정리 | 5회차 매크로 | 6회차 최종 과제" },
+          { en: "Fee: $120, or $90 for students with proof of enrolment.", ko: "수강료: 120달러, 재학 증명을 제출한 학생은 90달러." },
+          { en: "Recordings stay available for three months after the course ends.", ko: "녹화 강의는 과정이 끝난 뒤 3개월간 볼 수 있습니다." },
+          { en: "Instructor: Beatriz Nunes", ko: "강사: 베아트리스 누네스" }
+        ]
+      },
+      {
+        label: "지문 2 — 수강생 게시글",
+        header: ["Posted by: Kwan-ho Lim | March 2"],
+        sentences: [
+          { en: "I signed up mainly for Session 5, but I had to miss it because of a work trip.", ko: "주로 5회차 때문에 신청했는데 출장 때문에 그 수업을 놓쳐야 했습니다." },
+          { en: "The recording saved me. I watched it twice the next weekend.", ko: "녹화 강의가 도움이 됐습니다. 다음 주말에 두 번 봤어요." },
+          { en: "One thing: the exercise files for Session 4 were not in the download folder.", ko: "한 가지, 4회차 연습 파일이 다운로드 폴더에 없었습니다." },
+          { en: "Otherwise this is the most useful course I have taken this year.", ko: "그 점만 빼면 올해 들은 강좌 중 가장 유익했습니다." },
+          { en: "I paid the reduced fee since I am finishing a degree part-time.", ko: "저는 시간제로 학위를 마치는 중이라 할인된 수강료를 냈습니다." }
+        ]
+      },
+      {
+        label: "지문 3 — 강사 답변",
+        header: ["From: Beatriz Nunes", "Re: Posted by Kwan-ho Lim"],
+        sentences: [
+          { en: "Thank you for the kind words.", ko: "좋게 말씀해 주셔서 감사합니다." },
+          { en: "You are right about the missing files; I have now added them to the folder for everyone.", ko: "파일이 빠졌다는 지적이 맞습니다. 모든 수강생이 볼 수 있도록 폴더에 올려 두었습니다." },
+          { en: "I am glad the recording helped.", ko: "녹화 강의가 도움이 되어 다행입니다." },
+          { en: "Anyone who misses a live session can watch it for the three months after the course finishes.", ko: "실시간 수업을 놓친 분은 과정이 끝난 뒤 3개월간 보실 수 있습니다." },
+          { en: "I am also planning a follow-up course on databases for the autumn.", ko: "가을에는 데이터베이스를 다루는 후속 강좌도 준비하고 있습니다." },
+          { en: "Beatriz", ko: "베아트리스" }
+        ]
+      }
+    ],
+    vocab: [
+      { w: "session", m: "회차, 수업" },
+      { w: "proof of enrolment", m: "재학 증명" },
+      { w: "recording", m: "녹화 강의" },
+      { w: "sign up for", m: "~에 신청하다" },
+      { w: "follow-up", m: "후속의" }
+    ],
+    questions: [
+      { q: "What is the course mainly about?", choices: ["Using spreadsheets", "Managing databases", "Writing business reports", "Designing web pages"], answer: 0, explanation: "수식, 차트, 피벗 테이블 등 스프레드시트 활용을 다룬다. 데이터베이스는 가을 후속 강좌다." },
+      { q: "Which session did Mr. Lim miss?", choices: ["Charts", "Data cleaning", "Macros", "Final project"], answer: 2, explanation: "연계 문제다. 게시글에서 5회차를 놓쳤다고 했고, 안내문에서 5회차는 매크로다." },
+      { q: "How much did Mr. Lim most likely pay?", choices: ["$90", "$120", "$180", "$210"], answer: 0, explanation: "연계 문제다. 할인된 수강료를 냈다고 했고, 안내문에서 학생 할인가는 90달러다." },
+      { q: "What problem does Mr. Lim report?", choices: ["A session started late", "Some exercise files were missing", "A recording would not play", "The fee was charged twice"], answer: 1, explanation: "the exercise files for Session 4 were not in the download folder." },
+      { q: "What does Ms. Nunes say she plans to do?", choices: ["Extend the recording period", "Offer another course", "Lower the course fee", "Add a seventh session"], answer: 1, explanation: "planning a follow-up course on databases for the autumn. 녹화 기간은 원래부터 3개월이라 연장이 아니다." }
+    ]
   }
 ];
 
