@@ -989,7 +989,7 @@ window.PASSAGES = [
       { q: "How many additional parking spaces would Ms. Han's company need?", choices: ["Two", "Four", "Six", "Eight"], answer: 1, explanation: "연계 문제다. 직원 6명이 차로 출근하고 광고에 주차 두 면이 포함되므로 4면이 더 필요하다." },
       { q: "What does Ms. Han ask about the rooms?", choices: ["Whether they can be joined together", "Whether they have windows", "How they are heated", "Who cleans them"], answer: 0, explanation: "whether the eight rooms can be combined into fewer, larger spaces." },
       { q: "What does Ms. Han request that differs from the advertised terms?", choices: ["A lower monthly rent", "An earlier move-in date", "Extra storage space", "A shorter lease period"], answer: 3, explanation: "연계 문제다. 광고는 최소 2년인데 이메일에서 1년 임대가 가능한지 물었다. 입주는 8월을 원하므로 7월보다 이른 것이 아니다." },
-      { q: "What does Ms. Han offer to do?", choices: ["Sign a contract this week", "Send a deposit in advance", "Visit the building later in the week", "Call Ms. Delgado on Monday"], answer: 2, explanation: "I am free to visit on Thursday or Friday afternoon." }
+      { q: "What does Ms. Han offer to do?", choices: ["Sign a contract this week", "Send a deposit in advance", "Visit the building on Thursday or Friday", "Call Ms. Delgado on Monday"], answer: 2, explanation: "I am free to visit on Thursday or Friday afternoon. 이메일에 보낸 날짜가 없으므로 '주 후반'이 아니라 요일 그대로 고른다." }
     ]
   },
   {

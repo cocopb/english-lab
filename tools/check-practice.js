@@ -120,6 +120,15 @@ function currentAnswer(area) {
 }
 
 // --- 2~5. 미니 모의고사 (수동 제출) ---
+// 실전 첫 화면: 두 모드 카드
+console.log('\n[실전 진입 화면]');
+const modeCards = mockStage.querySelectorAll('.practice-mode-card');
+check('모드 카드 2개 (미니 모의고사 · RC 풀세트)', modeCards.length === 2 &&
+  modeCards[0].textContent.includes('미니 모의고사') && modeCards[1].textContent.includes('RC 풀세트'), modeCards.map(c => c.dataset.mode).join(', '));
+check('미니 카드에 구성·시간', modeCards[0] && modeCards[0].textContent.includes('30~31문항 · 25분') && modeCards[0].textContent.includes('Part 5 15문항 + Part 6 8문항'));
+check('풀세트 카드에 구성·시간', modeCards[1] && modeCards[1].textContent.includes('100문항 · 75분') &&
+  modeCards[1].textContent.includes('실제 토익 RC와 같은 구성(Part 5·6·7)'));
+modeCards[0].querySelectorAll('.button').find(b => b.textContent === '미니 모의고사 선택').click();
 console.log('\n[미니 모의고사 — 수동 제출]');
 const startBtn = mockStage.querySelectorAll('.button').find(b => b.textContent === '모의고사 시작');
 // Part 7은 지문을 자르지 않으므로 7~8문항, 총 30~31문항이다. 시작 화면에 보인 구성이 실제 시험과 같아야 한다.
@@ -337,6 +346,250 @@ for (let tries = 0; tries < 2000 && p7Checked.size < W.PASSAGES.length; tries++)
 }
 check('Part 7 전 지문 어휘 표시', p7Checked.size === W.PASSAGES.length && !p7VocabProblems.length,
   p7Checked.size + ' / ' + W.PASSAGES.length + (p7VocabProblems.length ? ' 문제: ' + p7VocabProblems.join(', ') : ''));
+
+// =================== RC 풀세트 ===================
+// 같은 localStorage(store)·같은 가짜 시계(now)를 쓰는 새 페이지를 띄운다. "앱을 닫았다 다시 연다"를 흉내 낼 때 쓴다.
+const FULL_KEY = 'englishLabFullSetSave';
+function loadPracticePage(opts = {}) {
+  const pbody = new El('body');
+  const padd = (tag, id) => { const e = new El(tag); e.id = id; pbody.appendChild(e); return e; };
+  const pheader = padd('div', 'site-header');
+  pheader.querySelector = sel => sel === '.theme-toggle' ? new El('button') : null;
+  ['mock', 'parts', 'history'].forEach(n => { const t = padd('button', 'practice-tab-' + n); t.setAttribute('role', 'tab'); padd('section', 'practice-panel-' + n); });
+  const stage = padd('div', 'practice-mock-stage');
+  padd('form', 'practice-part-form'); padd('select', 'practice-part-select'); padd('div', 'practice-part-stage'); padd('div', 'practice-history');
+  const pready = [];
+  const env = { stage, tick: null, errors: [], warns: [] };
+  const pdoc = {
+    readyState: 'loading', documentElement: new El('html'),
+    createElement: t => new El(t),
+    getElementById: id => pbody.all().find(e => e.id === id) || null,
+    querySelectorAll: s => pbody.querySelectorAll(s),
+    addEventListener: (t, f) => { if (t === 'DOMContentLoaded') pready.push(f); }
+  };
+  pdoc.documentElement.hasAttribute = () => false;
+  const pwin = {
+    document: pdoc, location: { pathname: '/english-lab/pages/practice.html', hash: '' },
+    addEventListener() {}, matchMedia: () => ({ matches: false }),
+    setInterval: fn => { env.tick = fn; return 9; }, clearInterval: () => { env.tick = null; },
+    confirm: () => true
+  };
+  const pconsole = { log: console.log, info() {}, warn: (...a) => env.warns.push(a.join(' ')), error: (...a) => env.errors.push(a.join(' ')) };
+  const c = vm.createContext({ window: pwin, document: pdoc, localStorage, console: pconsole, Date: FakeDate });
+  for (const f of ['assets/js/common.js', 'data/grammar.js', 'data/reading.js', 'assets/js/practice.js']) {
+    vm.runInContext(fs.readFileSync(path.join(root, f), 'utf8'), c, { filename: f });
+    if (f === 'data/reading.js' && opts.mutate) opts.mutate(pwin);
+  }
+  pready.forEach(f => f());
+  env.window = pwin;
+  return env;
+}
+const byText = (rootEl, text) => rootEl.querySelectorAll('.button').find(b => b.textContent === text);
+const omrCells = env => env.stage.querySelector('.practice-omr').querySelectorAll('.practice-omr-cell');
+function startFull(env) {
+  byText(env.stage, 'RC 풀세트 선택').click();
+  const start = byText(env.stage, '풀세트 시작');
+  if (start) start.click();
+  return !!start;
+}
+// 화면에 보이는 정보만으로 지금 문항의 원본을 찾는다.
+function identify(env) {
+  const Wd = env.window;
+  const a = env.stage.querySelector('.practice-question-area');
+  const meta = a.querySelector('.practice-question-meta').textContent;
+  const [label, rest] = meta.split(' · ');
+  const number = parseInt(rest, 10);
+  const prompt = a.querySelector('.practice-question-prompt').textContent.replace(/^\d+\.\s*/, '');
+  if (label === 'Part 5') {
+    const q = Wd.GRAMMAR_QUIZ.find(x => x.question === prompt);
+    return { label, number, q, key: q && 'p5:' + q.id };
+  }
+  if (label === 'Part 6') {
+    const headerText = a.querySelector('.reading-passage-header').textContent;
+    const set = Wd.PART6.find(s => s.header.join('') === headerText);
+    const n = a.querySelectorAll('.practice-blank').findIndex(b => b.classList.contains('is-current')) + 1;
+    const q = set && set.questions.find(x => x.n === n);
+    return { label, number, q, set, key: set && 'p6:' + set.id + ':' + n };
+  }
+  const title = a.querySelector('.reading-passage-type').textContent;
+  const passage = Wd.PASSAGES.find(p => p.type + ' · ' + p.title === title);
+  const qIndex = passage ? passage.questions.findIndex(x => x.q === prompt) : -1;
+  return { label, number, q: passage && passage.questions[qIndex], passage, key: passage && 'p7:' + passage.id + ':' + qIndex };
+}
+const leakSelectors = ['.reading-vocab-section', '.practice-translation', '.reading-sentence-ko'];
+
+// --- 1. 20회 생성: 구성·번호·자르지 않음·중복·Part 5 유형 분산 ---
+console.log('\n[RC 풀세트 — 20회 생성]');
+store.delete(FULL_KEY);
+const gen = loadPracticePage();
+check('풀세트 진입 화면에 두 모드', gen.stage.querySelectorAll('.practice-mode-card').length === 2);
+const genProblems = [];
+let maxRuleSeen = 0, leakCount = 0, omrLabels = null;
+const EXPECTED_SECTIONS = { 'Part 5': 30, 'Part 6': 16, 'Part 7 단일': 29, 'Part 7 이중': 10, 'Part 7 삼중': 15 };
+for (let run = 0; run < 20; run++) {
+  if (!startFull(gen)) { genProblems.push(run + '회: 시작 버튼 없음'); break; }
+  const cs = omrCells(gen);
+  if (cs.length !== 100) genProblems.push(run + '회: OMR ' + cs.length + '칸');
+  if (run === 0) omrLabels = gen.stage.querySelector('.practice-omr').querySelectorAll('.practice-omr-part').map(e => e.textContent);
+  const sectionCounts = {}, keys = new Set(), ruleCounts = {}, passageNumbers = new Map(), p6Counts = new Map();
+  for (let i = 0; i < cs.length; i++) {
+    omrCells(gen)[i].click();
+    const info = identify(gen);
+    if (!info.q) { genProblems.push(run + '회 ' + (i + 1) + '번 원본 못 찾음'); continue; }
+    if (info.number !== i + 1) genProblems.push(run + '회 번호 ' + info.number + '≠' + (i + 1));
+    sectionCounts[info.label] = (sectionCounts[info.label] || 0) + 1;
+    if (keys.has(info.key)) genProblems.push(run + '회 중복 문항 ' + info.key);
+    keys.add(info.key);
+    if (info.label === 'Part 5') ruleCounts[info.q.ruleId] = (ruleCounts[info.q.ruleId] || 0) + 1;
+    if (info.set) p6Counts.set(info.set.id, (p6Counts.get(info.set.id) || 0) + 1);
+    if (info.passage) {
+      const entry = passageNumbers.get(info.passage.id) || { passage: info.passage, label: info.label, numbers: [] };
+      if (entry.label !== info.label) genProblems.push(run + '회 ' + info.passage.id + ' 구획이 섞임');
+      entry.numbers.push(info.number);
+      passageNumbers.set(info.passage.id, entry);
+    }
+    leakSelectors.forEach(sel => { if (gen.stage.querySelectorAll(sel).length) leakCount++; });
+  }
+  Object.keys(EXPECTED_SECTIONS).forEach(label => {
+    if (sectionCounts[label] !== EXPECTED_SECTIONS[label]) genProblems.push(run + '회 ' + label + ' ' + sectionCounts[label] + '문항');
+  });
+  const ruleMax = Math.max(...Object.values(ruleCounts));
+  maxRuleSeen = Math.max(maxRuleSeen, ruleMax);
+  if (ruleMax > 6) genProblems.push(run + '회 Part 5 한 유형 ' + ruleMax + '문항');
+  if (p6Counts.size !== 4 || [...p6Counts.values()].some(n => n !== 4)) genProblems.push(run + '회 Part 6 세트 ' + [...p6Counts.values()].join('+'));
+  const singleSizes = [];
+  passageNumbers.forEach(({ passage, label, numbers }) => {
+    const parts = Array.isArray(passage.parts) ? passage.parts.length : 1;
+    if (numbers.length !== passage.questions.length) genProblems.push(run + '회 ' + passage.id + ' 잘림 ' + numbers.length + '/' + passage.questions.length);
+    if (numbers[numbers.length - 1] - numbers[0] !== numbers.length - 1) genProblems.push(run + '회 ' + passage.id + ' 문항이 떨어져 있음');
+    if (label === 'Part 7 단일') { if (parts !== 1) genProblems.push(run + '회 단일 구획에 ' + passage.id); singleSizes.push(passage.questions.length); }
+    if (label === 'Part 7 이중' && (parts !== 2 || passage.questions.length !== 5)) genProblems.push(run + '회 이중 구획에 ' + passage.id);
+    if (label === 'Part 7 삼중' && (parts !== 3 || passage.questions.length !== 5)) genProblems.push(run + '회 삼중 구획에 ' + passage.id);
+  });
+  if (singleSizes.join(',') !== '2,2,2,2,3,3,3,4,4,4') genProblems.push(run + '회 단일 지문 구성 ' + singleSizes.join(','));
+  byText(gen.stage, '제출').click();
+  if (store.has(FULL_KEY)) genProblems.push(run + '회 제출 후 저장값이 남음');
+  byText(gen.stage, '모드 선택').click();
+}
+check('20회 모두 100문항 · 30/16/29/10/15 · 번호 1~100 · 지문 안 잘림 · 중복 없음', genProblems.length === 0, genProblems.slice(0, 5).join(' ; ') || '이상 없음');
+check('Part 5 한 유형 6문항 이하', maxRuleSeen <= 6, '20회 중 한 유형 최대 ' + maxRuleSeen + '문항');
+check('OMR 파트 경계 표시', JSON.stringify(omrLabels) === JSON.stringify(['Part 5 · 1~30번 (지금)', 'Part 6 · 31~46번', 'Part 7 단일 · 47~75번', 'Part 7 이중 · 76~85번', 'Part 7 삼중 · 86~100번']), (omrLabels || []).join(' | '));
+check('푸는 중 어휘·해석 없음 (20회 × 100문항 화면)', leakCount === 0, leakCount + '건');
+
+// --- 2. 중간 저장 → 앱을 닫고 3시간 뒤 다시 열기 → 이어서 풀기 → 제출 ---
+console.log('\n[RC 풀세트 — 중간 저장과 이어서 풀기]');
+store.delete(FULL_KEY);
+const progressBefore = store.get('englishLabProgress');
+const s1 = loadPracticePage();
+startFull(s1);
+const chosen = [];
+let expectedCorrect = 0;
+let saveOnMoveMisses = 0, saveOnAnswerMisses = 0;
+const storedSave = () => JSON.parse(store.get(FULL_KEY) || 'null');
+function answerUpTo(env, from, to) {
+  for (let i = from; i < to; i++) {
+    omrCells(env)[i].click();
+    if (!storedSave() || storedSave().index !== i) saveOnMoveMisses++; // 문항을 옮기면 바로 저장
+    const info = identify(env);
+    const choice = i % 3 === 0 ? (info.q.answer + 1) % 4 : info.q.answer;
+    env.stage.querySelector('.practice-question-area').querySelectorAll('.quiz-option')[choice].click();
+    if (!storedSave() || storedSave().answers[i] !== choice) saveOnAnswerMisses++; // 답을 고르면 바로 저장
+    chosen[i] = choice;
+    if (choice === info.q.answer) expectedCorrect++;
+  }
+}
+answerUpTo(s1, 0, 40);
+check('답을 고를 때마다 바로 저장', saveOnAnswerMisses === 0, saveOnAnswerMisses + '건 누락');
+check('문항을 옮길 때마다 바로 저장', saveOnMoveMisses === 0, saveOnMoveMisses + '건 누락');
+for (let k = 0; k < 120; k++) { now += 1000; s1.tick(); } // 2분 경과
+const saved1 = JSON.parse(store.get(FULL_KEY) || 'null');
+check('저장: 답 40개', saved1 && saved1.answers.filter(a => a !== null).length === 40 && saved1.answers.slice(0, 40).every((a, i) => a === chosen[i]));
+check('저장: 남은 시간 73:00 (4380초)', saved1 && saved1.remainingSec === 4380, saved1 && saved1.remainingSec);
+check('저장: 현재 문항 40번', saved1 && saved1.index === 39, saved1 && saved1.index);
+check('저장: 다른 학습 기록 키와 별도', store.get('englishLabProgress') === progressBefore && !(JSON.parse(progressBefore || '{}').fullSet));
+const validSnapshot = store.get(FULL_KEY);
+
+now += 3 * 3600 * 1000; // 앱을 닫아 둔 3시간
+const s2 = loadPracticePage();
+const savedNote = s2.stage.querySelector('.practice-mode-saved');
+check('다시 열면 진행 중 세트 안내', savedNote && savedNote.textContent.includes('푼 문제 40 / 100') && savedNote.textContent.includes('남은 시간 73:00'), savedNote && savedNote.textContent);
+byText(s2.stage, 'RC 풀세트 선택').click();
+check('이어서 풀기 / 새로 시작 선택지', !!byText(s2.stage, '이어서 풀기') && !!byText(s2.stage, '새로 시작'));
+byText(s2.stage, '이어서 풀기').click();
+check('이어서: 남은 시간 73:00부터 (닫아 둔 3시간은 안 깎임)', s2.stage.querySelector('.practice-time').textContent === '73:00', s2.stage.querySelector('.practice-time').textContent);
+const resumedCells = omrCells(s2);
+check('이어서: 답 40개가 그대로', resumedCells.filter(c => c.classList.contains('is-answered')).length === 40 &&
+  chosen.slice(0, 40).every((c, i) => resumedCells[i].querySelector('.practice-omr-mark').textContent === String.fromCharCode(65 + c)));
+check('이어서: 40번에서 시작', resumedCells[39].classList.contains('is-current'));
+now += 1000; s2.tick();
+check('이어서: 타이머가 다시 돎 (72:59)', s2.stage.querySelector('.practice-time').textContent === '72:59');
+answerUpTo(s2, 40, 100);
+byText(s2.stage, '제출').click();
+const scoreText = s2.stage.querySelector('.practice-result-score');
+check('이어서 푼 100문항 채점', scoreText && scoreText.textContent === '총점 ' + expectedCorrect + ' / 100', (scoreText && scoreText.textContent) + ' (예상 ' + expectedCorrect + ')');
+check('제출 후 저장된 세트 삭제', !store.has(FULL_KEY));
+const lastAttempt = s2.window.Progress.getPracticeHistory().slice(-1)[0];
+check('기록에 100문항 응시로 남음', lastAttempt && lastAttempt.total === 100 && lastAttempt.correct === expectedCorrect && lastAttempt.elapsedSec === 120 + 1,
+  lastAttempt && (lastAttempt.correct + '/' + lastAttempt.total + ', ' + lastAttempt.elapsedSec + '초'));
+
+// --- 3. 깨진 저장값: 지우고 새로 시작, 다른 학습 기록은 그대로 ---
+console.log('\n[RC 풀세트 — 깨진 저장값]');
+const brokenPlan = JSON.parse(validSnapshot); brokenPlan.plan.triple[0] = 'rp99';
+const shortAnswers = JSON.parse(validSnapshot); shortAnswers.answers = [0, 1, 2];
+const badTime = JSON.parse(validSnapshot); badTime.remainingSec = -5;
+const corruptCases = [['JSON 깨짐', '{broken'], ['버전 없음', JSON.stringify({ plan: {} })], ['답 개수 틀림', JSON.stringify(shortAnswers)],
+  ['남은 시간 음수', JSON.stringify(badTime)], ['없는 지문 id', JSON.stringify(brokenPlan)]];
+const corruptProblems = [];
+corruptCases.forEach(([name, value]) => {
+  const progress = store.get('englishLabProgress'), theme = store.get('englishLabTheme');
+  store.set(FULL_KEY, value);
+  const e = loadPracticePage();
+  if (e.stage.querySelector('.practice-mode-saved')) corruptProblems.push(name + ': 이어서 풀기 안내가 뜸');
+  if (store.has(FULL_KEY)) corruptProblems.push(name + ': 깨진 값이 남음');
+  if (store.get('englishLabProgress') !== progress || store.get('englishLabTheme') !== theme) corruptProblems.push(name + ': 다른 기록이 바뀜');
+  if (!e.warns.some(w => w.includes('깨져'))) corruptProblems.push(name + ': 경고 없음');
+  if (!startFull(e) || omrCells(e).length !== 100) corruptProblems.push(name + ': 새로 시작 안 됨');
+  store.delete(FULL_KEY);
+});
+check('깨진 저장값 5종 — 지우고 새로 시작, 학습 기록 유지', corruptProblems.length === 0, corruptProblems.join(' ; ') || corruptCases.map(c => c[0]).join(', '));
+check('학습 기록이 비지 않음', !!store.get('englishLabProgress') && s2.window.Progress.getPracticeHistory().length > 0);
+
+// --- 4. 타이머: 10분·5분 알림, 멈춘 틈은 안 깎음, 0이면 자동 제출 ---
+console.log('\n[RC 풀세트 — 타이머]');
+store.delete(FULL_KEY);
+const t = loadPracticePage();
+startFull(t);
+const bar = () => t.stage.querySelector('.practice-timer-bar');
+const alertBox = () => bar().querySelector('.practice-time-alert');
+check('시작 75:00', t.stage.querySelector('.practice-time').textContent === '75:00');
+for (let k = 0; k < 4500 - 601; k++) { now += 1000; t.tick(); }
+check('10:01에는 알림 없음', alertBox().hidden === true, t.stage.querySelector('.practice-time').textContent);
+now += 1000; t.tick();
+check('10분 알림', !alertBox().hidden && alertBox().textContent.includes('남은 시간 10분') && bar().classList.contains('is-warning'), alertBox().textContent);
+for (let k = 0; k < 20; k++) { now += 1000; t.tick(); }
+check('알림은 잠시 뒤 사라짐', alertBox().hidden === true);
+now += 60 * 1000; t.tick(); // 화면이 1분 멈췄다 돌아옴
+check('멈춘 틈은 최대 5초만 깎음', t.stage.querySelector('.practice-time').textContent === '09:35', t.stage.querySelector('.practice-time').textContent);
+while (t.stage.querySelector('.practice-time') && t.stage.querySelector('.practice-time').textContent !== '05:01') { now += 1000; t.tick(); }
+now += 1000; t.tick();
+check('5분 알림', !alertBox().hidden && alertBox().textContent.includes('남은 시간 5분') && bar().classList.contains('is-danger'), alertBox().textContent);
+for (let k = 0; k < 400 && t.tick; k++) { now += 1000; t.tick(); }
+const timeoutResult = t.stage.querySelector('.practice-result');
+check('0이 되면 자동 제출', !!timeoutResult && timeoutResult.textContent.includes('시간 초과로 자동 제출') && timeoutResult.textContent.includes('/ 100'));
+check('자동 제출 후 저장값 삭제·타이머 정지', !store.has(FULL_KEY) && t.tick === null);
+
+// --- 5. 데이터가 모자라면 오류를 띄우고 세트를 만들지 않는다 ---
+console.log('\n[RC 풀세트 — 데이터 부족]');
+const short = loadPracticePage({ mutate: w => { w.PASSAGES = w.PASSAGES.filter(p => p.id !== 'rp30'); } });
+const startedShort = startFull(short);
+const errorPanel = short.stage.querySelector('.practice-full-error');
+check('5문항 이중 지문이 1개면 오류 표시', !startedShort && !!errorPanel && errorPanel.textContent.includes('이중 지문') && errorPanel.textContent.includes('필요 2개, 현재 1개'),
+  errorPanel && errorPanel.textContent);
+check('console.error 남김', short.errors.some(m => m.includes('RC 풀세트를 만들 수 없습니다')), short.errors[0]);
+const shortP5 = loadPracticePage({ mutate: w => { w.GRAMMAR_QUIZ = w.GRAMMAR_QUIZ.filter(q => ['g01', 'g02', 'g03', 'g04'].includes(q.ruleId)); } });
+startFull(shortP5);
+const p5Error = shortP5.stage.querySelector('.practice-full-error');
+check('Part 5 유형이 4개뿐이면(6×4=24<30) 오류 표시', !!p5Error && p5Error.textContent.includes('Part 5'), p5Error && p5Error.textContent);
 
 console.log(failures ? `\n실패 ${failures}건` : '\n전부 통과');
 process.exit(failures ? 1 : 0);

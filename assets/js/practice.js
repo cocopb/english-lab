@@ -18,6 +18,25 @@
   ];
   var PART_PRACTICE_P5_COUNT = 10;
 
+  // 시험 모드별 시간 설정. 미니 모의고사는 기존 값 그대로, 풀세트는 75분에 10분·5분 남았을 때 알림.
+  var MODES = {
+    mini: { mode: "mini", title: "RC 미니 모의고사", seconds: EXAM.seconds, warnSec: EXAM.warnSec, dangerSec: EXAM.dangerSec, alerts: [] },
+    full: { mode: "full", title: "RC 풀세트", seconds: 75 * 60, warnSec: 10 * 60, dangerSec: 5 * 60, alerts: [10 * 60, 5 * 60] }
+  };
+  // RC 풀세트 구성 (실제 토익 RC와 같음, 고정). 지문·세트의 문항은 자르지 않는다.
+  var FULL_SET = {
+    p5: 30, p5MaxPerRule: 6,
+    p6Sets: 4, p6Questions: 4,
+    single: [{ questions: 2, count: 4 }, { questions: 3, count: 3 }, { questions: 4, count: 3 }],
+    double: { parts: 2, questions: 5, count: 2 },
+    triple: { parts: 3, questions: 5, count: 3 },
+    total: 100
+  };
+  var FULL_SAVE_KEY = "englishLabFullSetSave"; // 학습 기록(englishLabProgress)과 별도 키
+  var FULL_SAVE_EVERY_TICKS = 10; // 답을 고르지 않고 있어도 10초마다 남은 시간을 저장
+  var FULL_MAX_TICK_SEC = 5; // 화면이 멈췄다 돌아온 틈(폰 잠김 등)은 남은 시간에서 깎지 않는다
+  var SECTION_LABELS = { p5: "Part 5", p6: "Part 6", p7: "Part 7", p7s: "Part 7 단일", p7d: "Part 7 이중", p7t: "Part 7 삼중" };
+
   document.addEventListener("DOMContentLoaded", function () {
     var grammarQuiz = window.GRAMMAR_QUIZ || [];
     var part6Sets = window.PART6 || [];
@@ -210,6 +229,158 @@
       return items;
     }
 
+    // ---------- RC 풀세트 구성 ----------
+
+    function fullSetError(message) {
+      var error = new Error(message);
+      error.isFullSetError = true;
+      return error;
+    }
+
+    function passagePartCount(passage) {
+      return Array.isArray(passage.parts) && passage.parts.length ? passage.parts.length : 1;
+    }
+
+    // Part 5는 한 문법 유형(ruleId)이 FULL_SET.p5MaxPerRule을 넘지 않게 뽑는다.
+    function pickPart5Balanced() {
+      var counts = {};
+      var picked = [];
+      shuffle(grammarQuiz).forEach(function (question) {
+        if (picked.length >= FULL_SET.p5) return;
+        var key = question.ruleId || "(유형 없음)";
+        if ((counts[key] || 0) >= FULL_SET.p5MaxPerRule) return;
+        counts[key] = (counts[key] || 0) + 1;
+        picked.push(question.id);
+      });
+      return picked;
+    }
+
+    function requireCount(list, count, what) {
+      if (list.length < count) {
+        throw fullSetError(what + " 수가 모자라 RC 풀세트를 만들 수 없어요. 필요 " + count + "개, 현재 " + list.length + "개.");
+      }
+      return list.slice(0, count);
+    }
+
+    // 무작위로 풀세트 구성표(id 목록)를 만든다. 저장·이어 풀기도 이 구성표로 같은 세트를 다시 만든다.
+    function planFullSet() {
+      var p5 = pickPart5Balanced();
+      if (p5.length < FULL_SET.p5) {
+        throw fullSetError("Part 5 문제가 모자라 RC 풀세트를 만들 수 없어요. 한 유형 " + FULL_SET.p5MaxPerRule +
+          "문항 이하로 " + FULL_SET.p5 + "문항이 필요한데 " + p5.length + "문항만 뽑혔어요.");
+      }
+      var p6 = requireCount(shuffle(part6Sets.filter(function (set) { return set.questions.length === FULL_SET.p6Questions; })),
+        FULL_SET.p6Sets, "Part 6 " + FULL_SET.p6Questions + "문항 세트");
+      var single = [];
+      FULL_SET.single.forEach(function (group) {
+        var pool = passages.filter(function (passage) {
+          return passagePartCount(passage) === 1 && passage.questions.length === group.questions;
+        });
+        single = single.concat(requireCount(shuffle(pool), group.count, "Part 7 " + group.questions + "문항 단일 지문"));
+      });
+      function multi(spec, name) {
+        var pool = passages.filter(function (passage) {
+          return passagePartCount(passage) === spec.parts && passage.questions.length === spec.questions;
+        });
+        return requireCount(shuffle(pool), spec.count, "Part 7 " + spec.questions + "문항 " + name);
+      }
+      var double = multi(FULL_SET.double, "이중 지문");
+      var triple = multi(FULL_SET.triple, "삼중 지문");
+      function ids(list) { return list.map(function (entry) { return entry.id; }); }
+      return { p5: p5, p6: ids(p6), single: ids(single), double: ids(double), triple: ids(triple) };
+    }
+
+    // 구성표 → 실제 시험 순서의 100문항. 데이터와 맞지 않으면(지문이 없어졌거나 문항 수가 바뀜) 오류를 던진다.
+    function assembleFullSet(plan) {
+      function find(list, id, what) {
+        var found = list.find(function (entry) { return entry.id === id; });
+        if (!found) throw fullSetError(what + " " + id + "을(를) 찾을 수 없어요.");
+        return found;
+      }
+      var items = part5Items(plan.p5.map(function (id) { return find(grammarQuiz, id, "Part 5 문항"); }));
+      items.forEach(function (item) { item.section = "p5"; });
+      plan.p6.forEach(function (id) {
+        part6Items(find(part6Sets, id, "Part 6 세트"), Infinity).forEach(function (item) { item.section = "p6"; items.push(item); });
+      });
+      [["single", "p7s"], ["double", "p7d"], ["triple", "p7t"]].forEach(function (pair) {
+        plan[pair[0]].forEach(function (id) {
+          part7Items(find(passages, id, "Part 7 지문")).forEach(function (item) { item.section = pair[1]; items.push(item); });
+        });
+      });
+      if (items.length !== FULL_SET.total) {
+        throw fullSetError("RC 풀세트가 " + FULL_SET.total + "문항이 아니에요 (" + items.length + "문항).");
+      }
+      items.forEach(function (item, index) {
+        item.number = index + 1;
+        if (item.part === "p6") item.group.numbers[item.blank] = item.number;
+      });
+      return items;
+    }
+
+    // 단일 지문은 실제 시험처럼 짧은 지문(2문항)부터 긴 지문(4문항) 순서로 둔다. planFullSet이 그 순서로 담는다.
+    function buildFullSet() {
+      var plan = planFullSet();
+      var items = assembleFullSet(plan);
+      return { plan: plan, items: items };
+    }
+
+    // ---------- RC 풀세트 저장 (이어서 풀기) ----------
+
+    function readFullSave() {
+      var raw = null;
+      try {
+        raw = localStorage.getItem(FULL_SAVE_KEY);
+      } catch (error) {
+        console.warn("저장된 RC 풀세트를 읽지 못했습니다.", error);
+        return null;
+      }
+      if (raw === null) return null;
+      try {
+        var saved = JSON.parse(raw);
+        var plan = saved && saved.plan;
+        var valid = saved && saved.version === 1 && plan &&
+          ["p5", "p6", "single", "double", "triple"].every(function (key) { return Array.isArray(plan[key]); }) &&
+          Array.isArray(saved.answers) && saved.answers.length === FULL_SET.total &&
+          saved.answers.every(function (answer) { return answer === null || (Number.isInteger(answer) && answer >= 0 && answer < 4); }) &&
+          typeof saved.remainingSec === "number" && isFinite(saved.remainingSec) &&
+          saved.remainingSec > 0 && saved.remainingSec <= MODES.full.seconds &&
+          Number.isInteger(saved.index) && saved.index >= 0 && saved.index < FULL_SET.total &&
+          typeof saved.startedAt === "number";
+        if (!valid) throw new Error("형식이 맞지 않음");
+        saved.items = assembleFullSet(plan); // 데이터가 바뀌어 세트를 다시 만들 수 없어도 깨진 저장으로 본다
+        return saved;
+      } catch (error) {
+        console.warn("저장된 RC 풀세트가 깨져 있어 지우고 새로 시작합니다.", error.message);
+        clearFullSave();
+        return null;
+      }
+    }
+
+    function writeFullSave() {
+      if (!exam || exam.submitted || exam.config.mode !== "full") return;
+      try {
+        localStorage.setItem(FULL_SAVE_KEY, JSON.stringify({
+          version: 1,
+          plan: exam.plan,
+          answers: exam.answers,
+          remainingSec: Math.max(1, Math.round(exam.remainingSec)),
+          index: exam.index,
+          startedAt: exam.startedAt,
+          savedAt: Date.now()
+        }));
+      } catch (error) {
+        console.warn("RC 풀세트 진행 상황을 저장하지 못했습니다.", error);
+      }
+    }
+
+    function clearFullSave() {
+      try {
+        localStorage.removeItem(FULL_SAVE_KEY);
+      } catch (error) {
+        console.warn("저장된 RC 풀세트를 지우지 못했습니다.", error);
+      }
+    }
+
     function partTotals(items) {
       var totals = { p5: 0, p6: 0, p7: 0 };
       items.forEach(function (item) { totals[item.part] += 1; });
@@ -294,6 +465,94 @@
     // 시작 화면에 보여준 문항 구성 그대로 시험을 시작하려고, 시작 화면에서 만든 시험을 보관한다.
     var preparedItems = null;
 
+    function backToModes() {
+      return button("button button-quiet practice-back", "← 모드 선택", renderModeSelect);
+    }
+
+    // 모의고사 탭 첫 화면: 미니 모의고사와 RC 풀세트 중 고른다.
+    function renderModeSelect() {
+      preparedItems = null;
+      var list = element("div", "practice-mode-list");
+      var mini = element("article", "panel practice-mode-card");
+      mini.dataset.mode = "mini";
+      mini.append(
+        element("h3", "", "미니 모의고사"),
+        element("p", "practice-mode-meta", "30~31문항 · " + Math.round(MODES.mini.seconds / 60) + "분"),
+        element("p", "", "Part 5 " + EXAM.p5 + "문항 + Part 6 " + EXAM.p6 + "문항 + Part 7 " + PART7_TARGETS.join("~") + "문항 (지문 2~3개)"),
+        element("p", "", "가볍게 자주 풀기 좋아요."),
+        button("button button-primary", "미니 모의고사 선택", renderMockIntro)
+      );
+      var full = element("article", "panel practice-mode-card");
+      full.dataset.mode = "full";
+      full.append(
+        element("h3", "", "RC 풀세트"),
+        element("p", "practice-mode-meta", FULL_SET.total + "문항 · " + Math.round(MODES.full.seconds / 60) + "분"),
+        element("p", "", "실제 토익 RC와 같은 구성(Part 5·6·7)"),
+        element("p", "", "Part 5 30문항 · Part 6 16문항 · Part 7 54문항 (단일 29 · 이중 10 · 삼중 15)"),
+        element("p", "", "실전 점검용이에요. 중간에 끊겨도 이어서 풀 수 있어요.")
+      );
+      var saved = readFullSave();
+      if (saved) {
+        full.appendChild(element("p", "practice-mode-saved", "진행 중인 세트가 있어요 · 푼 문제 " +
+          saved.answers.filter(function (answer) { return answer !== null; }).length + " / " + FULL_SET.total +
+          " · 남은 시간 " + formatTime(saved.remainingSec)));
+      }
+      full.appendChild(button("button button-primary", "RC 풀세트 선택", renderFullIntro));
+      list.append(mini, full);
+      mockStage.replaceChildren(list);
+    }
+
+    // 풀세트 첫 화면: 저장된 세트가 있으면 이어서 풀기 / 새로 시작을 고른다.
+    function renderFullIntro() {
+      preparedItems = null;
+      var saved = readFullSave();
+      var intro = element("div", "panel practice-intro practice-full-intro");
+      if (saved) {
+        var answered = saved.answers.filter(function (answer) { return answer !== null; }).length;
+        intro.append(
+          element("h3", "", "진행 중인 RC 풀세트가 있어요"),
+          element("p", "", "푼 문제 " + answered + " / " + FULL_SET.total + " · 남은 시간 " + formatTime(saved.remainingSec) +
+            " · 마지막으로 본 문제 " + (saved.index + 1) + "번"),
+          element("p", "", "이어서 풀면 남은 시간부터 타이머가 다시 돌아요. 새로 시작하면 저장된 세트는 지워져요.")
+        );
+        var actions = element("div", "practice-result-actions");
+        actions.append(
+          button("button button-primary", "이어서 풀기", function () { launchExam(saved.items, MODES.full, saved); }),
+          button("button button-quiet", "새로 시작", function () {
+            if (typeof window.confirm === "function" && !window.confirm("저장된 세트를 지우고 새로 시작할까요?")) return;
+            clearFullSave();
+            renderFullIntro();
+          })
+        );
+        intro.appendChild(actions);
+        intro.appendChild(backToModes());
+        mockStage.replaceChildren(intro);
+        return;
+      }
+      var built;
+      try {
+        built = buildFullSet();
+      } catch (error) {
+        console.error("RC 풀세트를 만들 수 없습니다: " + error.message, error);
+        var failure = element("div", "panel practice-intro practice-full-error");
+        failure.setAttribute("role", "alert");
+        failure.append(element("h3", "", "RC 풀세트를 만들 수 없어요"), element("p", "", error.message), backToModes());
+        mockStage.replaceChildren(failure);
+        return;
+      }
+      intro.append(
+        element("h3", "", "RC 풀세트 · " + FULL_SET.total + "문항 · " + Math.round(MODES.full.seconds / 60) + "분"),
+        element("p", "", "Part 5 1~30번 → Part 6 31~46번 → Part 7 단일 47~75번 → 이중 76~85번 → 삼중 86~100번, 실제 시험 순서대로 풀어요."),
+        element("p", "", "중간에는 정답·어휘·해석을 보여주지 않아요. 10분, 5분 남았을 때 알려 드리고, 시간이 끝나면 자동으로 제출돼요."),
+        element("p", "", "답을 고르거나 문제를 옮길 때마다 저장돼요. 중간에 끊겨도 실전 탭에서 이어서 풀 수 있어요.")
+      );
+      intro.appendChild(button("button button-primary", "풀세트 시작", function () {
+        launchExam(built.items, MODES.full, { plan: built.plan });
+      }));
+      intro.appendChild(backToModes());
+      mockStage.replaceChildren(intro);
+    }
+
     function renderMockIntro() {
       preparedItems = buildExam();
       var totals = partTotals(preparedItems);
@@ -305,6 +564,7 @@
         element("p", "", "중간에는 정답을 보여주지 않아요. 다 풀고 제출하면 한 번에 채점하고, 시간이 끝나면 자동으로 제출돼요.")
       );
       intro.appendChild(button("button button-primary", "모의고사 시작", startExam));
+      intro.appendChild(backToModes());
       mockStage.replaceChildren(intro);
     }
 
@@ -315,31 +575,48 @@
         mockStage.replaceChildren(element("div", "placeholder", "출제할 문제가 없어요."));
         return;
       }
+      launchExam(items, MODES.mini, null);
+    }
+
+    // 두 모드 공용 시험 화면. saved가 있으면(풀세트 이어서 풀기) 저장된 답·남은 시간·위치에서 시작한다.
+    // 미니 모의고사는 기존처럼 시계 기준(endsAt)으로, 풀세트는 저장된 남은 시간을 기준으로 초를 깎는다.
+    function launchExam(items, config, saved) {
       stopTimer();
       var now = Date.now();
+      var resumed = !!(saved && saved.answers);
       exam = {
         items: items,
-        answers: items.map(function () { return null; }),
-        index: 0,
-        startedAt: now,
-        endsAt: now + EXAM.seconds * 1000,
+        config: config,
+        plan: saved ? saved.plan : null,
+        answers: resumed ? saved.answers.slice() : items.map(function () { return null; }),
+        index: resumed ? saved.index : 0,
+        startedAt: resumed ? saved.startedAt : now,
+        endsAt: now + config.seconds * 1000,
+        remainingSec: resumed ? saved.remainingSec : config.seconds,
+        lastTick: now,
+        ticksSinceSave: 0,
+        alertTicks: 0,
         timerHandle: null,
         submitted: false
       };
       mockStage.replaceChildren();
       exam.timerBar = element("div", "practice-timer-bar");
       exam.timerBar.setAttribute("role", "timer");
-      exam.timeOutput = element("strong", "practice-time", formatTime(EXAM.seconds));
+      exam.timeOutput = element("strong", "practice-time", formatTime(exam.remainingSec));
       exam.progressOutput = element("span", "practice-progress", "");
       var timeLabel = element("span", "practice-time-label", "남은 시간");
       var timeGroup = element("div", "practice-time-group");
       timeGroup.append(timeLabel, exam.timeOutput);
       exam.timerBar.append(timeGroup, exam.progressOutput);
+      exam.timeAlert = element("p", "practice-time-alert");
+      exam.timeAlert.setAttribute("role", "alert");
+      exam.timeAlert.hidden = true;
+      exam.timerBar.appendChild(exam.timeAlert);
 
       var layout = element("div", "practice-exam-layout");
       exam.questionArea = element("section", "panel practice-question-area");
       exam.questionArea.setAttribute("aria-live", "polite");
-      exam.omr = element("aside", "panel practice-omr");
+      exam.omr = element("aside", "panel practice-omr" + (config.mode === "full" ? " is-full" : ""));
       exam.omr.setAttribute("aria-label", "OMR 답안지");
       layout.append(exam.questionArea, exam.omr);
       mockStage.append(exam.timerBar, layout);
@@ -347,6 +624,8 @@
       renderExamQuestion();
       renderOmr();
       updateTimer();
+      exam.ticksSinceSave = 0; // 10초 저장 주기는 실제 1초 틱부터 센다
+      writeFullSave();
       exam.timerHandle = window.setInterval(updateTimer, 1000);
     }
 
@@ -358,17 +637,55 @@
     }
 
     function remainingSeconds() {
+      if (exam.config.mode === "full") return Math.max(0, Math.ceil(exam.remainingSec));
       return Math.max(0, Math.ceil((exam.endsAt - Date.now()) / 1000));
+    }
+
+    // 풀세트: 지난 틱 이후 흐른 시간만큼 깎되, 화면이 멈췄던 긴 틈(폰 잠김·다른 앱)은 깎지 않는다.
+    function tickFullSet() {
+      var now = Date.now();
+      var delta = (now - exam.lastTick) / 1000;
+      exam.lastTick = now;
+      var hidden = typeof document.hidden === "boolean" && document.hidden;
+      if (!hidden && delta > 0) exam.remainingSec = Math.max(0, exam.remainingSec - Math.min(delta, FULL_MAX_TICK_SEC));
+    }
+
+    function showTimeAlert(text) {
+      exam.timeAlert.textContent = text;
+      exam.timeAlert.hidden = false;
+      exam.timerBar.classList.add("has-alert");
+      exam.alertTicks = 20; // 20초 동안 보여 준다
     }
 
     function updateTimer() {
       if (!exam || exam.submitted) return;
+      var config = exam.config;
+      var before = remainingSeconds();
+      if (config.mode === "full") tickFullSet();
       var remaining = remainingSeconds();
       exam.timeOutput.textContent = formatTime(remaining);
-      exam.timerBar.classList.toggle("is-warning", remaining <= EXAM.warnSec && remaining > EXAM.dangerSec);
-      exam.timerBar.classList.toggle("is-danger", remaining <= EXAM.dangerSec);
+      exam.timerBar.classList.toggle("is-warning", remaining <= config.warnSec && remaining > config.dangerSec);
+      exam.timerBar.classList.toggle("is-danger", remaining <= config.dangerSec);
+      // 10분·5분 남은 순간을 지날 때 한 번씩 알린다 (이어서 풀기로 이미 지난 경계는 다시 알리지 않는다).
+      config.alerts.forEach(function (threshold) {
+        if (before > threshold && remaining <= threshold) showTimeAlert("⏰ 남은 시간 " + Math.round(threshold / 60) + "분");
+      });
+      if (exam.alertTicks > 0) {
+        exam.alertTicks -= 1;
+        if (exam.alertTicks === 0) {
+          exam.timeAlert.hidden = true;
+          exam.timerBar.classList.remove("has-alert");
+        }
+      }
       var answered = exam.answers.filter(function (answer) { return answer !== null; }).length;
       exam.progressOutput.textContent = "푼 문제 " + answered + " / " + exam.items.length;
+      if (config.mode === "full") {
+        exam.ticksSinceSave += 1;
+        if (exam.ticksSinceSave >= FULL_SAVE_EVERY_TICKS) {
+          exam.ticksSinceSave = 0;
+          writeFullSave();
+        }
+      }
       if (remaining <= 0) submitExam(true);
     }
 
@@ -377,6 +694,7 @@
       exam.index = Math.min(exam.items.length - 1, Math.max(0, index));
       renderExamQuestion();
       renderOmr();
+      writeFullSave();
       if (exam.heading && exam.heading.focus) exam.heading.focus({ preventScroll: true });
     }
 
@@ -384,7 +702,7 @@
       var item = exam.items[exam.index];
       var area = exam.questionArea;
       area.replaceChildren();
-      area.appendChild(element("p", "practice-question-meta", PART_LABELS[item.part] + " · " + item.number + " / " + exam.items.length));
+      area.appendChild(element("p", "practice-question-meta", SECTION_LABELS[item.section || item.part] + " · " + item.number + " / " + exam.items.length));
       if (item.part === "p6") area.appendChild(renderPart6Text(item.group.set, item.group.numbers, item.blank));
       if (item.part === "p7") area.appendChild(renderPart7Text(item.group.passage));
       var heading = element("h3", "practice-question-prompt" + (item.part === "p6" ? "" : " en"),
@@ -399,7 +717,9 @@
           exam.answers[exam.index] = choiceIndex;
           renderExamQuestion();
           renderOmr();
-          updateTimer();
+          writeFullSave();
+          var answered = exam.answers.filter(function (answer) { return answer !== null; }).length;
+          exam.progressOutput.textContent = "푼 문제 " + answered + " / " + exam.items.length;
         });
         var selected = exam.answers[exam.index] === choiceIndex;
         if (selected) option.classList.add("is-selected");
@@ -421,11 +741,20 @@
     function renderOmr() {
       var omr = exam.omr;
       omr.replaceChildren(element("h3", "practice-omr-title", "답안지"));
-      ["p5", "p6", "p7"].forEach(function (part) {
-        var entries = exam.items.filter(function (item) { return item.part === part; });
+      // 풀세트는 파트 경계(30/46/75/85)마다 구획을 나누고 번호 범위를 붙인다. 지금 문제가 든 구획은 강조한다.
+      var full = exam.config.mode === "full";
+      var current = exam.items[exam.index];
+      ["p5", "p6", "p7", "p7s", "p7d", "p7t"].forEach(function (part) {
+        var entries = exam.items.filter(function (item) { return (item.section || item.part) === part; });
         if (!entries.length) return;
         var section = element("div", "practice-omr-section");
-        section.appendChild(element("p", "practice-omr-part", PART_LABELS[part]));
+        section.dataset.section = part;
+        var label = SECTION_LABELS[part] + (full ? " · " + entries[0].number + "~" + entries[entries.length - 1].number + "번" : "");
+        if (full && (current.section || current.part) === part) {
+          section.classList.add("is-current-section");
+          label += " (지금)";
+        }
+        section.appendChild(element("p", "practice-omr-part", label));
         var grid = element("div", "practice-omr-grid");
         entries.forEach(function (item) {
           var index = item.number - 1;
@@ -457,7 +786,11 @@
       }
       exam.submitted = true;
       stopTimer();
-      var elapsedSec = Math.min(EXAM.seconds, Math.round((Date.now() - exam.startedAt) / 1000));
+      if (exam.config.mode === "full") clearFullSave();
+      // 풀세트는 실제로 깎인 시간(제한 - 남은 시간)으로, 미니 모의고사는 기존처럼 시작 시각부터 잰다.
+      var elapsedSec = exam.config.mode === "full"
+        ? Math.round(exam.config.seconds - exam.remainingSec)
+        : Math.min(exam.config.seconds, Math.round((Date.now() - exam.startedAt) / 1000));
       var timedOut = auto === true;
       var scores = { p5: 0, p6: 0, p7: 0 };
       var totals = partTotals(exam.items);
@@ -498,7 +831,7 @@
       var card = element("section", "panel practice-result");
       card.setAttribute("aria-live", "polite");
       card.append(
-        element("p", "eyebrow", "MOCK TEST RESULT"),
+        element("p", "eyebrow", exam.config.mode === "full" ? "RC FULL SET RESULT" : "MOCK TEST RESULT"),
         element("h3", "practice-result-score", "총점 " + result.correct + " / " + result.total),
         element("p", "practice-result-rate", "정답률 " + percent(result.correct, result.total) + "%")
       );
@@ -524,7 +857,7 @@
       card.appendChild(parts);
 
       card.appendChild(element("p", "practice-result-time" + (result.timedOut ? " is-timeout" : ""),
-        "소요 시간 " + formatTime(result.elapsedSec) + " / 제한 " + formatTime(EXAM.seconds) + " · " +
+        "소요 시간 " + formatTime(result.elapsedSec) + " / 제한 " + formatTime(exam.config.seconds) + " · " +
         (result.timedOut ? "시간 초과로 자동 제출됐어요." : "제한 시간 안에 제출했어요.")));
 
       var missSection = element("section", "grammar-result-misses");
@@ -532,7 +865,7 @@
       misses.forEach(function (miss) {
         var item = miss.item;
         var entry = element("article", "grammar-result-miss practice-miss");
-        entry.appendChild(element("p", "practice-miss-meta", item.number + "번 · " + PART_LABELS[item.part] +
+        entry.appendChild(element("p", "practice-miss-meta", item.number + "번 · " + SECTION_LABELS[item.section || item.part] +
           (item.part === "p7" ? " · " + item.group.passage.title : "")));
         entry.appendChild(element("p", "practice-miss-question en", questionTitle(item)));
         if (item.part === "p6") entry.appendChild(element("p", "practice-miss-context en", part6Context(item.group.set, item.blank)));
@@ -549,8 +882,9 @@
 
       var actions = element("div", "practice-result-actions");
       actions.append(
-        button("button button-primary", "다시 응시", startExam),
-        button("button button-quiet", "기록 보기", function () { showTab("history"); })
+        button("button button-primary", "다시 응시", exam.config.mode === "full" ? renderFullIntro : startExam),
+        button("button button-quiet", "기록 보기", function () { showTab("history"); }),
+        button("button button-quiet", "모드 선택", renderModeSelect)
       );
       card.appendChild(actions);
       mockStage.replaceChildren(card);
@@ -758,13 +1092,24 @@
     });
 
     window.addEventListener("beforeunload", function (event) {
-      if (exam && !exam.submitted) {
-        event.preventDefault();
-        event.returnValue = "";
+      if (!exam || exam.submitted) return;
+      // 풀세트는 저장해 두고 그냥 닫게 둔다 (다음에 이어서 풀기). 미니 모의고사만 기존처럼 경고한다.
+      if (exam.config.mode === "full") {
+        writeFullSave();
+        return;
       }
+      event.preventDefault();
+      event.returnValue = "";
+    });
+    // 폰 잠김·다른 앱으로 전환·탭 닫기 직전에 남은 시간을 저장한다. 돌아오면 멈춘 동안의 시간은 깎지 않는다.
+    window.addEventListener("pagehide", writeFullSave);
+    document.addEventListener("visibilitychange", function () {
+      if (!exam || exam.submitted || exam.config.mode !== "full") return;
+      if (document.hidden) writeFullSave();
+      else exam.lastTick = Date.now();
     });
 
-    renderMockIntro();
+    renderModeSelect();
     renderHistory();
   });
 }());
