@@ -49,10 +49,12 @@ window.GRAMMAR = [
     id: "g03", order: 3, title: "시제", weight: "빈출",
     oneLine: "문장에 있는 시간 표시어가 시제를 결정한다.",
     table: { headers: ["시제", "형태", "같이 오는 말"], rows: [
+      ["현재", "works", "always, usually, every day"],
       ["과거", "worked", "yesterday, last week, in 2020, ago"],
       ["현재완료", "have worked", "since, recently, already, yet, for(지금까지 이어질 때)"],
       ["미래", "will work", "tomorrow, next week"],
-      ["현재진행", "am working", "now, at the moment"]
+      ["현재진행", "am working", "now, at the moment"],
+      ["과거진행", "was working", "when + 과거 문장"]
     ] },
     examples: [
       { good: "I worked there last year.", bad: "I have worked there last year.", note: "last year가 있으면 현재완료를 쓸 수 없다" },
@@ -92,7 +94,7 @@ window.GRAMMAR = [
       { good: "We recommend taking the earlier train.", bad: "We recommend to take the earlier train.", note: "recommend 뒤에는 to부정사가 바로 못 온다" },
       { good: "She finished writing the report.", bad: "She finished to write the report.", note: "finish 뒤에는 -ing" }
     ],
-    trap: "이 표는 '빈칸 바로 뒤'에 무엇이 오는지를 가리는 기준이다. that절처럼 다른 구조를 따로 갖는 동사도 있다.\n그리고 to 뒤에는 보통 동사원형이지만, look forward to / be used to / contribute to의 to는 전치사라서 -ing가 온다.\nI look forward to meeting you. (to meet ❌)",
+    trap: "이 표는 '빈칸 바로 뒤'에 무엇이 오는지를 가리는 기준이다. that절처럼 다른 구조를 따로 갖는 동사도 있다.\n그리고 to 뒤에는 보통 동사원형이지만, look forward to / be used to / contribute to의 to는 전치사라서 -ing가 온다.\nI look forward to meeting you. (to meet ❌)\nneed처럼 -ing도 가능한 동사가 있다. The car needs washing.",
     toeicPattern: "빈칸 앞 동사만 보면 된다. 해석할 필요가 없다. 위 표의 동사 목록을 외워두면 3초 안에 풀린다."
   },
   {
@@ -109,7 +111,7 @@ window.GRAMMAR = [
       { good: "I waited for two hours.", bad: "I waited during two hours.", note: "for + 숫자 기간" }
     ],
     trap: "by와 until을 구분하라.\nby 5 = 5시 전까지 끝내라 (마감)\nuntil 5 = 5시까지 계속하라 (지속)\n뜻이 완전히 다르다.",
-    toeicPattern: "빈칸 뒤 명사를 보고 고른다. 숫자 기간(two weeks)이면 for, 사건 명사(the meeting)면 during이다."
+    toeicPattern: "빈칸 뒤 명사를 보고 고른다. 숫자 기간(two weeks)이면 for, 사건이나 기간을 가리키는 명사(the meeting, the holidays)면 during이다."
   },
   {
     id: "g07", order: 7, title: "접속사 vs 전치사", weight: "최다 빈출",
@@ -156,8 +158,8 @@ window.GRAMMAR = [
       { good: "This book is mine.", bad: "This book is my.", note: "뒤에 명사가 없으면 소유대명사" },
       { good: "He did it himself.", bad: "He did it him.", note: "주어와 같은 대상 → 재귀대명사" }
     ],
-    trap: "its와 it's를 구분하라.\nits = 그것의 (소유격)\nit's = it is의 줄임\n아포스트로피가 있으면 it is다. 토익이 자주 노린다.",
-    toeicPattern: "빈칸이 동사나 전치사 뒤면 목적격, 명사 앞이면 소유격, 뒤에 명사가 없으면 소유대명사다."
+    trap: "its와 it's를 구분하라.\nits = 그것의 (소유격)\nit's = it is의 줄임\n아포스트로피가 있으면 it is다. 위 ①~④로 풀리지 않고 '~이다'로 해석되면 it's를 의심하라.\nIt's a good idea. (It is a good idea.)",
+    toeicPattern: "순서대로 보면 된다.\n① 빈칸 바로 뒤에 관사(a/the) 없이 명사가 오면 소유격 (my, its, their)\n② 목적어가 주어와 같은 사람이면 재귀대명사 (himself)\n③ 그 밖에 주어 자리면 주격, 동사·전치사의 목적어 자리면 목적격\n④ 명사 없이 '~의 것'을 뜻하면 소유대명사 (mine, theirs)"
   },
   {
     id: "g10", order: 10, title: "비교급 / 최상급", weight: "보통",
@@ -173,7 +175,7 @@ window.GRAMMAR = [
       { good: "as soon as possible", bad: "as soon as possibly", note: "as soon as possible은 통째로 외우는 표현이다. possibly(부사)는 들어가지 않는다." }
     ],
     trap: "비교급을 강조할 때는 very를 쓰지 않는다.\nmuch better / far better / even better (⭕)\nvery better (❌)",
-    toeicPattern: "문장에 than이 보이면 무조건 비교급, the와 함께 of all·in the company가 보이면 최상급이다."
+    toeicPattern: "문장에 than이 보이면 대개 비교급, the와 함께 of all·in the company가 보이면 최상급이다. 단 rather than, other than의 than은 비교급과 관계가 없다."
   },
   {
     id: "g11", order: 11, title: "가정법", weight: "낮음",
@@ -188,7 +190,7 @@ window.GRAMMAR = [
       { good: "If I had time, I would help you.", bad: "If I have time, I would help you.", note: "현재 사실의 반대 → 과거형" },
       { good: "If I had known, I would have told you.", bad: "If I knew, I would have told you.", note: "과거 사실의 반대 → had p.p." }
     ],
-    trap: "if절 안에는 will을 쓰지 않는다. 미래를 말하더라도 현재형을 쓴다.",
+    trap: "조건을 뜻하는 if절 안에는 will을 쓰지 않는다. 미래를 말하더라도 현재형을 쓴다.\n단 '~인지'라는 뜻의 if는 조건이 아니라서 will이 올 수 있다.\nLet me know if he will come. (그가 올지 알려주세요)",
     toeicPattern: "토익에서는 단순 조건(If + 현재, will)이 가장 많이 나온다. if절에 will이 들어간 선택지는 거의 오답이다."
   },
   {
@@ -196,7 +198,7 @@ window.GRAMMAR = [
     oneLine: "영어 문장에는 주어와 동사가 반드시 있어야 하고, 꾸밈말은 정해진 자리에 간다.",
     table: { headers: ["항목", "규칙"], rows: [
       ["기본 어순", "주어 + 동사 + 목적어"],
-      ["빈도부사", "be동사 뒤 / 일반동사 앞 (always, often, never)"],
+      ["빈도부사", "be동사 뒤 / 일반동사 앞 / 조동사 뒤 (always, often, never)"],
       ["간접의문문", "의문사 + 주어 + 동사 (의문문 어순이 아님)"]
     ] },
     examples: [
