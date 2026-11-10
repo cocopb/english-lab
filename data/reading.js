@@ -715,6 +715,130 @@ window.PASSAGES = [
       { q: "What is NOT included in the $9.50 price?", choices: ["A soup", "A sandwich", "A drink", "A dessert"], answer: 3, explanation: "디저트는 2달러를 더 내야 한다." },
       { q: "What is stated about the coupon?", choices: ["It is valid on weekends", "It may not be used on holidays", "It must be ordered online", "It expires in one week"], answer: 1, explanation: "Not valid on holidays. 월~목 한정이라 주말도 안 된다." }
     ]
+  },
+  {
+    id: "rp24", type: "이중 지문", title: "기록물 관리자 구인과 지원", strategyId: "r06", recommendedSec: 200,
+    parts: [
+      {
+        label: "지문 1 — 구인 공고",
+        header: ["Thornbury Public Library — Part-Time Archivist"],
+        sentences: [
+          { en: "Thornbury Public Library seeks a part-time archivist to organize our local history collection.", ko: "손버리 공립 도서관은 지역 역사 자료를 정리할 시간제 기록물 관리자를 구합니다." },
+          { en: "Responsibilities include cataloguing documents, scanning photographs, and assisting researchers.", ko: "업무에는 문서 목록 작성, 사진 스캔, 연구자 지원이 포함됩니다." },
+          { en: "Candidates must have a degree in library science and at least two years of archival experience.", ko: "지원자는 문헌정보학 학위와 최소 2년의 기록물 관리 경력이 있어야 합니다." },
+          { en: "The position is twenty hours per week, with occasional Saturday shifts.", ko: "근무는 주 20시간이며, 간혹 토요일 근무가 있습니다." },
+          { en: "Send a résumé and a brief cover letter to hr@thornburylibrary.org by March 20.", ko: "3월 20일까지 이력서와 간단한 자기소개서를 hr@thornburylibrary.org로 보내주세요." }
+        ]
+      },
+      {
+        label: "지문 2 — 지원 이메일",
+        header: ["From: Nadia Bello", "To: hr@thornburylibrary.org", "Subject: Part-Time Archivist"],
+        sentences: [
+          { en: "Dear Hiring Committee,", ko: "채용 담당자님께," },
+          { en: "I am writing to apply for the archivist position advertised on your website.", ko: "귀 기관 웹사이트에 공고된 기록물 관리자 직책에 지원하고자 메일 드립니다." },
+          { en: "I hold a master's degree in library science and have spent four years organizing photograph collections at the Dunmore Historical Society.", ko: "저는 문헌정보학 석사 학위가 있고, 던모어 역사협회에서 4년간 사진 자료를 정리했습니다." },
+          { en: "I am available on weekends as well as weekdays.", ko: "저는 평일뿐 아니라 주말에도 근무할 수 있습니다." },
+          { en: "My résumé is attached, and I would be glad to provide references if needed.", ko: "이력서를 첨부했으며, 필요하시면 추천인도 제공해 드릴 수 있습니다." },
+          { en: "Sincerely, Nadia Bello", ko: "나디아 벨로 드림" }
+        ]
+      }
+    ],
+    vocab: [
+      { w: "archivist", m: "기록물 관리자" },
+      { w: "catalogue", m: "목록을 작성하다" },
+      { w: "candidate", m: "지원자, 후보자" },
+      { w: "shift", m: "교대 근무" },
+      { w: "cover letter", m: "자기소개서" }
+    ],
+    questions: [
+      { q: "What is one responsibility of the position?", choices: ["Repairing damaged books", "Scanning photographs", "Leading school tours", "Managing a budget"], answer: 1, explanation: "Responsibilities include cataloguing documents, scanning photographs, and assisting researchers." },
+      { q: "How did Ms. Bello learn about the job?", choices: ["From a newspaper", "From the library's website", "From a former colleague", "At a job fair"], answer: 1, explanation: "the archivist position advertised on your website." },
+      { q: "What is suggested about Ms. Bello's availability?", choices: ["She can work the occasional Saturday shifts", "She can work only on weekday mornings", "She needs a full-time schedule", "She is unavailable until April"], answer: 0, explanation: "연계 문제다. 공고에 간혹 토요일 근무가 있다고 했고, 이메일에서 주말에도 가능하다고 했다." },
+      { q: "What does Ms. Bello offer to provide?", choices: ["A photograph sample", "References", "A writing sample", "A university transcript"], answer: 1, explanation: "I would be glad to provide references if needed." }
+    ]
+  },
+  {
+    id: "rp25", type: "이중 지문", title: "호텔 예약 변경", strategyId: "r06", recommendedSec: 195,
+    parts: [
+      {
+        label: "지문 1 — 예약 확인서",
+        header: ["MERIDIAN HARBOUR HOTEL — Reservation Confirmation"],
+        sentences: [
+          { en: "Guest: Dr. Felix Osei | Confirmation number: MH-20714", ko: "투숙객: 펠릭스 오세이 박사 | 예약 번호: MH-20714" },
+          { en: "Check-in: October 8 | Check-out: October 11", ko: "입실: 10월 8일 | 퇴실: 10월 11일" },
+          { en: "Room type: Deluxe king, harbour view — $180 per night", ko: "객실 종류: 디럭스 킹, 항구 전망 — 1박 180달러" },
+          { en: "Breakfast is included in the room rate. Parking is $15 per day.", ko: "조식은 객실 요금에 포함됩니다. 주차는 1일 15달러입니다." },
+          { en: "Changes made more than 48 hours before check-in are free of charge.", ko: "입실 48시간 이전에 하는 변경은 수수료가 없습니다." }
+        ]
+      },
+      {
+        label: "지문 2 — 변경 요청 이메일",
+        header: ["From: Felix Osei", "To: reservations@meridianharbour.com", "Subject: Confirmation MH-20714"],
+        sentences: [
+          { en: "Hello,", ko: "안녕하세요," },
+          { en: "My conference now ends a day later than planned, so I would like to stay until October 12.", ko: "학회가 예정보다 하루 늦게 끝나게 되어 10월 12일까지 머물고 싶습니다." },
+          { en: "I am sending this message on October 3, so I believe no change fee applies.", ko: "이 메일을 10월 3일에 보내므로 변경 수수료는 적용되지 않을 것으로 생각합니다." },
+          { en: "I will also need parking for the whole stay.", ko: "투숙 기간 전체에 주차도 필요합니다." },
+          { en: "Could you send me an updated confirmation?", ko: "갱신된 확인서를 보내주시겠어요?" },
+          { en: "Thank you, Felix Osei", ko: "감사합니다. 펠릭스 오세이" }
+        ]
+      }
+    ],
+    vocab: [
+      { w: "confirmation number", m: "예약 번호" },
+      { w: "per night", m: "1박당" },
+      { w: "free of charge", m: "무료로" },
+      { w: "apply", m: "(요금·규정이) 적용되다" },
+      { w: "updated", m: "갱신된" }
+    ],
+    questions: [
+      { q: "What is included in the room rate?", choices: ["Breakfast", "Parking", "An airport transfer", "Laundry service"], answer: 0, explanation: "Breakfast is included in the room rate. 주차는 1일 15달러로 따로 받는다." },
+      { q: "What change does Dr. Osei request?", choices: ["A different room type", "A later check-out date", "An earlier check-in", "A lower nightly rate"], answer: 1, explanation: "I would like to stay until October 12." },
+      { q: "Why will Dr. Osei most likely not be charged a change fee?", choices: ["He is a frequent guest", "He requested the change more than 48 hours in advance", "He has already paid in full", "He is attending a conference"], answer: 1, explanation: "연계 문제다. 확인서에 입실 48시간 이전 변경은 무료라고 했고, 입실은 10월 8일인데 메일은 10월 3일에 보냈다." },
+      { q: "How many nights will Dr. Osei now stay at the hotel?", choices: ["Three", "Four", "Five", "Six"], answer: 1, explanation: "10월 8일 입실, 12일 퇴실이므로 4박이다. 원래 예약은 3박이었다." }
+    ]
+  },
+  {
+    id: "rp26", type: "이중 지문", title: "마케팅 세미나와 참가 후기", strategyId: "r06", recommendedSec: 200,
+    parts: [
+      {
+        label: "지문 1 — 세미나 안내",
+        header: ["Small Business Marketing Seminar", "Saturday, February 21 | Cedarville Community Center, Hall C"],
+        sentences: [
+          { en: "9:00 A.M. Registration and coffee", ko: "오전 9시 접수 및 커피" },
+          { en: "9:30 A.M. Session 1 — Finding Your Customers (Dr. Amina Farouk)", ko: "오전 9시 30분 1강 — 고객 찾기 (아미나 파루크 박사)" },
+          { en: "11:00 A.M. Session 2 — Low-Cost Online Advertising (Jae-won Park)", ko: "오전 11시 2강 — 저비용 온라인 광고 (박재원)" },
+          { en: "12:30 P.M. Lunch (provided)", ko: "오후 12시 30분 점심 (제공)" },
+          { en: "1:30 P.M. Session 3 — Measuring Results (Dr. Amina Farouk)", ko: "오후 1시 30분 3강 — 성과 측정 (아미나 파루크 박사)" },
+          { en: "Seats are limited to sixty participants. Register at cedarvillecc.org.", ko: "좌석은 60명으로 제한됩니다. cedarvillecc.org에서 신청하세요." }
+        ]
+      },
+      {
+        label: "지문 2 — 참가자 설문",
+        header: ["Participant Feedback Form", "Name: Olga Marchetti | Business: Marchetti Flowers"],
+        sentences: [
+          { en: "Which session was most useful to you?", ko: "어느 강의가 가장 유익했습니까?" },
+          { en: "The second one. I had never used online advertising before, and the speaker showed examples I could copy the same week.", ko: "두 번째 강의입니다. 온라인 광고를 한 번도 써 본 적이 없었는데, 강사가 그 주에 바로 따라 할 수 있는 예시를 보여 주었습니다." },
+          { en: "Do you have any suggestions?", ko: "제안하실 점이 있습니까?" },
+          { en: "Please allow more time for questions. Also, the hall was very cold in the morning.", ko: "질문 시간을 더 주세요. 그리고 오전에 강당이 너무 추웠습니다." },
+          { en: "Would you attend another seminar?", ko: "다른 세미나에도 참석하시겠습니까?" },
+          { en: "Yes, definitely.", ko: "네, 꼭 하겠습니다." }
+        ]
+      }
+    ],
+    vocab: [
+      { w: "registration", m: "접수, 등록" },
+      { w: "participant", m: "참가자" },
+      { w: "be limited to", m: "~로 제한되다" },
+      { w: "provided", m: "제공되는" },
+      { w: "suggestion", m: "제안" }
+    ],
+    questions: [
+      { q: "What is indicated about the seminar?", choices: ["It lasts two days", "The number of seats is limited", "It is free to attend", "It is held every month"], answer: 1, explanation: "Seats are limited to sixty participants. 참가비 이야기는 없다." },
+      { q: "Who led two of the sessions?", choices: ["Dr. Amina Farouk", "Jae-won Park", "Olga Marchetti", "The community center director"], answer: 0, explanation: "1강과 3강 모두 파루크 박사가 진행한다." },
+      { q: "Which session did Ms. Marchetti find most useful?", choices: ["Finding Your Customers", "Low-Cost Online Advertising", "Measuring Results", "The lunch discussion"], answer: 1, explanation: "연계 문제다. 설문에서 두 번째 강의라고 했고, 일정표에서 2강은 저비용 온라인 광고다." },
+      { q: "What does Ms. Marchetti suggest?", choices: ["Serving a hot lunch", "Allowing more time for questions", "Moving the seminar to a weekday", "Reducing the number of sessions"], answer: 1, explanation: "Please allow more time for questions." }
+    ]
   }
 ];
 
@@ -738,7 +862,7 @@ window.PART6 = [
       { w: "operating hours", m: "운영 시간" },
       { w: "feedback", m: "의견, 피드백" },
       { w: "early shift", m: "아침 일찍 시작하는 근무" },
-      { w: "transition", m: "전환 기간" },
+      { w: "transition", m: "전환, 이행" },
       { w: "facilities manager", m: "시설 관리자" }
     ],
     questions: [
@@ -796,7 +920,7 @@ window.PART6 = [
       { w: "mover", m: "이삿짐 업체 직원" },
       { w: "pack", m: "(짐을) 싸다, 포장하다" },
       { w: "clear your desk", m: "책상을 비우다" },
-      { w: "label", m: "이름표를 붙이다" },
+      { w: "label", m: "라벨을 붙이다, 표시하다" },
       { w: "operations team", m: "운영팀" }
     ],
     questions: [
@@ -855,7 +979,7 @@ window.PART6 = [
       { w: "without interruption", m: "중단 없이" },
       { w: "renew", m: "(구독을) 갱신하다" },
       { w: "option", m: "방법, 선택지" },
-      { w: "readership", m: "꾸준히 읽어 주심, 애독" }
+      { w: "readership", m: "독자층, 독자 수" }
     ],
     questions: [
       { n: 1, choices: ["expire", "expires", "expired", "expiring"], answer: 1, explanation: "주어 Your subscription이 단수이고 예정된 일을 말하므로 현재형 expires.", ruleId: "g02" },
@@ -970,7 +1094,8 @@ window.PART6 = [
       { w: "undergo", m: "겪다, 받다" },
       { w: "scheduled maintenance", m: "정기 점검" },
       { w: "be affected", m: "영향을 받다" },
-      { w: "playback", m: "재생" }
+      { w: "playback", m: "재생" },
+      { w: "assignment", m: "과제" }
     ],
     questions: [
       { n: 1, choices: ["outcome", "outlook", "outage", "output"], answer: 2, explanation: "outage는 서비스가 중단된 시간을 말한다. 철자가 비슷한 단어들과 구분해야 한다.", ruleId: null },
@@ -997,7 +1122,9 @@ window.PART6 = [
     vocab: [
       { w: "logistics coordinator", m: "물류 담당자" },
       { w: "be impressed by", m: "~에 좋은 인상을 받다" },
-      { w: "written exercise", m: "필기 과제" }
+      { w: "written exercise", m: "필기 과제" },
+      { w: "position", m: "직책" },
+      { w: "reserve", m: "일정을 잡아 두다" }
     ],
     questions: [
       { n: 1, choices: ["invite", "inviting", "invited", "invitation"], answer: 0, explanation: "would like to 뒤에는 동사원형이 온다.", ruleId: "g05" },

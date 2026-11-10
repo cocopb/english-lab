@@ -36,8 +36,10 @@ var failures = {
   missingTranslation: [],
   duplicateIds: [],
   invalidPart6: [],
-  invalidPart6Vocab: []
+  invalidPart6Vocab: [],
+  part6VocabRevealsChoice: []
 };
+var notes = { part6VocabInSentenceChoice: [] };
 
 var strategyIds = Object.create(null);
 var grammarIds = Object.create(null);
@@ -106,6 +108,32 @@ function checkPart6Vocab(set, label) {
     if (!forms.some(function (form) { return text.indexOf(form) !== -1; })) {
       failures.invalidPart6Vocab.push({ id: label, word: w, reason: "본문/header에 없는 단어" });
     }
+    checkVocabAgainstChoices(set, label, w);
+  });
+}
+
+// 어휘 목록은 처음부터 보이므로 빈칸 정답·선택지 단어가 들어가면 답을 알려 주게 된다.
+// 단어형 선택지(문법·어휘 문항)와 겹치면 실패. 문장 삽입 선택지는 어휘가 이미 본문에 있어 힌트가 되지 않으므로 참고로만 출력한다.
+// 대소문자·어형(-s/-es/-ed/-ing, 끝 e, 겹자음) 무시, 관사·전치사·be동사 같은 기능어는 비교하지 않는다.
+var STOP_WORDS = Object.create(null);
+"a an the to in on at by for of with and or but nor be am is are was were been being more most your our their its this that one".split(" ")
+  .forEach(function (word) { STOP_WORDS[word] = true; });
+function stemWord(token) {
+  return token.replace(/(ies|ied)$/, "y").replace(/(ing|ed|es|s)$/, "").replace(/([^aeiouy])\1$/, "$1").replace(/e$/, "");
+}
+function contentStems(text) {
+  return (String(text).toLowerCase().match(/[a-z]+/g) || []).filter(function (token) { return !STOP_WORDS[token]; }).map(stemWord);
+}
+function checkVocabAgainstChoices(set, label, w) {
+  var wordStems = contentStems(w);
+  (set.questions || []).forEach(function (question) {
+    (question.choices || []).forEach(function (choice, cIndex) {
+      var choiceStems = contentStems(choice);
+      if (!wordStems.some(function (stem) { return choiceStems.indexOf(stem) !== -1; })) return;
+      var entry = { id: label, word: w, question: question.n, choice: choice, isAnswer: cIndex === question.answer };
+      if (/[.!?]$/.test(String(choice).trim())) notes.part6VocabInSentenceChoice.push(entry);
+      else failures.part6VocabRevealsChoice.push(entry);
+    });
   });
 }
 
@@ -137,6 +165,11 @@ Object.keys(failures).forEach(function (key) {
   console.log("\n" + key + " (" + failures[key].length + ")");
   if (!failures[key].length) console.log("  없음");
   failures[key].forEach(function (failure) { console.log("  " + JSON.stringify(failure)); });
+});
+
+Object.keys(notes).forEach(function (key) {
+  console.log("\n[참고] " + key + " (" + notes[key].length + ") — 실패 아님");
+  notes[key].forEach(function (note) { console.log("  " + JSON.stringify(note)); });
 });
 
 // ---------- 2. 렌더링 검사 (가짜 DOM) ----------

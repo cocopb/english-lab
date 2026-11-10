@@ -644,6 +644,8 @@
         if (!passage) return partStage.replaceChildren(element("div", "placeholder", "출제할 지문이 없어요."));
         var card = element("article", "panel practice-drill-passage");
         card.appendChild(renderPart7Text(passage));
+        var passageVocab = renderVocab(passage.vocab);
+        if (passageVocab) card.appendChild(passageVocab);
         list.appendChild(card);
         passage.questions.forEach(function (question, index) {
           list.appendChild(practiceQuestionCard(index + 1, question.q, true, {

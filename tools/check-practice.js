@@ -141,7 +141,7 @@ check('초기 타이머 25:00', timerBar.querySelector('.practice-time').textCon
 check('중간에 정답 표시 없음', !area.querySelector('.correct') && !area.querySelector('.answer-right'));
 
 const expected = { p5: 0, p6: 0, p7: 0 }; let answered = 0; let ruleAnswered = 0; const seenP5 = new Set(); const p7Groups = new Map(); const p6Groups = new Map();
-let firstChoiceWasCorrect = 0;
+let firstChoiceWasCorrect = 0; const vocabInExam = [];
 for (let i = 0; i < TOTAL; i++) {
   mockStage.querySelector('.practice-omr').querySelectorAll('.practice-omr-cell')[i].click();
   const a = mockStage.querySelector('.practice-question-area');
@@ -149,6 +149,7 @@ for (let i = 0; i < TOTAL; i++) {
   if (!meta.includes(' ' + (i + 1) + ' / ' + TOTAL)) check('OMR ' + (i + 1) + '번 이동', false, meta);
   const cur = mockStage.querySelector('.practice-omr').querySelectorAll('.practice-omr-cell.is-current');
   if (cur.length !== 1 || !cur[0].textContent.startsWith(String(i + 1))) check('현재 칸 표시 ' + (i + 1), false);
+  if (mockStage.querySelectorAll('.reading-vocab-section').length) vocabInExam.push(i + 1);
   const { part, q, set } = currentAnswer(a);
   if (!q) { check('문항 원본 찾기 ' + (i + 1), false, meta); continue; }
   if (part === 'p5') seenP5.add(q.question);
@@ -162,6 +163,8 @@ for (let i = 0; i < TOTAL; i++) {
   if (choice === q.answer) expected[part]++;
 }
 check('Part 5 중복 없음', seenP5.size === 15);
+// 모의고사는 실전이라 Part 6·7 모두 어휘 목록을 보여 주지 않는다.
+check('모의고사 화면에 어휘 목록 없음 (전 ' + TOTAL + '문항)', vocabInExam.length === 0, vocabInExam.length ? vocabInExam.join(',') + '번' : '');
 // Part 6도 같은 방식: 마지막 세트 앞까지는 4문항 전부, 합계 8문항.
 const p6Ids = [...p6Groups.keys()];
 const p6Used = p6Ids.map(id => p6Groups.get(id));
@@ -313,6 +316,27 @@ for (let tries = 0; tries < 300 && p6Checked.size < W.PART6.length; tries++) {
   check(set.id + ' ' + set.title, problems.length === 0, problems.length ? problems.join(', ') : '빈칸 ' + blanks.length + '개, 어휘 ' + (set.vocab ? set.vocab.length + '개' : '없음') + ', 4문항 정답 처리, 해석 토글');
 }
 check('Part 6 전 세트 확인', p6Checked.size === W.PART6.length, p6Checked.size + ' / ' + W.PART6.length);
+
+// --- Part 7 전 지문: 파트별 연습에서 독해 탭과 같은 어휘 목록이 채점 전부터 보여야 한다 ---
+console.log('\n[Part 7 전 지문 어휘 표시]');
+const p7Checked = new Set(); const p7VocabProblems = [];
+for (let tries = 0; tries < 2000 && p7Checked.size < W.PASSAGES.length; tries++) {
+  partSelect.value = 'p7'; partForm.dispatch('submit');
+  const title = partStage.querySelector('.reading-passage-type').textContent;
+  const passage = W.PASSAGES.find(p => p.type + ' · ' + p.title === title);
+  if (!passage) { check('Part 7 지문 찾기', false, title); break; }
+  if (p7Checked.has(passage.id)) continue;
+  p7Checked.add(passage.id);
+  const sections = partStage.querySelectorAll('.reading-vocab-section');
+  const items = sections.length === 1 ? sections[0].querySelector('.reading-vocab-list').children : [];
+  const vocab = passage.vocab || [];
+  const ok = vocab.length ? sections.length === 1 && !sections[0].hidden && items.length === vocab.length &&
+    vocab.every((v, i) => items[i].querySelector('.reading-vocab-word').textContent === v.w &&
+      items[i].querySelector('.reading-vocab-meaning').textContent === v.m) : sections.length === 0;
+  if (!ok) p7VocabProblems.push(passage.id + '(' + items.length + '/' + vocab.length + ')');
+}
+check('Part 7 전 지문 어휘 표시', p7Checked.size === W.PASSAGES.length && !p7VocabProblems.length,
+  p7Checked.size + ' / ' + W.PASSAGES.length + (p7VocabProblems.length ? ' 문제: ' + p7VocabProblems.join(', ') : ''));
 
 console.log(failures ? `\n실패 ${failures}건` : '\n전부 통과');
 process.exit(failures ? 1 : 0);
