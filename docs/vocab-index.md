@@ -5,8 +5,8 @@
 
 ## 요약
 
-- 전체 단어 수: **580개** (토익 510 / 생존 영어 70)
-- Day 수: **17개** (Day 1 ~ Day 17)
+- 전체 단어 수: **610개** (토익 540 / 생존 영어 70)
+- Day 수: **18개** (Day 1 ~ Day 18)
 - 상황 수: **3개** (식당·카페, 공항·입국, 길찾기·교통)
 - 표제어 중 오답 전용 표현 `(✕)`: 0개
 
@@ -14,9 +14,9 @@
 
 | 품사 | 표기 | 개수 |
 | --- | --- | ---: |
-| 명사 | `n.` | 323 |
-| 동사 | `v.` | 115 |
-| 형용사 | `adj.` | 53 |
+| 명사 | `n.` | 350 |
+| 동사 | `v.` | 117 |
+| 형용사 | `adj.` | 54 |
 | 표현 | `표현` | 43 |
 | 명사/동사 | `n./v.` | 24 |
 | 동사/명사 | `v./n.` | 12 |
@@ -47,6 +47,7 @@
 | 15 | 안전·보건·복지 | 30 |
 | 16 | 환경·에너지 | 30 |
 | 17 | 부동산·임대·시설 관리 | 30 |
+| 18 | 행사·전시·공연 | 30 |
 
 ### Day 1 — 사무 기본 빈출 (일정·주문·제출·환불) (30개)
 
@@ -115,6 +116,10 @@ sustainable, emission, renewable, conservation, pollution, landfill, carbon foot
 ### Day 17 — 부동산·임대·시설 관리 (30개)
 
 lease, tenant, landlord, rent, premises, property, real estate, floor plan, furnished, sublease, vacate, commercial space, move-in date, janitorial service, plumbing, leak, repair, elevator, corridor, parking space, remodel, air conditioning, heating, basement, rooftop, restroom, ceiling, wiring, soundproof, walk-through
+
+### Day 18 — 행사·전시·공연 (30개)
+
+exhibition, exhibit, booth, trade show, keynote speech, panel discussion, admission, registration desk, name badge, RSVP, invitation, host, organizer, catering, refreshments, banquet, ceremony, award, auditorium, seating capacity, front row, program, lineup, early-bird rate, on-site registration, exhibitor, stage, intermission, sold out, turnout
 
 ## 상황별 (생존 영어)
 
