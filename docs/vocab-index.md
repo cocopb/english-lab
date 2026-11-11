@@ -5,8 +5,8 @@
 
 ## 요약
 
-- 전체 단어 수: **550개** (토익 480 / 생존 영어 70)
-- Day 수: **16개** (Day 1 ~ Day 16)
+- 전체 단어 수: **580개** (토익 510 / 생존 영어 70)
+- Day 수: **17개** (Day 1 ~ Day 17)
 - 상황 수: **3개** (식당·카페, 공항·입국, 길찾기·교통)
 - 표제어 중 오답 전용 표현 `(✕)`: 0개
 
@@ -14,9 +14,9 @@
 
 | 품사 | 표기 | 개수 |
 | --- | --- | ---: |
-| 명사 | `n.` | 299 |
-| 동사 | `v.` | 111 |
-| 형용사 | `adj.` | 51 |
+| 명사 | `n.` | 323 |
+| 동사 | `v.` | 115 |
+| 형용사 | `adj.` | 53 |
 | 표현 | `표현` | 43 |
 | 명사/동사 | `n./v.` | 24 |
 | 동사/명사 | `v./n.` | 12 |
@@ -46,6 +46,7 @@
 | 14 | 고객 서비스 | 30 |
 | 15 | 안전·보건·복지 | 30 |
 | 16 | 환경·에너지 | 30 |
+| 17 | 부동산·임대·시설 관리 | 30 |
 
 ### Day 1 — 사무 기본 빈출 (일정·주문·제출·환불) (30개)
 
@@ -110,6 +111,10 @@ safety, hazard, precaution, emergency, evacuate, injury, first aid, protective, 
 ### Day 16 — 환경·에너지 (30개)
 
 sustainable, emission, renewable, conservation, pollution, landfill, carbon footprint, solar, insulation, disposal, conserve, consumption, utility, eco-friendly, biodegradable, offset, standardize, retrofit, greenhouse gas, wind power, grid, shortage, meter, surcharge, reduce, incentive, subsidy, appliance, certification, preserve
+
+### Day 17 — 부동산·임대·시설 관리 (30개)
+
+lease, tenant, landlord, rent, premises, property, real estate, floor plan, furnished, sublease, vacate, commercial space, move-in date, janitorial service, plumbing, leak, repair, elevator, corridor, parking space, remodel, air conditioning, heating, basement, rooftop, restroom, ceiling, wiring, soundproof, walk-through
 
 ## 상황별 (생존 영어)
 
