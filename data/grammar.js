@@ -212,6 +212,52 @@ window.GRAMMAR = [
     ],
     trap: "한국어는 주어나 동사를 생략해도 말이 되지만 영어는 안 된다.\n말하기 전에 '내 문장에 동사가 있나'를 확인하는 습관을 들여라.",
     toeicPattern: "간접의문문 어순은 Part 5와 6에 꾸준히 나온다. 의문사 뒤가 '주어 + 동사' 순인 선택지를 고르면 된다."
+  },
+  {
+    id: "g13", order: 13, title: "조동사 + 동사원형", weight: "빈출",
+    oneLine: "조동사 뒤에는 어떤 경우에도 동사원형이 온다. 주어가 3인칭 단수여도 -s를 붙이지 않는다.",
+    table: { headers: ["조동사", "뜻", "예"], rows: [
+      ["can", "~할 수 있다 / ~해도 된다", "You can park in the west lot."],
+      ["will", "~할 것이다", "The shipment will arrive on Friday."],
+      ["should", "~해야 한다 (권고)", "You should confirm the booking."],
+      ["must", "~해야 한다 (의무) / ~임이 틀림없다", "All visitors must sign in."],
+      ["may / might", "~해도 된다 / ~일 수도 있다", "Prices may change without notice."],
+      ["would", "~하겠다 (정중), ~할 것이다", "Would you send me the file?"],
+      ["could", "~해 주시겠어요, ~할 수 있었다", "Could you confirm the meeting time?"]
+    ] },
+    examples: [
+      { good: "The technician will inspect the machine tomorrow.", bad: "The technician will inspects the machine tomorrow.", note: "will 뒤 → 동사원형 (inspects ❌ / inspecting ❌)" },
+      { good: "All employees must be present at the briefing.", bad: "All employees must are present at the briefing.", note: "be동사도 원형 be를 쓴다" },
+      { good: "The report should have been submitted last week.", bad: "The report should be submitted last week.", note: "조동사 + have p.p. = 과거에 했어야 했는데 안 했다" },
+      { good: "We will review the contract and send you a copy.", bad: "We will review the contract and sends you a copy.", note: "and 뒤도 will을 함께 쓰는 병렬이라 원형 send" }
+    ],
+    trap: "조동사 두 개를 연달아 쓸 수 없다.\nwill can ❌ → will be able to ⭕ / will must ❌ → will have to ⭕\nhave to는 조동사가 아니라 일반동사라 주어에 따라 변한다 (He has to go). 그래서 조동사 뒤에도 올 수 있고, must 대신 has to를 쓸 수도 있다.\n수동태도 원형이 먼저 온다. will be delivered ⭕ / will is delivered ❌\n여기서 말하는 조동사는 will·can·should·must 같은 말이다. 완료의 have, 진행·수동의 be 뒤에는 원형이 아니라 p.p.나 -ing가 온다. (has been sent, is undergoing)",
+    toeicPattern: "Part 5: 빈칸 앞에 will·should·must·may가 보이면 선택지에서 원형을 고른다. 선택지가 inspect / inspects / inspecting / to inspect처럼 한 동사의 네 형태로 나온다.\nPart 6: will A and ____ B 형태의 병렬. 앞의 조동사를 찾아 원형으로 맞춘다."
+  },
+  {
+    id: "g14", order: 14, title: "등위 · 상관 접속사", weight: "빈출",
+    oneLine: "and·but·or·nor는 문법이 아니라 뜻으로 고른다. 짝으로 쓰는 상관 접속사는 짝을 외워야 한다.",
+    table: { headers: ["접속사", "뜻", "신호 / 짝 규칙"], rows: [
+      ["and", "그리고", "앞뒤가 같은 방향"],
+      ["but", "그러나", "앞뒤가 뒤집힌다"],
+      ["or", "또는, 그러지 않으면", "선택 또는 경고"],
+      ["nor", "~도 아니다", "앞이 부정문일 때"],
+      ["so", "그래서", "앞이 원인"],
+      ["both A and B", "A와 B 둘 다", "짝 — 동사는 복수"],
+      ["either A or B", "A나 B 둘 중 하나", "짝 — 동사는 B에 맞춘다"],
+      ["neither A nor B", "A도 B도 아니다", "짝 — 동사는 B에 맞춘다"],
+      ["not only A but also B", "A뿐 아니라 B도", "짝 — 동사는 B에 맞춘다"],
+      ["between A and B", "A와 B 사이", "짝 — between은 전치사지만 같이 외운다"]
+    ] },
+    examples: [
+      { good: "Submit the form by Friday, or your application will not be considered.", bad: "Submit the form by Friday, and your application will not be considered.", note: "명령문, or ~ = 그러지 않으면 (경고의 or)" },
+      { good: "You may pay by credit card or in cash.", bad: "You may pay by credit card nor in cash.", note: "둘 중 하나를 고르는 선택 → or. nor는 앞이 부정문일 때" },
+      { good: "Both the manager and the assistant attended.", bad: "Both the manager or the assistant attended.", note: "both는 and와 짝" },
+      { good: "She speaks neither French nor German.", bad: "She speaks neither French or German.", note: "neither는 nor와 짝" },
+      { good: "Not only the price but also the delivery time has improved.", bad: "Not only the price and also the delivery time has improved.", note: "not only는 but also와 짝. 동사는 B(the delivery time)에 맞춘다" }
+    ],
+    trap: "짝을 섞으면 안 된다. either ... nor ❌ / neither ... or ❌\n수 일치가 짝마다 다르다.\nboth A and B는 복수 동사 (Both the printer and the scanner have been repaired.)\neither A or B / neither A nor B / not only A but also B는 B에 맞춘다 (Neither the supervisor nor the technicians are available.)\n단 nor 없이 쓰는 neither는 g02 규칙대로 단수다. Neither of the proposals was approved. / Neither proposal was approved.\nbetween A and B의 and를 or로 바꿀 수 없다.",
+    toeicPattern: "빈칸 앞에 either·neither·not only·both가 보이면 짝을 찾는 문제다. 뜻을 읽지 않고 짝만 보고 고를 수 있으니 이것부터 확인한다.\n짝 신호가 없고 선택지가 and / but / or / nor 네 개면 문법 문제가 아니라 뜻 문제다. 앞뒤 절이 같은 방향인지 뒤집히는지를 먼저 본다."
   }
 ];
 
@@ -336,5 +382,25 @@ window.GRAMMAR_QUIZ = [
   { id: "q117", ruleId: "g12", question: "____ you please confirm the date?", choices: ["Could", "Must", "Should", "Shall"], answer: 0, explanation: "정중한 요청은 Could you ~? 로 시작한다.", difficulty: "easy" },
   { id: "q118", ruleId: "g12", question: "She ____ to the conference every year.", choices: ["goes often", "often goes", "going often", "often going"], answer: 1, explanation: "빈도부사 often은 일반동사 앞에 온다.", difficulty: "medium" },
   { id: "q119", ruleId: "g12", question: "Please let me know ____ the report is ready.", choices: ["does when", "when", "when does", "that when"], answer: 1, explanation: "뒤에 주어+동사가 이어지므로 접속사 when 하나면 된다.", difficulty: "medium" },
-  { id: "q120", ruleId: "g02", question: "____ there any questions about the agenda?", choices: ["Is", "Are", "Do", "Does"], answer: 1, explanation: "There 구문은 뒤의 명사가 주어다. questions가 복수이므로 Are.", difficulty: "medium" }
+  { id: "q120", ruleId: "g02", question: "____ there any questions about the agenda?", choices: ["Is", "Are", "Do", "Does"], answer: 1, explanation: "There 구문은 뒤의 명사가 주어다. questions가 복수이므로 Are.", difficulty: "medium" },
+  { id: "q121", ruleId: "g13", question: "All visitors must ____ in at the front desk.", choices: ["signs", "signing", "sign", "signed"], answer: 2, explanation: "조동사 must 뒤에는 동사원형이 온다. sign in = 이름을 적고 들어가다.", difficulty: "easy" },
+  { id: "q122", ruleId: "g13", question: "The new policy will ____ effect on July 1.", choices: ["take", "takes", "taking", "taken"], answer: 0, explanation: "조동사 will 뒤에는 동사원형이 온다. take effect = 시행되다. 주어가 단수여도 takes는 안 된다.", difficulty: "easy" },
+  { id: "q123", ruleId: "g13", question: "You should ____ your reservation before arriving.", choices: ["confirms", "confirming", "confirmed", "confirm"], answer: 3, explanation: "조동사 should 뒤에는 동사원형 confirm이 온다.", difficulty: "easy" },
+  { id: "q124", ruleId: "g13", question: "Employees may ____ the west lot free of charge.", choices: ["uses", "use", "using", "to use"], answer: 1, explanation: "조동사 may(~해도 된다) 뒤에는 동사원형이 온다. 조동사 뒤에는 to를 붙이지 않으므로 to use도 안 된다.", difficulty: "medium" },
+  { id: "q125", ruleId: "g13", question: "The report should ____ submitted last week, but it is still missing.", choices: ["be", "being", "have been", "been"], answer: 2, explanation: "last week에 했어야 했는데 하지 않은 일이므로 should have p.p.다. 보고서는 제출되는 쪽이라 should have been submitted. should be submitted는 last week와 맞지 않는다.", difficulty: "hard" },
+  { id: "q126", ruleId: "g13", question: "Our team will review the proposal and ____ comments by Monday.", choices: ["send", "sends", "sending", "sent"], answer: 0, explanation: "will review ... and (will) send. and 뒤의 동사도 will을 함께 쓰는 병렬이라 동사원형이 온다.", difficulty: "medium" },
+  { id: "q127", ruleId: "g13", question: "Visitors cannot ____ photographs inside the gallery.", choices: ["takes", "taking", "took", "take"], answer: 3, explanation: "cannot(can + not) 뒤에도 동사원형이 온다.", difficulty: "easy" },
+  { id: "q128", ruleId: "g13", question: "The revised schedule will ____ to all staff by e-mail.", choices: ["sent", "be sent", "is sent", "being sent"], answer: 1, explanation: "일정표는 보내지는 쪽이라 수동태다. 조동사 뒤에서는 be동사도 원형이므로 will be sent. will is sent처럼 조동사 뒤에 is를 쓸 수 없다.", difficulty: "medium" },
+  { id: "q129", ruleId: "g13", question: "Applicants must ____ able to work weekends.", choices: ["be", "are", "being", "been"], answer: 0, explanation: "조동사 뒤에는 be동사도 원형 be를 쓴다. must are는 틀린 형태다.", difficulty: "easy" },
+  { id: "q130", ruleId: "g13", question: "We will not ____ to finish the audit by Friday.", choices: ["can", "able", "be able", "possible"], answer: 2, explanation: "will can처럼 조동사 두 개를 연달아 쓸 수 없으므로 be able to를 쓴다. able·possible은 형용사라 be 없이 will 뒤에 올 수 없다.", difficulty: "hard" },
+  { id: "q131", ruleId: "g14", question: "Submit the form by Friday, ____ your application will not be considered.", choices: ["and", "or", "but", "nor"], answer: 1, explanation: "'명령문, or ~'는 '~해라, 그러지 않으면 ~'이라는 경고다. 뒤가 불이익이므로 or.", difficulty: "medium" },
+  { id: "q132", ruleId: "g14", question: "You may pay by credit card ____ in cash.", choices: ["nor", "but", "so", "or"], answer: 3, explanation: "카드와 현금 중 하나를 고르는 선택이므로 or. nor는 앞이 부정문일 때 쓴다.", difficulty: "easy" },
+  { id: "q133", ruleId: "g14", question: "____ the manager and the assistant attended the meeting.", choices: ["Both", "Either", "Neither", "Not only"], answer: 0, explanation: "뒤에 A and B가 있으므로 짝은 Both. either는 or, neither는 nor, not only는 but also와 짝이다.", difficulty: "easy" },
+  { id: "q134", ruleId: "g14", question: "She speaks neither French ____ German.", choices: ["or", "and", "nor", "but"], answer: 2, explanation: "neither의 짝은 nor다. neither ... or는 틀린 조합이다.", difficulty: "easy" },
+  { id: "q135", ruleId: "g14", question: "Not only the price ____ also the delivery time has improved.", choices: ["and", "but", "or", "nor"], answer: 1, explanation: "not only A but also B. also 앞에는 but이 온다.", difficulty: "medium" },
+  { id: "q136", ruleId: "g14", question: "Neither the supervisor nor the technicians ____ available this afternoon.", choices: ["is", "was", "has been", "are"], answer: 3, explanation: "neither A nor B는 동사를 B에 맞춘다. B인 the technicians가 복수이므로 are. 나머지는 모두 단수형이다.", difficulty: "hard" },
+  { id: "q137", ruleId: "g14", question: "Please print the form, sign it, ____ return it to reception.", choices: ["and", "but", "or", "nor"], answer: 0, explanation: "인쇄 → 서명 → 제출로 이어지는 같은 방향의 동작이므로 and. 셋 이상을 나열하면 마지막 항목 앞에 and를 쓴다.", difficulty: "medium" },
+  { id: "q138", ruleId: "g14", question: "Both the Seoul office ____ the Busan office will close early.", choices: ["or", "nor", "and", "but"], answer: 2, explanation: "both의 짝은 and다.", difficulty: "easy" },
+  { id: "q139", ruleId: "g14", question: "Both the printer and the scanner ____ been repaired.", choices: ["has", "have", "was", "is"], answer: 1, explanation: "both A and B는 항상 복수 취급한다. 그래서 have been repaired.", difficulty: "medium" },
+  { id: "q140", ruleId: "g14", question: "Either the morning session ____ the afternoon session is fine with me.", choices: ["nor", "and", "but", "or"], answer: 3, explanation: "either의 짝은 or다. 동사 is는 B(the afternoon session, 단수)에 맞춘 것이다.", difficulty: "medium" }
 ];
