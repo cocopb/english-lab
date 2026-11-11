@@ -5,8 +5,8 @@
 
 ## 요약
 
-- 전체 단어 수: **610개** (토익 540 / 생존 영어 70)
-- Day 수: **18개** (Day 1 ~ Day 18)
+- 전체 단어 수: **640개** (토익 570 / 생존 영어 70)
+- Day 수: **19개** (Day 1 ~ Day 19)
 - 상황 수: **3개** (식당·카페, 공항·입국, 길찾기·교통)
 - 표제어 중 오답 전용 표현 `(✕)`: 0개
 
@@ -14,9 +14,9 @@
 
 | 품사 | 표기 | 개수 |
 | --- | --- | ---: |
-| 명사 | `n.` | 350 |
-| 동사 | `v.` | 117 |
-| 형용사 | `adj.` | 54 |
+| 명사 | `n.` | 370 |
+| 동사 | `v.` | 123 |
+| 형용사 | `adj.` | 58 |
 | 표현 | `표현` | 43 |
 | 명사/동사 | `n./v.` | 24 |
 | 동사/명사 | `v./n.` | 12 |
@@ -48,6 +48,7 @@
 | 16 | 환경·에너지 | 30 |
 | 17 | 부동산·임대·시설 관리 | 30 |
 | 18 | 행사·전시·공연 | 30 |
+| 19 | 물류·배송 | 30 |
 
 ### Day 1 — 사무 기본 빈출 (일정·주문·제출·환불) (30개)
 
@@ -120,6 +121,10 @@ lease, tenant, landlord, rent, premises, property, real estate, floor plan, furn
 ### Day 18 — 행사·전시·공연 (30개)
 
 exhibition, exhibit, booth, trade show, keynote speech, panel discussion, admission, registration desk, name badge, RSVP, invitation, host, organizer, catering, refreshments, banquet, ceremony, award, auditorium, seating capacity, front row, program, lineup, early-bird rate, on-site registration, exhibitor, stage, intermission, sold out, turnout
+
+### Day 19 — 물류·배송 (30개)
+
+freight, cargo, courier, tracking number, packing slip, pallet, forklift, loading dock, customs clearance, in transit, tariff, distribution center, logistics, fulfill, backorder, out of stock, restock, expedite, carrier, recipient, perishable, fragile, bulk order, lead time, unload, consolidate, dispatch, proof of delivery, return label, freight forwarder
 
 ## 상황별 (생존 영어)
 
