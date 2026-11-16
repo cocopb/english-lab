@@ -5,8 +5,8 @@
 
 ## 요약
 
-- 전체 단어 수: **760개** (토익 690 / 생존 영어 70)
-- Day 수: **23개** (Day 1 ~ Day 23)
+- 전체 단어 수: **790개** (토익 720 / 생존 영어 70)
+- Day 수: **24개** (Day 1 ~ Day 24)
 - 상황 수: **3개** (식당·카페, 공항·입국, 길찾기·교통)
 - 표제어 중 오답 전용 표현 `(✕)`: 0개
 
@@ -14,9 +14,9 @@
 
 | 품사 | 표기 | 개수 |
 | --- | --- | ---: |
-| 명사 | `n.` | 423 |
+| 명사 | `n.` | 450 |
 | 동사 | `v.` | 157 |
-| 형용사 | `adj.` | 79 |
+| 형용사 | `adj.` | 82 |
 | 표현 | `표현` | 43 |
 | 명사/동사 | `n./v.` | 24 |
 | 부사 | `adv.` | 13 |
@@ -54,6 +54,7 @@
 | 21 | Part 5 빈출 동사 | 30 |
 | 22 | 교육·연수 | 30 |
 | 23 | Part 5 빈출 형용사·부사 | 30 |
+| 24 | 소매·매장 | 30 |
 
 ### Day 1 — 사무 기본 빈출 (일정·주문·제출·환불) (30개)
 
@@ -146,6 +147,10 @@ enroll, tuition, curriculum, syllabus, lecture, instructor, transcript, prerequi
 ### Day 23 — Part 5 빈출 형용사·부사 (30개)
 
 feasible, comprehensive, subsequent, preliminary, substantial, adjacent, apparent, beneficial, diverse, exceptional, inevitable, meticulous, obsolete, reliable, redundant, stringent, versatile, imminent, accordingly, consequently, nevertheless, otherwise, regardless of, eventually, increasingly, relatively, approximately, primarily, barely, mutually
+
+### Day 24 — 소매·매장 (30개)
+
+merchandise, aisle, checkout counter, cashier, shelf, display, clearance sale, markdown, price tag, barcode, membership card, gift card, store credit, in stock, fitting room, shoplifting, security tag, floor staff, storefront, flagship store, franchise, chain, sample, foot traffic, peak hours, seasonal, markup, return policy, price match, storewide
 
 ## 상황별 (생존 영어)
 
