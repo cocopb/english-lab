@@ -5,8 +5,8 @@
 
 ## 요약
 
-- 전체 단어 수: **700개** (토익 630 / 생존 영어 70)
-- Day 수: **21개** (Day 1 ~ Day 21)
+- 전체 단어 수: **730개** (토익 660 / 생존 영어 70)
+- Day 수: **22개** (Day 1 ~ Day 22)
 - 상황 수: **3개** (식당·카페, 공항·입국, 길찾기·교통)
 - 표제어 중 오답 전용 표현 `(✕)`: 0개
 
@@ -14,9 +14,9 @@
 
 | 품사 | 표기 | 개수 |
 | --- | --- | ---: |
-| 명사 | `n.` | 396 |
-| 동사 | `v.` | 155 |
-| 형용사 | `adj.` | 60 |
+| 명사 | `n.` | 423 |
+| 동사 | `v.` | 157 |
+| 형용사 | `adj.` | 61 |
 | 표현 | `표현` | 43 |
 | 명사/동사 | `n./v.` | 24 |
 | 동사/명사 | `v./n.` | 12 |
@@ -51,6 +51,7 @@
 | 19 | 물류·배송 | 30 |
 | 20 | 의료·병원 | 30 |
 | 21 | Part 5 빈출 동사 | 30 |
+| 22 | 교육·연수 | 30 |
 
 ### Day 1 — 사무 기본 빈출 (일정·주문·제출·환불) (30개)
 
@@ -135,6 +136,10 @@ physician, clinic, ward, outpatient, inpatient, admit, discharge, referral, pres
 ### Day 21 — Part 5 빈출 동사 (30개)
 
 accompany, adapt, adhere to, allocate, attribute, commence, compile, compensate, comprise, convene, cope with, devise, diminish, emphasize, encounter, exempt, facilitate, fluctuate, hinder, incur, integrate, jeopardize, justify, minimize, modify, monitor, oversee, precede, prohibit, pursue
+
+### Day 22 — 교육·연수 (30개)
+
+enroll, tuition, curriculum, syllabus, lecture, instructor, transcript, prerequisite, semester, scholarship, tutor, seminar, diploma, degree, major, graduate, undergraduate, faculty, credit, textbook, grade, apprenticeship, refresher course, hands-on, proficiency, facilitator, module, e-learning, continuing education, trainee
 
 ## 상황별 (생존 영어)
 
