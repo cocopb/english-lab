@@ -5,8 +5,8 @@
 
 ## 요약
 
-- 전체 단어 수: **640개** (토익 570 / 생존 영어 70)
-- Day 수: **19개** (Day 1 ~ Day 19)
+- 전체 단어 수: **670개** (토익 600 / 생존 영어 70)
+- Day 수: **20개** (Day 1 ~ Day 20)
 - 상황 수: **3개** (식당·카페, 공항·입국, 길찾기·교통)
 - 표제어 중 오답 전용 표현 `(✕)`: 0개
 
@@ -14,9 +14,9 @@
 
 | 품사 | 표기 | 개수 |
 | --- | --- | ---: |
-| 명사 | `n.` | 370 |
-| 동사 | `v.` | 123 |
-| 형용사 | `adj.` | 58 |
+| 명사 | `n.` | 396 |
+| 동사 | `v.` | 125 |
+| 형용사 | `adj.` | 60 |
 | 표현 | `표현` | 43 |
 | 명사/동사 | `n./v.` | 24 |
 | 동사/명사 | `v./n.` | 12 |
@@ -49,6 +49,7 @@
 | 17 | 부동산·임대·시설 관리 | 30 |
 | 18 | 행사·전시·공연 | 30 |
 | 19 | 물류·배송 | 30 |
+| 20 | 의료·병원 | 30 |
 
 ### Day 1 — 사무 기본 빈출 (일정·주문·제출·환불) (30개)
 
@@ -125,6 +126,10 @@ exhibition, exhibit, booth, trade show, keynote speech, panel discussion, admiss
 ### Day 19 — 물류·배송 (30개)
 
 freight, cargo, courier, tracking number, packing slip, pallet, forklift, loading dock, customs clearance, in transit, tariff, distribution center, logistics, fulfill, backorder, out of stock, restock, expedite, carrier, recipient, perishable, fragile, bulk order, lead time, unload, consolidate, dispatch, proof of delivery, return label, freight forwarder
+
+### Day 20 — 의료·병원 (30개)
+
+physician, clinic, ward, outpatient, inpatient, admit, discharge, referral, prescription, pharmacy, dosage, symptom, diagnosis, treatment, surgery, medical record, waiting room, receptionist, specialist, vaccination, blood pressure, physical therapy, medical certificate, co-payment, on call, consent form, medication, side effect, chronic, ambulance
 
 ## 상황별 (생존 영어)
 
