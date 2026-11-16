@@ -5,28 +5,30 @@
 
 ## 요약
 
-- 노트: **14개**
-- Part 5 문항: **160개**
+- 노트: **16개**
+- Part 5 문항: **180개**
 - Part 6: 세트 10개, 빈칸 40개 (문법 25 / sentence 10 / vocab 5)
 
 ## 노트
 
 | id | 제목 | 빈출도 | oneLine | Part 5 | Part 6 |
 | --- | --- | --- | --- | ---: | ---: |
-| g01 | 품사 자리 | 최다 빈출 | 빈칸 앞뒤를 보면 품사가 정해진다. 품사로 좁힌 뒤, 남으면 그때 뜻을 본다. | 11 | 6 |
-| g02 | 수 일치 | 빈출 | 동사의 모양은 주어 하나로 정해진다. 주어를 먼저 찾아라. | 11 | 1 |
+| g01 | 품사 자리 | 최다 빈출 | 빈칸 앞뒤를 보면 품사가 정해진다. 품사로 좁힌 뒤, 남으면 그때 뜻을 본다. | 11 | 5 |
+| g02 | 수 일치 | 빈출 | 동사의 모양은 주어 하나로 정해진다. 주어를 먼저 찾아라. | 7 | 1 |
 | g03 | 시제 | 빈출 | 문장에 있는 시간 표시어가 시제를 결정한다. | 9 | 0 |
-| g04 | 능동 / 수동 | 빈출 | 주어가 하는 쪽이면 능동, 당하는 쪽이면 수동(be + p.p.)이다. | 10 | 3 |
+| g04 | 능동 / 수동 | 빈출 | 주어가 하는 쪽이면 능동, 당하는 쪽이면 수동(be + p.p.)이다. | 10 | 2 |
 | g05 | to부정사 vs 동명사 | 빈출 | 동사 뒤에 어떤 형태가 오는지는 앞의 동사가 정한다. 전치사 뒤에 동사가 오면 -ing다. | 20 | 1 |
 | g06 | 전치사 | 빈출 | in(넓음) → on(면·날짜) → at(점·시각) 순으로 범위가 좁아진다. | 10 | 4 |
 | g07 | 접속사 vs 전치사 | 최다 빈출 | 뒤에 '주어+동사'가 오면 접속사, 명사 덩어리만 오면 전치사다. | 10 | 1 |
 | g08 | 관계대명사 | 보통 | 앞의 명사가 사람이면 who, 사물이면 which, 둘 다 되면 that이다. | 10 | 1 |
 | g09 | 대명사 | 보통 | 자리에 따라 모양이 바뀐다. 주어 자리인지 목적어 자리인지 봐라. | 10 | 0 |
-| g10 | 비교급 / 최상급 | 보통 | 둘을 비교하면 -er than, 셋 이상 중 하나면 the -est다. as ~ as 사이에는 원급이 온다. | 20 | 1 |
+| g10 | 비교급 / 최상급 | 빈출 | 둘을 비교하면 -er than, 셋 이상 중 하나면 the -est다. as ~ as 사이에는 원급이 온다. | 20 | 1 |
 | g11 | 가정법 | 낮음 | if절의 시제가 핵심이다. 실제로 가능한 조건이면 현재형, 실제와 반대면 한 칸 뒤로 민다. | 10 | 0 |
 | g12 | 어순 · 기타 | 보통 | 영어 문장에는 주어와 동사가 반드시 있어야 하고, 꾸밈말은 정해진 자리에 간다. | 9 | 1 |
 | g13 | 조동사 + 동사원형 | 빈출 | 조동사 뒤에는 어떤 경우에도 동사원형이 온다. 주어가 3인칭 단수여도 -s를 붙이지 않는다. | 10 | 5 |
 | g14 | 등위 · 상관 접속사 | 빈출 | and·but·or·nor는 문법이 아니라 뜻으로 고른다. 짝으로 쓰는 상관 접속사는 짝을 외워야 한다. | 10 | 1 |
+| g15 | 분사 | 빈출 | 명사를 꾸밀 때 그 명사가 하는 쪽이면 -ing, 당하는 쪽이면 p.p.다. 문장 앞에 콤마로 붙는 분사구문도 같은 기준이다. | 10 | 2 |
+| g16 | 수량 표현 | 빈출 | 셀 수 있는 명사에 붙는지, 셀 수 없는 명사에 붙는지로 거의 다 갈린다. | 14 | 0 |
 
 ## trap (충돌 확인용)
 
@@ -46,15 +48,17 @@
 - **g12 어순 · 기타**: 한국어는 주어나 동사를 생략해도 말이 되지만 영어는 안 된다. / 말하기 전에 '내 문장에 동사가 있나'를 확인하는 습관을 들여라.
 - **g13 조동사 + 동사원형**: 조동사 두 개를 연달아 쓸 수 없다. / will can ❌ → will be able to ⭕ / will must ❌ → will have to ⭕ / have to는 조동사가 아니라 일반동사라 주어에 따라 변한다 (He has to go). 그래서 조동사 뒤에도 올 수 있고, must 대신 has to를 쓸 수도 있다. / 수동태도 원형이 먼저 온다. will be delivered ⭕ / will is delivered ❌ / 여기서 말하는 조동사는 will·can·should·must 같은 말이다. 완료의 have, 진행·수동의 be 뒤에는 원형이 아니라 p.p.나 -ing가 온다. (has been sent, is undergoing)
 - **g14 등위 · 상관 접속사**: 짝을 섞으면 안 된다. either ... nor ❌ / neither ... or ❌ / 수 일치가 짝마다 다르다. / both A and B는 복수 동사 (Both the printer and the scanner have been repaired.) / either A or B / neither A nor B / not only A but also B는 B에 맞춘다 (Neither the supervisor nor the technicians are available.) / 단 nor 없이 쓰는 neither는 g02 규칙대로 단수다. Neither of the proposals was approved. / Neither proposal was approved. / between A and B의 and를 or로 바꿀 수 없다.
+- **g15 분사**: 명사 앞의 -ing와 p.p.는 그 명사가 하는 쪽인지 당하는 쪽인지로 가른다. 뜻이 아니라 관계로 판단한다. 빈칸 뒤에 목적어가 있으면 -ing라는 g04의 기준도 그대로 통한다. / 단 waiting room, training session, accounting department처럼 '~하는 용도'를 뜻하는 -ing는 분사가 아니라 명사 앞에 붙은 동명사다. 이때는 관계로 가르지 않는다. / 감정을 나타내는 동사(interest, excite, surprise, disappoint, satisfy, impress)는 사물·일에 -ing, 사람에 p.p.를 쓴다. an exciting offer / excited customers / 분사구문의 숨은 주어는 주절의 주어와 같다. 다르면 분사구문을 쓸 수 없다. / 단 given, including, following, regarding은 전치사처럼 굳어서 이 규칙을 따르지 않는다. Given the delay, we rescheduled. (지연을 고려해) / 명사 뒤에서 꾸밀 때는 관계대명사 + be동사가 생략된 것이다. the report (which was) submitted last week
+- **g16 수량 표현**: a few / a little(약간 있다)과 few / little(거의 없다)은 뜻이 반대다. a가 붙으면 긍정이다. / each, every, another 뒤에는 단수 명사가 오고 동사도 단수다. each of the + 복수 명사도 동사는 단수다. Each of the applicants is required ... (are ❌) / a number of + 복수 명사는 복수 동사, the number of + 복수 명사는 단수 동사다. the가 붙으면 '수 그 자체'라서 단수다. / either, neither 뒤에 바로 명사나 of가 오면 이 유형이고 단수 취급한다. Neither of the proposals was approved. 뒤에 or / nor가 이어지는 either A or B, neither A nor B는 상관 접속사(g14)라서 동사를 B에 맞춘다. / 셀 수 있는 명사의 비교는 fewer, 셀 수 없는 명사는 less다. fewer complaints / less paperwork. 단 less + 형용사(less expensive)는 비교급(g10)이다.
 
 ## Part 6 빈칸 ruleId 분포
 
 | ruleId | 제목 | 빈칸 수 |
 | --- | --- | ---: |
-| g01 | 품사 자리 | 6 |
+| g01 | 품사 자리 | 5 |
 | g02 | 수 일치 | 1 |
 | g03 | 시제 | 0 |
-| g04 | 능동 / 수동 | 3 |
+| g04 | 능동 / 수동 | 2 |
 | g05 | to부정사 vs 동명사 | 1 |
 | g06 | 전치사 | 4 |
 | g07 | 접속사 vs 전치사 | 1 |
@@ -65,9 +69,11 @@
 | g12 | 어순 · 기타 | 1 |
 | g13 | 조동사 + 동사원형 | 5 |
 | g14 | 등위 · 상관 접속사 | 1 |
+| g15 | 분사 | 2 |
+| g16 | 수량 표현 | 0 |
 | (없음) | 어휘·문장 삽입 | 15 |
 
-## Part 5 문항 (160개)
+## Part 5 문항 (180개)
 
 | id | ruleId | 질문 첫 10단어 | 정답 |
 | --- | --- | --- | --- |
@@ -82,15 +88,15 @@
 | q009 | g01 | The ____ of the project depends on teamwork. | success |
 | q010 | g01 | He responded ____ to the customer's complaint. | promptly |
 | q011 | g02 | The reports on the sales figures ____ ready for review. | are |
-| q012 | g02 | Each of the applicants ____ required to submit a resume. | is |
+| q012 | g16 | Each of the applicants ____ required to submit a resume. | is |
 | q013 | g02 | The information in these files ____ confidential. | is |
 | q014 | g02 | The manager of the two departments ____ attending the meeting. | is |
 | q015 | g02 | All employees ____ to complete the survey by Friday. | need |
-| q016 | g02 | Neither of the proposals ____ approved. | was |
-| q017 | g02 | The number of applicants ____ increased this year. | has |
+| q016 | g16 | Neither of the proposals ____ approved. | was |
+| q017 | g16 | The number of applicants ____ increased this year. | has |
 | q018 | g02 | There ____ several issues with the shipment. | are |
 | q019 | g02 | Our new equipment ____ just arrived. | has |
-| q020 | g02 | Every document ____ to be signed. | needs |
+| q020 | g16 | Every document ____ to be signed. | needs |
 | q021 | g03 | The shipment ____ last Monday. | arrived |
 | q022 | g03 | She ____ for this company since 2019. | has worked |
 | q023 | g03 | We ____ the new system next month. | will launch |
@@ -231,3 +237,23 @@
 | q158 | g10 | Of all our products, our ____ selling item is the … | best |
 | q159 | g10 | The report was ____ more detailed than we expected. | far |
 | q160 | g10 | Attendance at this year's fair was the ____ in a … | highest |
+| q161 | g15 | Please review the ____ document before the meeting. | attached |
+| q162 | g15 | The ____ demand for electric vehicles surprised analysts. | growing |
+| q163 | g15 | All applications ____ after Friday will not be considered. | received |
+| q164 | g15 | The employees ____ the workshop should meet in Room 2. | attending |
+| q165 | g15 | ____ by heavy rain, the outdoor event was moved indoors. | Affected |
+| q166 | g15 | The presentation was ____, so several people left early. | boring |
+| q167 | g15 | Customers were ____ with the quick repair. | satisfied |
+| q168 | g15 | The report ____ last week contains the final figures. | submitted |
+| q169 | g15 | ____ the budget cuts, the department postponed hiring. | Given |
+| q170 | g15 | We expect ____ results from the new campaign. | encouraging |
+| q171 | g16 | ____ applicants submitted their résumés before the deadline. | Many |
+| q172 | g16 | There is not ____ time left before the deadline. | much |
+| q173 | g16 | ____ employee must complete the safety training. | Each |
+| q174 | g16 | Only ____ of the rooms are still available, so book … | a few |
+| q175 | g16 | A number of packages ____ damaged during shipping. | were |
+| q176 | g16 | ____ number of employees have asked about the new parking … | A |
+| q177 | g16 | We received ____ information about the delay. | little |
+| q178 | g16 | ____ of the two proposals meets our budget. | Neither |
+| q179 | g16 | ____ of the new machines has its own manual. | Each |
+| q180 | g16 | There were ____ complaints last month than this month. | fewer |

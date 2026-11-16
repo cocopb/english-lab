@@ -170,7 +170,7 @@ window.GRAMMAR = [
     toeicPattern: "순서대로 보면 된다.\n① 빈칸 바로 뒤에 관사(a/the) 없이 명사가 오면 소유격 (my, its, their)\n② 목적어가 주어와 같은 사람이면 재귀대명사 (himself)\n③ 그 밖에 주어 자리면 주격, 동사·전치사의 목적어 자리면 목적격 (be동사 뒤는 목적어가 아니다)\n④ 명사 없이 '~의 것'을 뜻하면 소유대명사 (mine, theirs)"
   },
   {
-    id: "g10", order: 10, title: "비교급 / 최상급", weight: "보통",
+    id: "g10", order: 10, title: "비교급 / 최상급", weight: "빈출",
     oneLine: "둘을 비교하면 -er than, 셋 이상 중 하나면 the -est다. as ~ as 사이에는 원급이 온다.",
     table: { headers: ["구분", "형태 · 예"], rows: [
       ["짧은 단어", "tall → taller → the tallest"],
@@ -270,6 +270,49 @@ window.GRAMMAR = [
     ],
     trap: "짝을 섞으면 안 된다. either ... nor ❌ / neither ... or ❌\n수 일치가 짝마다 다르다.\nboth A and B는 복수 동사 (Both the printer and the scanner have been repaired.)\neither A or B / neither A nor B / not only A but also B는 B에 맞춘다 (Neither the supervisor nor the technicians are available.)\n단 nor 없이 쓰는 neither는 g02 규칙대로 단수다. Neither of the proposals was approved. / Neither proposal was approved.\nbetween A and B의 and를 or로 바꿀 수 없다.",
     toeicPattern: "빈칸 앞에 either·neither·not only·both가 보이면 짝을 찾는 문제다. 뜻을 읽지 않고 짝만 보고 고를 수 있으니 이것부터 확인한다.\n짝 신호가 없고 선택지가 and / but / or / nor 네 개면 문법 문제가 아니라 뜻 문제다. 앞뒤 절이 같은 방향인지 뒤집히는지를 먼저 본다."
+  },
+  {
+    id: "g15", order: 15, title: "분사", weight: "빈출",
+    oneLine: "명사를 꾸밀 때 그 명사가 하는 쪽이면 -ing, 당하는 쪽이면 p.p.다. 문장 앞에 콤마로 붙는 분사구문도 같은 기준이다.",
+    table: { headers: ["유형","형태","예"], rows: [
+      ["명사 앞 (능동)","-ing + 명사","the rising cost (비용이 오른다)"],
+      ["명사 앞 (수동)","p.p. + 명사","the attached file (파일이 첨부된다)"],
+      ["명사 뒤","명사 + 분사 + 딸린 말","the form signed by the manager"],
+      ["분사구문 (능동)","-ing ~, 주절","Having reviewed the data, we revised the plan."],
+      ["분사구문 (수동)","p.p. ~, 주절","Delayed by snow, the shipment arrived on Monday."],
+      ["감정 동사","사물·일엔 -ing, 사람엔 p.p.","an exciting offer / the excited customers"],
+      ["전치사처럼 굳은 분사","given, including, following, regarding + 명사","Given the delay, we rescheduled the launch."]
+    ] },
+    examples: [
+      { good: "Please see the attached schedule.", bad: "Please see the attaching schedule.", note: "일정은 첨부되는 쪽 → p.p." },
+      { good: "The rising cost of fuel cut into our margins.", bad: "The risen cost of fuel cut into our margins.", note: "비용은 오르는 쪽 → -ing" },
+      { good: "The employees attending the workshop will meet in Room 2.", bad: "The employees attended the workshop will meet in Room 2.", note: "직원이 참석하는 쪽이고 뒤에 목적어(the workshop)가 있다 → -ing" },
+      { good: "All applications received after Friday will not be considered.", bad: "All applications receiving after Friday will not be considered.", note: "지원서는 접수되는 쪽 → p.p. (which are) received가 줄어든 형태" },
+      { good: "Having completed the training, she started work on Monday.", bad: "Having completed the training, the work started on Monday.", note: "분사구문의 숨은 주어는 주절의 주어(she)와 같아야 한다" },
+      { good: "The results were disappointing, and the team was disappointed.", bad: "The results were disappointed, and the team was disappointing.", note: "사물·일은 -ing, 사람은 p.p." }
+    ],
+    trap: "명사 앞의 -ing와 p.p.는 그 명사가 하는 쪽인지 당하는 쪽인지로 가른다. 뜻이 아니라 관계로 판단한다. 빈칸 뒤에 목적어가 있으면 -ing라는 g04의 기준도 그대로 통한다.\n단 waiting room, training session, accounting department처럼 '~하는 용도'를 뜻하는 -ing는 분사가 아니라 명사 앞에 붙은 동명사다. 이때는 관계로 가르지 않는다.\n감정을 나타내는 동사(interest, excite, surprise, disappoint, satisfy, impress)는 사물·일에 -ing, 사람에 p.p.를 쓴다. an exciting offer / excited customers\n분사구문의 숨은 주어는 주절의 주어와 같다. 다르면 분사구문을 쓸 수 없다.\n단 given, including, following, regarding은 전치사처럼 굳어서 이 규칙을 따르지 않는다. Given the delay, we rescheduled. (지연을 고려해)\n명사 뒤에서 꾸밀 때는 관계대명사 + be동사가 생략된 것이다. the report (which was) submitted last week",
+    toeicPattern: "관사와 명사 사이는 형용사 자리다(g01). 선택지에 -ing와 p.p.가 함께 있으면 꾸밈 받는 명사가 하는 쪽인지 당하는 쪽인지로 고른다. 선택지는 attach / attached / attaching / attachment처럼 나온다.\n문장 맨 앞이 콤마로 끊기면 분사구문이다. 주절의 주어를 보고 능동인지 수동인지 고른다."
+  },
+  {
+    id: "g16", order: 16, title: "수량 표현", weight: "빈출",
+    oneLine: "셀 수 있는 명사에 붙는지, 셀 수 없는 명사에 붙는지로 거의 다 갈린다.",
+    table: { headers: ["붙는 명사","표현","예"], rows: [
+      ["셀 수 있는 복수","many, few, a few, several, both, a number of","many orders"],
+      ["셀 수 없는 명사","much, little, a little, a great deal of, a large amount of","much time"],
+      ["둘 다","some, any, most, all, a lot of, plenty of, no","most staff / most information"],
+      ["단수 명사","each, every, another","each employee"],
+      ["둘 중에서 (단수 명사)","either, neither","either option"]
+    ] },
+    examples: [
+      { good: "Many applicants submitted résumés.", bad: "Much applicants submitted résumés.", note: "applicants는 셀 수 있는 복수 → many" },
+      { good: "We do not have much time.", bad: "We do not have many time.", note: "time은 셀 수 없음 → much" },
+      { good: "Each employee receives a badge.", bad: "Each employees receive a badge.", note: "each 뒤는 단수 명사 + 단수 동사" },
+      { good: "A few rooms are still available.", bad: "A little rooms are still available.", note: "a few는 셀 수 있는 명사에 붙고 '몇 개 있다'. Few rooms are available.은 '거의 없다'" },
+      { good: "A number of items were damaged.", bad: "A number of items was damaged.", note: "a number of(많은)는 복수 동사. The number of items was small.은 '수 그 자체'라 단수" }
+    ],
+    trap: "a few / a little(약간 있다)과 few / little(거의 없다)은 뜻이 반대다. a가 붙으면 긍정이다.\neach, every, another 뒤에는 단수 명사가 오고 동사도 단수다. each of the + 복수 명사도 동사는 단수다. Each of the applicants is required ... (are ❌)\na number of + 복수 명사는 복수 동사, the number of + 복수 명사는 단수 동사다. the가 붙으면 '수 그 자체'라서 단수다.\neither, neither 뒤에 바로 명사나 of가 오면 이 유형이고 단수 취급한다. Neither of the proposals was approved. 뒤에 or / nor가 이어지는 either A or B, neither A nor B는 상관 접속사(g14)라서 동사를 B에 맞춘다.\n셀 수 있는 명사의 비교는 fewer, 셀 수 없는 명사는 less다. fewer complaints / less paperwork. 단 less + 형용사(less expensive)는 비교급(g10)이다.",
+    toeicPattern: "빈칸 뒤 명사가 단수인지 복수인지 셀 수 없는지를 먼저 본다. 선택지가 much / many / few / every처럼 수량 표현 넷이면 이 유형이다.\na number of / the number of, each of처럼 수량 표현이 주어에 붙으면 동사의 수까지 함께 묻는다. 선택지가 is / are처럼 동사로만 나와도 주어 앞의 수량 표현부터 본다."
   }
 ];
 
@@ -286,15 +329,15 @@ window.GRAMMAR_QUIZ = [
   { id: "q009", ruleId: "g01", question: "The ____ of the project depends on teamwork.", choices: ["succeed", "success", "successful", "successfully"], answer: 1, explanation: "The ____ of 구조에서 the 뒤는 명사 자리다. success가 명사다.", difficulty: "easy" },
   { id: "q010", ruleId: "g01", question: "He responded ____ to the customer's complaint.", choices: ["prompt", "promptly", "promptness", "prompted"], answer: 1, explanation: "동사 responded를 꾸미므로 부사 promptly. 일반동사 뒤에 오는 수식어는 부사다. 단 be동사나 seem 뒤에는 형용사가 온다.", difficulty: "easy" },
   { id: "q011", ruleId: "g02", question: "The reports on the sales figures ____ ready for review.", choices: ["is", "are", "was", "has"], answer: 1, explanation: "주어는 reports(복수)다. on the sales figures는 꾸밈말이므로 가리고 봐야 한다.", difficulty: "medium" },
-  { id: "q012", ruleId: "g02", question: "Each of the applicants ____ required to submit a resume.", choices: ["is", "are", "were", "have"], answer: 0, explanation: "each는 항상 단수 취급한다. of the applicants에 속지 마라.", difficulty: "medium" },
+  { id: "q012", ruleId: "g16", question: "Each of the applicants ____ required to submit a resume.", choices: ["is", "are", "were", "have"], answer: 0, explanation: "each는 항상 단수 취급한다. of the applicants에 속지 마라.", difficulty: "medium" },
   { id: "q013", ruleId: "g02", question: "The information in these files ____ confidential.", choices: ["is", "are", "were", "have"], answer: 0, explanation: "information은 셀 수 없는 명사로 항상 단수 취급한다.", difficulty: "easy" },
   { id: "q014", ruleId: "g02", question: "The manager of the two departments ____ attending the meeting.", choices: ["is", "are", "were", "have been"], answer: 0, explanation: "주어는 manager(단수)다. of the two departments는 꾸밈말이다.", difficulty: "medium" },
   { id: "q015", ruleId: "g02", question: "All employees ____ to complete the survey by Friday.", choices: ["needs", "need", "needing", "is needed"], answer: 1, explanation: "주어 employees가 복수이므로 동사에 -s를 붙이지 않는다.", difficulty: "easy" },
-  { id: "q016", ruleId: "g02", question: "Neither of the proposals ____ approved.", choices: ["was", "were", "have", "are"], answer: 0, explanation: "neither는 단수 취급한다. of the proposals는 꾸밈말이다.", difficulty: "hard" },
-  { id: "q017", ruleId: "g02", question: "The number of applicants ____ increased this year.", choices: ["has", "have", "are", "were"], answer: 0, explanation: "the number of는 '~의 수'로 단수다. a number of(많은)는 복수 취급이라 구분해야 한다.", difficulty: "hard" },
+  { id: "q016", ruleId: "g16", question: "Neither of the proposals ____ approved.", choices: ["was", "were", "have", "are"], answer: 0, explanation: "neither는 단수 취급한다. of the proposals는 꾸밈말이다.", difficulty: "hard" },
+  { id: "q017", ruleId: "g16", question: "The number of applicants ____ increased this year.", choices: ["has", "have", "are", "were"], answer: 0, explanation: "the number of는 '~의 수'로 단수다. a number of(많은)는 복수 취급이라 구분해야 한다.", difficulty: "hard" },
   { id: "q018", ruleId: "g02", question: "There ____ several issues with the shipment.", choices: ["is", "are", "was", "has"], answer: 1, explanation: "There 구문은 뒤에 오는 명사가 주어다. several issues는 복수다.", difficulty: "medium" },
   { id: "q019", ruleId: "g02", question: "Our new equipment ____ just arrived.", choices: ["has", "have", "are", "were"], answer: 0, explanation: "equipment는 셀 수 없는 명사로 단수 취급한다. just와 현재완료가 짝을 이룬다.", difficulty: "medium" },
-  { id: "q020", ruleId: "g02", question: "Every document ____ to be signed.", choices: ["needs", "need", "needing", "are needed"], answer: 0, explanation: "every + 단수명사는 단수 취급한다.", difficulty: "easy" },
+  { id: "q020", ruleId: "g16", question: "Every document ____ to be signed.", choices: ["needs", "need", "needing", "are needed"], answer: 0, explanation: "every + 단수명사는 단수 취급한다.", difficulty: "easy" },
   { id: "q021", ruleId: "g03", question: "The shipment ____ last Monday.", choices: ["arrives", "arrived", "has arrived", "will arrive"], answer: 1, explanation: "last Monday는 끝난 과거 시점이다. 현재완료와는 함께 쓸 수 없다.", difficulty: "easy" },
   { id: "q022", ruleId: "g03", question: "She ____ for this company since 2019.", choices: ["works", "worked", "has worked", "will work"], answer: 2, explanation: "since + 시점은 현재완료와 짝을 이룬다. 2019년부터 지금까지 이어진다는 뜻이다.", difficulty: "medium" },
   { id: "q023", ruleId: "g03", question: "We ____ the new system next month.", choices: ["launching", "launched", "have launched", "will launch"], answer: 3, explanation: "next month는 미래 시점이므로 will + 동사원형.", difficulty: "easy" },
@@ -434,5 +477,25 @@ window.GRAMMAR_QUIZ = [
   { id: "q157", ruleId: "g10", question: "This model is ____ to install than the previous version.", choices: ["easy", "easily", "easiest", "easier"], answer: 3, explanation: "than이 있으므로 비교급. easy의 비교급은 easier.", difficulty: "easy" },
   { id: "q158", ruleId: "g10", question: "Of all our products, our ____ selling item is the small desk lamp.", choices: ["good", "better", "best", "well"], answer: 2, explanation: "Of all(전체 중)이 있으므로 최상급 best. 소유격 our가 있어서 the는 쓰지 않는다.", difficulty: "medium" },
   { id: "q159", ruleId: "g10", question: "The report was ____ more detailed than we expected.", choices: ["far", "very", "too", "as"], answer: 0, explanation: "비교급 more detailed를 강조하는 자리다. far는 되지만 very는 비교급을 강조하지 못한다.", difficulty: "hard" },
-  { id: "q160", ruleId: "g10", question: "Attendance at this year's fair was the ____ in a decade.", choices: ["higher", "highest", "high", "highly"], answer: 1, explanation: "the와 in a decade(기간 범위)가 있으므로 최상급 highest.", difficulty: "medium" }
+  { id: "q160", ruleId: "g10", question: "Attendance at this year's fair was the ____ in a decade.", choices: ["higher", "highest", "high", "highly"], answer: 1, explanation: "the와 in a decade(기간 범위)가 있으므로 최상급 highest.", difficulty: "medium" },
+  { id: "q161", ruleId: "g15", question: "Please review the ____ document before the meeting.", choices: ["attach", "attached", "attachment", "attaching"], answer: 1, explanation: "문서는 첨부되는 쪽이므로 p.p. attached. attachment는 명사라 명사 document 앞의 꾸밈말 자리에 맞지 않는다.", difficulty: "easy" },
+  { id: "q162", ruleId: "g15", question: "The ____ demand for electric vehicles surprised analysts.", choices: ["grow", "grown", "grew", "growing"], answer: 3, explanation: "수요가 늘어나는 쪽이므로 -ing. grow는 '늘다'라는 자동사라 p.p.(grown)로 명사를 꾸미지 않는다.", difficulty: "medium" },
+  { id: "q163", ruleId: "g15", question: "All applications ____ after Friday will not be considered.", choices: ["received", "receive", "receiving", "receives"], answer: 0, explanation: "지원서는 접수되는 쪽이므로 p.p. 명사 뒤에서 꾸미는 (which are) received가 줄어든 형태다. 문장의 동사는 will not be considered다.", difficulty: "medium" },
+  { id: "q164", ruleId: "g15", question: "The employees ____ the workshop should meet in Room 2.", choices: ["attend", "attended", "attending", "attends"], answer: 2, explanation: "직원이 참석하는 쪽이고 뒤에 목적어 the workshop이 있으므로 -ing. 문장의 동사는 should meet이라 attended를 동사로 쓸 수 없다.", difficulty: "medium" },
+  { id: "q165", ruleId: "g15", question: "____ by heavy rain, the outdoor event was moved indoors.", choices: ["Affecting", "Affected", "To affect", "Affect"], answer: 1, explanation: "주절의 주어 the outdoor event가 비의 영향을 받는 쪽이고 뒤에 by가 있으므로 p.p.로 시작하는 분사구문이다.", difficulty: "hard" },
+  { id: "q166", ruleId: "g15", question: "The presentation was ____, so several people left early.", choices: ["bore", "bored", "bores", "boring"], answer: 3, explanation: "발표(일)가 지루함을 주는 쪽이므로 -ing. bored는 지루함을 느끼는 사람에게 쓴다.", difficulty: "easy" },
+  { id: "q167", ruleId: "g15", question: "Customers were ____ with the quick repair.", choices: ["satisfied", "satisfy", "satisfying", "satisfaction"], answer: 0, explanation: "고객(사람)이 만족을 느끼는 쪽이므로 p.p. be satisfied with ~.", difficulty: "easy" },
+  { id: "q168", ruleId: "g15", question: "The report ____ last week contains the final figures.", choices: ["submit", "submitting", "submitted", "submits"], answer: 2, explanation: "보고서는 제출되는 쪽이고 뒤에 목적어가 없으므로 p.p. 문장의 동사는 contains다.", difficulty: "medium" },
+  { id: "q169", ruleId: "g15", question: "____ the budget cuts, the department postponed hiring.", choices: ["Given", "Giving", "Give", "To give"], answer: 0, explanation: "Given + 명사는 '~을 고려하면'이라는 뜻으로 전치사처럼 굳은 표현이다. 그래서 주절의 주어와 맞추는 분사구문 규칙을 따르지 않는다.", difficulty: "hard" },
+  { id: "q170", ruleId: "g15", question: "We expect ____ results from the new campaign.", choices: ["encourage", "encouraged", "encouragement", "encouraging"], answer: 3, explanation: "결과(일)가 고무적인 쪽이므로 -ing. 감정 동사는 사물·일에 -ing를 쓴다.", difficulty: "medium" },
+  { id: "q171", ruleId: "g16", question: "____ applicants submitted their résumés before the deadline.", choices: ["Much", "Every", "Many", "A little"], answer: 2, explanation: "applicants는 셀 수 있는 복수 명사이므로 many. much·a little은 셀 수 없는 명사에, every는 단수 명사에 붙는다.", difficulty: "easy" },
+  { id: "q172", ruleId: "g16", question: "There is not ____ time left before the deadline.", choices: ["many", "much", "few", "several"], answer: 1, explanation: "time은 셀 수 없는 명사이므로 much. many·few·several은 셀 수 있는 복수 명사에 붙는다.", difficulty: "easy" },
+  { id: "q173", ruleId: "g16", question: "____ employee must complete the safety training.", choices: ["All", "Many", "Few", "Each"], answer: 3, explanation: "빈칸 뒤 employee가 단수 명사이므로 each. all·many·few는 복수 명사에 붙는다.", difficulty: "easy" },
+  { id: "q174", ruleId: "g16", question: "Only ____ of the rooms are still available, so book early.", choices: ["a few", "a little", "much", "every"], answer: 0, explanation: "rooms는 셀 수 있는 복수이므로 a few. only a few = 몇 개밖에 안 되는. every는 of와 함께 쓰지 않는다.", difficulty: "medium" },
+  { id: "q175", ruleId: "g16", question: "A number of packages ____ damaged during shipping.", choices: ["was", "is", "were", "has"], answer: 2, explanation: "a number of(많은) + 복수 명사는 복수 동사를 쓴다.", difficulty: "medium" },
+  { id: "q176", ruleId: "g16", question: "____ number of employees have asked about the new parking policy.", choices: ["The", "A", "Much", "Every"], answer: 1, explanation: "동사 have가 복수이므로 a number of(많은). the number of는 '수 그 자체'라서 단수 동사(has)를 쓴다.", difficulty: "hard" },
+  { id: "q177", ruleId: "g16", question: "We received ____ information about the delay.", choices: ["few", "many", "several", "little"], answer: 3, explanation: "information은 셀 수 없는 명사이므로 little. '거의 받지 못했다'는 뜻이 된다.", difficulty: "medium" },
+  { id: "q178", ruleId: "g16", question: "____ of the two proposals meets our budget.", choices: ["Neither", "Both", "Many", "Few"], answer: 0, explanation: "of the two(둘 중)와 단수 동사 meets가 있으므로 neither. both는 복수 동사(meet)를 쓴다. 뒤에 nor가 없으므로 상관 접속사가 아니다.", difficulty: "medium" },
+  { id: "q179", ruleId: "g16", question: "____ of the new machines has its own manual.", choices: ["Many", "Each", "Both", "Few"], answer: 1, explanation: "동사 has와 its가 단수이므로 each. each of the + 복수 명사는 단수 동사를 쓴다.", difficulty: "medium" },
+  { id: "q180", ruleId: "g16", question: "There were ____ complaints last month than this month.", choices: ["few", "less", "fewer", "little"], answer: 2, explanation: "than이 있어 비교급이고, complaints는 셀 수 있는 명사이므로 fewer. less는 셀 수 없는 명사에 쓴다.", difficulty: "medium" }
 ];

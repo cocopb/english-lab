@@ -1207,7 +1207,7 @@ window.PART6 = [
       { w: "building pass", m: "건물 출입증" }
     ],
     questions: [
-      { n: 1, type: "grammar", choices: ["delight", "delighted", "delighting", "delightful"], answer: 1, explanation: "사람이 기쁨을 느끼는 쪽이므로 -ed 형태인 delighted. We are delighted to ~ 는 환영 인사의 정형 표현이다.", ruleId: "g01" },
+      { n: 1, type: "grammar", choices: ["delight", "delighted", "delighting", "delightful"], answer: 1, explanation: "사람이 기쁨을 느끼는 쪽이므로 -ed 형태인 delighted. We are delighted to ~ 는 환영 인사의 정형 표현이다.", ruleId: "g15" },
       { n: 2, type: "sentence", choices: ["Lunch will be provided in the staff lounge.", "You must submit your resignation in advance.", "The orientation has been canceled.", "Parking is not available for employees."], answer: 0, explanation: "첫날 일정을 안내하는 문맥이므로 점심 제공 안내가 자연스럽다.", ruleId: null },
       { n: 3, type: "grammar", choices: ["goal", "goals", "goaled", "goaling"], answer: 1, explanation: "three main 뒤이므로 복수 명사 goals가 와야 한다.", ruleId: "g01" },
       { n: 4, type: "grammar", choices: ["assist", "assistance", "assistant", "assisted"], answer: 1, explanation: "need의 목적어 자리이므로 명사가 필요하다. assistance(도움)는 셀 수 없는 명사, assistant는 사람이다.", ruleId: "g01" }
@@ -1265,7 +1265,7 @@ window.PART6 = [
       { w: "a wider selection", m: "더 다양한 종류" }
     ],
     questions: [
-      { n: 1, type: "grammar", choices: ["founding", "founds", "founded", "to found"], answer: 2, explanation: "회사는 '설립되는' 쪽이므로 수동 의미의 과거분사가 와야 한다.", ruleId: "g04" },
+      { n: 1, type: "grammar", choices: ["founding", "founds", "founded", "to found"], answer: 2, explanation: "회사는 '설립되는' 쪽이므로 수동 의미의 과거분사가 와야 한다.", ruleId: "g15" },
       { n: 2, type: "grammar", choices: ["include", "including", "includes", "to include"], answer: 0, explanation: "will seat ... and (will) include. 조동사 will을 공유하는 병렬이라 동사원형이 온다.", ruleId: "g13" },
       { n: 3, type: "sentence", choices: ["The original shop closed in 2014.", "The company plans to reduce its staff.", "Canal Street will be closed to traffic.", "The bakery counter will be the company's first."], answer: 3, explanation: "문장 삽입 문제다. 뒤 문장이 '처음으로 직접 굽는다'로 이어지므로 '첫 베이커리 코너'가 맞다. 2014년은 설립 연도이고, 직원이 60명 이상으로 늘고 있어 감원 이야기도 맞지 않는다.", ruleId: null },
       { n: 4, type: "grammar", choices: ["whose", "who", "which", "whom"], answer: 1, explanation: "뒤에 동사 bought가 바로 오므로 주격 관계대명사다. 선행사가 사람이라 which는 안 된다.", ruleId: "g08" }

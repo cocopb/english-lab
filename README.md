@@ -32,7 +32,7 @@ english-lab/
 
 ```bash
 node tools/check-vocab.js      # 보카: 빈칸 생성 가능 여부, 필수 필드, 혼동 단어 수, ID 중복, 뜻 선택지 4개(유사도 가드), 트랙별 필수 정보 + 경고(실패 아님): 같은 트랙 중복 단어, 혼동 단어 뜻 누락 개수 + 화면: 마지막 Day의 드롭다운·접힘/펼침·뜻 시험·빈칸 시험 끝까지 진행
-node tools/check-grammar.js    # 문법 문제: 유형 ID, 선택지 4개, 정답 인덱스, 빈칸, ID 중복, 해설, 중복 선택지 + 화면: 모든 노트 아코디언(표·예문 개수), 유형 선택, 유형별 정답률
+node tools/check-grammar.js    # 문법 문제: 유형 ID, 선택지 4개, 정답 인덱스, 빈칸, ID 중복, 해설, 중복 선택지 + 화면: 모든 노트 아코디언(표·예문 개수), 유형 선택, 유형별 정답률(모든 유형을 끝까지 풀고 기록·표시·정렬 확인)
 node tools/check-reading.js    # 독해: 전략 ID, 정답 인덱스, 문장별 en/ko, ID 중복, Part 6 빈칸·문항 일치 + 지문 렌더링
 node tools/check-listening.js  # 리스닝: 받아쓰기 text/ko/level, Part 2 선택지 3개·정답, Part 3 script/questions·선택지 4개·정답, ID 중복, 해설 + 화면 로드 + 음성 재생(음성 목록이 빈 모바일·데스크톱·미지원 브라우저)
 node tools/check-speaking.js   # 회화: 패턴 pattern/meaning/tip/drills, 드릴 ko/en, 롤플레이 me 턴 instruction/model/comment, 쉐도잉 en/ko/level, ID 중복 + 화면 로드·채점(패턴·쉐도잉·롤플레이 끝까지 진행, 괄호 지문 음성 제외) + TTS 재생(음성 목록이 빈 모바일·데스크톱)

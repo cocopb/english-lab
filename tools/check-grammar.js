@@ -268,5 +268,37 @@ check("정답률 낮은 순: " + ruleA.title + "(" + expectedA + "%) → " + rul
   weakTitles[0] === ruleA.title && weakTitles[1] === ruleB.title && !!valueA && valueA.textContent === expectedA + "%",
   weakTitles.slice(0, 2).join(" / ") + " · " + (valueA ? valueA.textContent : "정답률 없음"));
 
+// 4. 나머지 모든 유형도 끝까지 풀고(유형마다 오답 수를 다르게) 약점 탭에서 유형별 정답률을 하나씩 확인한다.
+//    위 검사는 마지막 두 유형만 보므로, 노트가 늘어도 앞쪽 유형의 기록·표시가 빠지지 않게 한다.
+const expectedById = {};
+expectedById[ruleA.id] = expectedA;
+expectedById[ruleB.id] = 100;
+pageTopics.forEach((topic, index) => {
+  if (topic.id === ruleA.id || topic.id === ruleB.id) return;
+  const total = pageQuiz.filter(q => q.ruleId === topic.id).length;
+  const wrong = Math.min(total, index % 4);
+  solveRule(topic.id, wrong);
+  expectedById[topic.id] = Math.round((total - wrong) / total * 100);
+});
+const allStats = fakeWindow.Progress.getGrammarStats();
+const recordMismatch = pageTopics.filter(topic => {
+  const total = pageQuiz.filter(q => q.ruleId === topic.id).length;
+  return !allStats[topic.id] || allStats[topic.id].solved !== total ||
+    Math.round(allStats[topic.id].correct / total * 100) !== expectedById[topic.id];
+}).map(topic => topic.id + " " + JSON.stringify(allStats[topic.id]));
+check("모든 유형 기록: " + pageTopics.length + "개 유형 모두 푼 문제 수·정답 수가 맞음", !recordMismatch.length, recordMismatch.join(" | ") || "이상 없음");
+fakeDocument.getElementById("grammar-tab-weak").click();
+const allWeakItems = weakList.querySelectorAll(".grammar-weak-item");
+const shown = allWeakItems.map(item => {
+  const title = item.children[0].children[0].textContent;
+  const value = item.querySelector(".grammar-accuracy-value");
+  const topic = pageTopics.find(t => t.title === title);
+  return { id: topic ? topic.id : "(제목 불일치: " + title + ")", value: value ? parseInt(value.textContent, 10) : NaN };
+});
+const displayMismatch = shown.filter(s => expectedById[s.id] !== s.value).map(s => s.id + " 표시 " + s.value + "% / 기대 " + expectedById[s.id] + "%");
+check("모든 유형 정답률 표시: " + allWeakItems.length + "개 유형이 기록과 같은 %로 보임",
+  allWeakItems.length === pageTopics.length && !displayMismatch.length, displayMismatch.join(" | ") || shown.map(s => s.id + " " + s.value + "%").join(", "));
+check("모든 유형 정답률 낮은 순 정렬", shown.every((s, i) => i === 0 || shown[i - 1].value <= s.value), shown.map(s => s.value).join(" ≤ "));
+
 console.log(domFailures ? "\n화면 검사 실패 " + domFailures : "\n화면 검사 통과");
 if (failureCount || domFailures) process.exit(1);
