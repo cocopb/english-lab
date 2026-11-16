@@ -19,8 +19,10 @@ english-lab/
 │  ├─ check-listening.js  # 받아쓰기·Part 2·Part 3 데이터 검사 + 가짜 DOM으로 리스닝 화면 로드 검사
 │  ├─ check-speaking.js   # 회화 패턴·롤플레이·쉐도잉 데이터 검사 + 가짜 DOM으로 회화 화면 로드·채점 검사
 │  ├─ check-practice.js   # 가짜 DOM으로 실전 페이지(모의고사·OMR·타이머·기록) 동작 검사
-│  └─ build-vocab-index.js # 보카 색인(docs/vocab-index.md) 생성
+│  ├─ build-vocab-index.js # 보카 색인(docs/vocab-index.md) 생성
+│  └─ build-grammar-index.js # 문법 색인(docs/grammar-index.md) 생성
 ├─ docs/vocab-index.md    # Day별·상황별 표제어 색인 (자동 생성, 직접 수정 금지)
+├─ docs/grammar-index.md  # 문법 노트·trap·Part 5 문항·Part 6 ruleId 색인 (자동 생성, 직접 수정 금지)
 └─ README.md
 ```
 
@@ -40,6 +42,8 @@ node tools/check-practice.js   # 실전: 메뉴 7개, 30문항 구성, OMR 이�
 데이터를 추가하거나 화면 코드를 바꾼 뒤에는 여섯 스크립트를 모두 실행해 확인합니다. `check-practice.js`는 모의고사를 매번 무작위로 출제하므로 여러 번 실행해 보는 것이 좋습니다.
 
 보카 데이터를 바꾼 뒤에는 `node tools/build-vocab-index.js`로 `docs/vocab-index.md`(Day별 주제·표제어, 상황별 표제어, 품사별 집계, 여러 곳에 있는 표제어)를 다시 만듭니다. 새 Day 주제를 고를 때 기존 표제어와 겹치지 않는지 이 파일로 확인합니다. 새 Day를 추가하면 `tools/build-vocab-index.js`의 `DAY_TOPICS`에 주제 한 줄을 넣습니다(없으면 "(주제 미정)"으로 표시하고 경고합니다).
+
+문법 노트·문항이나 Part 6 빈칸을 바꾼 뒤에는 `node tools/build-grammar-index.js`로 `docs/grammar-index.md`(노트별 oneLine·문항 수, 노트별 trap 전체, Part 6 빈칸의 ruleId 분포, Part 5 문항 목록)를 다시 만듭니다. 새 노트나 trap을 쓸 때 기존 주제와 겹치지 않는지, 기존 문항의 정답·해설과 충돌하지 않는지 이 파일로 확인합니다.
 
 ## 메뉴
 

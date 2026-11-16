@@ -86,19 +86,24 @@ window.GRAMMAR = [
   },
   {
     id: "g05", order: 5, title: "to부정사 vs 동명사", weight: "빈출",
-    oneLine: "동사 뒤에 어떤 형태가 오는지는 앞의 동사가 정한다.",
+    oneLine: "동사 뒤에 어떤 형태가 오는지는 앞의 동사가 정한다. 전치사 뒤에 동사가 오면 -ing다.",
     table: { headers: ["뒤에 오는 형태", "해당 동사"], rows: [
-      ["뒤에 to부정사가 오는 동사", "want, plan, decide, hope, agree, need, offer, afford"],
-      ["뒤에 -ing가 오는 동사", "enjoy, finish, avoid, consider, recommend, suggest, mind, keep"],
-      ["둘 다 가능", "like, love, start, begin, continue"]
+      ["뒤에 to부정사가 오는 동사", "want, plan, decide, hope, agree, need, offer, afford, refuse, promise, expect, fail"],
+      ["뒤에 -ing가 오는 동사", "enjoy, finish, avoid, consider, recommend, suggest, mind, keep, postpone, quit"],
+      ["둘 다 가능 · 뜻이 같다", "like, love, prefer, start, begin, continue"],
+      ["둘 다 가능 · 뜻이 다르다", "remember, forget, stop, regret (to는 앞으로 할 일, -ing는 이미 한 일)"]
     ] },
     examples: [
       { good: "I want to go.", bad: "I want going.", note: "want 뒤에는 to부정사" },
       { good: "We recommend taking the earlier train.", bad: "We recommend to take the earlier train.", note: "recommend 뒤에는 to부정사가 바로 못 온다" },
-      { good: "She finished writing the report.", bad: "She finished to write the report.", note: "finish 뒤에는 -ing" }
+      { good: "She finished writing the report.", bad: "She finished to write the report.", note: "finish 뒤에는 -ing" },
+      { good: "She is responsible for training new staff.", bad: "She is responsible for train new staff.", note: "전치사 for 뒤에 동사가 오면 -ing" },
+      { good: "Please remember to send the invoice tomorrow.", bad: "Please remember sending the invoice tomorrow.", note: "앞으로 할 일은 remember to. remember -ing는 이미 한 일이다 (I remember sending it yesterday.)" },
+      { good: "We stopped printing the catalog, so it is now online only.", bad: "We stopped to print the catalog, so it is now online only.", note: "stop -ing는 '~하던 것을 그만두다', stop to는 '~하려고 멈추다'" },
+      { good: "Reviewing the contract took two hours.", bad: "Review the contract took two hours.", note: "주어 자리에는 동사원형을 쓸 수 없다" }
     ],
-    trap: "이 표는 '빈칸 바로 뒤'에 무엇이 오는지를 가리는 기준이다. that절처럼 다른 구조를 따로 갖는 동사도 있다.\n그리고 to 뒤에는 보통 동사원형이지만, look forward to / be used to / contribute to의 to는 전치사라서 -ing가 온다.\nI look forward to meeting you. (to meet ❌)\nneed처럼 -ing도 가능한 동사가 있다. The car needs washing.",
-    toeicPattern: "빈칸 앞 동사를 먼저 본다. 표에 있는 동사면 대부분 바로 풀린다. 단 look forward to, be used to처럼 to가 전치사인 경우는 뒤에 -ing가 오므로 따로 외워야 한다."
+    trap: "이 표는 '빈칸 바로 뒤'에 무엇이 오는지를 가리는 기준이다. that절처럼 다른 구조를 따로 갖는 동사도 있다.\n전치사 뒤에 동사가 오면 -ing다. 특히 to가 전치사인 표현에 주의한다. 이때 to 뒤에 동사원형을 쓰면 틀린다.\nlook forward to / be used to / be committed to / be opposed to / in addition to / contribute to\nI look forward to meeting you. (to meet ❌)\nbe used to -ing(~에 익숙하다)와 used to + 동사원형(과거에 ~했다)은 다른 표현이다.\n단 let·make·have + 목적어 뒤에는 동사원형이 온다. Please let me know. (to know ❌)\nneed처럼 -ing도 가능한 동사가 있다. The car needs washing.",
+    toeicPattern: "빈칸 앞을 먼저 본다. 전치사면 -ing, 동사면 그 동사가 어느 쪽을 받는지 표에서 찾는다. 선택지는 send / sends / sending / to send처럼 한 동사의 네 형태로 나온다.\nlook forward to, be committed to처럼 to가 전치사인 경우는 뒤에 -ing가 오므로 따로 외워야 한다. Part 6 이메일 맺음말의 단골이다."
   },
   {
     id: "g06", order: 6, title: "전치사", weight: "빈출",
@@ -166,19 +171,26 @@ window.GRAMMAR = [
   },
   {
     id: "g10", order: 10, title: "비교급 / 최상급", weight: "보통",
-    oneLine: "둘을 비교하면 -er than, 셋 이상 중 하나면 the -est다.",
-    table: { headers: ["구분", "원급 → 비교급 → 최상급"], rows: [
+    oneLine: "둘을 비교하면 -er than, 셋 이상 중 하나면 the -est다. as ~ as 사이에는 원급이 온다.",
+    table: { headers: ["구분", "형태 · 예"], rows: [
       ["짧은 단어", "tall → taller → the tallest"],
       ["긴 단어", "expensive → more expensive → the most expensive"],
-      ["불규칙", "good → better → the best / bad → worse → the worst"]
+      ["불규칙", "good → better → the best / bad → worse → the worst"],
+      ["원급 비교", "as + 원급 + as: as soon as possible"],
+      ["최상급 범위", "the + 최상급 + in/of 범위: the largest in the country"],
+      ["비교급 강조", "much / far / even / still / a lot + 비교급: much cheaper (very cheaper ❌)"],
+      ["배수", "배수 + as + 원급 + as: twice as large as"]
     ] },
     examples: [
       { good: "This is cheaper than that.", bad: "This is more cheap than that.", note: "짧은 단어는 -er" },
       { good: "the most efficient method", bad: "the efficientest method", note: "긴 단어는 most" },
-      { good: "as soon as possible", bad: "as soon as possibly", note: "as soon as possible은 통째로 외우는 표현이다. possibly(부사)는 들어가지 않는다." }
+      { good: "as soon as possible", bad: "as soon as possibly", note: "as soon as possible은 통째로 외우는 표현이다. possibly(부사)는 들어가지 않는다." },
+      { good: "The new system is much faster than the old one.", bad: "The new system is very faster than the old one.", note: "비교급 강조는 much·far·even·still·a lot" },
+      { good: "Sales were twice as high as expected.", bad: "Sales were twice as higher as expected.", note: "as ~ as 사이에는 원급" },
+      { good: "Our best seller is the desk lamp.", bad: "Our the best seller is the desk lamp.", note: "소유격이 있으면 최상급 앞에 the를 쓰지 않는다" }
     ],
-    trap: "비교급을 강조할 때는 very를 쓰지 않는다.\nmuch better / far better / even better (⭕)\nvery better (❌)",
-    toeicPattern: "문장에 than이 보이면 대개 비교급, the와 함께 of all·in the company가 보이면 최상급이다. 단 rather than, other than의 than은 비교급과 관계가 없다."
+    trap: "than이 보이면 비교급, the와 in/of + 범위나 ever가 보이면 최상급이다. 이게 1순위 단서다. 단 rather than, other than의 than은 비교급과 관계가 없다.\n비교급을 강조할 때는 very를 쓰지 않는다.\nmuch better / far better / even better / still better / a lot better (⭕)\nvery better (❌)\n-er과 more를 겹쳐 쓰지 않는다. more cheaper (❌)\n최상급 앞에 소유격이 오면 the를 쓰지 않는다. our best seller (⭕) / our the best seller (❌)\nas ~ as 사이에는 비교급이 아니라 원급이 온다. as cheaper as (❌)",
+    toeicPattern: "선택지가 cheap / cheaper / cheapest / cheaply처럼 한 단어의 네 형태로 나온다. than이 있으면 cheaper, the와 in/of가 있으면 cheapest, 동사를 꾸미는 자리면 cheaply다.\n비교급 강조 자리에는 very를 넣은 오답이 거의 항상 하나 들어 있다."
   },
   {
     id: "g11", order: 11, title: "가정법", weight: "낮음",
@@ -402,5 +414,25 @@ window.GRAMMAR_QUIZ = [
   { id: "q137", ruleId: "g14", question: "Please print the form, sign it, ____ return it to reception.", choices: ["and", "but", "or", "nor"], answer: 0, explanation: "인쇄 → 서명 → 제출로 이어지는 같은 방향의 동작이므로 and. 셋 이상을 나열하면 마지막 항목 앞에 and를 쓴다.", difficulty: "medium" },
   { id: "q138", ruleId: "g14", question: "Both the Seoul office ____ the Busan office will close early.", choices: ["or", "nor", "and", "but"], answer: 2, explanation: "both의 짝은 and다.", difficulty: "easy" },
   { id: "q139", ruleId: "g14", question: "Both the elevator and the main entrance ____ been inspected.", choices: ["has", "have", "was", "is"], answer: 1, explanation: "both A and B는 항상 복수 취급한다. 그래서 have been inspected.", difficulty: "medium" },
-  { id: "q140", ruleId: "g14", question: "Either the morning session ____ the afternoon session is fine with me.", choices: ["nor", "and", "but", "or"], answer: 3, explanation: "either의 짝은 or다. 동사 is는 B(the afternoon session, 단수)에 맞춘 것이다.", difficulty: "medium" }
+  { id: "q140", ruleId: "g14", question: "Either the morning session ____ the afternoon session is fine with me.", choices: ["nor", "and", "but", "or"], answer: 3, explanation: "either의 짝은 or다. 동사 is는 B(the afternoon session, 단수)에 맞춘 것이다.", difficulty: "medium" },
+  { id: "q141", ruleId: "g05", question: "The committee suggested ____ the meeting to Friday.", choices: ["move", "to move", "moving", "moves"], answer: 2, explanation: "suggest 뒤에는 -ing가 온다. suggest to + 동사원형으로는 쓰지 않는다.", difficulty: "medium" },
+  { id: "q142", ruleId: "g05", question: "We decided ____ a second supplier this year.", choices: ["adding", "to add", "add", "adds"], answer: 1, explanation: "decide 뒤에는 to부정사가 온다.", difficulty: "easy" },
+  { id: "q143", ruleId: "g05", question: "She is responsible for ____ new employees.", choices: ["train", "to train", "trains", "training"], answer: 3, explanation: "전치사 for 뒤에 동사가 오면 -ing다.", difficulty: "easy" },
+  { id: "q144", ruleId: "g05", question: "The union is strongly opposed to ____ the shift schedule.", choices: ["changing", "change", "to change", "changes"], answer: 0, explanation: "be opposed to의 to는 전치사라서 뒤에 -ing가 온다. to change를 고르면 틀린다.", difficulty: "hard" },
+  { id: "q145", ruleId: "g05", question: "The manager avoided ____ the question directly.", choices: ["to answer", "answers", "answering", "answer"], answer: 2, explanation: "avoid 뒤에는 -ing가 온다.", difficulty: "easy" },
+  { id: "q146", ruleId: "g05", question: "Our team is committed to ____ response times.", choices: ["improve", "improves", "to improve", "improving"], answer: 3, explanation: "be committed to의 to는 전치사라서 뒤에 -ing가 온다.", difficulty: "hard" },
+  { id: "q147", ruleId: "g05", question: "Please remember ____ the attachment before you send the e-mail.", choices: ["including", "to include", "include", "included"], answer: 1, explanation: "before you send는 앞으로 할 일이므로 remember to. remember -ing는 이미 한 일을 기억할 때 쓴다.", difficulty: "medium" },
+  { id: "q148", ruleId: "g05", question: "In addition to ____ the report, she presented the figures.", choices: ["writing", "write", "to write", "writes"], answer: 0, explanation: "in addition to의 to는 전치사라서 뒤에 -ing가 온다.", difficulty: "hard" },
+  { id: "q149", ruleId: "g05", question: "The supplier failed ____ the parts on time.", choices: ["delivering", "deliver", "delivers", "to deliver"], answer: 3, explanation: "fail 뒤에는 to부정사가 온다. fail to = ~하지 못하다.", difficulty: "medium" },
+  { id: "q150", ruleId: "g05", question: "After ____ the contract, both sides held a short press conference.", choices: ["sign", "to sign", "signing", "signs"], answer: 2, explanation: "전치사 after 뒤에 동사가 오면 -ing다.", difficulty: "easy" },
+  { id: "q151", ruleId: "g10", question: "The new printer is ____ than the one we replaced.", choices: ["quiet", "quieter", "quietly", "quietest"], answer: 1, explanation: "than이 있으므로 비교급 quieter.", difficulty: "easy" },
+  { id: "q152", ruleId: "g10", question: "Please send the files ____ soon as possible.", choices: ["as", "so", "more", "than"], answer: 0, explanation: "as soon as possible은 as + 원급 + as 구조다. 긍정문에서는 so ~ as를 쓰지 않는다.", difficulty: "easy" },
+  { id: "q153", ruleId: "g10", question: "The Busan office is ____ branch in the country.", choices: ["larger", "large", "the largest", "largely"], answer: 2, explanation: "in the country라는 범위가 있고 그중 하나를 고르므로 the + 최상급.", difficulty: "medium" },
+  { id: "q154", ruleId: "g10", question: "Shipping by rail is ____ cheaper than shipping by air.", choices: ["very", "more", "so", "much"], answer: 3, explanation: "비교급 강조는 much·far·even·still·a lot이다. very는 비교급을 강조하지 못하고, more cheaper는 비교급을 겹쳐 쓴 것이다.", difficulty: "hard" },
+  { id: "q155", ruleId: "g10", question: "Sales this quarter were twice ____ high as last quarter.", choices: ["as", "than", "so", "more"], answer: 0, explanation: "배수 + as + 원급 + as 구조다.", difficulty: "medium" },
+  { id: "q156", ruleId: "g10", question: "Of the three proposals, the second one was the ____ detailed.", choices: ["more", "most", "much", "very"], answer: 1, explanation: "Of the three(셋 중)와 the가 있으므로 최상급. 긴 단어는 most를 쓴다. the more는 둘 중 하나를 고를 때 쓴다.", difficulty: "medium" },
+  { id: "q157", ruleId: "g10", question: "This model is ____ to install than the previous version.", choices: ["easy", "easily", "easiest", "easier"], answer: 3, explanation: "than이 있으므로 비교급. easy의 비교급은 easier.", difficulty: "easy" },
+  { id: "q158", ruleId: "g10", question: "Of all our products, our ____ selling item is the small desk lamp.", choices: ["good", "better", "best", "well"], answer: 2, explanation: "Of all(전체 중)이 있으므로 최상급 best. 소유격 our가 있어서 the는 쓰지 않는다.", difficulty: "medium" },
+  { id: "q159", ruleId: "g10", question: "The report was ____ more detailed than we expected.", choices: ["far", "very", "too", "as"], answer: 0, explanation: "비교급 more detailed를 강조하는 자리다. far는 되지만 very는 비교급을 강조하지 못한다.", difficulty: "hard" },
+  { id: "q160", ruleId: "g10", question: "Attendance at this year's fair was the ____ in a decade.", choices: ["higher", "highest", "high", "highly"], answer: 1, explanation: "the와 in a decade(기간 범위)가 있으므로 최상급 highest.", difficulty: "medium" }
 ];
