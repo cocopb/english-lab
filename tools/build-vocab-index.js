@@ -47,10 +47,11 @@ var DAY_TOPICS = {
   19: "물류·배송",
   20: "의료·병원",
   21: "Part 5 빈출 동사",
-  22: "교육·연수"
+  22: "교육·연수",
+  23: "Part 5 빈출 형용사·부사"
 };
 
-var POS_LABELS = { "n.": "명사", "v.": "동사", "adj.": "형용사", "adv.": "부사", "표현": "표현" };
+var POS_LABELS = { "n.": "명사", "v.": "동사", "adj.": "형용사", "adv.": "부사", "prep.": "전치사", "표현": "표현" };
 
 function posLabel(pos) {
   return pos.split("/").map(function (part) {
