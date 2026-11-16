@@ -17,7 +17,7 @@ window.GRAMMAR = [
     },
     examples: [
       { good: "The decision was final.", bad: "The decide was final.", note: "the 뒤 → 명사" },
-      { good: "She works carefully.", bad: "She works careful.", note: "일반동사 뒤 → 부사" },
+      { good: "The train runs smoothly.", bad: "The train runs smooth.", note: "일반동사 뒤 → 부사" },
       { good: "This is an effective plan.", bad: "This is an effect plan.", note: "명사 앞 → 형용사" }
     ],
     trap: "very, so 같은 수식어에 속지 마라. 꾸밈 받는 대상을 봐야 한다.\nShe is very careful. (be동사 뒤 → 형용사)\nShe works very carefully. (일반동사 뒤 → 부사)\nbe동사 바로 뒤는 형용사 자리지만, be ___ -ing나 be ___ p.p.처럼 뒤에 동사가 이어지면 그 사이는 부사 자리다.\nThe office is currently undergoing renovation.",
@@ -35,17 +35,15 @@ window.GRAMMAR = [
         ["단수 (he, she, it, the report)", "works / is / has"],
         ["복수 (they, we, the reports)", "work / are / have"],
         ["셀 수 없는 명사 (information)", "단수 취급"],
-        ["each / every / neither + 명사", "단수 취급"],
-        ["the number of ~", "단수 (a number of ~ 는 복수)"],
-        ["There is / There are", "뒤에 오는 명사가 주어"]
+            ["There is / There are", "뒤에 오는 명사가 주어"]
       ]
     },
     examples: [
-      { good: "The report is ready.", bad: "The report are ready.", note: "report는 단수" },
-      { good: "The reports on the sales are ready.", bad: "The reports on the sales is ready.", note: "주어는 reports, on the sales는 전치사구" },
-      { good: "Information is helpful.", bad: "Informations are helpful.", note: "information은 셀 수 없음" }
+      { good: "The printer is broken.", bad: "The printer are broken.", note: "printer는 단수" },
+      { good: "The keys to the storage room are on my desk.", bad: "The keys to the storage room is on my desk.", note: "주어는 keys, to the storage room은 전치사구" },
+      { good: "This advice is helpful.", bad: "These advices are helpful.", note: "advice는 셀 수 없음" }
     ],
-    trap: "주어와 동사 사이에 낀 전치사구에 속지 마라.\nThe manager of the departments ___ .\n→ 주어는 manager(단수)지 departments가 아니다.",
+    trap: "주어와 동사 사이에 낀 전치사구에 속지 마라.\nThe color of the chairs ___ .\n→ 주어는 color(단수)지 chairs가 아니다.\neach·every·neither·the number of처럼 주어 앞에 수량 표현이 붙어 수가 정해지는 경우는 g16(수량 표현)에서 다룬다.",
     toeicPattern: "주어와 빈칸 사이에 of, in, with로 시작하는 덩어리가 길게 끼어 있으면 이 유형이다. 그 덩어리를 손으로 가리고 진짜 주어를 찾아라."
   },
   {
@@ -60,8 +58,8 @@ window.GRAMMAR = [
       ["과거진행", "was working", "when + 과거 문장 (단순과거와도 쓰임)"]
     ] },
     examples: [
-      { good: "I worked there last year.", bad: "I have worked there last year.", note: "last year가 있으면 현재완료를 쓸 수 없다" },
-      { good: "I have worked here for three years.", bad: "I work here for three years.", note: "for + 기간, 과거부터 지금까지 이어짐" },
+      { good: "I visited Paris last year.", bad: "I have visited Paris last year.", note: "last year가 있으면 현재완료를 쓸 수 없다" },
+      { good: "I have taught here for three years.", bad: "I teach here for three years.", note: "for + 기간, 과거부터 지금까지 이어짐" },
       { good: "He will call you tomorrow.", bad: "He called you tomorrow.", note: "tomorrow는 미래" }
     ],
     trap: "since + 시점(~이래로)은 현재완료와 짝을 이룬다. for + 기간은 지금까지 이어지면 현재완료, 과거에 끝났으면 과거형이다.\n(접속사 since '~때문에'는 다른 쓰임이다. g07 참고)",
@@ -77,9 +75,9 @@ window.GRAMMAR = [
       ["수동 완료", "has been sent", "—"]
     ] },
     examples: [
-      { good: "The package was delivered yesterday.", bad: "The package delivered yesterday.", note: "소포는 배달되는 쪽" },
-      { good: "They delivered the package.", bad: "They were delivered the package.", note: "사람은 배달하는 쪽" },
-      { good: "The report will be reviewed.", bad: "The report will review.", note: "보고서는 검토되는 쪽" }
+      { good: "The windows were cleaned this morning.", bad: "The windows cleaned this morning.", note: "창문은 닦이는 쪽" },
+      { good: "They painted the lobby.", bad: "They were painted the lobby.", note: "사람은 칠하는 쪽" },
+      { good: "The garden will be watered tonight.", bad: "The garden will water tonight.", note: "정원은 물을 받는 쪽" }
     ],
     trap: "가장 빠른 판별법은 빈칸 뒤를 보는 것이다.\n빈칸 뒤에 목적어(명사)가 있으면 능동, 없으면 수동일 확률이 높다.",
     toeicPattern: "선택지에 announce / announced / was announced / announcing이 섞여 있으면 이 유형이다. 해석보다 빈칸 뒤에 명사가 있는지부터 확인하라."
@@ -95,12 +93,12 @@ window.GRAMMAR = [
     ] },
     examples: [
       { good: "I want to go.", bad: "I want going.", note: "want 뒤에는 to부정사" },
-      { good: "We recommend taking the earlier train.", bad: "We recommend to take the earlier train.", note: "recommend 뒤에는 to부정사가 바로 못 온다" },
-      { good: "She finished writing the report.", bad: "She finished to write the report.", note: "finish 뒤에는 -ing" },
-      { good: "She is responsible for training new staff.", bad: "She is responsible for train new staff.", note: "전치사 for 뒤에 동사가 오면 -ing" },
-      { good: "Please remember to send the invoice tomorrow.", bad: "Please remember sending the invoice tomorrow.", note: "앞으로 할 일은 remember to. remember -ing는 이미 한 일이다 (I remember sending it yesterday.)" },
+      { good: "We recommend wearing comfortable shoes.", bad: "We recommend to wear comfortable shoes.", note: "recommend 뒤에는 to부정사가 바로 못 온다" },
+      { good: "He finished cleaning the kitchen.", bad: "He finished to clean the kitchen.", note: "finish 뒤에는 -ing" },
+      { good: "He is in charge of ordering supplies.", bad: "He is in charge of order supplies.", note: "전치사 of 뒤에 동사가 오면 -ing" },
+      { good: "Please remember to lock the door tonight.", bad: "Please remember locking the door tonight.", note: "앞으로 할 일은 remember to. remember -ing는 이미 한 일이다 (I remember locking it last night.)" },
       { good: "We stopped printing the catalog, so it is now online only.", bad: "We stopped to print the catalog, so it is now online only.", note: "stop -ing는 '~하던 것을 그만두다', stop to는 '~하려고 멈추다'" },
-      { good: "Reviewing the contract took two hours.", bad: "Review the contract took two hours.", note: "주어 자리에는 동사원형을 쓸 수 없다" }
+      { good: "Painting the fence took all weekend.", bad: "Paint the fence took all weekend.", note: "주어 자리에는 동사원형을 쓸 수 없다" }
     ],
     trap: "이 표는 '빈칸 바로 뒤'에 무엇이 오는지를 가리는 기준이다. that절처럼 다른 구조를 따로 갖는 동사도 있다.\n전치사 뒤에 동사가 오면 -ing다. 특히 to가 전치사인 표현에 주의한다. 이때 to 뒤에 동사원형을 쓰면 틀린다.\nlook forward to / be used to / be committed to / be opposed to / in addition to / contribute to\nI look forward to meeting you. (to meet ❌)\nbe used to -ing(~에 익숙하다)와 used to + 동사원형(과거에 ~했다)은 다른 표현이다.\n단 let·make·have + 목적어 뒤에는 동사원형이 온다. Please let me know. (to know ❌)\nneed처럼 -ing도 가능한 동사가 있다. The car needs washing.",
     toeicPattern: "빈칸 앞을 먼저 본다. 전치사면 -ing, 동사면 그 동사가 어느 쪽을 받는지 표에서 찾는다. 선택지는 send / sends / sending / to send처럼 한 동사의 네 형태로 나온다.\nlook forward to, be committed to처럼 to가 전치사인 경우는 뒤에 -ing가 오므로 따로 외워야 한다. Part 6 이메일 맺음말의 단골이다."
@@ -115,8 +113,8 @@ window.GRAMMAR = [
     ] },
     examples: [
       { good: "The meeting is on Monday.", bad: "The meeting is in Monday.", note: "요일은 on" },
-      { good: "Please finish it by Friday.", bad: "Please finish it until Friday.", note: "by는 마감, until은 계속" },
-      { good: "I waited for two hours.", bad: "I waited during two hours.", note: "for + 숫자 기간" }
+      { good: "Please return the key by noon.", bad: "Please return the key until noon.", note: "by는 마감, until은 계속" },
+      { good: "The flight was delayed for three hours.", bad: "The flight was delayed during three hours.", note: "for + 숫자 기간" }
     ],
     trap: "by와 until을 구분하라.\nby 5 = 5시 전까지 끝내라 (마감)\nuntil 5 = 5시까지 계속하라 (지속)\n뜻이 완전히 다르다.",
     toeicPattern: "빈칸 뒤 명사를 보고 고른다. 숫자 기간(two weeks)이면 for, 사건이나 기간을 가리키는 명사(the meeting, the holidays)면 during이다."
@@ -130,9 +128,9 @@ window.GRAMMAR = [
       ["~하는 동안", "while", "during"]
     ] },
     examples: [
-      { good: "We canceled it because it rained.", bad: "We canceled it because of it rained.", note: "뒤에 주어+동사 → 접속사" },
-      { good: "We canceled it because of the rain.", bad: "We canceled it because the rain.", note: "뒤에 명사만 → 전치사" },
-      { good: "Although he was late, he finished.", bad: "Despite he was late, he finished.", note: "despite 뒤에는 문장이 못 온다" }
+      { good: "We stayed inside because it was cold.", bad: "We stayed inside because of it was cold.", note: "뒤에 주어+동사 → 접속사" },
+      { good: "We stayed inside because of the cold.", bad: "We stayed inside because the cold.", note: "뒤에 명사만 → 전치사" },
+      { good: "Although the sofa was cheap, nobody bought it.", bad: "Despite the sofa was cheap, nobody bought it.", note: "despite 뒤에는 문장이 못 온다" }
     ],
     trap: "despite of는 존재하지 않는 표현이다. despite 또는 in spite of 둘 중 하나만 쓴다.\n\n접속사 뒤에서 '주어 + be동사'가 생략되면 -ing나 p.p.가 바로 온다.\np.p.가 바로 오면 접속사다. although delayed (although it was delayed), despite delayed ❌\n-ing는 전치사 뒤에도 올 수 있으니 짝을 봐라. while waiting ⭕ / during waiting ❌ / despite being late ⭕",
     toeicPattern: "빈칸 뒤를 보고 1초 만에 가른다. 주어+동사가 보이면 접속사, 명사만 보이면 전치사. Part 5에서 품사 자리 다음으로 많이 나온다."
@@ -146,9 +144,9 @@ window.GRAMMAR = [
       ["공통", "that", "that", "—"]
     ] },
     examples: [
-      { good: "The man who called you is here.", bad: "The man which called you is here.", note: "사람 → who" },
-      { good: "the report that I sent", bad: "the report what I sent", note: "what은 앞에 명사를 못 둔다" },
-      { good: "the company whose office is downtown", bad: "the company which office is downtown", note: "소유 관계 → whose" }
+      { good: "The woman who interviewed me was kind.", bad: "The woman which interviewed me was kind.", note: "사람 → who" },
+      { good: "the photos that she took", bad: "the photos what she took", note: "what은 앞에 명사를 못 둔다" },
+      { good: "the author whose book won the prize", bad: "the author which book won the prize", note: "소유 관계 → whose" }
     ],
     trap: "순서대로 가른다.\n① 빈칸 뒤에 명사가 바로 오고 소유 관계면 whose\n② 그렇지 않고 뒤에 주어가 없으면 주격 (who / which / that)\n③ 뒤에 주어가 있으면 목적격이고, 이때는 생략할 수 있다\n   the report (that) I sent",
     toeicPattern: "빈칸 뒤부터 본다. 동사가 바로 오면 주격, '주어 + 동사'인데 목적어가 빠져 있으면 목적격, '명사 + 동사'로 문장이 완전하고 그 명사가 앞 명사의 것이면 whose다. 그다음 앞 명사가 사람인지 사물인지로 who와 which를 가른다."
@@ -164,7 +162,7 @@ window.GRAMMAR = [
     examples: [
       { good: "She gave it to me.", bad: "She gave it to I.", note: "전치사 뒤 → 목적격" },
       { good: "This book is mine.", bad: "This book is my.", note: "뒤에 명사가 없으면 소유대명사" },
-      { good: "He did it himself.", bad: "He did it him.", note: "주어와 같은 대상 → 재귀대명사" }
+      { good: "She fixed the printer herself.", bad: "She fixed the printer her.", note: "주어와 같은 대상 → 재귀대명사" }
     ],
     trap: "its와 it's를 구분하라.\nits = 그것의 (소유격)\nit's = it is의 줄임\n아포스트로피가 있으면 it is다. 위 ①~④로 풀리지 않고 '~이다'로 해석되면 it's를 의심하라.\nIt's a good idea. (It is a good idea.)",
     toeicPattern: "순서대로 보면 된다.\n① 빈칸 바로 뒤에 관사(a/the) 없이 명사가 오면 소유격 (my, its, their)\n② 목적어가 주어와 같은 사람이면 재귀대명사 (himself)\n③ 그 밖에 주어 자리면 주격, 동사·전치사의 목적어 자리면 목적격 (be동사 뒤는 목적어가 아니다)\n④ 명사 없이 '~의 것'을 뜻하면 소유대명사 (mine, theirs)"
@@ -182,12 +180,12 @@ window.GRAMMAR = [
       ["배수", "배수 + as + 원급 + as: twice as large as"]
     ] },
     examples: [
-      { good: "This is cheaper than that.", bad: "This is more cheap than that.", note: "짧은 단어는 -er" },
+      { good: "This bag is lighter than that one.", bad: "This bag is more light than that one.", note: "짧은 단어는 -er" },
       { good: "the most efficient method", bad: "the efficientest method", note: "긴 단어는 most" },
-      { good: "as soon as possible", bad: "as soon as possibly", note: "as soon as possible은 통째로 외우는 표현이다. possibly(부사)는 들어가지 않는다." },
-      { good: "The new system is much faster than the old one.", bad: "The new system is very faster than the old one.", note: "비교급 강조는 much·far·even·still·a lot" },
-      { good: "Sales were twice as high as expected.", bad: "Sales were twice as higher as expected.", note: "as ~ as 사이에는 원급" },
-      { good: "Our best seller is the desk lamp.", bad: "Our the best seller is the desk lamp.", note: "소유격이 있으면 최상급 앞에 the를 쓰지 않는다" }
+      { good: "Please arrive as early as you can.", bad: "Please arrive as earlier as you can.", note: "as ~ as 사이에는 비교급이 아니라 원급이 온다" },
+      { good: "This year's budget is much larger than last year's.", bad: "This year's budget is very larger than last year's.", note: "비교급 강조는 much·far·even·still·a lot" },
+      { good: "This warehouse is three times as large as our first one.", bad: "This warehouse is three times as larger as our first one.", note: "배수 + as + 원급 + as" },
+      { good: "Our biggest customer is a local hospital.", bad: "Our the biggest customer is a local hospital.", note: "소유격이 있으면 최상급 앞에 the를 쓰지 않는다" }
     ],
     trap: "than이 보이면 비교급, the와 in/of + 범위나 ever가 보이면 최상급이다. 이게 1순위 단서다. 단 rather than, other than의 than은 비교급과 관계가 없다.\n비교급을 강조할 때는 very를 쓰지 않는다.\nmuch better / far better / even better / still better / a lot better (⭕)\nvery better (❌)\n-er과 more를 겹쳐 쓰지 않는다. more cheaper (❌)\n최상급 앞에 소유격이 오면 the를 쓰지 않는다. our best seller (⭕) / our the best seller (❌)\nas ~ as 사이에는 비교급이 아니라 원급이 온다. as cheaper as (❌)",
     toeicPattern: "선택지가 cheap / cheaper / cheapest / cheaply처럼 한 단어의 네 형태로 나온다. than이 있으면 cheaper, the와 in/of가 있으면 cheapest, 동사를 꾸미는 자리면 cheaply다.\n비교급 강조 자리에는 very를 넣은 오답이 거의 항상 하나 들어 있다."
@@ -201,8 +199,8 @@ window.GRAMMAR = [
       ["과거 사실의 반대", "If + had p.p.", "would have p.p."]
     ] },
     examples: [
-      { good: "If it rains tomorrow, we will cancel.", bad: "If it will rain tomorrow, we will cancel.", note: "조건의 if절 안에는 will을 쓰지 않는다" },
-      { good: "If I had time, I would help you.", bad: "If I have time, I would help you.", note: "현재 사실의 반대 → 과거형" },
+      { good: "If the bus is late, we will call a taxi.", bad: "If the bus will be late, we will call a taxi.", note: "조건의 if절 안에는 will을 쓰지 않는다" },
+      { good: "If we had a bigger budget, we would hire more staff.", bad: "If we have a bigger budget, we would hire more staff.", note: "현재 사실의 반대 → 과거형" },
       { good: "If I had known, I would have told you.", bad: "If I knew, I would have told you.", note: "과거 사실의 반대 → had p.p." }
     ],
     trap: "조건을 뜻하는 if절 안에는 will을 쓰지 않는다. 미래를 말하더라도 현재형을 쓴다.\n단 '~인지'라는 뜻의 if는 조건이 아니라서 will이 올 수 있다.\nLet me know if he will come. (그가 올지 알려주세요)",
@@ -218,8 +216,8 @@ window.GRAMMAR = [
       ["간접의문문 (의문사가 주어)", "의문사 + 동사 — Do you know who called?"]
     ] },
     examples: [
-      { good: "She is always late.", bad: "She always is late.", note: "be동사 뒤" },
-      { good: "Do you know where he is?", bad: "Do you know where is he?", note: "문장 안에 들어가면 평서문 어순" },
+      { good: "She is usually busy on Mondays.", bad: "She usually is busy on Mondays.", note: "be동사 뒤" },
+      { good: "We asked how long the repair would last.", bad: "We asked how long would the repair last.", note: "문장 안에 들어가면 평서문 어순" },
       { good: "I am ready.", bad: "I ready.", note: "형용사 앞에는 be동사가 필요하다" }
     ],
     trap: "한국어는 주어나 동사를 생략해도 말이 되지만 영어는 안 된다.\n말하기 전에 '내 문장에 동사가 있나'를 확인하는 습관을 들여라.",
@@ -240,8 +238,8 @@ window.GRAMMAR = [
     examples: [
       { good: "The technician will inspect the machine tomorrow.", bad: "The technician will inspects the machine tomorrow.", note: "will 뒤 → 동사원형 (inspects ❌ / inspecting ❌)" },
       { good: "All employees must be present at the briefing.", bad: "All employees must are present at the briefing.", note: "be동사도 원형 be를 쓴다" },
-      { good: "The report should have been submitted last week.", bad: "The report should be submitted last week.", note: "조동사 + have p.p. = 과거에 했어야 했는데 안 했다" },
-      { good: "We will review the contract and send you a copy.", bad: "We will review the contract and sends you a copy.", note: "and 뒤도 will을 함께 쓰는 병렬이라 원형 send" }
+      { good: "The invoice should have been paid yesterday.", bad: "The invoice should be paid yesterday.", note: "조동사 + have p.p. = 과거에 했어야 했는데 안 했다" },
+      { good: "The hotel will clean the room and change the towels.", bad: "The hotel will clean the room and changes the towels.", note: "and 뒤도 will을 함께 쓰는 병렬이라 원형 change" }
     ],
     trap: "조동사 두 개를 연달아 쓸 수 없다.\nwill can ❌ → will be able to ⭕ / will must ❌ → will have to ⭕\nhave to는 조동사가 아니라 일반동사라 주어에 따라 변한다 (He has to go). 그래서 조동사 뒤에도 올 수 있고, must 대신 has to를 쓸 수도 있다.\n수동태도 원형이 먼저 온다. will be delivered ⭕ / will is delivered ❌\n여기서 말하는 조동사는 will·can·should·must 같은 말이다. 완료의 have, 진행·수동의 be 뒤에는 원형이 아니라 p.p.나 -ing가 온다. (has been sent, is undergoing)",
     toeicPattern: "Part 5: 빈칸 앞에 will·should·must·may가 보이면 선택지에서 원형을 고른다. 선택지가 inspect / inspects / inspecting / to inspect처럼 한 동사의 네 형태로 나온다.\nPart 6: will A and ____ B 형태의 병렬. 앞의 조동사를 찾아 원형으로 맞춘다."
@@ -262,13 +260,13 @@ window.GRAMMAR = [
       ["between A and B", "A와 B 사이", "짝 — between은 전치사지만 같이 외운다"]
     ] },
     examples: [
-      { good: "Submit the form by Friday, or your application will not be considered.", bad: "Submit the form by Friday, and your application will not be considered.", note: "명령문, or ~ = 그러지 않으면 (경고의 or)" },
+      { good: "Leave now, or you will miss the bus.", bad: "Leave now, and you will miss the bus.", note: "명령문, or ~ = 그러지 않으면 (경고의 or)" },
       { good: "You may pay by credit card or in cash.", bad: "You may pay by credit card nor in cash.", note: "둘 중 하나를 고르는 선택 → or. nor는 앞이 부정문일 때" },
-      { good: "Both the manager and the assistant attended.", bad: "Both the manager or the assistant attended.", note: "both는 and와 짝" },
+      { good: "Both the café and the gym are open on Sundays.", bad: "Both the café or the gym are open on Sundays.", note: "both는 and와 짝" },
       { good: "She speaks neither French nor German.", bad: "She speaks neither French or German.", note: "neither는 nor와 짝" },
-      { good: "Not only the price but also the delivery time has improved.", bad: "Not only the price and also the delivery time has improved.", note: "not only는 but also와 짝. 동사는 B(the delivery time)에 맞춘다" }
+      { good: "Not only the hotel but also the restaurants were fully booked.", bad: "Not only the hotel and also the restaurants were fully booked.", note: "not only는 but also와 짝. 동사는 B(the restaurants)에 맞춘다" }
     ],
-    trap: "짝을 섞으면 안 된다. either ... nor ❌ / neither ... or ❌\n수 일치가 짝마다 다르다.\nboth A and B는 복수 동사 (Both the printer and the scanner have been repaired.)\neither A or B / neither A nor B / not only A but also B는 B에 맞춘다 (Neither the supervisor nor the technicians are available.)\n단 nor 없이 쓰는 neither는 g02 규칙대로 단수다. Neither of the proposals was approved. / Neither proposal was approved.\nbetween A and B의 and를 or로 바꿀 수 없다.",
+    trap: "짝을 섞으면 안 된다. either ... nor ❌ / neither ... or ❌\n수 일치가 짝마다 다르다.\nboth A and B는 복수 동사 (Both the printer and the scanner have been repaired.)\neither A or B / neither A nor B / not only A but also B는 B에 맞춘다 (Neither the supervisor nor the technicians are available.)\n단 nor 없이 쓰는 neither는 g16(수량 표현) 규칙대로 단수다. Neither of the proposals was approved. / Neither proposal was approved.\nbetween A and B의 and를 or로 바꿀 수 없다.",
     toeicPattern: "빈칸 앞에 either·neither·not only·both가 보이면 짝을 찾는 문제다. 뜻을 읽지 않고 짝만 보고 고를 수 있으니 이것부터 확인한다.\n짝 신호가 없고 선택지가 and / but / or / nor 네 개면 문법 문제가 아니라 뜻 문제다. 앞뒤 절이 같은 방향인지 뒤집히는지를 먼저 본다."
   },
   {
@@ -284,12 +282,12 @@ window.GRAMMAR = [
       ["전치사처럼 굳은 분사","given, including, following, regarding + 명사","Given the delay, we rescheduled the launch."]
     ] },
     examples: [
-      { good: "Please see the attached schedule.", bad: "Please see the attaching schedule.", note: "일정은 첨부되는 쪽 → p.p." },
+      { good: "Please check the enclosed form.", bad: "Please check the enclosing form.", note: "양식은 동봉되는 쪽 → p.p." },
       { good: "The rising cost of fuel cut into our margins.", bad: "The risen cost of fuel cut into our margins.", note: "비용은 오르는 쪽 → -ing" },
-      { good: "The employees attending the workshop will meet in Room 2.", bad: "The employees attended the workshop will meet in Room 2.", note: "직원이 참석하는 쪽이고 뒤에 목적어(the workshop)가 있다 → -ing" },
-      { good: "All applications received after Friday will not be considered.", bad: "All applications receiving after Friday will not be considered.", note: "지원서는 접수되는 쪽 → p.p. (which are) received가 줄어든 형태" },
-      { good: "Having completed the training, she started work on Monday.", bad: "Having completed the training, the work started on Monday.", note: "분사구문의 숨은 주어는 주절의 주어(she)와 같아야 한다" },
-      { good: "The results were disappointing, and the team was disappointed.", bad: "The results were disappointed, and the team was disappointing.", note: "사물·일은 -ing, 사람은 p.p." }
+      { good: "Visitors entering the lab must wear safety glasses.", bad: "Visitors entered the lab must wear safety glasses.", note: "방문객이 들어가는 쪽이고 뒤에 목적어(the lab)가 있다 → -ing" },
+      { good: "Orders placed before noon ship the same day.", bad: "Orders placing before noon ship the same day.", note: "주문은 접수되는 쪽 → p.p. (which are) placed가 줄어든 형태" },
+      { good: "Having read the instructions, the children built the tent.", bad: "Having read the instructions, the tent was built.", note: "분사구문의 숨은 주어는 주절의 주어(the children)와 같아야 한다" },
+      { good: "The news was surprising, and the staff were surprised.", bad: "The news was surprised, and the staff were surprising.", note: "사물·일은 -ing, 사람은 p.p." }
     ],
     trap: "명사 앞의 -ing와 p.p.는 그 명사가 하는 쪽인지 당하는 쪽인지로 가른다. 뜻이 아니라 관계로 판단한다. 빈칸 뒤에 목적어가 있으면 -ing라는 g04의 기준도 그대로 통한다.\n단 waiting room, training session, accounting department처럼 '~하는 용도'를 뜻하는 -ing는 분사가 아니라 명사 앞에 붙은 동명사다. 이때는 관계로 가르지 않는다.\n감정을 나타내는 동사(interest, excite, surprise, disappoint, satisfy, impress)는 사물·일에 -ing, 사람에 p.p.를 쓴다. an exciting offer / excited customers\n분사구문의 숨은 주어는 주절의 주어와 같다. 다르면 분사구문을 쓸 수 없다.\n단 given, including, following, regarding은 전치사처럼 굳어서 이 규칙을 따르지 않는다. Given the delay, we rescheduled. (지연을 고려해)\n명사 뒤에서 꾸밀 때는 관계대명사 + be동사가 생략된 것이다. the report (which was) submitted last week",
     toeicPattern: "관사와 명사 사이는 형용사 자리다(g01). 선택지에 -ing와 p.p.가 함께 있으면 꾸밈 받는 명사가 하는 쪽인지 당하는 쪽인지로 고른다. 선택지는 attach / attached / attaching / attachment처럼 나온다.\n문장 맨 앞이 콤마로 끊기면 분사구문이다. 주절의 주어를 보고 능동인지 수동인지 고른다."
@@ -305,11 +303,11 @@ window.GRAMMAR = [
       ["둘 중에서 (단수 명사)","either, neither","either option"]
     ] },
     examples: [
-      { good: "Many applicants submitted résumés.", bad: "Much applicants submitted résumés.", note: "applicants는 셀 수 있는 복수 → many" },
-      { good: "We do not have much time.", bad: "We do not have many time.", note: "time은 셀 수 없음 → much" },
-      { good: "Each employee receives a badge.", bad: "Each employees receive a badge.", note: "each 뒤는 단수 명사 + 단수 동사" },
-      { good: "A few rooms are still available.", bad: "A little rooms are still available.", note: "a few는 셀 수 있는 명사에 붙고 '몇 개 있다'. Few rooms are available.은 '거의 없다'" },
-      { good: "A number of items were damaged.", bad: "A number of items was damaged.", note: "a number of(많은)는 복수 동사. The number of items was small.은 '수 그 자체'라 단수" }
+      { good: "Many guests left positive reviews.", bad: "Much guests left positive reviews.", note: "guests는 셀 수 있는 복수 → many" },
+      { good: "We do not have much space in the van.", bad: "We do not have many space in the van.", note: "space(공간)는 셀 수 없음 → much" },
+      { good: "Each room has a coffee maker.", bad: "Each rooms have a coffee maker.", note: "each 뒤는 단수 명사 + 단수 동사" },
+      { good: "A few seats are left for the evening show.", bad: "A little seats are left for the evening show.", note: "a few는 셀 수 있는 명사에 붙고 '몇 개 있다'. Few seats are left.는 '거의 없다'" },
+      { good: "A number of trucks are waiting at the gate.", bad: "A number of trucks is waiting at the gate.", note: "a number of(많은)는 복수 동사. The number of trucks is small.은 '수 그 자체'라 단수" }
     ],
     trap: "a few / a little(약간 있다)과 few / little(거의 없다)은 뜻이 반대다. a가 붙으면 긍정이다.\neach, every, another 뒤에는 단수 명사가 오고 동사도 단수다. each of the + 복수 명사도 동사는 단수다. Each of the applicants is required ... (are ❌)\na number of + 복수 명사는 복수 동사, the number of + 복수 명사는 단수 동사다. the가 붙으면 '수 그 자체'라서 단수다.\neither, neither 뒤에 바로 명사나 of가 오면 이 유형이고 단수 취급한다. Neither of the proposals was approved. 뒤에 or / nor가 이어지는 either A or B, neither A nor B는 상관 접속사(g14)라서 동사를 B에 맞춘다.\n셀 수 있는 명사의 비교는 fewer, 셀 수 없는 명사는 less다. fewer complaints / less paperwork. 단 less + 형용사(less expensive)는 비교급(g10)이다.",
     toeicPattern: "빈칸 뒤 명사가 단수인지 복수인지 셀 수 없는지를 먼저 본다. 선택지가 much / many / few / every처럼 수량 표현 넷이면 이 유형이다.\na number of / the number of, each of처럼 수량 표현이 주어에 붙으면 동사의 수까지 함께 묻는다. 선택지가 is / are처럼 동사로만 나와도 주어 앞의 수량 표현부터 본다."

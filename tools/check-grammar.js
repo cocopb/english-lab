@@ -27,7 +27,8 @@ var failures = {
   missingBlank: [],
   duplicateIds: [],
   missingExplanation: [],
-  duplicateChoices: []
+  duplicateChoices: [],
+  exampleOverlap: []
 };
 var seenIds = Object.create(null);
 
@@ -62,6 +63,90 @@ questions.forEach(function (question, index) {
   }
 });
 
+// ---------------------------------------------------------------------------
+// 노트 예문 ↔ 문항 중복: 노트 예문(good·bad)이 같은 유형 문항과 지나치게 비슷하면 실패.
+// 노트를 읽은 직후 그 유형을 풀면 외운 문장으로 맞혀서 유형별 정답률이 실제보다 높게 나오기 때문이다.
+// 문항은 빈칸에 정답을 채운 문장으로 비교한다. 아래 셋 중 하나라도 해당하면 겹친 것으로 본다.
+//  1) 내용어: 기능어·숫자를 빼고 어미(-s/-es/-ed/-ing)를 뗀 단어가 2개 이상, 짧은 쪽의 50% 이상 같다
+//  2) 문장 틀: 연속 3단어 묶음이 2개 이상, 짧은 쪽의 50% 이상 같다 (기능어가 많은 짧은 문장용)
+//  3) 정답 노출: 정답의 내용어가 예문에 같은 형태로 나온다.
+//     정답이 기능어뿐이면(in, much, a 등) 정답에 붙은 내용어까지 같은 2단어로 나올 때만 (much time 등)
+// 다른 유형 문항과 겹치는 것은 정답이 다르므로 실패로 보지 않고 경고로만 알린다.
+// ---------------------------------------------------------------------------
+var OVERLAP_STOP_WORDS = new Set(("a an the is are was were be been being am to of in on at for with by from and or but nor so than as " +
+  "that this these those it its i you he she we they me him her us them my your his our their mine yours hers ours theirs " +
+  "will would can could should must may might shall do does did have has had not no very too much more most less least " +
+  "please there here if when what where who which whose whom all each every any some many few little both either neither " +
+  "one ones another other also just only even still far yet already ever never well about into after before during until " +
+  "since because although while though despite up out off over under again then now " +
+  // a number of / the number of의 number는 문법 표현의 일부라 소재로 보지 않는다
+  "number").split(" "));
+function overlapTokens(text) {
+  return String(text).toLowerCase().replace(/[^a-z' ]/g, " ").split(/\s+/).filter(Boolean);
+}
+function overlapStem(word) {
+  return word.length <= 4 ? word : word.replace(/(ing|ed|es|s)$/, "").replace(/e$/, "");
+}
+function isContentWord(word) { return !OVERLAP_STOP_WORDS.has(word) && word.length > 1; }
+function contentWords(text) { return new Set(overlapTokens(text).filter(isContentWord).map(overlapStem)); }
+function wordGrams(tokens, size) {
+  var grams = new Set();
+  for (var start = 0; start + size <= tokens.length; start++) grams.add(tokens.slice(start, start + size).join(" "));
+  return grams;
+}
+function sharedItems(left, right) { return Array.from(left).filter(function (item) { return right.has(item); }); }
+function shorterRatio(count, left, right) { return count / Math.max(1, Math.min(left.size, right.size)); }
+
+function exampleOverlapReasons(sentence, question) {
+  var answerText = question.choices[question.answer];
+  var full = question.question.replace(/_{2,}/, answerText);
+  var reasons = [];
+  var leftWords = contentWords(sentence), rightWords = contentWords(full), words = sharedItems(leftWords, rightWords);
+  if (words.length >= 2 && shorterRatio(words.length, leftWords, rightWords) >= 0.5) {
+    reasons.push("내용어 " + words.length + "개 겹침(" + words.join(", ") + ")");
+  }
+  var sentenceTokens = overlapTokens(sentence), fullTokens = overlapTokens(full);
+  var leftGrams = wordGrams(sentenceTokens, 3), rightGrams = wordGrams(fullTokens, 3), grams = sharedItems(leftGrams, rightGrams);
+  if (grams.length >= 2 && shorterRatio(grams.length, leftGrams, rightGrams) >= 0.5) {
+    reasons.push("문장 틀 겹침(" + grams.join(" | ") + ")");
+  }
+  var answerTokens = overlapTokens(answerText);
+  var sentenceText = " " + sentenceTokens.join(" ") + " ";
+  if (answerTokens.length && sentenceText.indexOf(" " + answerTokens.join(" ") + " ") !== -1) {
+    if (answerTokens.some(isContentWord)) {
+      reasons.push("정답 \"" + answerText + "\"이 예문에 그대로 나옴");
+    } else {
+      // 문항에서 정답 바로 앞뒤 단어와 붙은 2단어 묶음 중 내용어가 든 것이 예문에도 있는지
+      var blankIndex = overlapTokens(question.question.replace(/_{2,}/, " zzblank ")).indexOf("zzblank");
+      var before = blankIndex > 0 ? fullTokens[blankIndex - 1] : null;
+      var after = fullTokens[blankIndex + answerTokens.length];
+      var pairs = [];
+      if (before && isContentWord(before)) pairs.push(before + " " + answerTokens.join(" "));
+      if (after && isContentWord(after)) pairs.push(answerTokens.join(" ") + " " + after);
+      var hit = pairs.filter(function (pair) { return sentenceText.indexOf(" " + pair + " ") !== -1; });
+      if (hit.length) reasons.push("정답과 붙은 표현 \"" + hit.join(", ") + "\"이 예문에 그대로 나옴");
+    }
+  }
+  return reasons;
+}
+
+var crossOverlapWarnings = [];
+topics.forEach(function (topic) {
+  (topic.examples || []).forEach(function (example, index) {
+    ["good", "bad"].forEach(function (kind) {
+      if (typeof example[kind] !== "string") return;
+      questions.forEach(function (question) {
+        if (!Array.isArray(question.choices) || typeof question.question !== "string") return;
+        var reasons = exampleOverlapReasons(example[kind], question);
+        if (!reasons.length) return;
+        var entry = { note: topic.id, example: index + 1, kind: kind, sentence: example[kind], question: question.id, ruleId: question.ruleId, reasons: reasons.join(" / ") };
+        if (question.ruleId === topic.id) failures.exampleOverlap.push(entry);
+        else crossOverlapWarnings.push(entry);
+      });
+    });
+  });
+});
+
 var failureCount = Object.keys(failures).reduce(function (total, key) {
   return total + failures[key].length;
 }, 0);
@@ -78,6 +163,12 @@ Object.keys(failures).forEach(function (key) {
   failures[key].forEach(function (failure) {
     console.log("  " + JSON.stringify(failure));
   });
+});
+console.log("\nexampleOverlapOtherRule — 경고 (" + crossOverlapWarnings.length + ")");
+if (!crossOverlapWarnings.length) console.log("  없음");
+crossOverlapWarnings.forEach(function (warning) {
+  console.log("  ⚠ " + warning.note + " 예문" + warning.example + "(" + warning.kind + ") \"" + warning.sentence + "\" ↔ " +
+    warning.question + "[" + warning.ruleId + "] — " + warning.reasons);
 });
 
 // ---------------------------------------------------------------------------
