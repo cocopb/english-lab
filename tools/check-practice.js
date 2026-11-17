@@ -759,7 +759,12 @@ check('미니 모의고사 기록 표에는 100문항 응시가 없음', h.byId(
 
 // --- 5. 데이터가 모자라면 오류를 띄우고 세트를 만들지 않는다 ---
 console.log('\n[RC 풀세트 — 데이터 부족]');
-const short = loadPracticePage({ mutate: w => { w.PASSAGES = w.PASSAGES.filter(p => p.id !== 'rp30'); } });
+// 5문항 이중 지문을 첫 번째 하나만 남긴다 (지문이 늘어나도 항상 1개가 되게).
+const isFiveDouble = p => Array.isArray(p.parts) && p.parts.length === 2 && p.questions.length === 5;
+const short = loadPracticePage({ mutate: w => {
+  const keep = w.PASSAGES.find(isFiveDouble);
+  w.PASSAGES = w.PASSAGES.filter(p => !isFiveDouble(p) || p === keep);
+} });
 const startedShort = startFull(short);
 const errorPanel = short.stage.querySelector('.practice-full-error');
 check('5문항 이중 지문이 1개면 오류 표시', !startedShort && !!errorPanel && errorPanel.textContent.includes('이중 지문') && errorPanel.textContent.includes('필요 2개, 현재 1개'),

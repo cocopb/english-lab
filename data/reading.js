@@ -1035,6 +1035,201 @@ window.PASSAGES = [
       { q: "What does Mr. Ivanov say his customers ask about?", choices: ["The retail price", "Battery life", "Repair services", "Color options"], answer: 1, explanation: "Our customers often ask about battery life." },
       { q: "What does Mr. Ivanov hope will happen?", choices: ["The price will be lowered", "A free sample will be sent", "The units will arrive by October 1", "The order will be delivered in three parts"], answer: 2, explanation: "연계 문제다. 출하가 시작되는 날에 진열하고 싶다고 했고, 보도자료에서 그날은 10월 1일이다." }
     ]
+  },
+  {
+    id: "rp31", type: "삼중 지문", title: "사무실 이전", strategyId: "r06", recommendedSec: 270,
+    parts: [
+      {
+        label: "지문 1 — 사내 공지",
+        header: ["OFFICE RELOCATION — Fairbrook Analytics"],
+        sentences: [
+          { en: "We will move from 12 Grant Street to the eighth floor of the Keller Building on Friday, August 14.", ko: "8월 14일 금요일에 그랜트가 12번지에서 켈러 빌딩 8층으로 이전합니다." },
+          { en: "Pack your desk by Thursday at 5:00 P.M. and label each box with your name and new room number.", ko: "목요일 오후 5시까지 책상을 정리하고 상자마다 이름과 새 호실 번호를 적어 주세요." },
+          { en: "Monitors and chairs will be moved by the movers; personal items are your responsibility.", ko: "모니터와 의자는 이삿짐 업체가 옮기며, 개인 물품은 본인이 챙기셔야 합니다." },
+          { en: "The office will be closed on August 14, so please work from home that day.", ko: "8월 14일에는 사무실이 닫히니 그날은 재택근무해 주세요." },
+          { en: "Questions: Elena Barros, Facilities.", ko: "문의: 시설팀 엘레나 바로스." }
+        ]
+      },
+      {
+        label: "지문 2 — 이사 견적서",
+        header: ["MOVING ESTIMATE — Caldwell Movers"],
+        sentences: [
+          { en: "Client: Fairbrook Analytics | Date of move: August 14", ko: "고객: 페어브룩 애널리틱스 | 이사 날짜: 8월 14일" },
+          { en: "Packing boxes (120): $240", ko: "포장 상자 (120개): 240달러" },
+          { en: "Labor, four movers, eight hours: $1,600", ko: "인건비, 작업자 4명, 8시간: 1,600달러" },
+          { en: "Truck and fuel: $350", ko: "트럭과 연료: 350달러" },
+          { en: "Furniture disassembly and setup: $400", ko: "가구 분해 및 설치: 400달러" },
+          { en: "Subtotal: $2,590", ko: "소계: 2,590달러" },
+          { en: "Weekend surcharge, added only if the move takes place on a Saturday or Sunday: $300", ko: "주말 추가 요금, 토요일이나 일요일에 이사할 경우에만 부과: 300달러" },
+          { en: "This estimate is valid for thirty days.", ko: "이 견적서는 30일간 유효합니다." }
+        ]
+      },
+      {
+        label: "지문 3 — 직원 이메일",
+        header: ["From: Marcus Oyelaran", "To: Elena Barros", "Subject: Boxes and Friday"],
+        sentences: [
+          { en: "Hi Elena,", ko: "엘레나 씨," },
+          { en: "I will be at a client site all day Thursday, so I cannot pack before the deadline.", ko: "목요일에는 하루 종일 고객사에 있어서 마감 전에 짐을 쌀 수 없습니다." },
+          { en: "Could I come in on Wednesday evening and pack then instead?", ko: "대신 수요일 저녁에 나와서 짐을 싸도 될까요?" },
+          { en: "Also, I counted only about ninety boxes in the supply room.", ko: "그리고 비품실에 상자가 90개 정도밖에 없었습니다." },
+          { en: "One more thing: my new room number is not on the floor plan you sent.", ko: "한 가지 더, 보내주신 평면도에 제 새 호실 번호가 없습니다." },
+          { en: "Thanks, Marcus", ko: "감사합니다. 마커스" }
+        ]
+      }
+    ],
+    vocab: [
+      { w: "relocation", m: "이전" },
+      { w: "label", m: "(이름 등을) 적어 붙이다" },
+      { w: "estimate", m: "견적서" },
+      { w: "surcharge", m: "추가 요금" },
+      { w: "disassembly", m: "분해" }
+    ],
+    questions: [
+      { q: "Why was the office relocation notice written?", choices: ["To announce a change in office hours", "To explain how an office move will work", "To request a budget increase", "To introduce a new facilities manager"], answer: 1, explanation: "이사 날짜, 짐 싸는 방법, 당일 근무 방식을 안내하는 공지다." },
+      { q: "What are employees responsible for?", choices: ["Moving their own monitors", "Packing their personal items", "Hiring the movers", "Reserving the elevator"], answer: 1, explanation: "모니터와 의자는 업체가 옮기고 개인 물품만 본인 책임이다." },
+      { q: "Why will Fairbrook Analytics most likely NOT pay the surcharge?", choices: ["The move is scheduled for a weekday", "The estimate has expired", "The company booked early", "Fewer movers were needed"], answer: 0, explanation: "연계 문제다. 추가 요금은 토·일에 이사할 때만 붙는데, 공지에서 이사 날짜는 금요일이다." },
+      { q: "What does Mr. Oyelaran suggest about the boxes?", choices: ["They are the wrong size", "There are fewer than the estimate lists", "They have already been labeled", "They were delivered to the new office"], answer: 1, explanation: "연계 문제다. 견적서에는 120개인데 이메일에서 90개 정도만 세었다고 했다." },
+      { q: "What does Mr. Oyelaran ask permission to do?", choices: ["Work from home on Thursday", "Pack his desk a day early", "Skip the move entirely", "Choose his own room number"], answer: 1, explanation: "Could I come in on Wednesday evening and pack then instead? 마감인 목요일보다 하루 앞선 수요일이다." }
+    ]
+  },
+  {
+    id: "rp32", type: "삼중 지문", title: "주전자 리콜", strategyId: "r06", recommendedSec: 265,
+    parts: [
+      {
+        label: "지문 1 — 리콜 공고",
+        header: ["SAFETY RECALL — Nordvik Kettles, Model K-220"],
+        sentences: [
+          { en: "Nordvik is recalling all K-220 electric kettles sold between March 1 and July 31.", ko: "노르드빅은 3월 1일부터 7월 31일 사이에 판매된 모든 K-220 전기 주전자를 회수합니다." },
+          { en: "The handle can loosen after repeated use, which may cause hot water to spill.", ko: "반복 사용 후 손잡이가 헐거워져 뜨거운 물이 쏟아질 수 있습니다." },
+          { en: "Stop using the kettle immediately.", ko: "즉시 사용을 중단하십시오." },
+          { en: "Owners may choose a full refund or a free replacement with the newer K-240.", ko: "소유자는 전액 환불이나 신형 K-240으로의 무상 교환 중 선택할 수 있습니다." },
+          { en: "The model number is printed on the base of the kettle.", ko: "모델 번호는 주전자 바닥에 적혀 있습니다." },
+          { en: "To start a claim, call 1-800-555-0119 or visit nordvik.com/recall.", ko: "신청하시려면 1-800-555-0119로 전화하거나 nordvik.com/recall을 방문하세요." }
+        ]
+      },
+      {
+        label: "지문 2 — 고객 이메일",
+        header: ["From: Hana Petrov", "To: support@nordvik.com", "Subject: Recall — K-220"],
+        sentences: [
+          { en: "Hello,", ko: "안녕하세요," },
+          { en: "I bought my kettle in May, and the handle has already become loose.", ko: "5월에 주전자를 샀는데 손잡이가 벌써 헐거워졌습니다." },
+          { en: "I would prefer the replacement rather than a refund, since I am happy with everything else about it.", ko: "다른 점은 모두 만족해서 환불보다 교환을 원합니다." },
+          { en: "I no longer have the receipt. Is the model number enough?", ko: "영수증이 더는 없습니다. 모델 번호만으로 충분한가요?" },
+          { en: "Also, should I send the old kettle back, and who pays for the shipping?", ko: "그리고 기존 주전자를 돌려보내야 하나요? 배송비는 누가 부담하나요?" },
+          { en: "Hana Petrov", ko: "하나 페트로프" }
+        ]
+      },
+      {
+        label: "지문 3 — 고객센터 회신",
+        header: ["From: Nordvik Support", "To: Hana Petrov", "Subject: RE: Recall — K-220"],
+        sentences: [
+          { en: "Dear Ms. Petrov,", ko: "페트로프 님께," },
+          { en: "No receipt is needed; the model number on the base is enough.", ko: "영수증은 필요 없으며, 바닥에 적힌 모델 번호면 충분합니다." },
+          { en: "We will send a K-240 within ten business days.", ko: "영업일 기준 10일 안에 K-240을 보내 드리겠습니다." },
+          { en: "A prepaid return label is included in the box, so there is no cost to you.", ko: "상자 안에 선불 반송 라벨이 들어 있어 고객님 부담은 없습니다." },
+          { en: "Please note that the K-240 uses a different lid, so the old lid cannot be reused.", ko: "K-240은 뚜껑이 달라서 기존 뚜껑은 재사용할 수 없습니다." },
+          { en: "Nordvik Support", ko: "노르드빅 고객센터" }
+        ]
+      }
+    ],
+    vocab: [
+      { w: "recall", m: "(결함 제품의) 회수, 리콜" },
+      { w: "loosen", m: "헐거워지다" },
+      { w: "replacement", m: "교환품" },
+      { w: "prepaid", m: "선불의" },
+      { w: "reuse", m: "재사용하다" }
+    ],
+    questions: [
+      { q: "What is the problem with the K-220?", choices: ["It heats water too slowly", "Its handle can come loose", "Its cord is too short", "It does not turn off automatically"], answer: 1, explanation: "The handle can loosen after repeated use." },
+      { q: "What are owners asked to do first?", choices: ["Stop using the kettle", "Mail in the receipt", "Visit a repair center", "Remove the base"], answer: 0, explanation: "Stop using the kettle immediately." },
+      { q: "Why is Ms. Petrov eligible for the recall?", choices: ["She registered the product", "She bought the kettle within the stated period", "She is a returning customer", "She reported the problem by phone"], answer: 1, explanation: "연계 문제다. 공고의 회수 기간은 3월 1일~7월 31일이고, 이메일에서 5월에 샀다고 했다." },
+      { q: "What question does Nordvik answer for Ms. Petrov?", choices: ["Who pays for return shipping", "How to clean the kettle", "Where to buy a new lid", "When the K-240 was released"], answer: 0, explanation: "연계 문제다. 이메일에서 배송비를 누가 내는지 물었고, 회신에서 선불 라벨이라 부담이 없다고 답했다." },
+      { q: "What is indicated about the K-240?", choices: ["It costs more than the K-220", "Its lid is not the same as the K-220's", "It is sold only online", "It comes in one color"], answer: 1, explanation: "the K-240 uses a different lid." }
+    ]
+  },
+  {
+    id: "rp33", type: "이중 지문", title: "잡지 구독 문의", strategyId: "r06", recommendedSec: 235,
+    parts: [
+      {
+        label: "지문 1 — 구독 안내",
+        header: ["CIVIC REVIEW — Subscription Options"],
+        sentences: [
+          { en: "Print only: $48 a year (12 issues, delivered monthly)", ko: "인쇄본만: 연 48달러 (매월 배송, 12호)" },
+          { en: "Digital only: $30 a year (includes the full archive since 2008)", ko: "디지털만: 연 30달러 (2008년 이후 전체 기사 보관함 포함)" },
+          { en: "Print and digital: $60 a year", ko: "인쇄본과 디지털: 연 60달러" },
+          { en: "Students receive 40 percent off any plan with a valid school e-mail address.", ko: "학생은 유효한 학교 이메일 주소로 모든 요금제에서 40퍼센트 할인을 받습니다." },
+          { en: "Subscriptions renew automatically unless you cancel fourteen days before the renewal date.", ko: "갱신일 14일 전에 취소하지 않으면 구독이 자동으로 갱신됩니다." },
+          { en: "Gift subscriptions are available but cannot be combined with the student discount.", ko: "선물 구독도 가능하지만 학생 할인과 함께 적용할 수는 없습니다." }
+        ]
+      },
+      {
+        label: "지문 2 — 문의 이메일",
+        header: ["From: Omar Castellanos", "To: subs@civicreview.org", "Subject: Student rate and gift"],
+        sentences: [
+          { en: "Hello,", ko: "안녕하세요," },
+          { en: "I am a graduate student and would like the print and digital plan at the student rate.", ko: "저는 대학원생이고 인쇄본과 디지털 요금제를 학생가로 구독하고 싶습니다." },
+          { en: "Could you confirm what I would pay for the first year?", ko: "첫해에 얼마를 내게 되는지 확인해 주시겠어요?" },
+          { en: "I also want to buy a one-year digital subscription for my sister, who is not a student.", ko: "학생이 아닌 제 여동생을 위해 1년 디지털 구독도 사고 싶습니다." },
+          { en: "Finally, I will be moving in April. How much notice do you need for a change of address?", ko: "마지막으로 4월에 이사합니다. 주소 변경은 얼마나 미리 알려야 하나요?" },
+          { en: "Omar Castellanos", ko: "오마르 카스텔라노스" }
+        ]
+      }
+    ],
+    vocab: [
+      { w: "subscription", m: "구독" },
+      { w: "archive", m: "(과거 기사) 보관함" },
+      { w: "renew automatically", m: "자동으로 갱신되다" },
+      { w: "combine with", m: "~와 함께 적용하다" },
+      { w: "notice", m: "사전 통지" }
+    ],
+    questions: [
+      { q: "What is included with the digital plan?", choices: ["A printed copy each month", "Access to issues going back to 2008", "A free gift subscription", "Delivery to two addresses"], answer: 1, explanation: "includes the full archive since 2008." },
+      { q: "How much will Mr. Castellanos most likely pay for his own subscription?", choices: ["$18", "$30", "$36", "$60"], answer: 2, explanation: "연계 문제다. 인쇄본과 디지털은 60달러이고 학생 할인 40퍼센트를 적용하면 36달러다." },
+      { q: "What is indicated about the subscription for Mr. Castellanos's sister?", choices: ["It will be discounted", "It will cost the full price", "It is not available", "It must include print"], answer: 1, explanation: "연계 문제다. 선물 구독은 학생 할인과 함께 적용할 수 없고, 여동생은 학생도 아니다." },
+      { q: "What else does Mr. Castellanos ask about?", choices: ["Changing his address", "Canceling a past order", "Writing for the magazine", "Receiving a sample issue"], answer: 0, explanation: "How much notice do you need for a change of address?" },
+      { q: "What must a subscriber do to avoid automatic renewal?", choices: ["Call the office each year", "Cancel at least two weeks in advance", "Pay by check", "Choose the digital plan"], answer: 1, explanation: "갱신일 14일 전, 즉 2주 전에 취소해야 한다." }
+    ]
+  },
+  {
+    id: "rp34", type: "이중 지문", title: "식당 후기와 답글", strategyId: "r06", recommendedSec: 230,
+    parts: [
+      {
+        label: "지문 1 — 이용 후기",
+        header: ["Review: Marisol's Kitchen, 44 Dunne Street", "Posted by: Theo Lindqvist | Rating: 4 of 5"],
+        sentences: [
+          { en: "The lamb stew was the best I have had in this city, and the bread is baked on site.", ko: "양고기 스튜는 이 도시에서 먹어 본 중 최고였고 빵은 매장에서 직접 굽는다." },
+          { en: "Service was friendly but slow; we waited almost forty minutes for our main course on a Tuesday evening.", ko: "서비스는 친절했지만 느렸다. 화요일 저녁인데도 주요리를 40분 가까이 기다렸다." },
+          { en: "The dining room is small, with only twelve tables, so reservations are essential on weekends.", ko: "식사 공간은 테이블이 12개뿐이라 작아서 주말에는 예약이 필수다." },
+          { en: "Prices are fair: most main dishes are between $16 and $22.", ko: "가격은 합리적이다. 대부분의 주요리가 16달러에서 22달러 사이다." },
+          { en: "I would go again, but I would not bring a large group.", ko: "다시 가겠지만 많은 인원과 함께 가지는 않겠다." }
+        ]
+      },
+      {
+        label: "지문 2 — 사장 답글",
+        header: ["Response from the owner, Marisol Vega"],
+        sentences: [
+          { en: "Thank you for the kind words about the stew.", ko: "스튜를 좋게 봐주셔서 감사합니다." },
+          { en: "You are right about the wait that evening. Our second cook was ill, and we were short-staffed.", ko: "그날 저녁 대기 시간에 대한 지적이 맞습니다. 두 번째 요리사가 아파서 인력이 부족했습니다." },
+          { en: "We have since hired two part-time cooks, and we now take reservations on weekdays as well.", ko: "그 뒤로 시간제 요리사 두 명을 채용했고, 이제 평일에도 예약을 받습니다." },
+          { en: "We are also opening a second dining room next door in September, which will add fourteen tables.", ko: "9월에는 옆 공간에 두 번째 식사 공간을 열어 테이블 14개를 더합니다." },
+          { en: "We hope you will give us another try.", ko: "다시 한번 찾아 주시기를 바랍니다." }
+        ]
+      }
+    ],
+    vocab: [
+      { w: "baked on site", m: "매장에서 직접 구운" },
+      { w: "main course", m: "주요리" },
+      { w: "essential", m: "필수적인" },
+      { w: "short-staffed", m: "인력이 부족한" },
+      { w: "part-time", m: "시간제의" }
+    ],
+    questions: [
+      { q: "What did Mr. Lindqvist praise?", choices: ["The lamb stew", "The size of the dining room", "The speed of the service", "The weekend atmosphere"], answer: 0, explanation: "the best I have had in this city. 식사 공간은 작고 서비스는 느렸다고 했다." },
+      { q: "What problem does the review describe?", choices: ["The prices were too high", "The food arrived slowly", "The bread was not fresh", "The staff were rude"], answer: 1, explanation: "we waited almost forty minutes for our main course." },
+      { q: "On which day was Marisol's Kitchen short-staffed?", choices: ["Monday", "Tuesday", "Saturday", "Sunday"], answer: 1, explanation: "연계 문제다. 답글에서 후기 작성자가 온 그날 저녁 요리사가 아파 인력이 부족했다고 했고, 후기에서 그날은 화요일 저녁이다." },
+      { q: "How many tables will the restaurant have after September?", choices: ["Twelve", "Fourteen", "Twenty-six", "Twenty-eight"], answer: 2, explanation: "연계 문제다. 후기에 12개라고 했고 답글에서 14개를 더한다고 했으므로 26개다." },
+      { q: "What has the restaurant already done?", choices: ["Lowered its prices", "Hired additional cooks", "Opened the second dining room", "Stopped taking reservations"], answer: 1, explanation: "We have since hired two part-time cooks. 두 번째 공간은 9월에 열 예정이다." }
+    ]
   }
 ];
 
