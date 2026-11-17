@@ -727,7 +727,7 @@ async function runSpeechScenarios() {
       ($v("listening-locale").listeners.change || []).forEach(function (fn) { fn({}); });
     }
     var problems = [];
-    var p308Signatures = null;
+    var trioSignatures = {}; // 3인 대화(speakers가 있는 대화)의 화자별 목소리 — 보고용
     for (var di = 0; di < env.window.PART3.length; di += 1) {
       var dlg = env.window.PART3[di];
       var signatures = {};
@@ -762,7 +762,7 @@ async function runSpeechScenarios() {
       });
       var legacy = labels.every(function (l) { return l === "W" || l === "M"; });
       if (legacy && scenario.legacyPlain && labels.some(function (l) { return !/ pitch 1 \//.test(signatures[l]); })) problems.push(dlg.id + " 기존 W/M 대화에 pitch 보정이 붙음");
-      if (dlg.id === "p308") p308Signatures = signatures;
+      if (dlg.speakers) trioSignatures[dlg.id] = signatures;
       $v("part3-next-dialogue").click();
     }
     // Part 4 담화: 화자가 한 명이므로 모든 문장이 같은 목소리, voice(W/M)에 맞는 성별 음성, 보정(pitch) 없음.
@@ -794,7 +794,12 @@ async function runSpeechScenarios() {
     }
     check(problems.length === 0, "[음성 배정: " + scenario.name + "] " + problems.join(" ; "));
     assignmentReport.push("[Part 4] " + scenario.name + " → " + talkVoices.join(" | "));
-    assignmentReport.push(scenario.name + " → p308 " + (p308Signatures ? Object.keys(p308Signatures).map(function (l) { return l + "=" + p308Signatures[l]; }).join(" | ") : "없음"));
+    Object.keys(trioSignatures).forEach(function (id) {
+      var dlgInfo = env.window.PART3.find(function (item) { return item.id === id; });
+      assignmentReport.push(scenario.name + " → " + id + " " + Object.keys(trioSignatures[id]).map(function (l) {
+        return l + "(" + dlgInfo.speakers[l] + ")=" + trioSignatures[id][l];
+      }).join(" | "));
+    });
   }
   console.log("음성 배정: 환경 " + voiceScenarios.length + "개 × 대화 " + p3Items.length + "개 + 담화 " + p4Items.length + "개 (같은 화자 같은 목소리, 화자끼리 구분, 성별 음성, 고른 발음 유지)" +
     "\n  " + assignmentReport.join("\n  "));

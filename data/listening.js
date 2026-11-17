@@ -232,6 +232,42 @@ window.PART3 = [
       { q: "What will Hana do on Friday morning?", choices: ["Lead an orientation session", "Attend a budget meeting", "Travel to Singapore", "Install equipment"], answer: 0, explanation: "I'm leading the new-hire orientation until eleven. 라비가 'Hana, are you free then?'이라고 물은 데 대한 답이다." },
       { q: "What does Hana say about the conference room?", choices: ["It is too small for the group", "It now has a projector", "It must be reserved in advance", "It will be painted next week"], answer: 1, explanation: "They installed one last week. 지난번에는 빌려야 했다는 말과 대비된다." }
     ]
+  },
+  {
+    id: "p309",
+    title: "출장 숙소",
+    speakers: { W1: "Lena", M1: "Tomas", W2: "Priya" },
+    script: [
+      { speaker: "W1", text: "Our flights to Lisbon are booked, but the hotel next to the conference center is full." },
+      { speaker: "M1", text: "How far is the next closest one?" },
+      { speaker: "W2", text: "About twenty minutes by tram. I stayed there last year. It was clean, but the breakfast was poor." },
+      { speaker: "W1", text: "Twenty minutes each way, three days in a row. That adds up." },
+      { speaker: "M1", text: "What if one of us waits for a cancellation at the conference hotel, and the other two take the tram?" },
+      { speaker: "W2", text: "I would rather keep the team together than lose time coordinating." },
+      { speaker: "W1", text: "Agreed. I will book all three rooms there this afternoon." }
+    ],
+    questions: [
+      { q: "What are the speakers mainly discussing?", choices: ["A change to the conference program", "A flight cancellation", "A hotel's renovation", "Travel arrangements for a conference"], answer: 3, explanation: "항공편은 예약됐고 컨퍼런스 기간에 묵을 호텔을 정하는 대화다. 취소되는 것은 항공편이 아니라 호텔 방(취소분 대기)이다." },
+      { q: "What does Priya say about the second hotel?", choices: ["It is too expensive", "It is fully booked", "She has stayed there before", "It is closer than the first"], answer: 2, explanation: "I stayed there last year. 만실인 곳은 컨퍼런스 센터 옆 호텔이다." },
+      { q: "What will Lena do this afternoon?", choices: ["Book the rooms", "Call the conference center", "Change the flights", "Ask for a discount"], answer: 0, explanation: "I will book all three rooms there this afternoon." }
+    ]
+  },
+  {
+    id: "p310",
+    title: "면접 일정 조율",
+    script: [
+      { speaker: "W", text: "I have three candidates for the analyst position, but only Thursday afternoon is free on your calendar." },
+      { speaker: "M", text: "Three interviews in one afternoon is too many. Can we move one to Friday?" },
+      { speaker: "W", text: "On Friday you are at the client workshop until four." },
+      { speaker: "M", text: "Then let's do two on Thursday and one on Friday at four thirty. Will the candidates agree to that time?" },
+      { speaker: "W", text: "The third candidate works nearby, so late afternoon may suit her. I will ask." },
+      { speaker: "M", text: "Good. And please send me their résumés by Wednesday morning so that I have time to read them." }
+    ],
+    questions: [
+      { q: "What is the man's concern?", choices: ["The candidates are not qualified", "The position has not been approved", "Too many interviews in one afternoon", "The workshop was canceled"], answer: 2, explanation: "Three interviews in one afternoon is too many." },
+      { q: "Why can an interview not be held on Friday morning?", choices: ["The office is closed", "The woman will be traveling", "The room is booked", "The man will be at a workshop"], answer: 3, explanation: "On Friday you are at the client workshop until four. 그래서 금요일 면접은 4시 30분으로 잡는다." },
+      { q: "What does the man ask the woman to send?", choices: ["The candidates' résumés", "A revised calendar", "The workshop agenda", "An offer letter"], answer: 0, explanation: "please send me their résumés by Wednesday morning." }
+    ]
   }
 ];
 
@@ -391,6 +427,44 @@ window.PART4 = [
       { q: "Who is Dr. Leung?", choices: ["A city official", "A journalist", "A university president", "A research scientist"], answer: 3, explanation: "joined our research center as a junior scientist, and she now leads the water quality division. 40개 도시는 센서를 쓰는 곳이다." },
       { q: "What is notable about Dr. Leung's award?", choices: ["She has received it before", "It is given only to new researchers", "It includes a cash prize", "It was created this year"], answer: 0, explanation: "receives the Hadley Medal for the second time. 이번이 두 번째 수상이다." },
       { q: "What will happen after Dr. Leung's speech?", choices: ["A tour of the center", "A question period", "A dinner", "A second award"], answer: 1, explanation: "we will take questions afterward." }
+    ]
+  },
+  {
+    id: "pt409",
+    type: "경제 뉴스",
+    title: "라디오 경제 뉴스",
+    voice: "M",
+    script: [
+      "In business news, Castellan Foods announced this morning that it will build a new plant in Marsden, creating about two hundred and fifty jobs.",
+      "The company already operates two plants in the region, but this will be its first to run entirely on solar power.",
+      "Construction is set to begin in March and finish within two years.",
+      "Marsden's mayor called the decision a turning point for the town, which lost a major employer five years ago.",
+      "Castellan says hiring will start next winter.",
+      "We will be back after a short break."
+    ],
+    questions: [
+      { q: "What did Castellan Foods announce?", choices: ["A change in leadership", "The closing of two factories", "Plans to build a new plant", "A partnership with the city"], answer: 2, explanation: "it will build a new plant in Marsden. 기존 공장 두 곳은 이미 운영 중이라고만 했다." },
+      { q: "What is special about the new plant?", choices: ["It will run on solar power", "It will be the company's largest", "It will open within one year", "It will produce a new product"], answer: 0, explanation: "its first to run entirely on solar power. 공사는 2년 안에 끝나므로 1년 안에 여는 것이 아니다." },
+      { q: "When will hiring begin?", choices: ["In March", "Within two years", "Immediately", "Next winter"], answer: 3, explanation: "hiring will start next winter. 3월은 공사 시작 시점이다." }
+    ]
+  },
+  {
+    id: "pt410",
+    type: "오리엔테이션",
+    title: "신입 사원 오리엔테이션",
+    voice: "W",
+    script: [
+      "Welcome to your first day at Varden Group.",
+      "This morning we will cover payroll, benefits, and the building's security system.",
+      "Your photo badge is being made now and should be ready before lunch; until then, please sign in at the front desk.",
+      "After lunch you will meet your team leaders, and each of you will be given a laptop.",
+      "One reminder: the online safety course must be completed within your first two weeks, not today.",
+      "If you have not sent in your bank details, see Rosa in human resources before you leave."
+    ],
+    questions: [
+      { q: "Who most likely are the listeners?", choices: ["Visiting clients", "New employees", "Building inspectors", "Job applicants"], answer: 1, explanation: "Welcome to your first day at Varden Group. 급여·복리후생·사원증을 안내받는 첫 출근자다." },
+      { q: "What will the listeners receive after lunch?", choices: ["A photo badge", "A parking pass", "A printed handbook", "A laptop"], answer: 3, explanation: "each of you will be given a laptop. 사진 배지는 점심 전에 나온다." },
+      { q: "What must be completed within two weeks?", choices: ["A safety course", "A performance review", "A team project", "A security check"], answer: 0, explanation: "the online safety course must be completed within your first two weeks. 보안 시스템은 오늘 오전에 설명하는 내용이다." }
     ]
   }
 ];
