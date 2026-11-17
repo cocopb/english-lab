@@ -314,5 +314,83 @@ window.PART4 = [
       { q: "What are the listeners asked to do before entering?", choices: ["Leave their bags", "Sign a form", "Put on protective gear", "Buy a ticket"], answer: 2, explanation: "put on the safety glasses and earplugs." },
       { q: "What is not allowed in the drying room?", choices: ["Eating", "Taking photographs", "Speaking", "Touching the machines"], answer: 1, explanation: "Photography is allowed everywhere except the drying room." }
     ]
+  },
+  {
+    id: "pt405",
+    type: "자동 응답",
+    title: "도서관 자동 응답 메시지",
+    voice: "W",
+    script: [
+      "Thank you for calling Harborview Public Library.",
+      "Our hours have recently changed.",
+      "We are now open Monday through Thursday from ten in the morning until eight in the evening, and Friday and Saturday from ten in the morning until five in the afternoon.",
+      "We are closed on Sundays.",
+      "To renew a book, press one.",
+      "To speak with a librarian, press two; please note that the reference desk is staffed only until six.",
+      "For directions and parking information, press three.",
+      "To hear this message again, press the star key."
+    ],
+    questions: [
+      { q: "What information has recently changed?", choices: ["The parking fee", "The phone number", "The hours of operation", "The library's address"], answer: 2, explanation: "Our hours have recently changed. 주차는 안내 번호만 있고 요금 이야기는 없다." },
+      { q: "Until what time is the reference desk staffed?", choices: ["Five o'clock", "Six o'clock", "Eight o'clock", "Ten o'clock"], answer: 1, explanation: "the reference desk is staffed only until six. 8시는 월~목 폐관 시각, 5시는 금·토 폐관 시각, 10시는 여는 시각이다." },
+      { q: "What should a caller do to renew a book?", choices: ["Press one", "Press two", "Press three", "Press the star key"], answer: 0, explanation: "To renew a book, press one. 2번은 사서 연결, 3번은 길·주차 안내, 별표는 다시 듣기다." }
+    ]
+  },
+  {
+    id: "pt406",
+    type: "교통 방송",
+    title: "라디오 교통 방송",
+    voice: "M",
+    script: [
+      "And now your afternoon traffic update.",
+      "Construction on the Weston Bridge has closed two of the four lanes, and drivers heading downtown are backed up for nearly three kilometers.",
+      "Crews expect to reopen both lanes by eight tonight.",
+      "If you can, take the Route 9 tunnel instead; it is moving normally.",
+      "The city bus company has also added extra buses on the number 14 line this week while the bridge work continues.",
+      "We will have another update at four thirty."
+    ],
+    questions: [
+      { q: "What is causing the delay?", choices: ["A traffic accident", "Bad weather", "A public event", "Road construction"], answer: 3, explanation: "Construction on the Weston Bridge has closed two of the four lanes." },
+      { q: "What does the speaker recommend?", choices: ["Leaving work early", "Avoiding the bus", "Taking a different route", "Waiting until eight"], answer: 2, explanation: "take the Route 9 tunnel instead. 8시는 차로가 다시 열리는 예상 시각일 뿐 기다리라고 권하지 않았다." },
+      { q: "What will happen at four thirty?", choices: ["The bridge will reopen", "Another traffic report will air", "Extra buses will start running", "Construction will begin"], answer: 1, explanation: "We will have another update at four thirty. 다리는 8시에 열리고, 추가 버스는 이번 주 내내 이미 운행 중이다." }
+    ]
+  },
+  {
+    id: "pt407",
+    type: "회의 발췌",
+    title: "분기 실적 회의",
+    voice: "M",
+    script: [
+      "Before we end, I want to go over the results from last quarter.",
+      "Online sales rose eleven percent, which is better than we projected.",
+      "Store sales, though, were flat, and three of our smaller locations lost money for the second quarter in a row.",
+      "The management team will decide by the end of the month whether to close them.",
+      "I know that is difficult news, so I will send a written summary this afternoon, and then everyone will have the same numbers.",
+      "If you have questions before then, come find me."
+    ],
+    questions: [
+      { q: "What is the speaker mainly discussing?", choices: ["A new product line", "A hiring plan", "A store renovation", "Quarterly sales results"], answer: 3, explanation: "go over the results from last quarter. 온라인·매장 매출 결과를 이야기한다." },
+      { q: "What does the speaker say about three of the locations?", choices: ["They have lost money twice in a row", "They have opened recently", "They will move to larger spaces", "They had the highest online sales"], answer: 0, explanation: "lost money for the second quarter in a row. 두 분기 연속, 즉 두 번 연속 손실이다." },
+      { q: "What will the speaker do this afternoon?", choices: ["Visit the smaller stores", "Meet the management team", "Send a written summary", "Announce a closing date"], answer: 2, explanation: "I will send a written summary this afternoon. 폐점 여부는 이달 말에 경영진이 정한다." }
+    ]
+  },
+  {
+    id: "pt408",
+    type: "시상식 소개",
+    title: "연구원 시상식 소개",
+    voice: "W",
+    script: [
+      "It is my pleasure to introduce tonight's award recipient.",
+      "Dr. Amara Leung joined our research center eighteen years ago as a junior scientist, and she now leads the water quality division.",
+      "Her team's sensor, developed over six years, is now used by more than forty cities.",
+      "Tonight she receives the Hadley Medal for the second time, making her the first person from our center to win it twice.",
+      "Dr. Leung will speak for about fifteen minutes, and we will take questions afterward.",
+      "Please join me in welcoming her to the stage."
+    ],
+    questions: [
+      { q: "Who is Dr. Leung?", choices: ["A city official", "A journalist", "A university president", "A research scientist"], answer: 3, explanation: "joined our research center as a junior scientist, and she now leads the water quality division. 40개 도시는 센서를 쓰는 곳이다." },
+      { q: "What is notable about Dr. Leung's award?", choices: ["She has received it before", "It is given only to new researchers", "It includes a cash prize", "It was created this year"], answer: 0, explanation: "receives the Hadley Medal for the second time. 이번이 두 번째 수상이다." },
+      { q: "What will happen after Dr. Leung's speech?", choices: ["A tour of the center", "A question period", "A dinner", "A second award"], answer: 1, explanation: "we will take questions afterward." }
+    ]
   }
 ];

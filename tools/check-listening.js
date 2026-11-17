@@ -33,6 +33,8 @@ var failures = {
   part4Structure: [],
   part4Choices: [],
   part4Answer: [],
+  part4AnswerRun: [],
+  ttsUnsafeNumber: [],
   missingExplanation: [],
   duplicateIds: []
 };
@@ -130,6 +132,27 @@ part4.forEach(function (talk, index) {
   });
 });
 
+// Part 4 정답 위치: 바로 앞 문항과 같은 위치가 연속되면 실패(담화 경계를 넘어서도 이어서 본다).
+var previousAnswer = { answer: null, label: null };
+part4.forEach(function (talk) {
+  ((talk && talk.questions) || []).forEach(function (question, qIndex) {
+    if (question && question.answer === previousAnswer.answer) {
+      failures.part4AnswerRun.push({ id: talk.id + " Q" + (qIndex + 1), answer: "ABCD"[question.answer], previous: previousAnswer.label });
+    }
+    previousAnswer = { answer: question && question.answer, label: talk.id + " Q" + (qIndex + 1) };
+  });
+});
+
+// TTS로 읽는 대본(Part 3·4)에 숫자-하이픈-숫자(555-0144 같은 전화번호)가 있으면 "빼기"로 읽힐 수 있어 실패.
+// 번호는 "five five five, zero one four four"처럼 풀어 쓴다.
+part3.concat(part4).forEach(function (item) {
+  ((item && item.script) || []).forEach(function (line, lIndex) {
+    var text = typeof line === "string" ? line : (line && line.text) || "";
+    var hit = /\d\s*[-–—]\s*\d/.exec(text);
+    if (hit) failures.ttsUnsafeNumber.push({ id: item.id, line: lIndex + 1, found: hit[0] });
+  });
+});
+
 var labels = {
   dictationFields: "받아쓰기 필수 필드(text, ko, level) 누락",
   part2Choices: "Part 2 선택지가 3개가 아님",
@@ -140,6 +163,8 @@ var labels = {
   part4Structure: "Part 4 type/title/voice/script/문항 3개 형식 오류",
   part4Choices: "Part 4 선택지가 4개가 아님",
   part4Answer: "Part 4 정답 인덱스 오류",
+  part4AnswerRun: "Part 4 정답 위치가 바로 앞 문항과 같음(담화 경계 포함)",
+  ttsUnsafeNumber: "대본에 숫자-하이픈-숫자 (TTS가 빼기로 읽을 수 있음)",
   missingExplanation: "해설(explanation) 비어 있음",
   duplicateIds: "ID 중복/누락"
 };
