@@ -21,7 +21,9 @@
   // 시험 모드별 시간 설정. 미니 모의고사는 기존 값 그대로, 풀세트는 75분에 10분·5분 남았을 때 알림.
   var MODES = {
     mini: { mode: "mini", title: "RC 미니 모의고사", seconds: EXAM.seconds, warnSec: EXAM.warnSec, dangerSec: EXAM.dangerSec, alerts: [] },
-    full: { mode: "full", title: "RC 풀세트", seconds: 75 * 60, warnSec: 10 * 60, dangerSec: 5 * 60, alerts: [10 * 60, 5 * 60] }
+    full: { mode: "full", title: "RC 풀세트", seconds: 75 * 60, warnSec: 10 * 60, dangerSec: 5 * 60, alerts: [10 * 60, 5 * 60] },
+    // LC 풀세트: 실제 LC 길이 45분. 알림·이탈·자동 제출 규칙은 RC 풀세트와 같다.
+    lc: { mode: "lc", title: "LC 풀세트", seconds: 45 * 60, warnSec: 10 * 60, dangerSec: 5 * 60, alerts: [10 * 60, 5 * 60] }
   };
   // RC 풀세트 구성 (실제 토익 RC와 같음, 고정). 지문·세트의 문항은 자르지 않는다.
   var FULL_SET = {
@@ -63,8 +65,43 @@
     return FULL_SCORE_TABLE[Math.min(100, Math.max(0, count))];
   }
   window.PracticeFullSet = { scoreFor: fullSetScore, scoreTable: FULL_SCORE_TABLE.slice() };
+
+  // LC 풀세트 구성 (Part 1 사진 제외, 고정). 대화·담화는 자르지 않고 3문항을 모두 낸다.
+  var LC_SET = { p2: 25, p3Talks: 13, p4Talks: 10, questionsPerTalk: 3, total: 94 };
+  var LC_SAVE_KEY = "englishLabLcFullSetSave"; // RC 풀세트 저장(englishLabFullSetSave)과 별도 키
+  var LC_HISTORY_KEY = "englishLabLcFullSetHistory"; // RC 풀세트 기록과 별도 키
+  var LC_EXCLUDED_NOTE = "Part 1 사진 문제는 제외된 94문항입니다";
+  // LC 환산표: 100문항 기준 맞은 개수(0~100) → LC 495점 기준 예상 점수. 16개 이하는 5점.
+  var LC_SCORE_TABLE = (function () {
+    var fromTop = [ // 100개부터 17개까지
+      495, 495, 495, 490, 485, 480, 475, 470, 460, 455,
+      450, 445, 435, 430, 425, 415, 410, 400, 395, 390,
+      380, 375, 370, 360, 355, 350, 340, 335, 330, 320,
+      315, 310, 300, 295, 290, 280, 275, 270, 260, 255,
+      250, 245, 240, 230, 225, 220, 210, 205, 200, 195,
+      185, 180, 175, 165, 160, 155, 145, 140, 135, 130,
+      120, 115, 110, 105, 95, 90, 85, 80, 70, 65,
+      60, 55, 50, 45, 40, 35, 30, 25, 20, 15,
+      15, 10, 10, 5
+    ];
+    var table = [];
+    for (var correct = 0; correct <= 100; correct += 1) table[correct] = correct >= 17 ? fromTop[100 - correct] : 5;
+    return table;
+  }());
+  // 94문항 맞은 개수를 100문항 기준으로 보정한다(× 100 / 94, 반올림). 범위 밖이나 숫자가 아닌 값도 0~94로 맞춘다.
+  function lcScaledCorrect(correct) {
+    var count = Math.round(Number(correct));
+    if (!isFinite(count)) count = 0;
+    count = Math.min(LC_SET.total, Math.max(0, count));
+    return Math.round(count * 100 / LC_SET.total);
+  }
+  function lcFullSetScore(correct) {
+    return LC_SCORE_TABLE[lcScaledCorrect(correct)];
+  }
+  window.PracticeLcFullSet = { scoreFor: lcFullSetScore, scaledFor: lcScaledCorrect, scoreTable: LC_SCORE_TABLE.slice(), total: LC_SET.total };
   var PART6_TYPE_LABELS = { grammar: "문법", vocab: "어휘", sentence: "문장 삽입" };
-  var SECTION_LABELS = { p5: "Part 5", p6: "Part 6", p7: "Part 7", p7s: "Part 7 단일", p7d: "Part 7 이중", p7t: "Part 7 삼중" };
+  var SECTION_LABELS = { p5: "Part 5", p6: "Part 6", p7: "Part 7", p7s: "Part 7 단일", p7d: "Part 7 이중", p7t: "Part 7 삼중",
+    p2: "Part 2", p3: "Part 3", p4: "Part 4" };
 
   document.addEventListener("DOMContentLoaded", function () {
     var grammarQuiz = window.GRAMMAR_QUIZ || [];
@@ -414,6 +451,22 @@
       }
     }
 
+    // RC·LC 풀세트는 남은 시간 기준 타이머, 2분 이탈 규칙, 중간 저장을 함께 쓴다(저장 키는 따로).
+    function isTimedMode(config) {
+      return !!config && (config.mode === "full" || config.mode === "lc");
+    }
+
+    function writeExamSave() {
+      if (!exam || exam.submitted) return;
+      if (exam.config.mode === "full") writeFullSave();
+      else if (exam.config.mode === "lc") writeLcSave();
+    }
+
+    function clearExamSave(config) {
+      if (config.mode === "full") clearFullSave();
+      else if (config.mode === "lc") clearLcSave();
+    }
+
     // ---------- RC 풀세트 분석 ----------
 
     function rate(correct, total) {
@@ -456,25 +509,27 @@
 
     // ---------- RC 풀세트 응시 기록 (최근 20회, 미니 모의고사와 별도 키) ----------
 
-    function readFullHistory() {
+    function readFullHistory(key) {
+      key = key || FULL_HISTORY_KEY;
       try {
-        var parsed = JSON.parse(localStorage.getItem(FULL_HISTORY_KEY) || "[]");
+        var parsed = JSON.parse(localStorage.getItem(key) || "[]");
         if (!Array.isArray(parsed)) throw new Error("배열이 아님");
         return parsed.filter(function (entry) {
           return entry && typeof entry.date === "string" && !Number.isNaN(Date.parse(entry.date)) &&
             Number.isInteger(entry.correct) && Number.isInteger(entry.score) && entry.sections && typeof entry.sections === "object";
         }).slice(-FULL_HISTORY_LIMIT);
       } catch (error) {
-        console.warn("RC 풀세트 기록이 깨져 있어 지웁니다.", error.message);
-        try { localStorage.removeItem(FULL_HISTORY_KEY); } catch (removeError) { /* 무시 */ }
+        console.warn((key === LC_HISTORY_KEY ? "LC" : "RC") + " 풀세트 기록이 깨져 있어 지웁니다.", error.message);
+        try { localStorage.removeItem(key); } catch (removeError) { /* 무시 */ }
         return [];
       }
     }
 
-    function recordFullHistory(result) {
+    function recordFullHistory(result, key) {
+      key = key || FULL_HISTORY_KEY;
       var sections = {};
       result.analysis.sections.forEach(function (section) { sections[section.id] = { correct: section.correct, total: section.total }; });
-      var history = readFullHistory();
+      var history = readFullHistory(key);
       history.push({
         date: new Date().toISOString(),
         correct: result.correct,
@@ -485,15 +540,15 @@
         sections: sections
       });
       try {
-        localStorage.setItem(FULL_HISTORY_KEY, JSON.stringify(history.slice(-FULL_HISTORY_LIMIT)));
+        localStorage.setItem(key, JSON.stringify(history.slice(-FULL_HISTORY_LIMIT)));
       } catch (error) {
-        console.warn("RC 풀세트 기록을 저장하지 못했습니다.", error);
+        console.warn("풀세트 기록을 저장하지 못했습니다.", error);
       }
     }
 
     function partTotals(items) {
       var totals = { p5: 0, p6: 0, p7: 0 };
-      items.forEach(function (item) { totals[item.part] += 1; });
+      items.forEach(function (item) { totals[item.part] = (totals[item.part] || 0) + 1; });
       return totals;
     }
 
@@ -579,7 +634,7 @@
       return button("button button-quiet practice-back", "← 모드 선택", renderModeSelect);
     }
 
-    // 모의고사 탭 첫 화면: 미니 모의고사와 RC 풀세트 중 고른다.
+    // 모의고사 탭 첫 화면: 미니 모의고사 · RC 풀세트 · LC 풀세트 중 고른다.
     function renderModeSelect() {
       preparedItems = null;
       var list = element("div", "practice-mode-list");
@@ -608,7 +663,23 @@
           " · 남은 시간 " + formatTime(saved.remainingSec)));
       }
       full.appendChild(button("button button-primary", "RC 풀세트 선택", renderFullIntro));
-      list.append(mini, full);
+      var lc = element("article", "panel practice-mode-card");
+      lc.dataset.mode = "lc";
+      lc.append(
+        element("h3", "", "LC 풀세트"),
+        element("p", "practice-mode-meta", LC_SET.total + "문항 · " + Math.round(MODES.lc.seconds / 60) + "분 (Part 1 사진 제외)"),
+        element("p", "", "Part 2 " + LC_SET.p2 + "문항 · Part 3 " + LC_SET.p3Talks * LC_SET.questionsPerTalk + "문항(대화 " + LC_SET.p3Talks +
+          "개) · Part 4 " + LC_SET.p4Talks * LC_SET.questionsPerTalk + "문항(담화 " + LC_SET.p4Talks + "개)"),
+        element("p", "", "음성은 한 번만 나오고, 지나간 문항으로 돌아갈 수 없어요. 실제 LC처럼요.")
+      );
+      var lcSaved = readLcSave();
+      if (lcSaved) {
+        lc.appendChild(element("p", "practice-mode-saved", "진행 중인 세트가 있어요 · 푼 문제 " +
+          lcSaved.answers.filter(function (answer) { return answer !== null; }).length + " / " + LC_SET.total +
+          " · 남은 시간 " + formatTime(lcSaved.remainingSec)));
+      }
+      lc.appendChild(button("button button-primary", "LC 풀세트 선택", renderLcIntro));
+      list.append(mini, full, lc);
       mockStage.replaceChildren(list);
     }
 
@@ -717,8 +788,12 @@
         ticksSinceSave: 0,
         alertTicks: 0,
         timerHandle: null,
-        submitted: false
+        submitted: false,
+        played: {}, // LC: 이미 재생한 음성 (Part 2 문항 / Part 3·4 대화·담화 단위)
+        playing: null,
+        lcMessage: ""
       };
+      if (resumed && Array.isArray(saved.played)) saved.played.forEach(function (key) { exam.played[key] = true; });
       mockStage.replaceChildren();
       exam.timerBar = element("div", "practice-timer-bar");
       exam.timerBar.setAttribute("role", "timer");
@@ -736,7 +811,7 @@
       var layout = element("div", "practice-exam-layout");
       exam.questionArea = element("section", "panel practice-question-area");
       exam.questionArea.setAttribute("aria-live", "polite");
-      exam.omr = element("aside", "panel practice-omr" + (config.mode === "full" ? " is-full" : ""));
+      exam.omr = element("aside", "panel practice-omr" + (isTimedMode(config) ? " is-full" : "") + (config.mode === "lc" ? " is-lc" : ""));
       exam.omr.setAttribute("aria-label", "OMR 답안지");
       layout.append(exam.questionArea, exam.omr);
       mockStage.append(exam.timerBar, layout);
@@ -745,7 +820,7 @@
       renderOmr();
       updateTimer();
       exam.ticksSinceSave = 0; // 10초 저장 주기는 실제 1초 틱부터 센다
-      writeFullSave();
+      writeExamSave();
       exam.timerHandle = window.setInterval(updateTimer, 1000);
     }
 
@@ -757,7 +832,7 @@
     }
 
     function remainingSeconds() {
-      if (exam.config.mode === "full") return Math.max(0, Math.ceil(exam.remainingSec));
+      if (isTimedMode(exam.config)) return Math.max(0, Math.ceil(exam.remainingSec));
       return Math.max(0, Math.ceil((exam.endsAt - Date.now()) / 1000));
     }
 
@@ -778,19 +853,23 @@
 
     // 2분 넘게 떠났다 돌아옴: 떠나기 직전의 남은 시간으로 저장하고 이어서 풀기 화면으로 보낸다.
     function suspendFullSet(remaining) {
+      var mode = exam.config.mode;
       exam.remainingSec = remaining;
-      writeFullSave();
+      if (mode === "lc") stopLcAudio();
+      writeExamSave();
       stopTimer();
       exam = null;
-      renderFullIntro("시험이 중단되었습니다. 남은 시간 " + formatTime(remaining) + "부터 이어서 풀 수 있습니다.");
+      var message = "시험이 중단되었습니다. 남은 시간 " + formatTime(remaining) + "부터 이어서 풀 수 있습니다.";
+      if (mode === "lc") renderLcIntro(message);
+      else renderFullIntro(message);
     }
 
     function handleVisibilityChange() {
-      if (!exam || exam.submitted || exam.config.mode !== "full") return;
+      if (!exam || exam.submitted || !isTimedMode(exam.config)) return;
       if (document.hidden) {
         exam.hiddenAt = Date.now();
         exam.remainingAtHide = exam.remainingSec;
-        writeFullSave();
+        writeExamSave();
         return;
       }
       if (exam.hiddenAt === null) return;
@@ -802,7 +881,7 @@
         return;
       }
       exam.remainingSec = Math.max(0, exam.remainingAtHide - Math.max(0, away)); // 짧은 이탈은 그대로 깎는다
-      writeFullSave();
+      writeExamSave();
       updateTimer();
     }
 
@@ -817,7 +896,7 @@
       if (!exam || exam.submitted) return;
       var config = exam.config;
       var before = remainingSeconds();
-      if (config.mode === "full" && tickFullSet()) return;
+      if (isTimedMode(config) && tickFullSet()) return;
       var remaining = remainingSeconds();
       exam.timeOutput.textContent = formatTime(remaining);
       exam.timerBar.classList.toggle("is-warning", remaining <= config.warnSec && remaining > config.dangerSec);
@@ -835,11 +914,11 @@
       }
       var answered = exam.answers.filter(function (answer) { return answer !== null; }).length;
       exam.progressOutput.textContent = "푼 문제 " + answered + " / " + exam.items.length;
-      if (config.mode === "full") {
+      if (isTimedMode(config)) {
         exam.ticksSinceSave += 1;
         if (exam.ticksSinceSave >= FULL_SAVE_EVERY_TICKS) {
           exam.ticksSinceSave = 0;
-          writeFullSave();
+          writeExamSave();
         }
       }
       if (remaining <= 0) submitExam(true);
@@ -847,14 +926,20 @@
 
     function goTo(index) {
       if (!exam || exam.submitted) return;
+      if (exam.config.mode === "lc") {
+        if (index <= exam.index) return; // LC: 지나간 문항으로 돌아갈 수 없다
+        if (exam.playing) stopLcAudio();
+        exam.lcMessage = "";
+      }
       exam.index = Math.min(exam.items.length - 1, Math.max(0, index));
       renderExamQuestion();
       renderOmr();
-      writeFullSave();
+      writeExamSave();
       if (exam.heading && exam.heading.focus) exam.heading.focus({ preventScroll: true });
     }
 
     function renderExamQuestion() {
+      if (exam.config.mode === "lc") return renderLcQuestion();
       var item = exam.items[exam.index];
       var area = exam.questionArea;
       area.replaceChildren();
@@ -873,7 +958,7 @@
           exam.answers[exam.index] = choiceIndex;
           renderExamQuestion();
           renderOmr();
-          writeFullSave();
+          writeExamSave();
           var answered = exam.answers.filter(function (answer) { return answer !== null; }).length;
           exam.progressOutput.textContent = "푼 문제 " + answered + " / " + exam.items.length;
         });
@@ -895,6 +980,7 @@
     }
 
     function renderOmr() {
+      if (exam.config.mode === "lc") return renderLcOmr();
       var omr = exam.omr;
       omr.replaceChildren(element("h3", "practice-omr-title", "답안지"));
       // 풀세트는 파트 경계(30/46/75/85)마다 구획을 나누고 번호 범위를 붙인다. 지금 문제가 든 구획은 강조한다.
@@ -940,11 +1026,12 @@
           !window.confirm("아직 안 푼 문제가 " + unanswered + "개 있어요. 제출할까요?")) {
         return;
       }
+      if (exam.config.mode === "lc") stopLcAudio();
       exam.submitted = true;
       stopTimer();
-      if (exam.config.mode === "full") clearFullSave();
+      if (isTimedMode(exam.config)) clearExamSave(exam.config);
       // 풀세트는 실제로 깎인 시간(제한 - 남은 시간)으로, 미니 모의고사는 기존처럼 시작 시각부터 잰다.
-      var elapsedSec = exam.config.mode === "full"
+      var elapsedSec = isTimedMode(exam.config)
         ? Math.round(exam.config.seconds - exam.remainingSec)
         : Math.min(exam.config.seconds, Math.round((Date.now() - exam.startedAt) / 1000));
       var timedOut = auto === true;
@@ -958,7 +1045,7 @@
         var isCorrect = answer === item.answer;
         if (isCorrect) {
           correct += 1;
-          scores[item.part] += 1;
+          scores[item.part] = (scores[item.part] || 0) + 1;
         } else {
           misses.push({ item: item, answer: answer });
         }
@@ -981,6 +1068,20 @@
           }
         });
         recordFullHistory(result);
+      } else if (exam.config.mode === "lc") {
+        // LC 풀세트: 별도 기록 키. 답한 문항은 리스닝 정답률(listeningStats part2·3·4)에도 반영한다.
+        result.score = lcFullSetScore(correct);
+        result.scaled = lcScaledCorrect(correct);
+        result.analysis = analyzeLc(exam.items, exam.answers);
+        exam.items.forEach(function (item, index) {
+          if (exam.answers[index] === null) return;
+          try {
+            window.Progress.recordListeningAnswer(LC_PROGRESS_TYPES[item.part], exam.answers[index] === item.answer);
+          } catch (error) {
+            console.warn("리스닝 기록을 저장하지 못했습니다.", error);
+          }
+        });
+        recordFullHistory(result, LC_HISTORY_KEY);
       } else {
         try {
           window.Progress.recordPracticeAttempt(result);
@@ -1002,12 +1103,16 @@
       var card = element("section", "panel practice-result");
       card.setAttribute("aria-live", "polite");
       card.append(
-        element("p", "eyebrow", config.mode === "full" ? "RC FULL SET RESULT" : "MOCK TEST RESULT"),
+        element("p", "eyebrow", config.mode === "full" ? "RC FULL SET RESULT" : config.mode === "lc" ? "LC FULL SET RESULT" : "MOCK TEST RESULT"),
         element("h3", "practice-result-score", "총점 " + result.correct + " / " + result.total),
         element("p", "practice-result-rate", "정답률 " + percent(result.correct, result.total) + "%")
       );
       if (config.mode === "full") {
         renderFullResult(card, result, misses, config);
+        return;
+      }
+      if (config.mode === "lc") {
+        renderLcResult(card, result, misses, config);
         return;
       }
 
@@ -1288,6 +1393,562 @@
       if (view.scrollIntoView) view.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
+    // =================== LC 풀세트 (Part 1 사진 제외 94문항 / 45분) ===================
+    // 실전 조건: 문항(Part 2)·대화·담화(Part 3·4)의 음성은 한 번만 재생, 지나간 문항으로 돌아갈 수 없음,
+    // 시험 중에는 스크립트를 보여 주지 않음(채점 후 오답 복습에서만). 타이머·이탈·중간 저장 규칙은 RC 풀세트와 같다.
+
+    var listeningPart2 = window.PART2 || [];
+    var listeningPart3 = window.PART3 || [];
+    var listeningPart4 = window.PART4 || [];
+    var part2TypeLabels = window.PART2_TYPE_LABELS || {};
+    var LC_PROGRESS_TYPES = { p2: "part2", p3: "part3", p4: "part4" };
+    var LC_TALK_UNITS = { p3: "대화", p4: "담화" };
+
+    function speechSupported() {
+      return !!(window.Speech && window.Speech.isSupported() && window.ListeningVoices);
+    }
+
+    function lcRequire(list, count, what) {
+      if (list.length < count) {
+        throw fullSetError(what + " 수가 모자라 LC 풀세트를 만들 수 없어요. 필요 " + count + "개, 현재 " + list.length + "개.");
+      }
+      return list.slice(0, count);
+    }
+
+    function usableTalks(list) {
+      return list.filter(function (talk) {
+        return talk && Array.isArray(talk.script) && talk.script.length &&
+          Array.isArray(talk.questions) && talk.questions.length === LC_SET.questionsPerTalk;
+      });
+    }
+
+    // 무작위 구성표(id 목록). 저장·이어 풀기도 이 구성표로 같은 세트를 다시 만든다.
+    function planLcSet() {
+      function ids(list) { return list.map(function (entry) { return entry.id; }); }
+      var p2 = lcRequire(shuffle(listeningPart2.filter(function (item) {
+        return item && Array.isArray(item.choices) && item.choices.length === 3;
+      })), LC_SET.p2, "Part 2 문항");
+      var p3 = lcRequire(shuffle(usableTalks(listeningPart3)), LC_SET.p3Talks, "Part 3 대화");
+      var p4 = lcRequire(shuffle(usableTalks(listeningPart4)), LC_SET.p4Talks, "Part 4 담화");
+      return { p2: ids(p2), p3: ids(p3), p4: ids(p4) };
+    }
+
+    // 구성표 → 시험 순서의 94문항 (Part 2 1~25 → Part 3 26~64 → Part 4 65~94). 대화·담화는 3문항을 모두 낸다.
+    function assembleLcSet(plan) {
+      function find(list, id, what) {
+        var found = list.find(function (entry) { return entry && entry.id === id; });
+        if (!found) throw fullSetError(what + " " + id + "을(를) 찾을 수 없어요.");
+        return found;
+      }
+      var items = [];
+      plan.p2.forEach(function (id) {
+        var q = find(listeningPart2, id, "Part 2 문항");
+        items.push({
+          part: "p2", section: "p2", prompt: q.question, choices: q.choices, answer: q.answer, explanation: q.explanation,
+          ko: q.ko || "", qtype: q.type || "기타", source: q, key: "p2:" + q.id, audioKey: "p2:" + q.id, group: null, ruleId: null
+        });
+      });
+      [["p3", listeningPart3, "Part 3 대화"], ["p4", listeningPart4, "Part 4 담화"]].forEach(function (spec) {
+        plan[spec[0]].forEach(function (id) {
+          var talk = find(spec[1], id, spec[2]);
+          if (!Array.isArray(talk.questions) || talk.questions.length !== LC_SET.questionsPerTalk) {
+            throw fullSetError(spec[2] + " " + id + "의 문항 수가 " + LC_SET.questionsPerTalk + "개가 아니에요.");
+          }
+          var group = { kind: spec[0], talk: talk, key: spec[0] + ":" + talk.id, numbers: [] };
+          talk.questions.forEach(function (q, qIndex) {
+            items.push({
+              part: spec[0], section: spec[0], prompt: q.q, choices: q.choices, answer: q.answer, explanation: q.explanation,
+              group: group, qIndex: qIndex, key: group.key + ":" + qIndex, audioKey: group.key, ruleId: null
+            });
+          });
+        });
+      });
+      if (items.length !== LC_SET.total) {
+        throw fullSetError("LC 풀세트가 " + LC_SET.total + "문항이 아니에요 (" + items.length + "문항).");
+      }
+      items.forEach(function (item, index) {
+        item.number = index + 1;
+        if (item.group) item.group.numbers.push(item.number);
+      });
+      return items;
+    }
+
+    function buildLcSet() {
+      var plan = planLcSet();
+      return { plan: plan, items: assembleLcSet(plan) };
+    }
+
+    // ---------- LC 풀세트 저장 (RC 풀세트와 별도 키) ----------
+
+    function readLcSave() {
+      var raw = null;
+      try {
+        raw = localStorage.getItem(LC_SAVE_KEY);
+      } catch (error) {
+        console.warn("저장된 LC 풀세트를 읽지 못했습니다.", error);
+        return null;
+      }
+      if (raw === null) return null;
+      try {
+        var saved = JSON.parse(raw);
+        var plan = saved && saved.plan;
+        var valid = saved && saved.version === 1 && plan &&
+          ["p2", "p3", "p4"].every(function (key) { return Array.isArray(plan[key]); }) &&
+          Array.isArray(saved.answers) && saved.answers.length === LC_SET.total &&
+          saved.answers.every(function (answer) { return answer === null || (Number.isInteger(answer) && answer >= 0 && answer < 4); }) &&
+          typeof saved.remainingSec === "number" && isFinite(saved.remainingSec) &&
+          saved.remainingSec > 0 && saved.remainingSec <= MODES.lc.seconds &&
+          Number.isInteger(saved.index) && saved.index >= 0 && saved.index < LC_SET.total &&
+          typeof saved.startedAt === "number" &&
+          Array.isArray(saved.played) && saved.played.every(function (key) { return typeof key === "string"; });
+        if (!valid) throw new Error("형식이 맞지 않음");
+        saved.items = assembleLcSet(plan);
+        var away = typeof saved.savedAt === "number" ? (Date.now() - saved.savedAt) / 1000 : Infinity;
+        saved.interrupted = !(away >= 0 && away <= FULL_AWAY_LIMIT_SEC);
+        if (!saved.interrupted) saved.remainingSec = Math.max(1, saved.remainingSec - away);
+        return saved;
+      } catch (error) {
+        console.warn("저장된 LC 풀세트가 깨져 있어 지우고 새로 시작합니다.", error.message);
+        clearLcSave();
+        return null;
+      }
+    }
+
+    // 저장 항목: 구성표, 고른 답, 남은 시간, 현재 문항, 이미 재생한 음성 목록(이어서 풀어도 다시 못 듣게).
+    function writeLcSave() {
+      if (!exam || exam.submitted || exam.config.mode !== "lc") return;
+      try {
+        localStorage.setItem(LC_SAVE_KEY, JSON.stringify({
+          version: 1,
+          plan: exam.plan,
+          answers: exam.answers,
+          remainingSec: Math.max(1, Math.round(exam.remainingSec)),
+          index: exam.index,
+          played: Object.keys(exam.played),
+          startedAt: exam.startedAt,
+          savedAt: Date.now()
+        }));
+      } catch (error) {
+        console.warn("LC 풀세트 진행 상황을 저장하지 못했습니다.", error);
+      }
+    }
+
+    function clearLcSave() {
+      try {
+        localStorage.removeItem(LC_SAVE_KEY);
+      } catch (error) {
+        console.warn("저장된 LC 풀세트를 지우지 못했습니다.", error);
+      }
+    }
+
+    // ---------- LC 음성 ----------
+
+    var lcAudioToken = 0;
+
+    // Part 2는 질문과 세 응답을 서로 다른 화자가 읽는다(번호마다 남녀를 번갈아). Part 3·4는 리스닝 탭과 같은 대사.
+    function lcAudioLines(item) {
+      if (item.part === "p2") {
+        var asker = item.number % 2 ? "W" : "M";
+        var responder = asker === "W" ? "M" : "W";
+        return [{ speaker: asker, text: item.prompt }].concat(item.choices.map(function (choice, index) {
+          return { speaker: responder, text: letter(index) + ". " + choice };
+        }));
+      }
+      return window.ListeningVoices.talkLines(item.group.talk);
+    }
+
+    // 대사를 차례로 읽는다. 화자별 음성은 리스닝 탭과 같은 규칙(listening-voices.js)으로 정한다.
+    // 첫 줄은 클릭 핸들러 안에서 바로 speak()해야 iOS에서 막히지 않는다.
+    function playLcLines(lines) {
+      var token = ++lcAudioToken;
+      var settings = window.Speech.getSettings();
+      var profiles = window.ListeningVoices.profiles(lines, settings);
+      function speakLine(line) {
+        if (token !== lcAudioToken) return undefined;
+        var profile = profiles[line.speaker] || {};
+        return window.Speech.speak(line.text, {
+          rate: settings.rate,
+          voice: profile.voice,
+          pitch: profile.pitch,
+          rateScale: profile.rateScale,
+          lang: settings.voiceSelected ? settings.locale : "en-US",
+          fallbackLang: "en-US"
+        });
+      }
+      var sequence = Promise.resolve(speakLine(lines[0]));
+      lines.slice(1).forEach(function (line) {
+        sequence = sequence.then(function () { return speakLine(line); });
+      });
+      return sequence;
+    }
+
+    function stopLcAudio() {
+      lcAudioToken += 1;
+      if (exam && exam.config.mode === "lc") exam.playing = null;
+      if (window.Speech && window.Speech.isSupported()) window.Speech.stop();
+    }
+
+    // 시험 중 재생: 누르는 순간 '들은 것'으로 친다. 중간에 끊기거나 이어서 풀어도 다시 들을 수 없다.
+    function playLcItem(item) {
+      if (!exam || exam.submitted || exam.played[item.audioKey] || !speechSupported()) return;
+      exam.played[item.audioKey] = true;
+      exam.playing = item.audioKey;
+      exam.lcMessage = "";
+      var current = exam;
+      var playback = playLcLines(lcAudioLines(item));
+      writeExamSave();
+      renderExamQuestion();
+      playback.then(function () {
+        if (exam !== current || exam.submitted || exam.playing !== item.audioKey) return;
+        exam.playing = null;
+        renderExamQuestion();
+      }).catch(function (error) {
+        if (exam !== current || exam.submitted) return;
+        exam.playing = null;
+        exam.lcMessage = error && error.message ? error.message : "음성을 재생하지 못했어요.";
+        renderExamQuestion();
+      });
+    }
+
+    // ---------- LC 시험 화면 ----------
+
+    function lcScriptBox(item) {
+      var box = element("div", "listening-transcript practice-lc-script");
+      if (item.part === "p2") {
+        box.appendChild(element("p", "listening-transcript-line en", item.prompt));
+        item.choices.forEach(function (choice, index) {
+          box.appendChild(element("p", "listening-transcript-line en", "(" + letter(index) + ") " + choice));
+        });
+        return box;
+      }
+      var talk = item.group.talk;
+      window.ListeningVoices.talkLines(talk).forEach(function (line) {
+        var paragraph = element("p", "listening-transcript-line en");
+        if (item.part === "p3") paragraph.appendChild(element("span", "listening-speaker", window.ListeningVoices.speakerName(talk, line.speaker) + ": "));
+        paragraph.appendChild(element("span", "", line.text));
+        box.appendChild(paragraph);
+      });
+      return box;
+    }
+
+    function renderLcQuestion() {
+      var item = exam.items[exam.index];
+      var area = exam.questionArea;
+      var supported = speechSupported();
+      var played = !!exam.played[item.audioKey];
+      var playing = exam.playing === item.audioKey;
+      area.replaceChildren();
+      area.dataset.item = item.key;
+      area.appendChild(element("p", "practice-question-meta", SECTION_LABELS[item.section] + " · " + item.number + " / " + exam.items.length));
+      var unit = LC_TALK_UNITS[item.part];
+      area.appendChild(element("p", "practice-lc-directions", item.part === "p2"
+        ? "질문과 세 응답을 듣고 가장 알맞은 응답을 고르세요. 질문과 응답은 화면에 나오지 않아요."
+        : item.group.numbers[0] + "~" + item.group.numbers[item.group.numbers.length - 1] + "번은 다음 " + unit + "를 듣고 답하세요."));
+
+      var audio = element("div", "practice-lc-audio");
+      if (supported) {
+        var label = item.part === "p2" ? "▶ 문제 듣기" : "▶ " + unit + " 듣기";
+        var play = button("button button-primary practice-lc-play", playing ? "재생 중…" : played ? "재생 완료 · 다시 들을 수 없어요" : label, function () {
+          playLcItem(item);
+        });
+        play.disabled = played || playing;
+        audio.append(play, element("span", "practice-lc-once", "음성은 한 번만 나와요"));
+      } else {
+        audio.appendChild(element("p", "practice-lc-message", "이 브라우저는 음성 재생을 지원하지 않아 스크립트를 보여 드려요. " +
+          (window.Speech ? window.Speech.CHROME_HINT : "크롬으로 열면 음성이 재생됩니다.")));
+      }
+      area.appendChild(audio);
+      if (exam.lcMessage) area.appendChild(element("p", "practice-lc-message", exam.lcMessage));
+      if (!supported) area.appendChild(lcScriptBox(item)); // 음성이 없으면 스크립트로라도 풀게 한다
+
+      // Part 3·4는 대화·담화를 다 들은 뒤에 문제가 보인다 (리스닝 탭과 같은 흐름, 다시 듣기 없음).
+      var questionVisible = item.part === "p2" || !supported || (played && !playing);
+      if (questionVisible) {
+        var heading = element("h3", "practice-question-prompt" + (item.part === "p2" ? "" : " en"),
+          item.number + ". " + (item.part === "p2" ? "알맞은 응답을 고르세요." : item.prompt));
+        heading.tabIndex = -1;
+        exam.heading = heading;
+        area.appendChild(heading);
+        var choices = element("div", "quiz-options practice-choices");
+        item.choices.forEach(function (choice, choiceIndex) {
+          // Part 2 선택지는 실제 시험처럼 글자 없이 (A)(B)(C)만 보인다. 음성을 못 쓰면 위 스크립트에서 읽는다.
+          var text = item.part === "p2" ? "(" + letter(choiceIndex) + ")" : "(" + letter(choiceIndex) + ") " + choice;
+          var option = button("quiz-option en", text, function () {
+            exam.answers[exam.index] = choiceIndex;
+            renderExamQuestion();
+            renderOmr();
+            writeExamSave();
+            var answered = exam.answers.filter(function (answer) { return answer !== null; }).length;
+            exam.progressOutput.textContent = "푼 문제 " + answered + " / " + exam.items.length;
+          });
+          var selected = exam.answers[exam.index] === choiceIndex;
+          if (selected) option.classList.add("is-selected");
+          option.setAttribute("aria-pressed", String(selected));
+          choices.appendChild(option);
+        });
+        area.appendChild(choices);
+      } else {
+        exam.heading = null;
+        area.appendChild(element("p", "practice-lc-wait", playing
+          ? "재생 중이에요. 다 들으면 문제가 보여요."
+          : "▶ " + unit + " 듣기를 눌러 먼저 들어 주세요. 다 들으면 문제가 보여요."));
+      }
+
+      var nav = element("div", "practice-nav-row");
+      var next = button("button button-quiet", "다음 →", function () { goTo(exam.index + 1); });
+      next.disabled = exam.index === exam.items.length - 1;
+      var submit = button("button button-primary practice-submit", "제출", function () { submitExam(false); });
+      nav.append(next, submit);
+      area.appendChild(nav);
+      area.appendChild(element("p", "practice-lc-rule", "지나간 문항으로는 돌아갈 수 없어요. 지금 문항의 답은 바꿀 수 있어요."));
+    }
+
+    // OMR은 진행 표시용: 눌러서 이동할 수 없다(버튼이 아닌 칸).
+    function renderLcOmr() {
+      var omr = exam.omr;
+      omr.replaceChildren(
+        element("h3", "practice-omr-title", "답안지"),
+        element("p", "practice-omr-note", "진행 표시용이에요. 눌러서 이동할 수 없어요.")
+      );
+      var current = exam.items[exam.index];
+      ["p2", "p3", "p4"].forEach(function (part) {
+        var entries = exam.items.filter(function (item) { return item.section === part; });
+        if (!entries.length) return;
+        var section = element("div", "practice-omr-section");
+        section.dataset.section = part;
+        var label = SECTION_LABELS[part] + " · " + entries[0].number + "~" + entries[entries.length - 1].number + "번";
+        if (current.section === part) {
+          section.classList.add("is-current-section");
+          label += " (지금)";
+        }
+        section.appendChild(element("p", "practice-omr-part", label));
+        var grid = element("div", "practice-omr-grid");
+        entries.forEach(function (item) {
+          var index = item.number - 1;
+          var answer = exam.answers[index];
+          var cell = element("span", "practice-omr-cell is-static");
+          cell.append(
+            element("span", "practice-omr-number", String(item.number)),
+            element("span", "practice-omr-mark", answer === null ? "·" : letter(answer))
+          );
+          if (answer !== null) cell.classList.add("is-answered");
+          if (index < exam.index) cell.classList.add("is-passed");
+          if (index === exam.index) {
+            cell.classList.add("is-current");
+            cell.setAttribute("aria-current", "step");
+          }
+          cell.setAttribute("aria-label", item.number + "번" + (answer === null ? " 안 풂" : " 답 " + letter(answer)));
+          grid.appendChild(cell);
+        });
+        section.appendChild(grid);
+        omr.appendChild(section);
+      });
+    }
+
+    // ---------- LC 시작 화면 ----------
+
+    function renderLcIntro(notice) {
+      preparedItems = null;
+      if (window.Speech && window.Speech.isSupported()) window.Speech.stop();
+      lcAudioToken += 1;
+      var saved = readLcSave();
+      var intro = element("div", "panel practice-intro practice-full-intro practice-lc-intro");
+      intro.appendChild(element("p", "practice-lc-excluded", LC_EXCLUDED_NOTE));
+      if (saved) {
+        var answered = saved.answers.filter(function (answer) { return answer !== null; }).length;
+        var message = typeof notice === "string" ? notice
+          : saved.interrupted ? "시험이 중단되었습니다. 남은 시간 " + formatTime(saved.remainingSec) + "부터 이어서 풀 수 있습니다." : "";
+        if (message) {
+          var noticeBox = element("p", "practice-suspended-notice", message);
+          noticeBox.setAttribute("role", "status");
+          intro.appendChild(noticeBox);
+        }
+        intro.append(
+          element("h3", "", "진행 중인 LC 풀세트가 있어요"),
+          element("p", "", "푼 문제 " + answered + " / " + LC_SET.total + " · 남은 시간 " + formatTime(saved.remainingSec) +
+            " · 마지막으로 본 문제 " + (saved.index + 1) + "번"),
+          element("p", "", "이어서 풀어도 이미 들은 문항의 음성은 다시 들을 수 없어요. 새로 시작하면 저장된 세트는 지워져요.")
+        );
+        var actions = element("div", "practice-result-actions");
+        actions.append(
+          button("button button-primary", "이어서 풀기", function () { launchExam(saved.items, MODES.lc, saved); }),
+          button("button button-quiet", "새로 시작", function () {
+            if (typeof window.confirm === "function" && !window.confirm("저장된 세트를 지우고 새로 시작할까요?")) return;
+            clearLcSave();
+            renderLcIntro();
+          })
+        );
+        intro.appendChild(actions);
+        intro.appendChild(backToModes());
+        mockStage.replaceChildren(intro);
+        return;
+      }
+      var built;
+      try {
+        built = buildLcSet();
+      } catch (error) {
+        console.error("LC 풀세트를 만들 수 없습니다: " + error.message, error);
+        var failure = element("div", "panel practice-intro practice-full-error");
+        failure.setAttribute("role", "alert");
+        failure.append(element("h3", "", "LC 풀세트를 만들 수 없어요"), element("p", "", error.message), backToModes());
+        mockStage.replaceChildren(failure);
+        return;
+      }
+      intro.append(
+        element("h3", "", "LC 풀세트 · " + LC_SET.total + "문항 · " + Math.round(MODES.lc.seconds / 60) + "분"),
+        element("p", "", "Part 2 1~25번 → Part 3 26~64번(대화 13개) → Part 4 65~94번(담화 10개), 실제 시험 순서대로 풀어요."),
+        element("p", "", "실전처럼 음성은 문항마다 한 번만 나오고 다시 듣기가 없어요. 지나간 문항으로는 돌아갈 수 없어요. 지금 문항의 답은 바꿀 수 있어요."),
+        element("p", "", "Part 2는 질문과 응답이 화면에 나오지 않아요. Part 3·4는 대화·담화를 다 들은 뒤 문제가 보여요. 스크립트는 채점 후 오답 복습에서 볼 수 있어요."),
+        element("p", "", "10분, 5분 남았을 때 알려 드리고, 시간이 끝나면 자동으로 제출돼요. 중간에 끊겨도 실전 탭에서 이어서 풀 수 있어요.")
+      );
+      if (!speechSupported()) {
+        intro.appendChild(element("p", "practice-lc-message", "이 브라우저는 음성 재생을 지원하지 않아 스크립트를 보며 풀게 돼요. " +
+          (window.Speech ? window.Speech.CHROME_HINT : "크롬으로 열면 음성이 재생됩니다.")));
+      }
+      intro.appendChild(button("button button-primary", "LC 풀세트 시작", function () {
+        launchExam(built.items, MODES.lc, { plan: built.plan });
+      }));
+      intro.appendChild(backToModes());
+      mockStage.replaceChildren(intro);
+    }
+
+    // ---------- LC 채점 · 분석 ----------
+
+    function analyzeLc(items, answers) {
+      var sections = {}, types = {};
+      function bump(map, id, isCorrect) {
+        map[id] = map[id] || { correct: 0, total: 0 };
+        map[id].total += 1;
+        if (isCorrect) map[id].correct += 1;
+      }
+      items.forEach(function (item, index) {
+        var isCorrect = answers[index] === item.answer;
+        bump(sections, item.section, isCorrect);
+        if (item.part === "p2") bump(types, item.qtype, isCorrect);
+      });
+      return {
+        sections: ["p2", "p3", "p4"].map(function (id) {
+          return Object.assign({ id: id }, rate(sections[id] ? sections[id].correct : 0, sections[id] ? sections[id].total : 0));
+        }),
+        p2Types: Object.keys(types).map(function (id) {
+          return Object.assign({ id: id }, rate(types[id].correct, types[id].total));
+        }).sort(byWeakness)
+      };
+    }
+
+    var lastLcResult = null;
+
+    function lcResultCard(result) {
+      var card = element("section", "panel practice-result");
+      card.setAttribute("aria-live", "polite");
+      card.append(
+        element("p", "eyebrow", "LC FULL SET RESULT"),
+        element("h3", "practice-result-score", "총점 " + result.correct + " / " + result.total),
+        element("p", "practice-result-rate", "정답률 " + percent(result.correct, result.total) + "%")
+      );
+      return card;
+    }
+
+    function renderLcResult(card, result, misses, config) {
+      lastLcResult = { result: result, misses: misses, config: config };
+      var analysis = result.analysis;
+      card.appendChild(element("p", "practice-lc-excluded", LC_EXCLUDED_NOTE));
+      var score = element("div", "practice-band practice-full-score practice-lc-score");
+      score.append(
+        element("strong", "practice-band-value", "예상 LC 점수 약 " + result.score + "점"),
+        element("p", "practice-band-note", "Part 1이 빠진 94문항을 100문항 기준으로 환산한 참고값입니다")
+      );
+      card.appendChild(score);
+      card.appendChild(element("p", "practice-result-time" + (result.timedOut ? " is-timeout" : ""),
+        "소요 시간 " + formatTime(result.elapsedSec) + " / 제한 " + formatTime(config.seconds) + " · " +
+        (result.timedOut ? "시간 초과로 자동 제출됐어요." : "제한 시간 안에 제출했어요.")));
+
+      var sections = statSection("practice-analysis-sections", "파트별 정답률");
+      analysis.sections.forEach(function (stat) { sections.appendChild(statRow(SECTION_LABELS[stat.id], stat)); });
+      card.appendChild(sections);
+
+      var types = statSection("practice-analysis-p2types", "Part 2 질문 유형별 정답률",
+        "정답률이 낮은 순서예요. 약한 유형은 리스닝 탭 질의응답에서 다시 연습해 보세요.");
+      analysis.p2Types.forEach(function (stat) { types.appendChild(statRow(part2TypeLabels[stat.id] || stat.id, stat)); });
+      card.appendChild(types);
+
+      var actions = element("div", "practice-result-actions");
+      var review = button("button button-primary", misses.length ? "오답 복습 (" + misses.length + "문항)" : "오답 없음", function () { renderLcReview(); });
+      review.disabled = !misses.length;
+      actions.append(
+        review,
+        button("button button-quiet", "다시 응시", renderLcIntro),
+        button("button button-quiet", "기록 보기", function () { showTab("history"); }),
+        button("button button-quiet", "모드 선택", renderModeSelect)
+      );
+      card.appendChild(actions);
+      mockStage.replaceChildren(card);
+      if (card.scrollIntoView) card.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    // ---------- LC 오답 복습 ----------
+
+    // 복습에서는 몇 번이든 다시 들을 수 있다.
+    function lcReplayButton(item) {
+      var replay = button("button button-quiet practice-lc-replay", "▶ 다시 듣기", function () {
+        playLcLines(lcAudioLines(item)).catch(function (error) { console.warn("복습 음성을 재생하지 못했습니다.", error); });
+      });
+      replay.disabled = !speechSupported();
+      return replay;
+    }
+
+    function lcMissDetail(miss) {
+      var entry = missDetail(miss);
+      if (miss.item.ko) entry.appendChild(element("p", "practice-lc-ko", miss.item.ko));
+      return entry;
+    }
+
+    // 오답만 모은다. Part 2는 문항 단위, Part 3·4는 대화·담화 단위로 묶어 같은 대화를 두 번 싣지 않는다.
+    function renderLcReview() {
+      if (!lastLcResult) return;
+      var misses = lastLcResult.misses;
+      var groups = [];
+      var byKey = {};
+      misses.forEach(function (miss) {
+        var item = miss.item;
+        var key = item.part === "p2" ? item.key : item.group.key;
+        if (!byKey[key]) {
+          byKey[key] = { key: key, item: item, misses: [] };
+          groups.push(byKey[key]);
+        }
+        byKey[key].misses.push(miss);
+      });
+      var view = element("section", "panel practice-review practice-lc-review");
+      view.append(
+        element("p", "eyebrow", "WRONG ANSWER REVIEW"),
+        element("h3", "", "오답 복습 · " + misses.length + "문항"),
+        element("p", "practice-analysis-note", "대화·담화는 한 번씩만 싣고, 그 안에서 틀린 문항을 모아 보여 줘요. 이제 스크립트를 보며 몇 번이든 다시 들을 수 있어요.")
+      );
+      var back = button("button button-quiet", "← 채점 결과로", function () {
+        if (window.Speech && window.Speech.isSupported()) window.Speech.stop();
+        lcAudioToken += 1;
+        renderLcResult(lcResultCard(lastLcResult.result), lastLcResult.result, lastLcResult.misses, lastLcResult.config);
+      });
+      view.appendChild(back);
+      groups.forEach(function (group) {
+        var item = group.item;
+        var article = element("article", "practice-review-group");
+        article.dataset.group = group.key;
+        if (item.part === "p2") {
+          article.appendChild(element("p", "practice-review-title", "Part 2 · " + item.number + "번 · " + (part2TypeLabels[item.qtype] || item.qtype)));
+        } else {
+          article.appendChild(element("p", "practice-review-title", SECTION_LABELS[item.section] + " · " + item.group.talk.title + " · 틀린 문항 " +
+            group.misses.map(function (miss) { return miss.item.number + "번"; }).join(", ")));
+        }
+        article.append(lcReplayButton(item), lcScriptBox(item));
+        group.misses.forEach(function (miss) { article.appendChild(lcMissDetail(miss)); });
+        view.appendChild(article);
+      });
+      view.appendChild(button("button button-quiet", "← 채점 결과로", function () { back.click(); }));
+      mockStage.replaceChildren(view);
+      if (view.scrollIntoView) view.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
     // ---------- 파트별 연습 (즉시 채점) ----------
 
     function practiceQuestionCard(number, promptText, isEnglish, question) {
@@ -1397,16 +2058,24 @@
         String(date.getHours()).padStart(2, "0") + ":" + String(date.getMinutes()).padStart(2, "0");
     }
 
-    // RC 풀세트 기록: 점수 추이 막대 + 표 (최근 20회). 미니 모의고사 기록 아래에 따로 그린다.
-    function renderFullHistory() {
-      var history = readFullHistory();
+    var HISTORY_SPECS = {
+      full: { key: FULL_HISTORY_KEY, className: "practice-full-history", tableClass: "practice-full-history-table",
+        title: "RC 풀세트 기록", scoreLabel: "예상 RC 점수", note: "오래된 순 → 최신 순 (495점 만점)", total: FULL_SET.total },
+      lc: { key: LC_HISTORY_KEY, className: "practice-lc-history", tableClass: "practice-lc-history-table",
+        title: "LC 풀세트 기록", scoreLabel: "예상 LC 점수", note: "오래된 순 → 최신 순 (495점 만점, Part 1 제외 94문항을 100문항 기준으로 환산)", total: LC_SET.total }
+    };
+
+    // 풀세트 기록: 점수 추이 막대 + 표 (최근 20회). 미니 모의고사 기록 아래에 RC·LC를 따로 그린다.
+    function renderFullHistory(kind) {
+      var spec = HISTORY_SPECS[kind || "full"];
+      var history = readFullHistory(spec.key);
       if (!history.length) return;
-      var section = element("section", "panel practice-full-history");
-      section.appendChild(element("h3", "", "RC 풀세트 기록 (최근 " + history.length + "회)"));
-      section.appendChild(element("p", "practice-trend-note", "예상 RC 점수 추이 · 오래된 순 → 최신 순 (495점 만점)"));
+      var section = element("section", "panel practice-full-history-panel " + spec.className);
+      section.appendChild(element("h3", "", spec.title + " (최근 " + history.length + "회)"));
+      section.appendChild(element("p", "practice-trend-note", spec.scoreLabel + " 추이 · " + spec.note));
       var chart = element("div", "practice-full-trend");
       chart.setAttribute("role", "img");
-      chart.setAttribute("aria-label", "예상 RC 점수 추이: " + history.map(function (entry) { return entry.score + "점"; }).join(", "));
+      chart.setAttribute("aria-label", spec.scoreLabel + " 추이: " + history.map(function (entry) { return entry.score + "점"; }).join(", "));
       history.forEach(function (entry) {
         var column = element("div", "practice-full-trend-col");
         var track = element("span", "practice-full-trend-track");
@@ -1423,7 +2092,7 @@
       });
       section.appendChild(chart);
 
-      var table = element("table", "practice-history-table practice-full-history-table");
+      var table = element("table", "practice-history-table " + spec.tableClass);
       var head = element("thead");
       var headRow = element("tr");
       ["날짜", "점수", "맞은 개수", "소요 시간"].forEach(function (label) {
@@ -1435,7 +2104,7 @@
       var body = element("tbody");
       history.slice().reverse().forEach(function (entry) {
         var row = element("tr");
-        [["날짜", formatDate(entry.date)], ["점수", "약 " + entry.score + "점"], ["맞은 개수", entry.correct + " / " + (entry.total || FULL_SET.total)],
+        [["날짜", formatDate(entry.date)], ["점수", "약 " + entry.score + "점"], ["맞은 개수", entry.correct + " / " + (entry.total || spec.total)],
           ["소요 시간", formatTime(entry.elapsedSec || 0) + (entry.timedOut ? " (시간 초과)" : "")]].forEach(function (cell) {
           var td = element("td", "", cell[1]);
           td.setAttribute("data-label", cell[0]);
@@ -1454,7 +2123,8 @@
       historyRoot.replaceChildren();
       if (!attempts.length) {
         historyRoot.appendChild(element("div", "placeholder", "아직 응시한 모의고사가 없어요. 미니 모의고사를 풀면 여기에 기록돼요."));
-        renderFullHistory();
+        renderFullHistory("full");
+        renderFullHistory("lc");
         return;
       }
 
@@ -1508,7 +2178,8 @@
       });
       table.append(caption, head, body);
       historyRoot.appendChild(table);
-      renderFullHistory();
+      renderFullHistory("full");
+      renderFullHistory("lc");
     }
 
     // ---------- 탭 ----------
@@ -1545,15 +2216,15 @@
     window.addEventListener("beforeunload", function (event) {
       if (!exam || exam.submitted) return;
       // 풀세트는 저장해 두고 그냥 닫게 둔다 (다음에 이어서 풀기). 미니 모의고사만 기존처럼 경고한다.
-      if (exam.config.mode === "full") {
-        writeFullSave();
+      if (isTimedMode(exam.config)) {
+        writeExamSave();
         return;
       }
       event.preventDefault();
       event.returnValue = "";
     });
     // 폰 잠김·다른 앱으로 전환·탭 닫기 직전에 남은 시간을 저장한다. 돌아오면 2분 규칙으로 처리한다.
-    window.addEventListener("pagehide", writeFullSave);
+    window.addEventListener("pagehide", writeExamSave);
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
     renderModeSelect();

@@ -510,6 +510,20 @@ h1, h2, h3, p { overflow-wrap: anywhere; }
 .practice-mode-card .practice-mode-meta { color: var(--blue); font-size: 14px; font-weight: 700; }
 .practice-mode-card .practice-mode-saved { color: var(--red); font-weight: 600; }
 .practice-mode-card .button { margin-top: 8px; }
+/* LC 풀세트: 음성 한 번 재생, 진행 표시용 OMR */
+.practice-lc-excluded { margin: 0 0 10px; color: var(--blue); font-size: 12px; font-weight: 700; }
+.practice-lc-directions { margin: 0 0 8px; color: var(--ink-soft); font-size: 13px; }
+.practice-lc-audio { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 10px 0 14px; }
+.practice-lc-once { color: var(--ink-faint); font-size: 11px; }
+.practice-lc-message { margin: 0 0 10px; color: var(--red); font-size: 12px; }
+.practice-lc-wait { margin: 12px 0; padding: 12px 14px; border-radius: 9px; background: var(--surface-2); color: var(--ink-soft); font-size: 13px; }
+.practice-lc-rule { margin: 8px 0 0; color: var(--ink-faint); font-size: 11px; }
+.practice-lc-script { margin: 10px 0; }
+.practice-lc-ko { margin: 4px 0 0; color: var(--ink-soft); font-size: 12px; }
+.practice-lc-replay { margin: 8px 0 0; }
+.practice-omr-note { margin: 0 0 8px; color: var(--ink-faint); font-size: 11px; }
+.practice-omr-cell.is-static { cursor: default; }
+.practice-omr-cell.is-passed:not(.is-answered) { opacity: 0.55; }
 .practice-back { margin-top: 8px; margin-left: 6px; }
 .practice-time-alert { flex-basis: 100%; margin: 0; font-size: 15px; font-weight: 700; }
 .practice-timer-bar.has-alert { border-width: 2px; }

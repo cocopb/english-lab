@@ -27,13 +27,14 @@ var failures = {
   dictationFields: [],
   part2Choices: [],
   part2Answer: [],
+  part2Type: [],
   part3Structure: [],
   part3Choices: [],
   part3Answer: [],
   part4Structure: [],
   part4Choices: [],
   part4Answer: [],
-  part4AnswerRun: [],
+  answerRun: [],
   ttsUnsafeNumber: [],
   missingExplanation: [],
   duplicateIds: []
@@ -61,6 +62,7 @@ dictation.forEach(function (item, index) {
   if (missing.length) failures.dictationFields.push({ id: label, missing: missing });
 });
 
+var part2TypeLabels = context.window.PART2_TYPE_LABELS || {};
 part2.forEach(function (item, index) {
   item = item || {};
   var label = item.id || "Part 2 #" + (index + 1);
@@ -70,6 +72,8 @@ part2.forEach(function (item, index) {
   }
   if (!validAnswer(item.answer, item.choices)) failures.part2Answer.push({ id: label, answer: item.answer });
   if (!nonEmpty(item.explanation)) failures.missingExplanation.push({ id: label });
+  // 질문 유형: LC 풀세트 채점 화면의 Part 2 유형별 정답률에 쓴다.
+  if (!part2TypeLabels[item.type]) failures.part2Type.push({ id: label, type: item.type });
 });
 
 part3.forEach(function (dialogue, index) {
@@ -132,14 +136,17 @@ part4.forEach(function (talk, index) {
   });
 });
 
-// Part 4 정답 위치: 바로 앞 문항과 같은 위치가 연속되면 실패(담화 경계를 넘어서도 이어서 본다).
-var previousAnswer = { answer: null, label: null };
-part4.forEach(function (talk) {
-  ((talk && talk.questions) || []).forEach(function (question, qIndex) {
-    if (question && question.answer === previousAnswer.answer) {
-      failures.part4AnswerRun.push({ id: talk.id + " Q" + (qIndex + 1), answer: "ABCD"[question.answer], previous: previousAnswer.label });
-    }
-    previousAnswer = { answer: question && question.answer, label: talk.id + " Q" + (qIndex + 1) };
+// Part 3·4 정답 위치: 바로 앞 문항과 같은 위치가 연속되면 실패(대화·담화 경계를 넘어서도 이어서 본다).
+[["Part 3", part3], ["Part 4", part4]].forEach(function (pair) {
+  var previousAnswer = { answer: null, label: null };
+  pair[1].forEach(function (item) {
+    ((item && item.questions) || []).forEach(function (question, qIndex) {
+      var qLabel = item.id + " Q" + (qIndex + 1);
+      if (question && question.answer === previousAnswer.answer) {
+        failures.answerRun.push({ part: pair[0], id: qLabel, answer: "ABCD"[question.answer], previous: previousAnswer.label });
+      }
+      previousAnswer = { answer: question && question.answer, label: qLabel };
+    });
   });
 });
 
@@ -157,13 +164,14 @@ var labels = {
   dictationFields: "받아쓰기 필수 필드(text, ko, level) 누락",
   part2Choices: "Part 2 선택지가 3개가 아님",
   part2Answer: "Part 2 정답 인덱스 오류",
+  part2Type: "Part 2 질문 유형(type)이 없거나 PART2_TYPE_LABELS에 없음",
   part3Structure: "Part 3 script/questions 누락",
   part3Choices: "Part 3 선택지가 4개가 아님",
   part3Answer: "Part 3 정답 인덱스 오류",
   part4Structure: "Part 4 type/title/voice/script/문항 3개 형식 오류",
   part4Choices: "Part 4 선택지가 4개가 아님",
   part4Answer: "Part 4 정답 인덱스 오류",
-  part4AnswerRun: "Part 4 정답 위치가 바로 앞 문항과 같음(담화 경계 포함)",
+  answerRun: "Part 3·4 정답 위치가 바로 앞 문항과 같음(대화·담화 경계 포함)",
   ttsUnsafeNumber: "대본에 숫자-하이픈-숫자 (TTS가 빼기로 읽을 수 있음)",
   missingExplanation: "해설(explanation) 비어 있음",
   duplicateIds: "ID 중복/누락"
@@ -309,7 +317,7 @@ function runListeningPage() {
   };
   var sandbox = { window: window, document: document, console: console, Promise: Promise };
   vm.createContext(sandbox);
-  ["data/listening.js", "assets/js/listening.js"].forEach(function (file) {
+  ["data/listening.js", "assets/js/listening-voices.js", "assets/js/listening.js"].forEach(function (file) {
     vm.runInContext(fs.readFileSync(path.join(root, file), "utf8"), sandbox, { filename: file });
   });
   check(typeof ready === "function", "DOMContentLoaded 핸들러가 등록되지 않음");
@@ -503,7 +511,7 @@ function loadListeningWithRealSpeech(mode, customVoices) {
   };
   var sandbox = { window: window, document: document, localStorage: localStorage, console: { info: function () {}, warn: function () {}, log: console.log, error: console.error }, Promise: Promise };
   vm.createContext(sandbox);
-  ["assets/js/speech.js", "data/listening.js", "assets/js/listening.js"].forEach(function (file) {
+  ["assets/js/speech.js", "data/listening.js", "assets/js/listening-voices.js", "assets/js/listening.js"].forEach(function (file) {
     vm.runInContext(fs.readFileSync(path.join(root, file), "utf8"), sandbox, { filename: file });
   });
   ready();

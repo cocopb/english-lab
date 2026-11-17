@@ -60,6 +60,7 @@ node tools/check-practice.js   # 실전: 메뉴 7개, 30문항 구성, OMR 이�
 ## 실전 (pages/practice.html)
 
 - **미니 모의고사**: Part 5 15문항(`GRAMMAR_QUIZ`) + Part 6 8문항(`PART6`) + Part 7 7문항(`PASSAGES`) = 30문항, 제한 시간 25분. 모두 무작위 출제하며, 제출 전에는 정답을 보여주지 않고 시간이 끝나면 자동 제출합니다. Part 6·7은 세트/지문을 무작위로 골라 문항 수가 찰 때까지 담고, 마지막 세트/지문은 앞에서부터 필요한 문항만 사용합니다.
+- **LC 풀세트**: Part 1 사진을 뺀 94문항 / 45분. Part 2 25문항(`PART2` 45개 중) → Part 3 대화 13개(`PART3` 중, 39문항) → Part 4 담화 10개(`PART4` 중, 30문항). 음성은 문항(대화·담화)마다 한 번만 재생되고 지나간 문항으로 돌아갈 수 없으며, 스크립트는 채점 후 오답 복습에서만 보입니다. 저장 `englishLabLcFullSetSave`, 기록 `englishLabLcFullSetHistory`(RC 풀세트와 별도 키). 예상 점수는 `맞은 개수 × 100 / 94`를 반올림해 LC 환산표에 넣은 참고값입니다. Part 2 유형별 정답률은 `PART2` 항목의 `type`(`PART2_TYPE_LABELS`의 키)으로 셉니다.
 - **파트별 연습**: 파트 하나만 시간 제한 없이 풀고 문항마다 즉시 채점합니다.
 - **기록**: `englishLabProgress.practiceStats.attempts`에 `{ date, correct, total, elapsedSec, timedOut, partScores:{p5,p6,p7}, partTotals:{p5,p6,p7} }`로 저장합니다 (최근 100회). `ruleId`가 있는 문항의 응답은 `grammarStats`에도 반영됩니다.
 - 결과 화면의 RC 예상 점수대는 맞은 개수 구간으로 정한 **참고용 추정치**입니다.
