@@ -268,6 +268,76 @@ window.PART3 = [
       { q: "Why can an interview not be held on Friday morning?", choices: ["The office is closed", "The woman will be traveling", "The room is booked", "The man will be at a workshop"], answer: 3, explanation: "On Friday you are at the client workshop until four. 그래서 금요일 면접은 4시 30분으로 잡는다." },
       { q: "What does the man ask the woman to send?", choices: ["The candidates' résumés", "A revised calendar", "The workshop agenda", "An offer letter"], answer: 0, explanation: "please send me their résumés by Wednesday morning." }
     ]
+  },
+  {
+    id: "p311",
+    title: "케이터링 주문 변경",
+    script: [
+      { speaker: "W", text: "I'm calling about our catering order for Thursday. The order number is eight two four one." },
+      { speaker: "M", text: "I have it here. Lunch for thirty people, delivered at noon." },
+      { speaker: "W", text: "Two more people may join the training, so we might need thirty-two. When do you need the final number?" },
+      { speaker: "M", text: "Tomorrow morning at the latest. After that, the kitchen has already done the shopping." },
+      { speaker: "W", text: "I'll confirm today. One more thing: could you make three of the meals without nuts?" },
+      { speaker: "M", text: "Of course. I'll mark those boxes with a green label so they're easy to find." }
+    ],
+    questions: [
+      { q: "Why is the woman calling?", choices: ["To cancel an order", "To complain about a delivery", "To ask for a refund", "To change the size of an order"], answer: 3, explanation: "30인분 주문을 32인분으로 늘릴 수 있는지 묻는다. 취소나 배달 불만이 아니다." },
+      { q: "By when must the change be confirmed?", choices: ["By tomorrow morning", "By noon today", "By Wednesday", "By Thursday"], answer: 0, explanation: "Tomorrow morning at the latest. 정오는 목요일 배달 시각이다." },
+      { q: "What will the man do with three of the meals?", choices: ["Deliver them separately", "Prepare them first", "Charge extra for them", "Mark them with a label"], answer: 3, explanation: "I'll mark those boxes with a green label." }
+    ]
+  },
+  {
+    id: "p312",
+    title: "복사기 수리 방문",
+    script: [
+      { speaker: "M", text: "Our copier jams on every job longer than ten pages. It's covered by our service contract." },
+      { speaker: "W", text: "Let me check the address. Is this still the Fifth Street office?" },
+      { speaker: "M", text: "No, we moved in August. We're on Linden Road now, suite four hundred." },
+      { speaker: "W", text: "Thanks, I'll update that. The earliest a technician can come is Wednesday afternoon." },
+      { speaker: "M", text: "We have a board meeting Wednesday. Could someone come Thursday morning instead?" },
+      { speaker: "W", text: "Thursday at nine works. I'll send a confirmation to the e-mail on file." }
+    ],
+    questions: [
+      { q: "What problem does the man report?", choices: ["A contract has expired", "A delivery never arrived", "A machine jams on long jobs", "A bill was incorrect"], answer: 2, explanation: "Our copier jams on every job longer than ten pages. 서비스 계약은 아직 유효하다." },
+      { q: "What information does the man correct?", choices: ["His phone number", "The model number", "The contract date", "The company's address"], answer: 3, explanation: "Fifth Street에서 8월에 Linden Road로 이사했다고 주소를 바로잡는다." },
+      { q: "When will the technician visit?", choices: ["Thursday morning", "Wednesday afternoon", "Friday at nine", "Next Monday"], answer: 0, explanation: "Thursday at nine works. 수요일 오후는 이사회 때문에 피했다." }
+    ]
+  },
+  {
+    id: "p313",
+    title: "포장 디자인",
+    speakers: { M1: "Dae-ho", W1: "Fiona", W2: "Aminata" },
+    script: [
+      { speaker: "M1", text: "The new packaging tested well, but it costs eleven cents more per unit." },
+      { speaker: "W1", text: "Over a year that is close to ninety thousand dollars." },
+      { speaker: "M1", text: "Right. The question is whether customers notice the difference." },
+      { speaker: "W2", text: "They did in the store test. Shoppers picked up the new box twice as often." },
+      { speaker: "W1", text: "That is hard to argue with. Could we use the new design only for the gift sizes?" },
+      { speaker: "W2", text: "That would cut the extra cost by about half, and those are the ones people give away." },
+      { speaker: "M1", text: "Let's model both options and bring numbers to the Friday meeting." }
+    ],
+    questions: [
+      { q: "What are the speakers mainly discussing?", choices: ["A delivery delay", "A new package design", "A store opening", "A price increase for customers"], answer: 1, explanation: "새 포장의 비용과 매장 테스트 결과를 이야기한다. 비용이 늘어나는 것은 회사 쪽이지 고객 가격이 아니다." },
+      { q: "What does Fiona suggest?", choices: ["Dropping the new design", "Raising the price", "Running a second store test", "Using the design for only some products"], answer: 3, explanation: "use the new design only for the gift sizes." },
+      { q: "What will the speakers do before Friday?", choices: ["Visit the store", "Order new boxes", "Prepare cost estimates", "Interview shoppers"], answer: 2, explanation: "Let's model both options and bring numbers to the Friday meeting." }
+    ]
+  },
+  {
+    id: "p314",
+    title: "공항 셔틀",
+    script: [
+      { speaker: "W", text: "Does the hotel shuttle go to the north terminal, or only the south?" },
+      { speaker: "M", text: "Both, but it stops at the south terminal first, so allow an extra fifteen minutes." },
+      { speaker: "W", text: "My flight boards at seven forty in the morning. Which shuttle should I take?" },
+      { speaker: "M", text: "The five thirty would be safest. The six o'clock cuts it close if traffic is bad." },
+      { speaker: "W", text: "Is there a sign-up sheet?" },
+      { speaker: "M", text: "Just tell the front desk tonight so the driver knows how many to expect." }
+    ],
+    questions: [
+      { q: "What does the woman want to know?", choices: ["How much the shuttle costs", "Where to check in", "When her flight lands", "Which shuttle to take"], answer: 3, explanation: "Which shuttle should I take? 7시 40분은 탑승 시각이지 도착 시각이 아니다." },
+      { q: "What does the man say about the six o'clock shuttle?", choices: ["It may not leave enough time", "It is already full", "It goes only to the north terminal", "It does not run on weekends"], answer: 0, explanation: "The six o'clock cuts it close if traffic is bad." },
+      { q: "What should the woman do tonight?", choices: ["Print her boarding pass", "Pay the driver", "Call the airline", "Tell the front desk"], answer: 3, explanation: "Just tell the front desk tonight. 신청서는 따로 없다." }
+    ]
   }
 ];
 
@@ -465,6 +535,44 @@ window.PART4 = [
       { q: "Who most likely are the listeners?", choices: ["Visiting clients", "New employees", "Building inspectors", "Job applicants"], answer: 1, explanation: "Welcome to your first day at Varden Group. 급여·복리후생·사원증을 안내받는 첫 출근자다." },
       { q: "What will the listeners receive after lunch?", choices: ["A photo badge", "A parking pass", "A printed handbook", "A laptop"], answer: 3, explanation: "each of you will be given a laptop. 사진 배지는 점심 전에 나온다." },
       { q: "What must be completed within two weeks?", choices: ["A safety course", "A performance review", "A team project", "A security check"], answer: 0, explanation: "the online safety course must be completed within your first two weeks. 보안 시스템은 오늘 오전에 설명하는 내용이다." }
+    ]
+  },
+  {
+    id: "pt411",
+    type: "일기 예보",
+    title: "일기 예보와 행사 장소 변경",
+    voice: "W",
+    script: [
+      "Good evening. Rain will move into the area after midnight and continue through Saturday morning, with about thirty millimeters expected.",
+      "Because of that, Saturday's Riverside Craft Market has been moved from the park to the community hall on Fifth Street.",
+      "The market will run at its usual hours, from nine in the morning until three in the afternoon.",
+      "Vendors should arrive by eight to set up indoors.",
+      "If you plan to drive, note that the hall has only twelve parking spaces, so the lot will fill early.",
+      "Sunday looks clear and mild."
+    ],
+    questions: [
+      { q: "Why has the event been moved?", choices: ["The park is being repaired", "Rain is expected", "More vendors signed up", "The hours have changed"], answer: 1, explanation: "Because of that(비 예보), 공원에서 주민회관으로 옮겼다. 운영 시간은 평소와 같다." },
+      { q: "What time should vendors arrive?", choices: ["Nine", "Three", "Eight", "Midnight"], answer: 2, explanation: "Vendors should arrive by eight. 9시와 3시는 시장 운영 시간, 자정은 비가 시작되는 시각이다." },
+      { q: "What does the speaker say about parking?", choices: ["There is very little of it", "It is free", "It is only for vendors", "It is across the street"], answer: 0, explanation: "the hall has only twelve parking spaces, so the lot will fill early." }
+    ]
+  },
+  {
+    id: "pt412",
+    type: "안내 방송",
+    title: "박물관 폐관 안내 방송",
+    voice: "M",
+    script: [
+      "Attention, visitors. The museum will close in thirty minutes, at five o'clock.",
+      "The third-floor photography exhibit closes first, in fifteen minutes, so please make your way down soon.",
+      "Our gift shop stays open until five fifteen for anyone who would like a catalog of the exhibit.",
+      "A reminder that members can see the new glass collection on the thirteenth, one day before it opens to the public.",
+      "Tickets for that preview are free but must be reserved.",
+      "Thank you for visiting."
+    ],
+    questions: [
+      { q: "What closes earliest?", choices: ["The gift shop", "The main entrance", "The glass collection", "The photography exhibit"], answer: 3, explanation: "The third-floor photography exhibit closes first, in fifteen minutes. 박물관은 30분 뒤, 기념품점은 5시 15분까지다." },
+      { q: "What can visitors buy in the gift shop?", choices: ["A membership", "A catalog", "A photograph", "A guidebook of the city"], answer: 1, explanation: "for anyone who would like a catalog of the exhibit." },
+      { q: "What is offered to members?", choices: ["A discount on tickets", "A free catalog", "Early access to an exhibit", "A guided tour"], answer: 2, explanation: "members can see the new glass collection ... one day before it opens to the public. 무료인 것은 사전 관람 티켓이다." }
     ]
   }
 ];
