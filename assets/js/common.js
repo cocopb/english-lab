@@ -15,7 +15,8 @@
     listeningStats: {
       dictation: { attempted: 0, wordAccuracy: [] },
       part2: { solved: 0, correct: 0 },
-      part3: { solved: 0, correct: 0 }
+      part3: { solved: 0, correct: 0 },
+      part4: { solved: 0, correct: 0 }
     },
     readingStats: {},
     speakingStats: {
@@ -90,6 +91,7 @@
     var dictationStats = listeningStats.dictation && typeof listeningStats.dictation === "object" ? listeningStats.dictation : {};
     var part2Stats = listeningStats.part2 && typeof listeningStats.part2 === "object" ? listeningStats.part2 : {};
     var part3Stats = listeningStats.part3 && typeof listeningStats.part3 === "object" ? listeningStats.part3 : {};
+    var part4Stats = listeningStats.part4 && typeof listeningStats.part4 === "object" ? listeningStats.part4 : {};
     result.listeningStats = {
       dictation: {
         attempted: Math.max(0, Math.floor(Number(dictationStats.attempted) || 0)),
@@ -113,6 +115,13 @@
         correct: Math.min(
           Math.max(0, Math.floor(Number(part3Stats.solved) || 0)),
           Math.max(0, Math.floor(Number(part3Stats.correct) || 0))
+        )
+      },
+      part4: {
+        solved: Math.max(0, Math.floor(Number(part4Stats.solved) || 0)),
+        correct: Math.min(
+          Math.max(0, Math.floor(Number(part4Stats.solved) || 0)),
+          Math.max(0, Math.floor(Number(part4Stats.correct) || 0))
         )
       }
     };
@@ -368,8 +377,8 @@
   }
 
   function recordListeningAnswer(type, isCorrect) {
-    if (type !== "part2" && type !== "part3") {
-      throw new TypeError("리스닝 문제 유형은 part2 또는 part3이어야 합니다.");
+    if (type !== "part2" && type !== "part3" && type !== "part4") {
+      throw new TypeError("리스닝 문제 유형은 part2, part3, part4 중 하나여야 합니다.");
     }
     if (typeof isCorrect !== "boolean") {
       throw new TypeError("정답 여부는 boolean 값이어야 합니다.");

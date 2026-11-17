@@ -1,6 +1,6 @@
 "use strict";
 
-// 리스닝 데이터(DICTATION, PART2, PART3) 검사 + 가짜 DOM으로 리스닝 화면 로드 검사
+// 리스닝 데이터(DICTATION, PART2, PART3, PART4) 검사 + 가짜 DOM으로 리스닝 화면 로드 검사
 // 실행: node tools/check-listening.js
 
 var fs = require("fs");
@@ -15,8 +15,9 @@ vm.runInNewContext(fs.readFileSync(dataPath, "utf8"), context, { filename: dataP
 var dictation = context.window.DICTATION;
 var part2 = context.window.PART2;
 var part3 = context.window.PART3;
-if (!Array.isArray(dictation) || !Array.isArray(part2) || !Array.isArray(part3)) {
-  console.error("검사 실패: data/listening.js에서 DICTATION, PART2, PART3 배열을 찾을 수 없습니다.");
+var part4 = context.window.PART4;
+if (!Array.isArray(dictation) || !Array.isArray(part2) || !Array.isArray(part3) || !Array.isArray(part4)) {
+  console.error("검사 실패: data/listening.js에서 DICTATION, PART2, PART3, PART4 배열을 찾을 수 없습니다.");
   process.exit(1);
 }
 
@@ -29,6 +30,9 @@ var failures = {
   part3Structure: [],
   part3Choices: [],
   part3Answer: [],
+  part4Structure: [],
+  part4Choices: [],
+  part4Answer: [],
   missingExplanation: [],
   duplicateIds: []
 };
@@ -95,6 +99,37 @@ part3.forEach(function (dialogue, index) {
   });
 });
 
+// Part 4 담화: 화자가 한 명이라 script는 라벨 없는 문장 배열, voice(W/M)는 그 화자의 음성 성별. 문항은 담화마다 3개.
+var PART4_QUESTIONS = 3;
+part4.forEach(function (talk, index) {
+  talk = talk || {};
+  var label = talk.id || "Part 4 #" + (index + 1);
+  checkId(talk.id, label);
+  var missing = ["type", "title"].filter(function (key) { return !nonEmpty(talk[key]); });
+  if (missing.length) failures.part4Structure.push({ id: label, missing: missing });
+  if (talk.voice !== "W" && talk.voice !== "M") failures.part4Structure.push({ id: label, reason: "voice는 W 또는 M", voice: talk.voice });
+  if (!Array.isArray(talk.script) || !talk.script.length) {
+    failures.part4Structure.push({ id: label, reason: "script 없음" });
+  } else {
+    talk.script.forEach(function (line, lIndex) {
+      if (!nonEmpty(line)) failures.part4Structure.push({ id: label, line: lIndex + 1, reason: "문장은 비어 있지 않은 문자열(화자 라벨 없음)" });
+    });
+  }
+  if (!Array.isArray(talk.questions) || talk.questions.length !== PART4_QUESTIONS) {
+    failures.part4Structure.push({ id: label, reason: "문항은 " + PART4_QUESTIONS + "개", actual: Array.isArray(talk.questions) ? talk.questions.length : "없음" });
+  }
+  (talk.questions || []).forEach(function (question, qIndex) {
+    question = question || {};
+    var qLabel = label + " Q" + (qIndex + 1);
+    if (!nonEmpty(question.q)) failures.part4Structure.push({ id: qLabel, reason: "질문 없음" });
+    if (!Array.isArray(question.choices) || question.choices.length !== 4 || !question.choices.every(nonEmpty)) {
+      failures.part4Choices.push({ id: qLabel, actual: Array.isArray(question.choices) ? question.choices.length : "배열 아님" });
+    }
+    if (!validAnswer(question.answer, question.choices)) failures.part4Answer.push({ id: qLabel, answer: question.answer });
+    if (!nonEmpty(question.explanation)) failures.missingExplanation.push({ id: qLabel });
+  });
+});
+
 var labels = {
   dictationFields: "받아쓰기 필수 필드(text, ko, level) 누락",
   part2Choices: "Part 2 선택지가 3개가 아님",
@@ -102,6 +137,9 @@ var labels = {
   part3Structure: "Part 3 script/questions 누락",
   part3Choices: "Part 3 선택지가 4개가 아님",
   part3Answer: "Part 3 정답 인덱스 오류",
+  part4Structure: "Part 4 type/title/voice/script/문항 3개 형식 오류",
+  part4Choices: "Part 4 선택지가 4개가 아님",
+  part4Answer: "Part 4 정답 인덱스 오류",
   missingExplanation: "해설(explanation) 비어 있음",
   duplicateIds: "ID 중복/누락"
 };
@@ -113,8 +151,16 @@ Object.keys(failures).forEach(function (key) {
   failures[key].forEach(function (failure) { console.log("  " + JSON.stringify(failure)); });
 });
 var part3QuestionCount = part3.reduce(function (sum, d) { return sum + ((d && d.questions) || []).length; }, 0);
+var part4QuestionCount = part4.reduce(function (sum, t) { return sum + ((t && t.questions) || []).length; }, 0);
+var part4AnswerSpread = [0, 1, 2, 3].map(function (n) {
+  return "ABCD"[n] + " " + part4.reduce(function (sum, t) {
+    return sum + ((t && t.questions) || []).filter(function (q) { return q && q.answer === n; }).length;
+  }, 0);
+}).join(" · ");
 console.log("데이터: 받아쓰기 " + dictation.length + "문장, Part 2 " + part2.length + "문제, Part 3 대화 " +
-  part3.length + "개(" + part3QuestionCount + "문항)" + (dataFailures ? "" : " — 이상 없음"));
+  part3.length + "개(" + part3QuestionCount + "문항), Part 4 담화 " + part4.length + "개(" + part4QuestionCount + "문항)" +
+  (dataFailures ? "" : " — 이상 없음"));
+console.log("  Part 4 정답 위치: " + part4AnswerSpread);
 
 // ---------- 2. 화면 로드 검사 (가짜 DOM) ----------
 
@@ -203,7 +249,7 @@ function runListeningPage() {
   }
 
   var ready = null;
-  var recorded = { dictation: 0, part2: 0, part3: 0 };
+  var recorded = { dictation: 0, part2: 0, part3: 0, part4: 0 };
   var document = {
     createElement: function (tag) { return new FakeElement(tag); },
     createTextNode: function (text) { var node = new FakeElement("#text"); node._text = String(text); return node; },
@@ -248,6 +294,7 @@ function runListeningPage() {
   var D = window.DICTATION;
   var P2 = window.PART2;
   var P3 = window.PART3;
+  var P4 = window.PART4;
 
   // 받아쓰기: 모든 문장을 차례로 채점하고 다음으로 넘긴다
   var seenDictation = [];
@@ -303,12 +350,43 @@ function runListeningPage() {
     $("part3-next-dialogue").click();
   });
   check(recorded.part3 === part3QuestionCount, "Part 3 기록 수 " + recorded.part3);
+
+  // Part 4: Part 3과 같은 흐름. 스크립트에는 화자 라벨이 없다.
+  var seenPart4 = 0;
+  check($("listening-tab-part4") && $("listening-panel-part4"), "Part 4 탭/영역 없음");
+  P4.forEach(function (talk, index) {
+    check($("part4-counter").textContent === "담화 " + (index + 1) + " / " + P4.length + " · " + talk.title,
+      "Part 4 카운터 — " + $("part4-counter").textContent);
+    var lines = $("part4-script").querySelectorAll(".listening-transcript-line");
+    check(lines.length === talk.script.length, talk.id + " 스크립트 줄 수 불일치");
+    check(lines.map(function (l) { return l.textContent; }).join("|") === talk.script.join("|"), talk.id + " 스크립트 내용 불일치");
+    check($("part4-script").querySelectorAll(".listening-speaker").length === 0, talk.id + " 담화 스크립트에 화자 라벨이 붙음");
+    $("part4-start-questions").click();
+    check($("part4-quiz").hidden === false, talk.id + " 문제 영역이 열리지 않음");
+    talk.questions.forEach(function (question, qIndex) {
+      check($("part4-question-counter").textContent === "문제 " + (qIndex + 1) + " / " + talk.questions.length, talk.id + " Q" + (qIndex + 1) + " 문항 카운터");
+      check($("part4-question").textContent === question.q, talk.id + " Q" + (qIndex + 1) + " 질문 불일치");
+      var buttons = $("part4-choices").querySelectorAll(".listening-choice-answer");
+      check(buttons.length === 4, talk.id + " Q" + (qIndex + 1) + " 선택지 수 " + buttons.length);
+      buttons[question.answer].click();
+      check(buttons[question.answer].classList.contains("correct"), talk.id + " Q" + (qIndex + 1) + " 정답 표시 없음");
+      check($("part4-feedback").textContent.indexOf("정답이에요!") === 0, talk.id + " Q" + (qIndex + 1) + " 정답 피드백 없음");
+      check($("part4-feedback").textContent.indexOf(question.explanation) !== -1, talk.id + " Q" + (qIndex + 1) + " 해설 미표시");
+      $("part4-next").click();
+    });
+    check($("part4-next-talk").hidden === false, talk.id + " 마지막 문항 후 다음 담화 버튼이 보이지 않음");
+    seenPart4 += 1;
+    $("part4-next-talk").click();
+  });
+  check(recorded.part4 === part4QuestionCount, "Part 4 기록 수 " + recorded.part4);
+  check($("part4-counter").textContent.indexOf("담화 1 / ") === 0, "Part 4가 처음으로 돌아오지 않음");
+  check(recorded.part3 === part3QuestionCount, "Part 4를 풀었는데 Part 3 기록이 바뀜 " + recorded.part3);
   // 마지막 다음 버튼 뒤에는 첫 항목으로 돌아와야 한다
   check($("dictation-counter").textContent === "문장 1 / " + D.length, "받아쓰기가 처음으로 돌아오지 않음");
   check($("part3-counter").textContent.indexOf("대화 1 / ") === 0, "Part 3가 처음으로 돌아오지 않음");
 
   console.log("화면: 받아쓰기 " + seenDictation.length + "문장, Part 2 " + seenPart2 + "문제, 대화 " + seenPart3 +
-    "개 로드·채점 확인" + (errors.length ? "" : " — 이상 없음"));
+    "개, 담화 " + seenPart4 + "개 로드·채점 확인" + (errors.length ? "" : " — 이상 없음"));
   return errors;
 }
 
@@ -563,6 +641,36 @@ async function runSpeechScenarios() {
   console.log("음성: Part 3 대화 " + p3Items.length + "개 대화 듣기·다시 듣기 한 줄씩 재생, 채점, 스크립트 토글 확인" +
     (p3Problems.length ? " — 문제 " + p3Problems.length + "개" : " — 이상 없음"));
 
+  // --- Part 4 전 담화: 담화 듣기·다시 듣기가 모든 문장을 순서대로 읽고, 채점·스크립트 토글이 되는지 ---
+  var p4Items = d.window.PART4;
+  var p4Problems = [];
+  for (var p4 = 0; p4 < p4Items.length; p4 += 1) {
+    var talk4 = p4Items[p4];
+    var lines4 = talk4.script.join("|");
+    var first4 = await playDialogueOnce("part4-play");
+    if (first4.join("|") !== lines4) p4Problems.push(talk4.id + " 담화 듣기 " + first4.length + "/" + talk4.script.length + "줄");
+    if ($("part4-start-questions").disabled) p4Problems.push(talk4.id + " 재생 후 문제 시작 비활성");
+    if ($("part4-message").textContent !== "담화가 끝났어요. 문제를 시작하거나 다시 들을 수 있어요.") p4Problems.push(talk4.id + " 종료 안내 — " + $("part4-message").textContent);
+    var again4 = await playDialogueOnce("part4-replay");
+    if (again4.join("|") !== lines4) p4Problems.push(talk4.id + " 다시 듣기 " + again4.length + "/" + talk4.script.length + "줄");
+    if ($("part4-play").disabled || $("part4-replay").disabled) p4Problems.push(talk4.id + " 재생 후 버튼이 다시 활성화되지 않음");
+    $("part4-start-questions").click();
+    talk4.questions.forEach(function (question, qIndex) {
+      $("part4-choices").querySelectorAll(".listening-choice-answer")[question.answer].click();
+      if ($("part4-feedback").textContent.indexOf("정답이에요!") !== 0) p4Problems.push(talk4.id + " Q" + (qIndex + 1) + " 정답 처리");
+      $("part4-script-toggle").click();
+      var shown4 = $("part4-script").querySelectorAll(".listening-transcript-line").map(function (line) { return line.textContent; });
+      if ($("part4-script").hidden || shown4.join("|") !== lines4) p4Problems.push(talk4.id + " Q" + (qIndex + 1) + " 스크립트 토글");
+      $("part4-script-toggle").click();
+      if (!$("part4-script").hidden) p4Problems.push(talk4.id + " Q" + (qIndex + 1) + " 스크립트 숨기기");
+      $("part4-next").click();
+    });
+    $("part4-next-talk").click();
+  }
+  check(p4Problems.length === 0, "[데스크톱] Part 4 재생·채점 — " + p4Problems.join(" ; "));
+  console.log("음성: Part 4 담화 " + p4Items.length + "개 담화 듣기·다시 듣기 모든 문장 순서대로 재생, 채점, 스크립트 토글 확인" +
+    (p4Problems.length ? " — 문제 " + p4Problems.length + "개" : " — 이상 없음"));
+
   // --- 화자별 음성 배정 ---
   // 목소리 = 음성 이름 + pitch + 속도. 검사 항목:
   //  - 한 대화 안에서 같은 화자는 늘 같은 목소리, 서로 다른 화자는 서로 다른 목소리(남녀 사이 포함)
@@ -632,10 +740,38 @@ async function runSpeechScenarios() {
       if (dlg.id === "p308") p308Signatures = signatures;
       $v("part3-next-dialogue").click();
     }
+    // Part 4 담화: 화자가 한 명이므로 모든 문장이 같은 목소리, voice(W/M)에 맞는 성별 음성, 보정(pitch) 없음.
+    var talkVoices = [];
+    for (var ti = 0; ti < env.window.PART4.length; ti += 1) {
+      var talk = env.window.PART4[ti];
+      var talkSigs = [];
+      for (var tround = 0; tround < 2; tround += 1) {
+        env.synth.queue = [];
+        $v(tround === 0 ? "part4-play" : "part4-replay").click();
+        for (var tl = 0; tl < talk.script.length && env.synth.queue.length; tl += 1) {
+          var tu = env.synth.queue.shift();
+          if (tu.text !== talk.script[tl]) problems.push(talk.id + " " + (tl + 1) + "번째 문장 순서");
+          if (scenario.lang && tu.lang !== scenario.lang) problems.push(talk.id + " 고른 발음(" + scenario.lang + ")이 아님: " + tu.lang);
+          if (!scenario.lang && !scenario.select && tu.lang !== "en-US") problems.push(talk.id + " 발음 미선택인데 en-US가 아님: " + tu.lang);
+          talkSigs.push((tu.voice ? tu.voice.name : "기본 음성") + " / pitch " + (tu.pitch === undefined ? 1 : tu.pitch));
+          if (tu.onend) tu.onend();
+          await flush(); await flush();
+        }
+      }
+      if (talkSigs.length !== talk.script.length * 2) problems.push(talk.id + " 재생 문장 수 " + talkSigs.length + "/" + talk.script.length * 2);
+      if (new Set(talkSigs).size !== 1) problems.push(talk.id + " 한 담화 안에서 목소리가 바뀜 (" + Array.from(new Set(talkSigs)).join(", ") + ")");
+      var talkVoiceName = (talkSigs[0] || "").split(" / ")[0];
+      var ownVoices = talk.voice === "W" ? scenario.female : scenario.male;
+      if (ownVoices && ownVoices.indexOf(talkVoiceName) === -1) problems.push(talk.id + " voice " + talk.voice + "에 맞는 성별 음성 아님 (" + talkSigs[0] + ")");
+      if (talkSigs[0] && !/ pitch 1$/.test(talkSigs[0])) problems.push(talk.id + " 화자가 한 명인데 pitch 보정이 붙음 (" + talkSigs[0] + ")");
+      talkVoices.push(talk.id + "(" + talk.voice + ")=" + talkSigs[0]);
+      $v("part4-next-talk").click();
+    }
     check(problems.length === 0, "[음성 배정: " + scenario.name + "] " + problems.join(" ; "));
+    assignmentReport.push("[Part 4] " + scenario.name + " → " + talkVoices.join(" | "));
     assignmentReport.push(scenario.name + " → p308 " + (p308Signatures ? Object.keys(p308Signatures).map(function (l) { return l + "=" + p308Signatures[l]; }).join(" | ") : "없음"));
   }
-  console.log("음성 배정: 환경 " + voiceScenarios.length + "개 × 대화 " + p3Items.length + "개 (같은 화자 같은 목소리, 화자끼리 구분, 성별 음성, 고른 발음 유지)" +
+  console.log("음성 배정: 환경 " + voiceScenarios.length + "개 × 대화 " + p3Items.length + "개 + 담화 " + p4Items.length + "개 (같은 화자 같은 목소리, 화자끼리 구분, 성별 음성, 고른 발음 유지)" +
     "\n  " + assignmentReport.join("\n  "));
 
   // --- "다시 듣기"에서만 화자 이름 표시: 대사마다 바뀌고, 재생이 끝나면 지워진다 ---

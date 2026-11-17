@@ -234,3 +234,85 @@ window.PART3 = [
     ]
   }
 ];
+
+// Part 4 담화: 화자가 한 명이라 script는 라벨 없는 문장 배열이다.
+// voice는 그 화자의 음성 성별(W/M)로, 화자 이름(Dominic, Teresa 등)과 맞춘다.
+window.PART4 = [
+  {
+    id: "pt401",
+    type: "안내 방송",
+    title: "매장 폐점 안내 방송",
+    voice: "W",
+    script: [
+      "Attention, shoppers. The store will close in fifteen minutes.",
+      "Please bring your final selections to the checkout counters at the front.",
+      "Note that our customer service desk is already closed for the evening; returns and exchanges can be made tomorrow from nine.",
+      "Tomorrow we begin our winter clearance, with up to sixty percent off coats and boots.",
+      "Members of our rewards program may enter one hour early, at eight.",
+      "Thank you for shopping with us."
+    ],
+    questions: [
+      { q: "Where most likely is the announcement being made?", choices: ["At an airport", "At a library", "At a bank", "At a department store"], answer: 3, explanation: "계산대, 반품·교환, 코트와 부츠 세일로 보아 매장이다." },
+      { q: "What will happen tomorrow?", choices: ["A sale will begin", "The store will close early", "A new branch will open", "The service desk will move"], answer: 0, explanation: "Tomorrow we begin our winter clearance. 일찍 닫는 것은 오늘 저녁의 안내가 아니라 평소 폐점이다." },
+      { q: "What advantage do rewards members have?", choices: ["Free parking", "A longer return period", "Earlier entry to the store", "An extra discount"], answer: 2, explanation: "may enter one hour early, at eight." }
+    ]
+  },
+  {
+    id: "pt402",
+    type: "전화 메시지",
+    title: "치과 예약 변경 전화",
+    voice: "M",
+    script: [
+      "Hi, this is Dominic Falk calling from Brightline Dental.",
+      "I'm calling about your appointment on Thursday at two o'clock with Dr. Osei.",
+      "Unfortunately, Dr. Osei will be out of the office that afternoon.",
+      "We can move you to Thursday morning at nine thirty, or to the same time on Monday.",
+      "Whichever you prefer, please call us back at five five five, zero one four four, before five today so that we can hold the slot.",
+      "Sorry for the short notice."
+    ],
+    questions: [
+      { q: "Why is the speaker calling?", choices: ["To confirm a payment", "To reschedule an appointment", "To recommend a specialist", "To cancel a service"], answer: 1, explanation: "목요일 오후 예약을 다른 시간으로 옮기려 한다. 취소가 아니다." },
+      { q: "What problem does the speaker mention?", choices: ["The office will be closed all week", "A file has been lost", "A machine is broken", "A doctor will be unavailable"], answer: 3, explanation: "Dr. Osei will be out of the office that afternoon. 그날 오후만 자리를 비우므로 일주일 휴무가 아니다." },
+      { q: "What does the speaker ask the listener to do?", choices: ["Call back the same day", "Come in an hour early", "Send an e-mail", "Visit another clinic"], answer: 0, explanation: "please call us back ... before five today." }
+    ]
+  },
+  {
+    id: "pt403",
+    type: "광고",
+    title: "헬스장 개업 광고",
+    voice: "M",
+    script: [
+      "Looking for a gym that fits your schedule?",
+      "Eastgate Fitness opens on Bell Street this Saturday, and we are open twenty-four hours a day.",
+      "Our opening offer gives you three months for the price of two, but only if you sign up during the first week.",
+      "Every membership includes two sessions with a personal trainer and free parking in the garage next door.",
+      "Come by on Saturday between ten and four to tour the building and meet our staff.",
+      "Eastgate Fitness, on Bell Street, across from the public library."
+    ],
+    questions: [
+      { q: "What is being advertised?", choices: ["A parking garage", "A public library", "A fitness center", "A sports equipment store"], answer: 2, explanation: "첫 문장의 gym과 Eastgate Fitness로 보아 헬스장이다. 주차장과 도서관은 위치·혜택 설명에 나올 뿐이다." },
+      { q: "What must customers do to receive the special offer?", choices: ["Bring a friend", "Sign up within the first week", "Pay for a full year", "Attend a free class"], answer: 1, explanation: "only if you sign up during the first week." },
+      { q: "What is included with every membership?", choices: ["Free meals", "A locker", "A discount at the library", "Sessions with a trainer"], answer: 3, explanation: "Every membership includes two sessions with a personal trainer. 무료 주차도 포함되지만 선택지에 없다." }
+    ]
+  },
+  {
+    id: "pt404",
+    type: "견학 안내",
+    title: "제지 공장 견학 안내",
+    voice: "W",
+    script: [
+      "Good morning, everyone, and welcome to the Rowan Paper Mill.",
+      "I'm Teresa, and I will be leading today's tour.",
+      "Before we go in, please put on the safety glasses and earplugs from the bin by the door, since the machine floor is loud.",
+      "The tour lasts about an hour, and we will end in the gift shop.",
+      "Photography is allowed everywhere except the drying room, where the equipment is still under patent.",
+      "If we get separated, the exits are marked in green.",
+      "Let's start upstairs with the raw materials."
+    ],
+    questions: [
+      { q: "Where does the talk most likely take place?", choices: ["At a factory", "At a museum", "At a construction site", "At a printing shop"], answer: 0, explanation: "paper mill, machine floor, raw materials로 보아 공장이다." },
+      { q: "What are the listeners asked to do before entering?", choices: ["Leave their bags", "Sign a form", "Put on protective gear", "Buy a ticket"], answer: 2, explanation: "put on the safety glasses and earplugs." },
+      { q: "What is not allowed in the drying room?", choices: ["Eating", "Taking photographs", "Speaking", "Touching the machines"], answer: 1, explanation: "Photography is allowed everywhere except the drying room." }
+    ]
+  }
+];

@@ -37,7 +37,8 @@ var failures = {
   duplicateIds: [],
   invalidPart6: [],
   invalidPart6Vocab: [],
-  part6VocabRevealsChoice: []
+  part6VocabRevealsChoice: [],
+  duplicateQuestionText: []
 };
 var notes = { part6VocabInSentenceChoice: [] };
 
@@ -85,6 +86,28 @@ passages.forEach(function (passage, index) {
       }
     });
   });
+});
+
+// 서로 다른 지문의 질문 문장(q)이 완전히 같으면 실패. 정답이 달라도 학습에는 문제가 없지만,
+// check-practice.js는 질문 문장으로 원본 문항을 찾으므로 그 지문이 뽑힐 때만 채점 검사가 깨진다(간헐적 실패).
+// 앞뒤 공백과 연속 공백만 정리해 비교한다(대소문자·문장부호는 그대로).
+var questionOwners = Object.create(null);
+passages.forEach(function (passage) {
+  (passage.questions || []).forEach(function (question, qIndex) {
+    if (!question || typeof question.q !== "string") return;
+    var key = question.q.trim().replace(/\s+/g, " ");
+    (questionOwners[key] = questionOwners[key] || []).push({ id: passage.id, question: qIndex + 1, answer: question.answer });
+  });
+});
+Object.keys(questionOwners).forEach(function (text) {
+  var owners = questionOwners[text];
+  var distinct = owners.map(function (owner) { return owner.id; }).filter(function (id, i, list) { return list.indexOf(id) === i; });
+  if (distinct.length > 1) {
+    failures.duplicateQuestionText.push({
+      q: text,
+      where: owners.map(function (owner) { return owner.id + " " + owner.question + "번(정답 " + "ABCD"[owner.answer] + ")"; }).join(", ")
+    });
+  }
 });
 
 // Part 6 어휘: 있으면 w·m이 비어 있지 않고, w가 그 세트의 영어 본문(빈칸 제외)이나 header에 실제로 나와야 한다.

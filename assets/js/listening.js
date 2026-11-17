@@ -10,17 +10,13 @@
     var supportNote = document.getElementById("listening-support-note");
     var dictationIndex = 0;
     var part2Index = 0;
-    var dialogueIndex = 0;
-    var part3QuestionIndex = 0;
-    var part3Ready = false;
-    var part3Answered = false;
     var currentUtteranceToken = 0;
     var currentPlaybackButton = null;
     var voiceSettings = window.Speech.getSettings();
     var localeLabels = { "en-US": "미국식", "en-GB": "영국식", "en-AU": "호주식" };
 
     function showTab(name) {
-      ["dictation", "part2", "part3"].forEach(function (tabName) {
+      ["dictation", "part2", "part3", "part4"].forEach(function (tabName) {
         var selected = name === tabName;
         var tab = document.getElementById("listening-tab-" + tabName);
         tab.setAttribute("aria-selected", String(selected));
@@ -293,8 +289,9 @@
       });
     }
 
-    function gradeListeningChoice(type, item, answer, choicesContainer) {
-      var correctAnswer = type === "part2" ? item.answer : item.answer;
+    // onAnswered: Part 3·4가 채점 뒤 "다음 문제"·스크립트 버튼을 보이게 하는 콜백
+    function gradeListeningChoice(type, item, answer, choicesContainer, onAnswered) {
+      var correctAnswer = item.answer;
       var rows = Array.from(choicesContainer.children);
       rows.forEach(function (row, index) {
         row.querySelector(".listening-choice-answer").disabled = true;
@@ -310,13 +307,8 @@
         makeFeedbackLine(item.explanation || item.ko, "listening-explanation")
       );
       if (item.ko) feedback.appendChild(makeFeedbackLine(item.ko, "listening-translation"));
-      if (type === "part2") {
-        document.getElementById("part2-next").hidden = false;
-      } else {
-        part3Answered = true;
-        document.getElementById("part3-next").hidden = false;
-        document.getElementById("part3-script-toggle").hidden = false;
-      }
+      if (type === "part2") document.getElementById("part2-next").hidden = false;
+      if (onAnswered) onAnswered();
     }
 
     function makeFeedbackLine(text, className) {
@@ -331,10 +323,6 @@
       var result = document.getElementById("dictation-result");
       result.replaceChildren(makeFeedbackLine(item.text, "en dictation-full-answer"));
       document.getElementById("dictation-translation").hidden = false;
-    }
-
-    function currentDialogue() {
-      return window.PART3[dialogueIndex % window.PART3.length];
     }
 
     // 화자 라벨: W / M (기존) 또는 W1·W2·M1·M2 (3인 대화). 첫 글자가 성별이다.
@@ -374,9 +362,9 @@
     // - 발음을 골랐으면 그 억양의 음성 안에서, 안 골랐으면 영어 음성 전체(en-US 먼저)에서 고른다.
     // - W·W1·W2는 여성 음성, M·M1·M2는 남성 음성. 같은 성별 화자가 여럿이면 서로 다른 음성을 쓴다.
     // - 음성이 모자라 한 음성을 나눠 쓰면 두 번째 화자부터 pitch·속도로 구분한다(남녀 사이도 마찬가지).
-    function speakerProfiles(dialogue) {
+    function speakerProfiles(lines) {
       var labels = [];
-      dialogue.script.forEach(function (line) { if (labels.indexOf(line.speaker) === -1) labels.push(line.speaker); });
+      lines.forEach(function (line) { if (labels.indexOf(line.speaker) === -1) labels.push(line.speaker); });
       var selected = voiceSettings.voiceSelected;
       var voices = supportedVoices().filter(function (voice) {
         return !window.Speech.isVoiceUnavailable(voice) &&
@@ -427,132 +415,202 @@
       return profiles;
     }
 
-    // "다시 듣기"에서만 지금 읽는 대사의 화자 이름을 보여 준다(대사 내용은 보여 주지 않는다).
-    function showNowSpeaking(text) {
-      var node = document.getElementById("part3-now-speaking");
-      if (!node) return;
-      node.textContent = text || "";
-      node.hidden = !text;
-    }
-
-    function renderDialogue() {
-      var dialogue = currentDialogue();
-      showNowSpeaking("");
-      document.getElementById("part3-counter").textContent =
-        "대화 " + (dialogueIndex % window.PART3.length + 1) + " / " + window.PART3.length + " · " + dialogue.title;
-      part3Ready = false;
-      part3QuestionIndex = 0;
-      part3Answered = false;
-      document.getElementById("part3-start-questions").disabled = true;
-      document.getElementById("part3-quiz").hidden = true;
-      document.getElementById("part3-next-dialogue").hidden = true;
-      document.getElementById("part3-script-toggle").hidden = true;
-      document.getElementById("part3-script-toggle").textContent = "스크립트 보기";
-      document.getElementById("part3-script-toggle").setAttribute("aria-expanded", "false");
-      document.getElementById("part3-script").hidden = true;
-      var transcript = document.getElementById("part3-script");
-      transcript.replaceChildren();
-      dialogue.script.forEach(function (line) {
-        var paragraph = document.createElement("p");
-        paragraph.className = "listening-transcript-line en";
-        var speaker = document.createElement("span");
-        speaker.className = "listening-speaker";
-        speaker.textContent = speakerName(dialogue, line.speaker) + ": ";
-        paragraph.appendChild(speaker);
-        paragraph.appendChild(document.createTextNode(line.text));
-        transcript.appendChild(paragraph);
+    // Part 3 대화는 { speaker, text } 줄 배열이고, Part 4 담화는 화자가 한 명이라 라벨 없는 문장 배열이다.
+    // 담화 문장은 그 담화의 voice(W/M, 없으면 W)를 화자 라벨로 삼아 같은 음성 배정 규칙을 그대로 쓴다.
+    function talkLines(item) {
+      return item.script.map(function (line) {
+        return typeof line === "string" ? { speaker: item.voice || "W", text: line } : line;
       });
-      if (!window.Speech.isSupported()) {
-        transcript.hidden = false;
-        document.getElementById("part3-quiz").hidden = false;
-        document.getElementById("part3-script-toggle").hidden = false;
-        document.getElementById("part3-script-toggle").textContent = "스크립트 숨기기";
-        document.getElementById("part3-script-toggle").setAttribute("aria-expanded", "true");
-        document.getElementById("part3-start-questions").disabled = false;
-        part3Ready = true;
-        messageAt("part3-message", "음성 없이 스크립트를 읽고 문제를 풀 수 있어요.");
-      }
     }
 
-    function playDialogue(button, showSpeakers) {
-      if (!window.Speech.isSupported()) {
-        messageAt("part3-message", window.Speech.UNSUPPORTED_MESSAGE);
-        return Promise.resolve();
+    // Part 3·Part 4 공통 화면: 듣기 → 문제 시작 → 문항마다 채점·스크립트 → 다음 항목.
+    // 요소 id는 prefix-counter, prefix-play 처럼 prefix만 다르고 구조는 같다.
+    // config: prefix, dataKey(window의 배열 이름), unit(대화/담화), nextSuffix, speakerLabels(스크립트·다시 듣기에 화자 이름 표시)
+    function createTalkSection(config) {
+      var state = { index: 0, questionIndex: 0, ready: false, answered: false };
+      function $(suffix) { return document.getElementById(config.prefix + "-" + suffix); }
+      function items() { return window[config.dataKey] || []; }
+      function current() { return items()[state.index % items().length]; }
+
+      // "다시 듣기"에서만 지금 읽는 대사의 화자 이름을 보여 준다(대사 내용은 보여 주지 않는다). 담화는 표시 영역이 없다.
+      function showNowSpeaking(text) {
+        var node = $("now-speaking");
+        if (!node) return;
+        node.textContent = text || "";
+        node.hidden = !text;
       }
-      var dialogue = currentDialogue();
-      var token = ++currentUtteranceToken;
-      showNowSpeaking("");
-      if (currentPlaybackButton && currentPlaybackButton !== button) currentPlaybackButton.disabled = false;
-      currentPlaybackButton = button;
-      button.disabled = true;
-      document.getElementById("part3-start-questions").disabled = true;
-      messageAt("part3-message", "");
-      var profiles = speakerProfiles(dialogue);
-      function speakLine(line) {
-        if (token !== currentUtteranceToken) return undefined;
-        var profile = profiles[line.speaker];
-        if (showSpeakers) showNowSpeaking("지금 말하는 사람: " + speakerName(dialogue, line.speaker));
-        return window.Speech.speak(line.text, {
-          rate: voiceSettings.rate,
-          voice: profile.voice,
-          pitch: profile.pitch,
-          rateScale: profile.rateScale,
-          lang: voiceSettings.voiceSelected ? voiceSettings.locale : "en-US",
-          fallbackLang: "en-US",
-          onVoiceUnavailable: handleVoiceUnavailable,
-          onFallback: handleVoiceFallback
+
+      function hideScript() {
+        $("script-toggle").textContent = "스크립트 보기";
+        $("script-toggle").setAttribute("aria-expanded", "false");
+        $("script").hidden = true;
+      }
+
+      function render() {
+        if (!items().length) return;
+        var item = current();
+        showNowSpeaking("");
+        $("counter").textContent =
+          config.unit + " " + (state.index % items().length + 1) + " / " + items().length + " · " + item.title;
+        state.ready = false;
+        state.questionIndex = 0;
+        state.answered = false;
+        $("start-questions").disabled = true;
+        $("quiz").hidden = true;
+        $(config.nextSuffix).hidden = true;
+        $("script-toggle").hidden = true;
+        hideScript();
+        var transcript = $("script");
+        transcript.replaceChildren();
+        talkLines(item).forEach(function (line) {
+          var paragraph = document.createElement("p");
+          paragraph.className = "listening-transcript-line en";
+          if (config.speakerLabels) {
+            var speaker = document.createElement("span");
+            speaker.className = "listening-speaker";
+            speaker.textContent = speakerName(item, line.speaker) + ": ";
+            paragraph.appendChild(speaker);
+          }
+          paragraph.appendChild(document.createTextNode(line.text));
+          transcript.appendChild(paragraph);
         });
-      }
-      // 첫 대사는 클릭 핸들러 안에서 바로 재생해야 iOS에서 막히지 않는다. 이후 대사는 차례로 잇는다.
-      var sequence = Promise.resolve(speakLine(dialogue.script[0], 0));
-      dialogue.script.slice(1).forEach(function (line, offset) {
-        sequence = sequence.then(function () { return speakLine(line, offset + 1); });
-      });
-      return sequence.then(function () {
-        if (token !== currentUtteranceToken) return;
-        part3Ready = true;
-        document.getElementById("part3-start-questions").disabled = false;
-        messageAt("part3-message", "대화가 끝났어요. 문제를 시작하거나 다시 들을 수 있어요.");
-      }).catch(function (error) {
-        if (token === currentUtteranceToken) messageAt("part3-message", error.message);
-      }).then(function () {
-        if (token === currentUtteranceToken) {
-          button.disabled = false;
-          currentPlaybackButton = null;
-          showNowSpeaking("");
+        if (!window.Speech.isSupported()) {
+          transcript.hidden = false;
+          $("quiz").hidden = false;
+          $("script-toggle").hidden = false;
+          $("script-toggle").textContent = "스크립트 숨기기";
+          $("script-toggle").setAttribute("aria-expanded", "true");
+          $("start-questions").disabled = false;
+          state.ready = true;
+          messageAt(config.prefix + "-message", "음성 없이 스크립트를 읽고 문제를 풀 수 있어요.");
         }
-      });
+      }
+
+      function play(button, showSpeakers) {
+        if (!window.Speech.isSupported()) {
+          messageAt(config.prefix + "-message", window.Speech.UNSUPPORTED_MESSAGE);
+          return Promise.resolve();
+        }
+        var item = current();
+        var lines = talkLines(item);
+        var token = ++currentUtteranceToken;
+        showNowSpeaking("");
+        if (currentPlaybackButton && currentPlaybackButton !== button) currentPlaybackButton.disabled = false;
+        currentPlaybackButton = button;
+        button.disabled = true;
+        $("start-questions").disabled = true;
+        messageAt(config.prefix + "-message", "");
+        var profiles = speakerProfiles(lines);
+        function speakLine(line) {
+          if (token !== currentUtteranceToken) return undefined;
+          var profile = profiles[line.speaker];
+          if (showSpeakers && config.speakerLabels) showNowSpeaking("지금 말하는 사람: " + speakerName(item, line.speaker));
+          return window.Speech.speak(line.text, {
+            rate: voiceSettings.rate,
+            voice: profile.voice,
+            pitch: profile.pitch,
+            rateScale: profile.rateScale,
+            lang: voiceSettings.voiceSelected ? voiceSettings.locale : "en-US",
+            fallbackLang: "en-US",
+            onVoiceUnavailable: handleVoiceUnavailable,
+            onFallback: handleVoiceFallback
+          });
+        }
+        // 첫 대사는 클릭 핸들러 안에서 바로 재생해야 iOS에서 막히지 않는다. 이후 대사는 차례로 잇는다.
+        var sequence = Promise.resolve(speakLine(lines[0]));
+        lines.slice(1).forEach(function (line) {
+          sequence = sequence.then(function () { return speakLine(line); });
+        });
+        return sequence.then(function () {
+          if (token !== currentUtteranceToken) return;
+          state.ready = true;
+          $("start-questions").disabled = false;
+          messageAt(config.prefix + "-message", config.unit + "가 끝났어요. 문제를 시작하거나 다시 들을 수 있어요.");
+        }).catch(function (error) {
+          if (token === currentUtteranceToken) messageAt(config.prefix + "-message", error.message);
+        }).then(function () {
+          if (token === currentUtteranceToken) {
+            button.disabled = false;
+            currentPlaybackButton = null;
+            showNowSpeaking("");
+          }
+        });
+      }
+
+      function renderQuestion() {
+        var item = current();
+        var question = item.questions[state.questionIndex];
+        var choices = $("choices");
+        state.answered = false;
+        $("question-counter").textContent = "문제 " + (state.questionIndex + 1) + " / " + item.questions.length;
+        $("question").textContent = question.q;
+        $("feedback").replaceChildren();
+        $("next").hidden = true;
+        $("script-toggle").hidden = true;
+        hideScript();
+        choices.replaceChildren();
+        question.choices.forEach(function (choice, index) {
+          var row = document.createElement("div");
+          row.className = "listening-choice-row";
+          var button = document.createElement("button");
+          button.type = "button";
+          button.className = "listening-choice-answer";
+          button.textContent = "(" + String.fromCharCode(65 + index) + ") " + choice;
+          button.addEventListener("click", function () {
+            gradeListeningChoice(config.prefix, question, index, choices, function () {
+              state.answered = true;
+              $("next").hidden = false;
+              $("script-toggle").hidden = false;
+            });
+          });
+          row.appendChild(button);
+          choices.appendChild(row);
+        });
+      }
+
+      function bind() {
+        if (!items().length) return;
+        $("play").addEventListener("click", function () {
+          document.getElementById("listening-fallback-note").hidden = true;
+          play(this);
+        });
+        $("replay").addEventListener("click", function () {
+          document.getElementById("listening-fallback-note").hidden = true;
+          play(this, true);
+        });
+        $("start-questions").addEventListener("click", function () {
+          if (!state.ready) return;
+          $("quiz").hidden = false;
+          renderQuestion();
+        });
+        $("next").addEventListener("click", function () {
+          if (!state.answered) return;
+          state.questionIndex += 1;
+          if (state.questionIndex < current().questions.length) {
+            renderQuestion();
+          } else {
+            $("next").hidden = true;
+            $("script-toggle").hidden = false;
+            $(config.nextSuffix).hidden = false;
+          }
+        });
+        $("script-toggle").addEventListener("click", function () {
+          toggleScript(config.prefix + "-script-toggle", config.prefix + "-script");
+        });
+        $(config.nextSuffix).addEventListener("click", function () {
+          state.index += 1;
+          render();
+          messageAt(config.prefix + "-message", "");
+        });
+      }
+
+      return { render: render, bind: bind };
     }
 
-    function renderPart3Question() {
-      var dialogue = currentDialogue();
-      var question = dialogue.questions[part3QuestionIndex];
-      var choices = document.getElementById("part3-choices");
-      part3Answered = false;
-      document.getElementById("part3-question-counter").textContent =
-        "문제 " + (part3QuestionIndex + 1) + " / " + dialogue.questions.length;
-      document.getElementById("part3-question").textContent = question.q;
-      document.getElementById("part3-feedback").replaceChildren();
-      document.getElementById("part3-next").hidden = true;
-      document.getElementById("part3-script-toggle").hidden = true;
-      document.getElementById("part3-script-toggle").textContent = "스크립트 보기";
-      document.getElementById("part3-script-toggle").setAttribute("aria-expanded", "false");
-      document.getElementById("part3-script").hidden = true;
-      choices.replaceChildren();
-      question.choices.forEach(function (choice, index) {
-        var row = document.createElement("div");
-        row.className = "listening-choice-row";
-        var button = document.createElement("button");
-        button.type = "button";
-        button.className = "listening-choice-answer";
-        button.textContent = "(" + String.fromCharCode(65 + index) + ") " + choice;
-        button.addEventListener("click", function () {
-          gradeListeningChoice("part3", question, index, choices);
-        });
-        row.appendChild(button);
-        choices.appendChild(row);
-      });
-    }
+    var talkSections = [
+      createTalkSection({ prefix: "part3", dataKey: "PART3", unit: "대화", nextSuffix: "next-dialogue", speakerLabels: true }),
+      createTalkSection({ prefix: "part4", dataKey: "PART4", unit: "담화", nextSuffix: "next-talk", speakerLabels: false })
+    ];
 
     function bindTabs() {
       document.querySelectorAll('[role="tab"][id^="listening-tab-"]').forEach(function (tab) {
@@ -600,7 +658,7 @@
 
     renderDictation();
     renderPart2();
-    renderDialogue();
+    talkSections.forEach(function (section) { section.render(); });
     if (!window.Speech.isSupported()) {
       showDictationAnswer();
     }
@@ -646,37 +704,6 @@
       messageAt("part2-message", "");
     });
 
-    document.getElementById("part3-play").addEventListener("click", function () {
-      document.getElementById("listening-fallback-note").hidden = true;
-      playDialogue(this);
-    });
-    document.getElementById("part3-replay").addEventListener("click", function () {
-      document.getElementById("listening-fallback-note").hidden = true;
-      playDialogue(this, true);
-    });
-    document.getElementById("part3-start-questions").addEventListener("click", function () {
-      if (!part3Ready) return;
-      document.getElementById("part3-quiz").hidden = false;
-      renderPart3Question();
-    });
-    document.getElementById("part3-next").addEventListener("click", function () {
-      if (!part3Answered) return;
-      part3QuestionIndex += 1;
-      if (part3QuestionIndex < currentDialogue().questions.length) {
-        renderPart3Question();
-      } else {
-        document.getElementById("part3-next").hidden = true;
-        document.getElementById("part3-script-toggle").hidden = false;
-        document.getElementById("part3-next-dialogue").hidden = false;
-      }
-    });
-    document.getElementById("part3-script-toggle").addEventListener("click", function () {
-      toggleScript("part3-script-toggle", "part3-script");
-    });
-    document.getElementById("part3-next-dialogue").addEventListener("click", function () {
-      dialogueIndex += 1;
-      renderDialogue();
-      messageAt("part3-message", "");
-    });
+    talkSections.forEach(function (section) { section.bind(); });
   });
 }());

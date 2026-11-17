@@ -887,7 +887,7 @@ window.PASSAGES = [
       { w: "in full", m: "전액으로" }
     ],
     questions: [
-      { q: "What is the purpose of the first notice?", choices: ["To explain rules for claiming travel costs", "To announce a change in salaries", "To report a budget shortage", "To introduce a new accounting system"], answer: 0, explanation: "식비, 숙박비, 택시, 제출 기한 등 경비 청구 규정을 안내하는 글이다." },
+      { q: "What is the purpose of the expense policy?", choices: ["To explain rules for claiming travel costs", "To announce a change in salaries", "To report a budget shortage", "To introduce a new accounting system"], answer: 0, explanation: "식비, 숙박비, 택시, 제출 기한 등 경비 청구 규정을 안내하는 글이다." },
       { q: "What is indicated about Mr. Vasilev's taxi fare?", choices: ["It was below the amount that needs a receipt", "It was not approved", "A receipt was required for it", "It was paid by the client"], answer: 2, explanation: "연계 문제다. 규정에 20달러 미만은 영수증이 필요 없다고 했고, 신청서의 택시 요금은 34달러다." },
       { q: "Why is the hotel cost approved in full?", choices: ["It was paid in advance", "The client agreed to share the cost", "He stayed only two nights", "The trip was outside the country"], answer: 3, explanation: "연계 문제다. 1박 195달러는 국내 한도 160달러를 넘지만 해외 한도 210달러보다는 낮다. 오슬로 출장이라 해외 한도가 적용된다." },
       { q: "What does Ms. Keller ask Mr. Vasilev to do?", choices: ["Resubmit the whole form", "Send receipts for one day's meals", "Return part of the payment", "Book a cheaper hotel next time"], answer: 1, explanation: "Please send me the receipts for April 7." },
