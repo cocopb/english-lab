@@ -102,10 +102,10 @@ lines.push("");
 
 lines.push("## Part 5 문항 (" + questions.length + "개)");
 lines.push("");
-lines.push("| id | ruleId | 질문 첫 10단어 | 정답 |");
+lines.push("| id | ruleId (+보조 태그) | 질문 첫 10단어 | 정답 |");
 lines.push("| --- | --- | --- | --- |");
 questions.forEach(function (question) {
-  lines.push("| " + [question.id, question.ruleId, cell(firstWords(question.question, 10)),
+  lines.push("| " + [question.id, question.ruleId + ((question.alsoRuleIds || []).length ? " (+" + question.alsoRuleIds.join(", ") + ")" : ""), cell(firstWords(question.question, 10)),
     cell(question.choices[question.answer])].join(" | ") + " |");
 });
 lines.push("");

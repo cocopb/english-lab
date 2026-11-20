@@ -161,7 +161,7 @@
       return questions.map(function (question) {
         return {
           part: "p5", prompt: question.question, choices: question.choices, answer: question.answer,
-          explanation: question.explanation, ruleId: question.ruleId || null, group: null
+          explanation: question.explanation, ruleId: question.ruleId || null, alsoRuleIds: question.alsoRuleIds || [], group: null
         };
       });
     }
@@ -607,6 +607,15 @@
       var link = element("a", "grammar-note-link", "📘 " + topic.title + " 노트 보기");
       link.href = "grammar.html#grammar-note-" + ruleId;
       return link;
+    }
+
+    // 보조 태그 링크: 오답 복습에서만 보여 준다. 점수·약점 통계는 주 태그(ruleId)만 쓴다.
+    function alsoRuleLinks(item) {
+      return (item.alsoRuleIds || []).filter(function (ruleId) { return topicById[ruleId]; }).map(function (ruleId) {
+        var link = element("a", "grammar-note-link grammar-also-link", "🔗 이 문제는 " + topicById[ruleId].title + "(" + ruleId + ")도 함께 묻습니다");
+        link.href = "grammar.html#grammar-note-" + ruleId;
+        return link;
+      });
     }
 
     // 결과 화면에서 Part 6 빈칸 앞뒤 문맥을 짧게 보여준다.
@@ -1155,6 +1164,7 @@
         );
         var link = item.ruleId ? noteLink(item.ruleId) : null;
         if (link) entry.appendChild(link);
+        alsoRuleLinks(item).forEach(function (also) { entry.appendChild(also); });
         missSection.appendChild(entry);
       });
       card.appendChild(missSection);
@@ -1322,6 +1332,7 @@
       );
       var link = item.ruleId ? noteLink(item.ruleId) : null;
       if (link) entry.appendChild(link);
+      alsoRuleLinks(item).forEach(function (also) { entry.appendChild(also); });
       return entry;
     }
 

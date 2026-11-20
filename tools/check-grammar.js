@@ -63,6 +63,20 @@ questions.forEach(function (question, index) {
   }
 });
 
+// 보조 태그(alsoRuleIds): 있으면 배열이고, 존재하는 유형이며, 주 태그와 같지 않고, 중복이 없어야 한다.
+failures.invalidAlsoRuleIds = [];
+questions.forEach(function (question, index) {
+  if (!question || question.alsoRuleIds === undefined) return;
+  var label = question.id || "문항 #" + (index + 1);
+  var also = question.alsoRuleIds;
+  if (!Array.isArray(also) || !also.length) { failures.invalidAlsoRuleIds.push({ id: label, problem: "빈 배열이거나 배열이 아님" }); return; }
+  also.forEach(function (ruleId) {
+    if (!topicIds[ruleId]) failures.invalidAlsoRuleIds.push({ id: label, problem: "없는 유형 " + ruleId });
+    if (ruleId === question.ruleId) failures.invalidAlsoRuleIds.push({ id: label, problem: "주 태그와 같음 " + ruleId });
+  });
+  if (new Set(also).size !== also.length) failures.invalidAlsoRuleIds.push({ id: label, problem: "중복" });
+});
+
 // ---------------------------------------------------------------------------
 // 노트 예문 ↔ 문항 중복: 노트 예문(good·bad)이 같은 유형 문항과 지나치게 비슷하면 실패.
 // 노트를 읽은 직후 그 유형을 풀면 외운 문장으로 맞혀서 유형별 정답률이 실제보다 높게 나오기 때문이다.
@@ -543,6 +557,43 @@ const displayMismatch = shown.filter(s => expectedById[s.id] !== s.value).map(s 
 check("모든 유형 정답률 표시: " + allWeakItems.length + "개 유형이 기록과 같은 %로 보임",
   allWeakItems.length === pageTopics.length && !displayMismatch.length, displayMismatch.join(" | ") || shown.map(s => s.id + " " + s.value + "%").join(", "));
 check("모든 유형 정답률 낮은 순 정렬", shown.every((s, i) => i === 0 || shown[i - 1].value <= s.value), shown.map(s => s.value).join(" ≤ "));
+
+// 5. 보조 태그: 틀리면 피드백과 결과의 틀린 문제에 "함께 묻습니다" 링크가 나오고, 맞힌 문항에는 나오지 않는다.
+//    통계는 주 태그에만 쌓이고 보조 태그 유형의 기록은 늘지 않는다.
+(function () {
+  const sample = pageQuiz.find(q => Array.isArray(q.alsoRuleIds) && q.alsoRuleIds.length);
+  if (!sample) { check("보조 태그 문항", false, "없음"); return; }
+  const alsoId = sample.alsoRuleIds[0];
+  const before = JSON.parse(JSON.stringify(fakeWindow.Progress.getGrammarStats()));
+  ruleSelect.value = sample.ruleId; ruleSelect.dispatch("change");
+  countSelect.value = "all";
+  form.dispatch("submit");
+  let wrongLinkShown = null, rightLinkShown = null, answered = 0;
+  for (let guard = 0; guard < 100; guard++) {
+    const prompt = stage.querySelector(".grammar-question-prompt");
+    const buttons = stage.querySelectorAll(".grammar-choice");
+    if (!prompt || !buttons.length) break;
+    const question = pageQuiz.find(q => q.question === prompt.textContent);
+    const isSample = question === sample;
+    buttons[isSample ? (question.answer + 1) % buttons.length : question.answer].click();
+    const links = stage.querySelectorAll(".grammar-also-link");
+    if (isSample) wrongLinkShown = links.length === 1 && links[0].textContent.indexOf(alsoId) !== -1;
+    else if (Array.isArray(question.alsoRuleIds) && rightLinkShown === null) rightLinkShown = links.length > 0;
+    answered++;
+    const next = stage.querySelector(".grammar-next-button");
+    if (!next) break;
+    next.click();
+  }
+  const missLinks = stage.querySelectorAll(".grammar-also-link").length;
+  const after = fakeWindow.Progress.getGrammarStats();
+  const mainGrew = after[sample.ruleId].solved - before[sample.ruleId].solved === answered;
+  const alsoSame = after[alsoId].solved === before[alsoId].solved;
+  check("보조 태그: " + sample.id + "를 틀리면 '" + alsoId + "도 함께 묻습니다' 링크", wrongLinkShown === true, String(wrongLinkShown));
+  check("보조 태그: 맞힌 문항에는 링크 없음", rightLinkShown !== true, String(rightLinkShown));
+  check("보조 태그: 결과의 틀린 문제에도 링크", missLinks === 1, missLinks + "개");
+  check("보조 태그: 통계는 주 태그(" + sample.ruleId + ")에만 쌓이고 " + alsoId + "는 그대로", mainGrew && alsoSame,
+    sample.ruleId + " +" + (after[sample.ruleId].solved - before[sample.ruleId].solved) + " / " + alsoId + " +" + (after[alsoId].solved - before[alsoId].solved));
+})();
 
 console.log(domFailures ? "\n화면 검사 실패 " + domFailures : "\n화면 검사 통과");
 if (failureCount || domFailures) process.exit(1);

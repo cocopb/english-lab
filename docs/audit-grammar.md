@@ -155,3 +155,85 @@ check-grammar.js에 두 가지를 넣었다.
 4. g02(7문항)·g12(8문항) 보충 여부.
 5. Part 6 문법 빈칸 25개도 같은 약점 통계에 들어간다. 이번 범위 밖이라 보기만 했는데, g06 두 개(direct A to B, from A through B)는 g06 노트로 풀 수 없다.
 6. 검토 목록에 없는 단정 문장을 실패로 처리했다. 새 노트를 쓸 때마다 목록을 채워야 하므로, 경고로 낮출지.
+
+# 2차 감사 — 180문항 복수정답·문장·해설 (2026-11-20)
+
+## 0. 지난 판단 반영
+
+| 항목 | 한 일 |
+|---|---|
+| 보조 태그 | 두 가지를 묻는 15문항에 `alsoRuleIds`를 붙였다 (지난번 표에서 q136·q139를 한 줄로 묶어 14개로 적었다). 약점 통계는 주 태그(`ruleId`)만 쓴다. 보조 태그는 오답 복습에서만 "🔗 이 문제는 ○○(gXX)도 함께 묻습니다" 링크로 보인다: 문법 화면에서 틀렸을 때의 피드백, 결과 화면의 "틀린 문제", 모의고사 결과·복습의 오답 카드. check-grammar가 형식(있는 유형, 주 태그와 다름, 중복 없음)과 화면(틀리면 링크, 맞히면 없음, 통계는 주 태그에만)을 확인한다 |
+| q006 | g01 유지. g01 trap에 "명사 앞 동명사 = 복합명사(accounting department, marketing team, training session)"와 g15 분사와의 차이를 한 줄로 적었다 |
+| q056 | g06 유지. g03 trap에 "since + 시점과 for + 기간(지금까지 이어질 때)은 현재완료와 함께 쓴다"를 추가했다 |
+| g02·g12 보충 | 하지 않았다 |
+| g06 | trap에 "동사가 정해 주는 전치사" 절(depend on, consist of, contribute to, refer to, result in, comply with, apply for, direct A to B, from A through B)과 toeicPattern 한 줄을 넣었다. Part 6의 g06 빈칸 두 개(direct any questions ___ / from ... ___ ...)가 이 절로 풀린다 |
+| 단정 문장 검사 | 실패 유지 |
+
+## A. 복수정답
+
+모든 문항의 오답 3개를 빈칸에 넣어 보았다. 고친 10문항은 모두 오답 쪽(보기 또는 문장)을 고쳤다. 정답은 하나도 바꾸지 않았다.
+
+| 문항 | 통하던 오답 | 왜 통했나 | 고친 것 |
+|---|---|---|---|
+| q053 | by | The conference will be held by May. = 5월까지는 열린다 (마감) | by → to |
+| q055 | at | The meeting takes place at the conference room. 지점의 at으로 원어민이 흔히 쓴다 | at → of |
+| q057 | by | The train leaves by nine o'clock. = 9시 전에는 떠난다 | by → to |
+| q060 | for | He will return for three days. = 돌아와서 3일 머문다 | 문장을 Your order will arrive ____ three days.로 바꿈 |
+| q087 | herself | The manager gave herself a raise. 관리자가 자기 급여를 올린 것으로 성립 | herself → she's |
+| q092 | more | the more experienced member of the team은 팀이 두 명이면 맞다 | 범위를 our twenty-person team으로 밝힘 |
+| q109 | would pass | 혼합 가정(시험이 앞으로 있다면)으로 성립 | 문장 끝에 last spring 추가 |
+| q113 | the train does leave | 강조의 do로 문법상 성립 | → the train leaving |
+| q115 | she did cancel | 강조의 do로 문법상 성립 | → she cancel |
+| q118 | goes often | She goes often to the gym.은 어색하지만 비문은 아니다 | → often go (수가 틀린 오답) |
+
+### 정답 쪽이 의심되는 문항
+
+정답이 틀린 문항은 없다. 정답은 표준 문법으로 맞지만 원어민 구어에서는 오답도 쓰이는 문항은 있다. 해설에 "토익은 ○○를 정답으로 낸다"를 적었다.
+
+| 문항 | 정답 | 구어에서 쓰이는 오답 |
+|---|---|---|
+| q016 | Neither of the proposals was approved. | were |
+| q086 | Ms. Lee and I attended | me |
+| q180 | fewer complaints | less |
+| q006 | accounting department | account department (광고 업계의 '고객 담당 부서'로 쓰는 말이 따로 있다) |
+| q059 | on Main Street | in Main Street (영국식) |
+
+## B. 영어 문장
+
+고친 것 7개 (A에서 바꾼 문장 3개는 따로 센다)
+
+| 문항 | 전 | 후 | 이유 |
+|---|---|---|---|
+| q027 | 보기 current time | more current | 낱말 형태를 묻는 보기에 명사구가 섞여 어색했다 |
+| q052 | Please submit it ____ 5 p.m. | Please submit your timesheet ____ 5 p.m. on Friday. | it이 가리키는 것이 없었다 |
+| q083 | The decision was ____. | We gave the team two options, and the final decision was ____. | 단서가 너무 적었다 |
+| q158 | our ____ selling item | Of all our branches, our ____ performer this year was the Daegu office. | best-selling은 붙여 쓰는 말이라 빈칸으로 가르면 하이픈이 빠진다 |
+| q012 | a resume | a résumé | q171과 철자 통일 |
+| q128·q147 | e-mail | email | 저장소 다른 곳(q039 email address)과 통일 |
+
+## C. 해설
+
+- 167개를 보강했다. 정답만 다시 말하고 오답이 왜 안 되는지가 없던 해설에 근거와 오답 이유를 넣었다.
+- 그대로 둔 13개(q001, q117, q124, q130, q133, q136, q154, q171, q172, q173, q176, q178, q179)는 이미 오답마다 이유가 있었다.
+- 노트와 어긋난 해설도 하나 고쳤다. q010 "일반동사 뒤에 오는 수식어는 부사다"는 g01 표(일반동사 + 목적어 앞은 형용사 자리, q008)와 어긋나서 다시 썼다.
+
+특히 부실했던 예
+
+| 문항 | 전 | 후 |
+|---|---|---|
+| q051 | 요일 앞에는 on을 쓴다. | 요일(Friday) 앞에는 on. in은 월·연도, at은 시각에 쓰고, due to는 '\~ 때문에'라 뜻이 달라진다. |
+| q043 | finish 뒤에는 -ing가 온다. | finish 뒤에는 -ing가 온다. to write는 finish가 받지 않고, write·written은 finished 바로 뒤에 올 수 없다. |
+| q071 | 앞 명사가 사람(employee)이고 뒤에 주어가 없으므로 주격 who. | ... which는 사물에 쓰고, whose는 뒤에 명사가 와야 하며, what은 앞에 명사를 둘 수 없다. |
+
+## D. 보카 0-1 경계 단어
+
+- 처음 뺀 단어는 60개가 아니라 63개였다. 그중 중학 수준인 47개(mercy·jury·species·obvious·structure·process 등)를 기초 목록에 다시 넣어 1,686개가 되었다.
+- substance·resident·opponent·slight·furious·burden·crush·lid·hose·mittens·plum·wardrobe·gadget·interior·trailer·carton 16개는 계속 뺀다.
+- `node tools/list-unknown-distractors.js` 결과: **교체 대상 481세트, 오답 722개** (전에는 505세트, 775개). 교체는 하지 않았다.
+
+## 판단이 필요한 항목
+
+1. 정답 쪽 의심 표의 구어 변형(q016 were, q086 me, q180 less)을 해설에 적는 선에서 둘지, 오답에서 빼고 다른 오답으로 바꿀지
+2. q006 account를 다른 오답(accounts·accountable 등)으로 바꿀지
+3. g06 노트의 "Please direct your questions to Ms. Kim."은 Part 6 빈칸의 앞 문장(Please direct any questions ___)과 거의 같다. 말씀하신 대로 이 절로 풀리게 했지만, 노트를 읽고 바로 풀면 외워서 맞힌다
+4. 보카 남은 481세트 교체 시점

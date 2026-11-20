@@ -235,6 +235,20 @@
       quizStage.replaceChildren(card);
     }
 
+    // 보조 태그(alsoRuleIds): 한 문항이 다른 유형도 함께 물을 때 오답 복습에서만 그 노트로 보내는 링크.
+    // 약점 통계(recordGrammarAnswer)에는 주 태그(ruleId)만 쓴다.
+    function alsoRuleLinks(question) {
+      return (question.alsoRuleIds || []).filter(function (ruleId) { return topicById[ruleId]; }).map(function (ruleId) {
+        var link = element("a", "grammar-note-link grammar-also-link", "🔗 이 문제는 " + topicById[ruleId].title + "(" + ruleId + ")도 함께 묻습니다");
+        link.href = "#grammar-note-" + ruleId;
+        link.addEventListener("click", function (event) {
+          event.preventDefault();
+          openNote(ruleId);
+        });
+        return link;
+      });
+    }
+
     function gradeAnswer(question, selectedIndex, choices, card) {
       if (card.dataset.answered === "true") return;
       card.dataset.answered = "true";
@@ -255,6 +269,7 @@
         openNote(question.ruleId);
       });
       feedback.appendChild(noteLink);
+      if (!isCorrect) alsoRuleLinks(question).forEach(function (link) { feedback.appendChild(link); });
       card.querySelector(".grammar-next-button").hidden = false;
     }
 
@@ -295,6 +310,7 @@
           element("p", "", "정답: " + question.choices[question.answer]),
           element("p", "", question.explanation)
         );
+        alsoRuleLinks(question).forEach(function (link) { entry.appendChild(link); });
         missSection.appendChild(entry);
       });
       if (!misses.length) missSection.appendChild(element("p", "", "모든 문제를 맞혔어요!"));

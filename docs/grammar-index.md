@@ -34,12 +34,12 @@
 
 노트마다 trap 전체를 한 줄로 이었다 (원문 줄바꿈은 ` / `). 새 trap이 아래 규칙이나 기존 문항의 정답·해설과 어긋나지 않는지 본다.
 
-- **g01 품사 자리**: very, so 같은 수식어에 속지 마라. 꾸밈 받는 대상을 봐야 한다. / He was very polite. (be동사 뒤 → 형용사) / He answered very politely. (일반동사 뒤 → 부사) / be동사 바로 뒤는 보통 형용사 자리다. 명사·대명사가 올 수도 있다 (He is a manager.). be ___ -ing나 be ___ p.p.처럼 뒤에 동사가 이어지면 그 사이는 부사 자리다. / The bridge is slowly being rebuilt. / 빈칸 바로 뒤에 명사가 오면 앞에 the·a가 있어도 보통 형용사 자리다 (명사가 명사를 꾸미는 복합명사는 표 참고). the ___ 뒤가 동사나 전치사이면 명사 자리다. 단 the highest in the country처럼 최상급이 오는 자리는 g10이다. / a quick reply (빈칸 뒤가 명사 reply → 형용사 quick) / The reply was quick. (the 뒤가 동사 was → 명사 reply) / '주어 ___ 목적어'라도 문장에 이미 동사가 있으면 빈칸은 동사가 아니라 꾸밈말(분사) 자리다. g15 참고.
+- **g01 품사 자리**: very, so 같은 수식어에 속지 마라. 꾸밈 받는 대상을 봐야 한다. / He was very polite. (be동사 뒤 → 형용사) / He answered very politely. (일반동사 뒤 → 부사) / be동사 바로 뒤는 보통 형용사 자리다. 명사·대명사가 올 수도 있다 (He is a manager.). be ___ -ing나 be ___ p.p.처럼 뒤에 동사가 이어지면 그 사이는 부사 자리다. / The bridge is slowly being rebuilt. / 빈칸 바로 뒤에 명사가 오면 앞에 the·a가 있어도 보통 형용사 자리다 (명사가 명사를 꾸미는 복합명사는 표 참고). the ___ 뒤가 동사나 전치사이면 명사 자리다. 단 the highest in the country처럼 최상급이 오는 자리는 g10이다. / a quick reply (빈칸 뒤가 명사 reply → 형용사 quick) / The reply was quick. (the 뒤가 동사 was → 명사 reply) / '주어 ___ 목적어'라도 문장에 이미 동사가 있으면 빈칸은 동사가 아니라 꾸밈말(분사) 자리다. g15 참고. / 명사 앞 동명사는 복합명사다. accounting department(회계 부서), marketing team(마케팅 팀), training session(교육 시간)처럼 -ing가 뒤 명사의 용도를 말하면 명사 자리로 보고 뜻으로 고른다. / g15 분사와의 차이: 분사는 꾸밈 받는 명사가 직접 그 동작을 한다(the rising cost = 비용이 오른다). 복합명사는 명사가 그 동작을 하지 않는다(부서가 회계를 하는 것이 아니라 회계 일을 하는 부서).
 - **g02 수 일치**: 주어와 동사 사이에 낀 전치사구에 속지 마라. / The color of the chairs ___ . / → 주어는 color(단수)지 chairs가 아니다. / each·every·neither·a number of·the number of처럼 주어 앞에 수량 표현이 붙어 수가 정해지는 경우는 g16(수량 표현)에서 다룬다.
-- **g03 시제**: since + 시점(~이래로)은 현재완료와 짝을 이룬다. for + 기간은 지금까지 이어지면 현재완료, 과거에 끝났으면 과거형이다. / (접속사 since '~때문에'는 다른 쓰임이다. g07 참고) / if·when·before·after·until·as soon as로 시작하는 조건·시간 부사절 안에서는 tomorrow가 있어도 will 없이 현재형을 쓴다. will은 주절에 쓴다. 단 '~인지'라는 뜻의 if·when 절에는 will이 올 수 있다 (g11). / When the manager arrives tomorrow, we will start. (will arrive ❌, g11 참고)
+- **g03 시제**: since + 시점(~이래로)은 현재완료와 짝을 이룬다. for + 기간은 지금까지 이어지면 현재완료, 과거에 끝났으면 과거형이다. / (접속사 since '~때문에'는 다른 쓰임이다. g07 참고) / if·when·before·after·until·as soon as로 시작하는 조건·시간 부사절 안에서는 tomorrow가 있어도 will 없이 현재형을 쓴다. will은 주절에 쓴다. 단 '~인지'라는 뜻의 if·when 절에는 will이 올 수 있다 (g11). / When the manager arrives tomorrow, we will start. (will arrive ❌, g11 참고) / since + 시점과 for + 기간(지금까지 이어질 때)은 현재완료와 함께 쓴다. The shop has been open since March. / We have used this printer for six months.
 - **g04 능동 / 수동**: 가장 빠른 판별법은 빈칸 뒤를 보는 것이다. / 빈칸 뒤에 목적어(명사)가 있으면 능동, 없으면 수동일 확률이 높다. / 단 arrive·happen·occur·rise·open(가게가 열다)·take place처럼 목적어를 받지 않는 동사는 수동이 없다. 목적어가 없어도 능동이다. / The accident happened at noon. (was happened ❌)
 - **g05 to부정사 vs 동명사**: 이 표는 '빈칸 바로 뒤'에 무엇이 오는지를 가리는 기준이다. that절처럼 다른 구조를 따로 갖는 동사도 있다. / 전치사 뒤에 동사가 오면 -ing다. 단 during은 -ing를 받지 않는다. 동작을 말할 때는 while -ing로 쓴다 (during waiting ❌ / while waiting ⭕, g07). / 특히 to가 전치사인 표현에 주의한다. 이때 to 뒤에 동사원형을 쓰면 틀린다. / look forward to / be used to / be committed to / be opposed to / in addition to / contribute to / Everyone contributed to planning the party. (to plan ❌) / be used to -ing(~에 익숙하다)와 used to + 동사원형(과거에 ~했다)은 다른 표현이다. / 단 let·make·have + 목적어 뒤에는 동사원형이 온다. The boss made us wait. (to wait ❌) / need처럼 -ing도 가능한 동사가 있다. The car needs washing.
-- **g06 전치사**: by와 until을 구분하라. / by 5 = 5시 전까지 끝내라 (마감) / until 5 = 5시까지 계속하라 (지속) / 뜻이 완전히 다르다.
+- **g06 전치사**: by와 until을 구분하라. / by 5 = 5시 전까지 끝내라 (마감) / until 5 = 5시까지 계속하라 (지속) / 뜻이 완전히 다르다. / 동사가 정해 주는 전치사는 뜻이 아니라 짝으로 외운다. / depend on / consist of / contribute to / refer to / result in / comply with / apply for / direct A to B = A를 B에게 보내다·안내하다 (Please direct your questions to Ms. Kim.) / from A through B = A부터 B까지, B 포함 (from Monday through Friday)
 - **g07 접속사 vs 전치사**: despite of는 존재하지 않는 표현이다. despite 또는 in spite of 둘 중 하나만 쓴다. / 접속사 뒤에서 '주어 + be동사'가 생략되면 -ing나 p.p.가 바로 온다. / p.p.가 바로 오면 접속사다. although delayed (although it was delayed), despite delayed ❌ / -ing는 전치사 뒤에도 올 수 있으니 짝을 봐라. while waiting ⭕ / during waiting ❌ / despite being late ⭕
 - **g08 관계대명사**: 순서대로 가른다. / ① 빈칸 뒤에 명사가 바로 오고 소유 관계면 whose / ② 그렇지 않고 뒤에 주어가 없으면 주격 (who / which / that) / ③ 뒤에 주어가 있으면 목적격이고, 이때는 생략할 수 있다 / the report (that) I sent
 - **g09 대명사**: its와 it's를 구분하라. / its = 그것의 (소유격) / it's = it is의 줄임 / 아포스트로피가 있으면 it is다. 위 ①~④로 풀리지 않고 '~이다'로 해석되면 it's를 의심하라. / It's too late to call him. (It is too late to call him.)
@@ -75,27 +75,27 @@
 
 ## Part 5 문항 (180개)
 
-| id | ruleId | 질문 첫 10단어 | 정답 |
+| id | ruleId (+보조 태그) | 질문 첫 10단어 | 정답 |
 | --- | --- | --- | --- |
 | q001 | g01 | The ____ was approved by the board. | proposal |
 | q002 | g01 | All employees must work ____ during the inspection. | carefully |
 | q003 | g01 | The manager gave a ____ explanation of the new policy. | clear |
 | q004 | g01 | The company reported a ____ in sales last quarter. | decline |
-| q005 | g01 | Ms. Park will ____ the training session tomorrow. | lead |
-| q006 | g01 | Please submit the form to the ____ department. | accounting |
+| q005 | g01 (+g13) | Ms. Park will ____ the training session tomorrow. | lead |
+| q006 | g01 (+g15) | Please submit the form to the ____ department. | accounting |
 | q007 | g01 | The instructions were written very ____. | simply |
-| q008 | g01 | Our team achieved ____ results this year. | impressive |
+| q008 | g01 (+g15) | Our team achieved ____ results this year. | impressive |
 | q009 | g01 | The ____ of the project depends on teamwork. | success |
 | q010 | g01 | He responded ____ to the customer's complaint. | promptly |
 | q011 | g02 | The reports on the sales figures ____ ready for review. | are |
-| q012 | g16 | Each of the applicants ____ required to submit a resume. | is |
+| q012 | g16 | Each of the applicants ____ required to submit a résumé. | is |
 | q013 | g02 | The information in these files ____ confidential. | is |
 | q014 | g02 | The manager of the two departments ____ attending the meeting. | is |
 | q015 | g02 | All employees ____ to complete the survey by Friday. | need |
 | q016 | g16 | Neither of the proposals ____ approved. | was |
 | q017 | g16 | The number of applicants ____ increased this year. | has |
 | q018 | g02 | There ____ several issues with the shipment. | are |
-| q019 | g02 | Our new equipment ____ just arrived. | has |
+| q019 | g02 (+g03) | Our new equipment ____ just arrived. | has |
 | q020 | g16 | Every document ____ to be signed. | needs |
 | q021 | g03 | The shipment ____ last Monday. | arrived |
 | q022 | g03 | She ____ for this company since 2019. | has worked |
@@ -105,11 +105,11 @@
 | q026 | g03 | Mr. Lee ____ in Seoul for ten years before moving … | lived |
 | q027 | g01 | The office is ____ undergoing renovation. | currently |
 | q028 | g03 | We have not received your payment ____. | yet |
-| q029 | g03 | The store ____ at nine every morning. | opens |
+| q029 | g03 (+g02) | The store ____ at nine every morning. | opens |
 | q030 | g03 | He ____ the documents yesterday afternoon. | sent |
 | q031 | g04 | The package ____ to the wrong address. | was delivered |
 | q032 | g04 | The committee ____ the proposal last week. | approved |
-| q033 | g04 | All applications ____ by Friday. | must be submitted |
+| q033 | g04 (+g13) | All applications ____ by Friday. | must be submitted |
 | q034 | g04 | The new policy ____ next month. | will be announced |
 | q035 | g04 | Our team ____ the results at the conference. | presented |
 | q036 | g04 | The building ____ in 1995. | was constructed |
@@ -128,15 +128,15 @@
 | q049 | g05 | Would you mind ____ the door? | closing |
 | q050 | g05 | I am used to ____ early. | getting up |
 | q051 | g06 | The report is due ____ Friday. | on |
-| q052 | g06 | Please submit it ____ 5 p.m. | by |
+| q052 | g06 | Please submit your timesheet ____ 5 p.m. on Friday. | by |
 | q053 | g06 | The conference will be held ____ May. | in |
 | q054 | g06 | We waited ____ two hours. | for |
 | q055 | g06 | The meeting takes place ____ the conference room. | in |
-| q056 | g06 | She has worked here ____ 2020. | since |
+| q056 | g06 (+g03) | She has worked here ____ 2020. | since |
 | q057 | g06 | The train leaves ____ nine o'clock. | at |
-| q058 | g06 | The office is closed ____ the holidays. | during |
+| q058 | g06 (+g07) | The office is closed ____ the holidays. | during |
 | q059 | g06 | Our store is located ____ Main Street. | on |
-| q060 | g06 | He will return ____ three days. | in |
+| q060 | g06 | Your order will arrive ____ three days. | in |
 | q061 | g07 | The event was canceled ____ the bad weather. | because of |
 | q062 | g07 | ____ the price increased, sales remained strong. | Although |
 | q063 | g07 | We finished early ____ everyone worked hard. | because |
@@ -159,7 +159,7 @@
 | q080 | g08 | The project ____ deadline was extended is now on track. | whose |
 | q081 | g09 | Please send the documents to ____. | me |
 | q082 | g09 | ____ office is on the third floor. | Our |
-| q083 | g09 | The decision was ____. | theirs |
+| q083 | g09 | We gave the team two options, and the final decision … | theirs |
 | q084 | g09 | He completed the project by ____. | himself |
 | q085 | g09 | The company announced ____ new policy. | its |
 | q086 | g09 | Ms. Lee and ____ attended the meeting. | I |
@@ -168,9 +168,9 @@
 | q089 | g09 | The team finished ____ report early. | their |
 | q090 | g09 | ____ a good idea to confirm first. | It's |
 | q091 | g10 | This model is ____ than the previous one. | cheaper |
-| q092 | g10 | She is the ____ experienced member of the team. | most |
+| q092 | g10 | She is the ____ experienced member of our twenty-person team. | most |
 | q093 | g10 | The new system is much ____ than the old one. | faster |
-| q094 | g10 | Please reply as soon as ____. | possible |
+| q094 | g10 (+g01) | Please reply as soon as ____. | possible |
 | q095 | g10 | This is the ____ report I have ever read. | best |
 | q096 | g10 | Sales were ____ this quarter than last quarter. | higher |
 | q097 | g10 | The second option is ____ expensive than the first. | less |
@@ -185,8 +185,8 @@
 | q106 | g11 | We would have finished on time if the shipment ____ … | had not been |
 | q107 | g11 | If the weather ____ better, we would go hiking. | were |
 | q108 | g11 | If you need help, ____ me know. | let |
-| q109 | g11 | If he had studied harder, he ____ the exam. | would have passed |
-| q110 | g11 | If the price ____, we will buy more. | drops |
+| q109 | g11 | If he had studied harder, he ____ the exam last … | would have passed |
+| q110 | g11 (+g02) | If the price ____, we will buy more. | drops |
 | q111 | g12 | She ____ late for meetings. | is never |
 | q112 | g12 | Do you know where ____? | the office is |
 | q113 | g12 | Could you tell me when ____? | the train leaves |
@@ -201,10 +201,10 @@
 | q122 | g13 | The new policy will ____ effect on July 1. | take |
 | q123 | g13 | You should ____ your reservation before arriving. | confirm |
 | q124 | g13 | Employees may ____ the west lot free of charge. | use |
-| q125 | g13 | The report should ____ submitted last week, but it is … | have been |
+| q125 | g13 (+g04) | The report should ____ submitted last week, but it is … | have been |
 | q126 | g13 | Our team will review the proposal and ____ comments by … | send |
 | q127 | g13 | Visitors cannot ____ photographs inside the gallery. | take |
-| q128 | g13 | The revised schedule will ____ to all staff by e-mail. | be sent |
+| q128 | g13 (+g04) | The revised schedule will ____ to all staff by email. | be sent |
 | q129 | g13 | Applicants must ____ able to work weekends. | be |
 | q130 | g13 | We will not ____ to finish the audit by Friday. | be able |
 | q131 | g14 | Renew the parking permit by Friday, ____ your vehicle will … | or |
@@ -212,10 +212,10 @@
 | q133 | g14 | ____ the sales team and the design team attended the … | Both |
 | q134 | g14 | The hotel offers neither breakfast ____ parking. | nor |
 | q135 | g14 | Not only the menu ____ also the service has improved. | but |
-| q136 | g14 | Neither the director nor the board members ____ available this … | are |
+| q136 | g14 (+g02) | Neither the director nor the board members ____ available this … | are |
 | q137 | g14 | Please print the form, sign it, ____ return it to … | and |
 | q138 | g14 | Both the Seoul office ____ the Busan office will close … | and |
-| q139 | g14 | Both the elevator and the main entrance ____ been inspected. | have |
+| q139 | g14 (+g02) | Both the elevator and the main entrance ____ been inspected. | have |
 | q140 | g14 | Either the morning session ____ the afternoon session is fine … | or |
 | q141 | g05 | The committee suggested ____ the meeting to Friday. | moving |
 | q142 | g05 | We decided ____ a second supplier this year. | to add |
@@ -223,7 +223,7 @@
 | q144 | g05 | The union is strongly opposed to ____ the shift schedule. | changing |
 | q145 | g05 | The manager avoided ____ the question directly. | answering |
 | q146 | g05 | Our team is committed to ____ response times. | improving |
-| q147 | g05 | Please remember ____ the attachment before you send the e-mail. | to include |
+| q147 | g05 | Please remember ____ the attachment before you send the email. | to include |
 | q148 | g05 | In addition to ____ the report, she presented the figures. | writing |
 | q149 | g05 | The supplier failed ____ the parts on time. | to deliver |
 | q150 | g05 | After ____ the contract, both sides held a short press … | signing |
@@ -234,7 +234,7 @@
 | q155 | g10 | Sales this quarter were twice ____ high as last quarter. | as |
 | q156 | g10 | Of the three proposals, the second one was the ____ … | most |
 | q157 | g10 | This model is ____ to install than the previous version. | easier |
-| q158 | g10 | Of all our products, our ____ selling item is the … | best |
+| q158 | g10 | Of all our branches, our ____ performer this year was … | best |
 | q159 | g10 | The report was ____ more detailed than we expected. | far |
 | q160 | g10 | Attendance at this year's fair was the ____ in a … | highest |
 | q161 | g15 | Please review the ____ document before the meeting. | attached |
@@ -256,4 +256,4 @@
 | q177 | g16 | We received ____ information about the delay. | little |
 | q178 | g16 | ____ of the two proposals meets our budget. | Neither |
 | q179 | g16 | ____ of the new machines has its own manual. | Each |
-| q180 | g16 | There were ____ complaints last month than this month. | fewer |
+| q180 | g16 (+g10) | There were ____ complaints last month than this month. | fewer |
