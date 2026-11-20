@@ -79,7 +79,7 @@ window.GRAMMAR = [
     examples: [
       { good: "The windows were cleaned this morning.", bad: "The windows cleaned this morning.", note: "창문은 닦이는 쪽" },
       { good: "They painted the lobby.", bad: "They were painted the lobby.", note: "사람은 칠하는 쪽" },
-      { good: "The garden will be watered tonight.", bad: "The garden will water tonight.", note: "정원은 물을 받는 쪽" }
+      { good: "The plants will be watered tonight.", bad: "The plants will water tonight.", note: "식물은 물을 받는 쪽" }
     ],
     trap: "가장 빠른 판별법은 빈칸 뒤를 보는 것이다.\n빈칸 뒤에 목적어(명사)가 있으면 능동, 없으면 수동일 확률이 높다.\n단 arrive·happen·occur·rise·open(가게가 열다)·take place처럼 목적어를 받지 않는 동사는 수동이 없다. 목적어가 없어도 능동이다.\nThe accident happened at noon. (was happened ❌)",
     toeicPattern: "선택지에 announce / announced / was announced / announcing이 섞여 있으면 이 유형이다. 해석보다 빈칸 뒤에 명사가 있는지부터 확인하라."
@@ -94,7 +94,7 @@ window.GRAMMAR = [
       ["둘 다 가능 · 뜻이 다르다", "remember, forget, regret (to는 앞으로 할 일, -ing는 이미 한 일) / stop (to는 ~하려고 멈추다, -ing는 ~하던 것을 그만두다)"]
     ] },
     examples: [
-      { good: "I want to go.", bad: "I want going.", note: "want 뒤에는 to부정사" },
+      { good: "I want to rest.", bad: "I want resting.", note: "want 뒤에는 to부정사" },
       { good: "We recommend wearing comfortable shoes.", bad: "We recommend to wear comfortable shoes.", note: "recommend 뒤에는 to부정사가 바로 못 온다" },
       { good: "He finished cleaning the kitchen.", bad: "He finished to clean the kitchen.", note: "finish 뒤에는 -ing" },
       { good: "He is in charge of ordering supplies.", bad: "He is in charge of order supplies.", note: "전치사 of 뒤에 동사가 오면 -ing" },
@@ -119,9 +119,9 @@ window.GRAMMAR = [
     examples: [
       { good: "The meeting is on Monday.", bad: "The meeting is in Monday.", note: "요일은 on" },
       { good: "Please return the key by noon.", bad: "Please return the key until noon.", note: "by는 마감, until은 계속" },
-      { good: "The flight was delayed for three hours.", bad: "The flight was delayed during three hours.", note: "for + 숫자 기간" }
+      { good: "The train was delayed for forty minutes.", bad: "The train was delayed during forty minutes.", note: "for + 숫자 기간" }
     ],
-    trap: "by와 until을 구분하라.\nby 5 = 5시 전까지 끝내라 (마감)\nuntil 5 = 5시까지 계속하라 (지속)\n뜻이 완전히 다르다.\n\n동사가 정해 주는 전치사는 뜻이 아니라 짝으로 외운다.\ndepend on / consist of / contribute to / refer to / result in / comply with / apply for\ndirect A to B = A를 B에게 보내다·안내하다 (Please direct your questions to Ms. Kim.)\nfrom A through B = A부터 B까지, B 포함 (from Monday through Friday)",
+    trap: "by와 until을 구분하라.\nby 5 = 5시 전까지 끝내라 (마감)\nuntil 5 = 5시까지 계속하라 (지속)\n뜻이 완전히 다르다.\n\n동사가 정해 주는 전치사는 뜻이 아니라 짝으로 외운다.\ndepend on / consist of / contribute to / refer to / result in / comply with / apply for\ndirect A to B = A를 B에게 보내다·안내하다 (Please direct all complaints to our service desk.)\nfrom A through B = A부터 B까지, B 포함 (from Monday through Friday)",
     toeicPattern: "빈칸 뒤 명사를 보고 고른다. 숫자 기간(two weeks)이면 for, 사건이나 기간을 가리키는 명사(the meeting, the holidays)면 during이다.\n단 숫자 기간 앞이라도 '그만큼 지나서'라는 뜻이면 in이다. 미래 문장에 자주 나온다. The results will be ready in two weeks. (2주 뒤에) / for two weeks (2주 동안)\n뒤가 연도·날짜 같은 시점이고 지금까지 이어지면 since다.\n빈칸 앞이 동사(depend, consist, refer, direct A 등)면 시간·장소보다 그 동사가 받는 전치사를 먼저 떠올린다."
   },
   {
@@ -267,7 +267,7 @@ window.GRAMMAR = [
     ] },
     examples: [
       { good: "Leave now, or you will miss the bus.", bad: "Leave now, and you will miss the bus.", note: "명령문, or ~ = 그러지 않으면 (경고의 or)" },
-      { good: "You may pay by credit card or in cash.", bad: "You may pay by credit card nor in cash.", note: "둘 중 하나를 고르는 선택 → or. nor는 앞이 부정문일 때" },
+      { good: "You may pay by check or in cash.", bad: "You may pay by check nor in cash.", note: "둘 중 하나를 고르는 선택 → or. nor는 앞이 부정문일 때" },
       { good: "Both the café and the gym are open on Sundays.", bad: "Both the café or the gym are open on Sundays.", note: "both는 and와 짝" },
       { good: "She speaks neither French nor German.", bad: "She speaks neither French or German.", note: "neither는 nor와 짝" },
       { good: "Not only the hotel but also the restaurants were fully booked.", bad: "Not only the hotel and also the restaurants were fully booked.", note: "not only는 but also와 짝. 동사는 B(the restaurants)에 맞춘다" }
@@ -328,7 +328,7 @@ window.GRAMMAR_QUIZ = [
   { id: "q003", ruleId: "g01", question: "The manager gave a ____ explanation of the new policy.", choices: ["clear", "clearly", "clarity", "clearness"], answer: 0, explanation: "명사 explanation 앞이라 형용사 clear. clearly는 부사라 명사를 꾸미지 못하고, clarity·clearness는 명사라 a와 explanation 사이에 들어갈 수 없다.", difficulty: "easy" },
   { id: "q004", ruleId: "g01", question: "The company reported a ____ in sales last quarter.", choices: ["decline", "declining", "declined", "decliner"], answer: 0, explanation: "a 뒤, 전치사 in 앞이라 명사 자리다. decline은 명사(감소)로도 쓰인다. declining·declined는 분사라 뒤에 꾸밈 받을 명사가 있어야 하고, decliner는 쓰지 않는 말이다.", difficulty: "medium" },
   { id: "q005", ruleId: "g01", alsoRuleIds: ["g13"], question: "Ms. Park will ____ the training session tomorrow.", choices: ["lead", "leader", "leading", "leadership"], answer: 0, explanation: "조동사 will 뒤라 동사원형 lead. leading은 will 바로 뒤에 올 수 없고(will be leading이어야 한다), leader·leadership은 명사라 동사 자리에 맞지 않는다.", difficulty: "easy" },
-  { id: "q006", ruleId: "g01", alsoRuleIds: ["g15"], question: "Please submit the form to the ____ department.", choices: ["account", "accounting", "accountant", "accounted"], answer: 1, explanation: "department를 꾸며 '회계 부서'를 만드는 복합명사 accounting이다(명사 앞 동명사, g01 trap). accountant는 사람(회계사)이라 '회계사 부서'가 되고, account는 '계좌·계정', accounted는 '설명된'이라 뜻이 맞지 않는다.", difficulty: "medium" },
+  { id: "q006", ruleId: "g01", alsoRuleIds: ["g15"], question: "Please submit the form to the ____ department.", choices: ["accountably", "accounting", "accountant", "accounted"], answer: 1, explanation: "department를 꾸며 '회계 부서'를 만드는 복합명사 accounting이다(명사 앞 동명사, g01 trap). accountant는 사람(회계사)이라 '회계사 부서'가 되고, accountably는 부사라 명사 department를 꾸미지 못하고, accounted는 '설명된'이라 뜻이 맞지 않는다.", difficulty: "medium" },
   { id: "q007", ruleId: "g01", question: "The instructions were written very ____.", choices: ["simple", "simply", "simplify", "simplicity"], answer: 1, explanation: "수동태 were written 뒤에서 동사를 꾸미는 자리라 부사 simply. very에 속지 말고 꾸밈 받는 대상(written)을 봐라. simple은 형용사, simplify는 동사, simplicity는 명사다.", difficulty: "medium" },
   { id: "q008", ruleId: "g01", alsoRuleIds: ["g15"], question: "Our team achieved ____ results this year.", choices: ["impress", "impressed", "impressive", "impressively"], answer: 2, explanation: "명사 results 앞이므로 형용사 impressive. impressed는 '감명받은'으로 사람에게 쓴다. impress는 동사, impressively는 부사라 명사 앞에 못 온다. 결과(일)에는 감정을 주는 쪽인 impressive를 쓴다(g15).", difficulty: "medium" },
   { id: "q009", ruleId: "g01", question: "The ____ of the project depends on teamwork.", choices: ["succeed", "success", "successful", "successfully"], answer: 1, explanation: "The ____ of 구조에서 빈칸 뒤가 전치사 of라 명사 자리다. success가 명사. succeed는 동사, successful은 형용사, successfully는 부사다.", difficulty: "easy" },

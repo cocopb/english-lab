@@ -200,6 +200,91 @@ topics.forEach(function (topic) {
 failures.noteTextOverlapAllowedStale = Object.keys(NOTE_TEXT_OVERLAP_ALLOWED).filter(function (key) { return !noteTextAllowedUsed[key]; })
   .map(function (key) { return { key: key, hint: "더 이상 겹치지 않거나 문장이 바뀌었다. 목록에서 지운다" }; });
 
+// 노트 영어 문장(예문 good + 설명 속 문장) ↔ 다른 영역의 지문·스크립트.
+// 문법 180문항만 보던 때 g06 노트 예문이 Part 6 빈칸 문장(direct any questions ___)과 거의 같았다 (2026-11-20).
+// - Part 6: 빈칸에 정답을 채운 문장을 문법 문항과 같은 기준(exampleOverlapReasons)으로 본다. 정답이 드러나는 곳이다.
+// - Part 7 지문, Part 1 보기, Part 2 질문·보기, Part 3·4 스크립트, 받아쓰기: 지문 문장이 길어 두 단어 겹침은 흔하므로
+//   내용어 3개 이상(짧은 쪽의 50% 이상) 또는 문장 틀(연속 3단어 묶음 2개 이상, 50% 이상)이 겹칠 때만 본다.
+// 둘 다 실패다. 피할 수 없는 겹침만 NOTE_PASSAGE_OVERLAP_ALLOWED에 "노트 id|노트 문장|위치" 키로 이유와 함께 적는다.
+var NOTE_PASSAGE_OVERLAP_ALLOWED = {};
+function loadWindow(name) {
+  var file = path.join(__dirname, "..", "data", name + ".js");
+  var sandbox = { window: {} };
+  vm.runInNewContext(fs.readFileSync(file, "utf8"), sandbox, { filename: file });
+  return sandbox.window;
+}
+function passageSentences(text) {
+  return String(text || "").split(/(?<=[.?!])\s+(?=[A-Z"'])/).map(function (sentence) { return sentence.trim(); })
+    .filter(function (sentence) { return sentence.split(/\s+/).length >= 3; });
+}
+var passageTargets = [];
+(function () {
+  var reading = loadWindow("reading"), listening = loadWindow("listening"), part1 = loadWindow("part1");
+  (reading.PART6 || []).forEach(function (set) {
+    // 빈칸마다 그 빈칸만 ____로 두고 나머지 빈칸은 정답으로 채운 지문을 만든 뒤, ____가 든 문장을 뽑는다
+    var blanks = (set.blocks || []).filter(function (block) { return block.type === "blank"; });
+    blanks.forEach(function (target) {
+      var question = (set.questions || []).find(function (q) { return q.n === target.n; });
+      if (!question || question.type === "sentence") return;
+      var text = "";
+      set.blocks.forEach(function (block) {
+        if (block.type === "text") text += block.en;
+        else if (block === target) text += "____";
+        else {
+          var other = (set.questions || []).find(function (q) { return q.n === block.n; });
+          text += other ? other.choices[other.answer] : "";
+        }
+      });
+      passageSentences(text).filter(function (sentence) { return sentence.indexOf("____") !== -1; }).forEach(function (sentence) {
+        passageTargets.push({ where: "Part 6 " + set.id + " 빈칸 " + target.n, sentence: sentence,
+          question: { question: sentence, choices: question.choices, answer: question.answer }, grammar: question.type === "grammar" });
+      });
+    });
+  });
+  (reading.PASSAGES || []).forEach(function (passage) {
+    (passage.sentences || []).forEach(function (line) { passageSentences(line.en).forEach(function (s) { passageTargets.push({ where: "Part 7 " + passage.id, sentence: s }); }); });
+  });
+  (part1.PART1 || []).forEach(function (q) { (q.choices || []).forEach(function (s) { passageTargets.push({ where: "Part 1 " + q.id, sentence: s }); }); });
+  (listening.PART2 || []).forEach(function (q) {
+    [q.question].concat(q.choices || []).forEach(function (text) { passageSentences(text).forEach(function (s) { passageTargets.push({ where: "Part 2 " + q.id, sentence: s }); }); });
+  });
+  (listening.PART3 || []).forEach(function (q) {
+    (q.script || []).forEach(function (line) { passageSentences(line.text).forEach(function (s) { passageTargets.push({ where: "Part 3 " + q.id, sentence: s }); }); });
+  });
+  (listening.PART4 || []).forEach(function (q) {
+    (q.script || []).forEach(function (line) { passageSentences(line).forEach(function (s) { passageTargets.push({ where: "Part 4 " + q.id, sentence: s }); }); });
+  });
+  (listening.DICTATION || []).forEach(function (q) { passageSentences(q.text).forEach(function (s) { passageTargets.push({ where: "받아쓰기 " + q.id, sentence: s }); }); });
+})();
+function passageOverlapReasons(noteSentence, passageSentence) {
+  var reasons = [];
+  var left = contentWords(noteSentence), right = contentWords(passageSentence), words = sharedItems(left, right);
+  if (words.length >= 3 && shorterRatio(words.length, left, right) >= 0.5) reasons.push("내용어 " + words.length + "개 겹침(" + words.join(", ") + ")");
+  var leftGrams = wordGrams(overlapTokens(noteSentence), 3), rightGrams = wordGrams(overlapTokens(passageSentence), 3), grams = sharedItems(leftGrams, rightGrams);
+  if (grams.length >= 2 && shorterRatio(grams.length, leftGrams, rightGrams) >= 0.5) reasons.push("문장 틀 겹침(" + grams.join(" | ") + ")");
+  return reasons;
+}
+failures.notePassageOverlap = [];
+var notePassageAllowedUsed = Object.create(null);
+topics.forEach(function (topic) {
+  var sentences = (topic.examples || []).map(function (example) { return example.good; }).filter(Boolean)
+    .concat(noteTextEnglishSentences(topic));
+  sentences.filter(function (sentence, index) { return sentences.indexOf(sentence) === index; }).forEach(function (sentence) {
+    passageTargets.forEach(function (target) {
+      // 어휘 빈칸(enough room 등)은 정답이 흔한 명사 하나라 "정답이 그대로 나옴"은 문법 빈칸에서만 본다
+      var reasons = target.question
+        ? exampleOverlapReasons(sentence, target.question).filter(function (reason) { return target.grammar || reason.indexOf("정답") !== 0; })
+        : passageOverlapReasons(sentence, target.sentence);
+      if (!reasons.length) return;
+      var key = topic.id + "|" + sentence + "|" + target.where;
+      if (NOTE_PASSAGE_OVERLAP_ALLOWED[key]) { notePassageAllowedUsed[key] = true; return; }
+      failures.notePassageOverlap.push({ note: topic.id, sentence: sentence, where: target.where, passage: target.sentence, reasons: reasons.join(" / ") });
+    });
+  });
+});
+failures.notePassageOverlapAllowedStale = Object.keys(NOTE_PASSAGE_OVERLAP_ALLOWED).filter(function (key) { return !notePassageAllowedUsed[key]; })
+  .map(function (key) { return { key: key, hint: "더 이상 겹치지 않거나 문장이 바뀌었다. 목록에서 지운다" }; });
+
 // ---------------------------------------------------------------------------
 // 단정 표현 대조: 노트 문구(oneLine·trap·toeicPattern·표·예문 설명)에서 "무조건·항상·절대·반드시·언제나·
 // 어떤 경우에도·~만·~뿐" 같은 단정이 든 문장을 뽑아, 대조할 문항 후보와 함께 보여 준다.

@@ -952,3 +952,269 @@ README '검사가 실제로 잡는지 확인할 때'에 적었다. 요약하면 
 
 - 쓰이지 않는다. 뜻 시험 보기는 `assets/js/vocab.js`의 questionChoices가 같은 Day(같은 상황), 그다음 같은 트랙의 **표제어 뜻**에서만 뽑는다.
 - `VOCAB_DISTRACTOR_MEANINGS`는 단어장 상세의 "혼동 단어" 줄에만 쓰인다. 그래서 subsidy 문제에 오답 뜻이 보기로 뜰 수 없고, 검사 범위를 넓힐 필요가 없다.
+
+# 3차 감사 — 오답 규칙 위반 교체(Day 1\~12), 사람 빈칸 규칙 5, 노트 예문 중복 검사 확대 (2026-11-20)
+
+## 기준
+
+오답 3개는 다음을 지킨다.
+
+1. 빈칸에 넣으면 **뜻이 안 맞아서** 지워져야 한다. "말이 안 되는 단어라서" 지워지면 안 된다.
+2. 최소 2개는 아는 단어(790단어장 ∪ 파생형 ∪ `docs/basic-words.md`)다.
+3. 나머지 1개는 정답과 철자·소리가 비슷하면 모르는 단어여도 된다.
+4. 철자가 비슷한 아는 단어가 없으면 철자를 포기하고 같은 주제의 업무 단어를 쓴다.
+5. 사람이 들어가는 빈칸은 오답도 사람 명사로 두고, 예문을 그 사람만 해당되게 고친다.
+
+## 위반·허용 나누기
+
+`tools/list-unknown-distractors.js`가 이제 세트를 둘로 나눈다.
+
+- **위반:** 모르는 오답이 2개 이상이거나, 1개인데 정답과 철자가 비슷하지 않은 세트. 출력에 ✗로 표시한다.
+- **허용:** 모르는 오답이 1개이고 철자가 비슷한 세트. 기준 3번에 맞는다.
+- **철자가 비슷하다:** 앞 두 글자가 같고 길이 차이가 3자 이내, 또는 뒤 세 글자가 같음, 또는 편집 거리가 긴 쪽 길이의 40% 이하.
+
+| 시점 | 모르는 오답이 있는 세트 | 위반 | 허용 |
+|---|---|---|---|
+| 시작 | 481 | 234 | 247 |
+| 이번 작업 뒤 | 382 | **115** (모두 Day 13 이후) | 267 |
+
+## 교체한 세트: 149개
+
+- Day 1부터 12까지의 위반 세트 113개
+- 사람 빈칸 규칙 5 세트 36개 (Day 13 이후 21개 포함)
+- 그중 예문도 고친 세트 34개
+- 새 오답 단어 46개의 뜻을 `day1To12Audit3Meanings` 블록에 넣었다 (뜻 누락 0).
+- 새 오답은 하나씩 빈칸에 넣어 통하는지 다시 봤다. 통하는 후보는 쓰지 않고 이유 칸에 "통해서 제외"로 적었다.
+
+### Day 1부터 12까지의 위반 교체 (113)
+
+| id | Day | 단어 | 전 | 후 | 이유 |
+|---|---|---|---|---|---|
+| v002 | 1 | attend | afford, admit, adopt | afford, admit, attack | adopt→attack |
+| v003 | 1 | confirm | conform, consume, convince | conform, contact, consult | consume·convince→contact·consult (cancel은 통해서 제외) |
+| v004 | 1 | require | acquire, inquire, retire | acquire, receive, retire | inquire→receive |
+| v006 | 1 | schedule | section, segment, sequence | section, segment, shelter | sequence→shelter (settle은 'settled for Monday'로 통해서 제외) |
+| v010 | 1 | deadline | headline, deadlock, outline | deposit, delay, outline | headline·deadlock→deposit·delay (demand는 'meet the demand'로 통해서 제외) |
+| v012 | 1 | receive | relieve, deceive, reverse | relieve, reserve, revise | deceive·reverse→reserve·revise (remove는 통해서 제외) |
+| v016 | 1 | arrange | arise, assign, assume | arrive, assign, arise | assume→arrive (agree는 'agree a meeting'으로 통해서 제외) |
+| v028 | 1 | announcement | annoyance, achievement, attainment | annoyance, attachment, amount | achievement·attainment→attachment·amount (appointment·argument·agreement·advertisement는 통해서 제외) |
+| v029 | 1 | attach | attack, attain, attempt | attack, attend, attain | attempt→attend |
+| v030 | 1 | temporary | temporal, contemporary, voluntary | voluntary, mandatory, durable | temporal·contemporary→mandatory·durable (preliminary는 통해서 제외) |
+| v034 | 2 | budget | bulletin, burden, bundle | bulletin, button, bridge | burden·bundle→button·bridge (deadline은 'went over deadline'으로 통해서 제외) |
+| v035 | 2 | estimate | estate, eliminate, evaluate | estate, evaluate, exhibit | eliminate→exhibit (invoice는 통해서 제외) |
+| v038 | 2 | deliver | deliberate, delegate, delight | delegate, devise, delight | deliberate→devise (decide·delay·design·deposit은 통해서 제외) |
+| v039 | 2 | facility | faculty, familiarity, feasibility | faculty, fatigue, liability | familiarity·feasibility→fatigue·liability |
+| v041 | 2 | issue | isolate, income, initial | income, injury, isolate | initial→injury (invoice·island는 통해서 제외) |
+| v042 | 2 | notify | nominate, negotiate, neglect | notarize, negotiate, nominate | neglect→notarize |
+| v043 | 2 | policy | politics, portion, position | police, position, poster | politics·portion→police·poster |
+| v057 | 2 | efficient | affluent, sufficient, deficient | sufficient, expensive, deficient | affluent→expensive ('less time and fewer materials'와 어긋나 뜻으로 지워진다. effective는 통해서 제외) |
+| v059 | 2 | shortly | slightly, strictly, sharply | sharply, softly, slightly | strictly→softly |
+| v062 | 3 | assign | assist, assume, assure | assist, assess, assume | assure→assess (sign은 통해서 제외) |
+| v073 | 3 | implement | import, imply, impress | imagine, invest, import | imply·impress→imagine·invest (install은 통해서 제외) |
+| v076 | 3 | negotiate | navigate, nominate, notify | notify, decorate, navigate | nominate→decorate (estimate는 통해서 제외) |
+| v078 | 3 | participate | perform, persuade, proceed | perform, practice, proceed | persuade→practice |
+| v079 | 3 | permit | permanent, persist, prevent | pending, print, promote | permanent·persist·prevent→pending·print·promote (not prevented·not permanent·not perfect는 통해서 제외) |
+| v084 | 3 | revise | reveal, revive, reverse | reveal, reserve, retire | revive·reverse→reserve·retire (review는 통해서 제외) |
+| v091 | 4 | accurate | accustomed, advanced, apparent | apparent, absent, active | accustomed·advanced→absent·active (accepted는 통해서 제외) |
+| v099 | 4 | beverage | leverage, barrier, average | average, coverage, beach | leverage·barrier→coverage·beach |
+| v102 | 4 | consult | conduct, consist, contain | contain, contact, concern | conduct·consist→contact·concern |
+| v107 | 4 | exceed | exclude, execute, exhibit | excuse, execute, exhibit | exclude→excuse |
+| v111 | 4 | itinerary | inventory, interior, interval | inventory, injury, library | interior·interval→injury·library (inquiry는 통해서 제외) |
+| v112 | 4 | mandatory | manual, marginal, maximum | manual, temporary, complimentary | marginal·maximum→temporary·complimentary ('so no one can skip it'과 어긋나 뜻으로 지워진다) |
+| v113 | 4 | obtain | observe, obstacle, occupy | occupy, object, outline | observe·obstacle→object·outline (offer는 통해서 제외) |
+| v114 | 4 | occupy | obtain, observe, operate | obtain, operate, order | observe→order |
+| v118 | 4 | renovate | innovate, rotate, remind | repeat, report, remind | innovate·rotate→repeat·report (relocate·remove·replace·reserve는 통해서 제외) |
+| v120 | 4 | verify | vary, violate, visualize | void, vote, version | vary·violate·visualize→void·vote·version (visit·certify는 통해서 제외) |
+| v121 | 5 | acknowledge | accomplish, accumulate, accompany | accompany, access, accommodate | accomplish·accumulate→access·accommodate (accept는 통해서 제외) |
+| v128 | 5 | duplicate | duration, dynamic, durable | durable, deficit, delegate | duration·dynamic→deficit·delegate (device·diploma는 통해서 제외) |
+| v130 | 5 | entitle | entire, entry, entertain | entire, enter, enforce | entry·entertain→enter·enforce |
+| v132 | 5 | feedback | forecast, framework, foundation | forecast, fee, facility | framework·foundation→fee·facility (feeling은 통해서 제외) |
+| v135 | 5 | outlet | outcome, outlook, output | output, outline, order | outcome·outlook→outline·order (office는 통해서 제외) |
+| v137 | 5 | pending | permanent, persistent, punctual | punctual, perishable, polite | permanent·persistent→perishable·polite (perfect는 통해서 제외) |
+| v138 | 5 | prompt | prosper, prop, pump | proud, profit, promise | prosper·prop·pump→proud·profit·promise (prior·private는 통해서 제외) |
+| v143 | 5 | tentative | territorial, technical, thorough | thorough, defective, entire | territorial·technical→defective·entire |
+| v144 | 5 | thorough | through, throughout, thorn | through, thirsty, thought | throughout·thorn→thirsty·thought |
+| v145 | 5 | utilize | uphold, upload, usual | unload, upload, usual | uphold→unload (upgrade는 통해서 제외) |
+| v146 | 5 | valid | valley, variable, various | valley, versatile, vacation | variable·various→versatile·vacation (void·visible·valuable은 통해서 제외) |
+| v155 | 6 | interview | interval, interfere, intervene | invest, invoice, incur | interval·interfere·intervene→invest·invoice·incur (invite·inform은 통해서 제외) |
+| v158 | 6 | position | portion, possession, petition | pollution, provision, physician | portion·possession·petition→pollution·provision·physician (promotion·post·policy는 통해서 제외) |
+| v165 | 6 | full-time | full-scale, full-blown, full-size | full-size, part-time, furnished | full-scale·full-blown→part-time·furnished ('40 hours a week'와 어긋나 뜻으로 지워진다) |
+| v168 | 6 | personnel | personal, persuasion, perspective | personal, passenger, perishable | persuasion·perspective→passenger·perishable (performance·pharmacy는 통해서 제외) |
+| v169 | 6 | reference | reflection, refrain, refund | refund, receipt, revenue | reflection·refrain→receipt·revenue |
+| v172 | 6 | training | traitor, trailing, translating | tradition, traffic, treatment | traitor·trailing·translating→tradition·traffic·treatment |
+| v174 | 6 | raise | rinse, race, range | race, ride, rating | rinse·range→ride·rating (rise는 영국식 pay rise로 통해서 제외) |
+| v176 | 6 | turnover | takeover, leftover, handover | tutor, traveler, tower | takeover·leftover·handover→tutor·traveler·tower (transfer·tuition·target은 통해서 제외) |
+| v180 | 6 | headquarters | headline, headphone, heading | hardware, headphone, heading | headline→hardware |
+| v185 | 7 | handout | handshake, handwriting, handling | handling, hazard, habit | handshake·handwriting→hazard·habit (handle·hat은 통해서 제외) |
+| v188 | 7 | brainstorm | breakthrough, breakdown, restock | restock, transport, brand | breakthrough·breakdown→transport·brand (bring은 통해서 제외) |
+| v189 | 7 | consensus | conference, consequence, construction | conference, concern, contest | consequence·construction→concern·contest |
+| v192 | 7 | reschedule | research, resource, resemble | research, recycle, reduce | resource·resemble→recycle·reduce (reserve·resume은 통해서 제외) |
+| v194 | 7 | follow-up | follower, fellow, fallen | follower, fellow, full-time | fallen→full-time (foolish는 통해서 제외) |
+| v195 | 7 | milestone | millstone, mileage, mailbox | mailbox, mistake, message | millstone·mileage→mistake·message (meeting은 통해서 제외) |
+| v196 | 7 | timeline | timeout, headline, deadline | deadline, ticket, title | timeout·headline→ticket·title (outline은 통해서 제외) |
+| v197 | 7 | priority | property, probability, prosperity | property, profit, prototype | probability·prosperity→profit·prototype (policy·promise는 통해서 제외) |
+| v199 | 7 | outline | outlet, outlook, outcome | outlet, obtain, postpone | outlook·outcome→obtain·postpone (utilize는 통해서 제외) |
+| v202 | 7 | availability | ability, accountability, visibility | ability, liability, facility | accountability·visibility→liability·facility |
+| v203 | 7 | absence | abstract, abundance, acceptance | acceptance, audience, asset | abstract·abundance→audience·asset (attendance·agenda·arrival은 통해서 제외) |
+| v204 | 7 | punctual | punctuation, particular, pending | punctuation, popular, pending | particular→popular (polite는 통해서 제외) |
+| v208 | 7 | clarify | classify, certify, qualify | certify, carry, charge | classify·qualify→carry·charge (clear·claim·click은 통해서 제외) |
+| v221 | 8 | flyer | filter, feature, fare | fare, floor, fee | filter·feature→floor·fee (flower·flag는 통해서 제외) |
+| v224 | 8 | publicity | publication, population, possibility | publication, policy, pollution | population·possibility→policy·pollution (priority는 통해서 제외) |
+| v225 | 8 | slogan | solution, salary, session | solution, salary, loan | session→loan (slide·login·sign은 통해서 제외) |
+| v226 | 8 | logo | load, lodge, loop | load, loan, lobby | lodge·loop→loan·lobby (lock·login은 통해서 제외) |
+| v227 | 8 | questionnaire | quotation, qualification, quarantine | qualification, quarter, queue | quotation·quarantine→quarter·queue |
+| v228 | 8 | awareness | agreement, assurance, allowance | agreement, allowance, address | assurance→address (access는 통해서 제외) |
+| v232 | 8 | billboard | bulletin, blackboard, billion | binding, blackboard, billion | bulletin→binding (board·balloon은 통해서 제외) |
+| v233 | 8 | commercial | committee, commission, commitment | complaint, competitor, courier | committee·commission·commitment→complaint·competitor·courier (comedy·concert는 통해서 제외) |
+| v234 | 8 | giveaway | getaway, giveback, takeaway | grade, renewal, delay | getaway·giveback·takeaway→grade·renewal·delay (gift는 통해서 제외) |
+| v236 | 8 | profit | project, portfolio, program | project, program, promise | portfolio→promise (product는 통해서 제외) |
+| v237 | 8 | revenue | revision, reverse, reunion | revision, rescue, resume | reverse·reunion→rescue·resume (refund·renewal·reserve는 통해서 제외) |
+| v241 | 9 | accounting | accountant, accordance, accumulation | accountant, access, accent | accordance·accumulation→access·accent (accident는 통해서 제외) |
+| v242 | 9 | balance | ballot, barrier, bargain | bargain, batch, barcode | ballot·barrier→batch·barcode |
+| v244 | 9 | audit | adopt, admit, adapt | asset, admit, adapt | adopt→asset |
+| v251 | 9 | debt | doubt, dent, dealt | doubt, desk, delay | dent·dealt→desk·delay (deal·deposit은 통해서 제외) |
+| v253 | 9 | interest rate | exchange rate, growth rate, success rate | exchange rate, early-bird rate, hourly rate | growth rate·success rate→early-bird rate·hourly rate |
+| v258 | 9 | annual | manual, casual, usual | manual, usual, punctual | casual→punctual (final은 통해서 제외) |
+| v260 | 9 | transaction | transition, translation, transmission | translation, training, tradition | transition·transmission→training·tradition (transfer는 통해서 제외) |
+| v270 | 9 | exchange rate | interest rate, growth rate, flat rate | interest rate, hourly rate, early-bird rate | growth rate·flat rate→hourly rate·early-bird rate |
+| v271 | 10 | accommodation | accumulation, acceleration, accreditation | accumulation, action, ambition | acceleration·accreditation→action·ambition |
+| v273 | 10 | check-out | checkup, checklist, checkpoint | checkup, chat, chart | checklist·checkpoint→chat·chart |
+| v275 | 10 | amenity | ability, academy, anonymity | ability, agenda, amount | academy·anonymity→agenda·amount (activity는 통해서 제외) |
+| v284 | 10 | terminal | technical, territorial, temporal | tenant, testimonial, team | technical·territorial·temporal→tenant·testimonial·team |
+| v288 | 10 | luggage | language, league, lounge | language, lease, leave | league·lounge→lease·leave (license·lunch는 통해서 제외) |
+| v293 | 10 | per diem | per capita, per hour, per unit | per capita, debt, drill | per hour·per unit→debt·drill (policy·deposit·diary는 통해서 제외) |
+| v294 | 10 | lodging | loading, logging, lodge fee | loading, loyalty, login | logging·lodge fee→loyalty·login. 예문에 호텔 영수증을 넣어 loading을 뜻으로 거른다 |
+| v298 | 10 | landmark | bookmark, benchmark, landlord | landlord, lawsuit, lawyer | bookmark·benchmark→lawsuit·lawyer |
+| v300 | 10 | duty-free | duty-bound, toll-free, free-of-charge | durable, diverse, free-of-charge | duty-bound·toll-free→durable·diverse |
+| v301 | 11 | manufacture | manufacturer, manual, management | manufacturer, malfunction, management | manual→malfunction (manage·measure·machine은 통해서 제외) |
+| v303 | 11 | defective | detective, decisive, descriptive | detective, departure, delegate | decisive·descriptive→departure·delegate. 예문에 고장 사유를 넣었다 (dedicated는 통해서 제외) |
+| v304 | 11 | inspection | injection, infection, inspiration | injection, instruction, insulation | infection·inspiration→instruction·insulation. 예문에 '기계를 전부 점검'을 넣었다 (interview·incentive·inventory·installment는 통해서 제외) |
+| v306 | 11 | output | outlet, outlook, outcome | outlet, outline, object | outlook·outcome→outline·object. 예문에 하루 생산 수를 넣었다 |
+| v308 | 11 | efficiency | effort, deficiency, sufficiency | effort, emergency, expense | deficiency·sufficiency→emergency·expense (proficiency는 통해서 제외) |
+| v309 | 11 | raw material | raw data, raw score, rare material | raw data, margin, markup | raw score·rare material→margin·markup |
+| v313 | 11 | durable | portable, valuable, dual | valuable, capable, liable | portable·dual→capable·liable |
+| v315 | 11 | safety gear | safety net, safety rule, spare gear | safety rule, safety drill, safety goal | safety net·spare gear→safety drill·safety goal |
+| v328 | 11 | automate | automatic, autonomy, automobile | automatic, attach, accommodate | autonomy·automobile→attach·accommodate. 예문에 로봇을 넣었다 (authorize·audit·estimate는 통해서 제외) |
+| v329 | 11 | downtime | downturn, downside, downtown | downtown, dosage, deadline | downturn·downside→dosage·deadline (overtime·doubt는 통해서 제외) |
+| v333 | 12 | backup | breakup, backpack, backlog | backpack, banquet, barcode | breakup·backlog→banquet·barcode (batch는 통해서 제외) |
+| v340 | 12 | attachment | attainment, achievement, adjustment | attendee, attorney, attention | attainment·achievement·adjustment→attendee·attorney·attention. 예문에 'to your email'을 넣었다 (apartment·statement·agreement는 통해서 제외) |
+| v341 | 12 | crash | clash, cash, crush | cash, cross, crowd | clash·crush→cross·crowd |
+| v344 | 12 | interface | interval, interfere, interview | interview, insurance, incentive | interval·interfere→insurance·incentive. 예문에 버튼·메뉴를 넣었다 (invoice·inventory는 통해서 제외) |
+| v350 | 12 | subscription | description, suspicion, substance | description, supervisor, surplus | suspicion·substance→supervisor·surplus (prescription은 통해서 제외) |
+| v354 | 12 | technical support | technical issue, technical skill, technical term | technical issue, physical therapy, first aid | technical skill·technical term→physical therapy·first aid. 예문에 컴퓨터를 넣었다 (quality control·front desk는 통해서 제외) |
+| v360 | 12 | glitch | grid, gadget, gauge | grid, gift, gate | gadget·gauge→gift·gate |
+
+### 사람 빈칸 규칙 5 (36)
+
+| id | Day | 단어 | 전 | 후 | 이유 |
+|---|---|---|---|---|---|
+| v219 | 8 | competitor | contributor, coordinator, collaborator | supplier, consumer, colleague | 규칙 5: contributor·coordinator·collaborator→supplier·consumer·colleague. 'so we lost some customers to them'이 경쟁사만 맞게 한다 |
+| v008 | 1 | employee | employer, employment, applicant | employer, applicant, customer | 규칙 5: employment→customer. 'in their first week at work'가 직원만 맞게 한다 |
+| v009 | 1 | customer | custom, costume, cluster | supplier, competitor, cashier | 규칙 5: custom·costume·cluster→supplier·competitor·cashier. 예문을 '우리 물건을 사던 쪽'만 맞게 바꿨다 |
+| v047 | 2 | supervisor | supplier, supervision, supporter | supplier, subscriber, customer | 규칙 5: supervision·supporter→subscriber·customer. 예문에 '승인하고 일정을 고친다'를 넣었다 (colleague는 통해서 제외) |
+| v055 | 2 | client | clinic, climate, cliff | clerk, colleague, competitor | 규칙 5: clinic·climate·cliff→clerk·colleague·competitor. 예문을 '변호사에게 돈을 내는 사람'만 맞게 바꿨다 |
+| v063 | 3 | candidate | capacity, campaign, coupon | employee, supplier, customer | 규칙 5: capacity·campaign·coupon→employee·supplier·customer. 예문에 '그중 한 명을 채용'을 넣었다 (applicant는 통해서 제외) |
+| v094 | 4 | applicant | appliance, application, appointment | attendee, attorney, employee | 규칙 5: appliance·application·appointment→attendee·attorney·employee. 예문에 '채용 대상이 되려면'을 넣었다 |
+| v147 | 5 | vendor | venue, version, vending | visitor, volunteer, tenant | 규칙 5: venue·version·vending→visitor·volunteer·tenant. 'to supply our office paper'가 공급업체만 맞게 한다 (supplier는 통해서 제외) |
+| v167 | 6 | staff | stuff, stack, stage | stranger, supplier, shareholder | 규칙 5: stuff·stack·stage→stranger·supplier·shareholder. 예문에 '새 근무표'를 넣었다 |
+| v182 | 7 | attendee | attendance, attention, attempt | attendant, attorney, applicant | 규칙 5: attendance·attention·attempt→attendant·attorney·applicant. 예문에 'of the workshop'을 넣었다 |
+| v183 | 7 | chairperson | chain, chart, charger | cashier, chef, customer | 규칙 5: chain·chart·charger→cashier·chef·customer. 예문을 회의 진행자만 맞게 바꿨다 |
+| v255 | 9 | shareholder | shelter, shelf, shortage | employee, customer, supplier | 규칙 5: shelter·shelf·shortage→employee·customer·supplier. 사용자가 준 예문 그대로 |
+| v278 | 10 | concierge | conference, contract, container | cashier, chef, competitor | 규칙 5: conference·contract·container→cashier·chef·competitor. '택시 예약·식당 추천'이 컨시어지만 맞게 한다 (receptionist는 통해서 제외) |
+| v296 | 10 | traveler | trend, turnover, treatment | landlord, supplier, trainer | 규칙 5: trend·turnover·treatment→landlord·supplier·trainer. 'flying abroad'는 사람이면 누구나 통해서 예문을 여행자 전용으로 바꿨다 |
+| v330 | 11 | subcontractor | subscriber, subway, subsidiary | subscriber, shareholder, supervisor | 규칙 5: subway·subsidiary→shareholder·supervisor. 예문에 '배선을 직접 한다'를 넣었다 (supplier는 통해서 제외) |
+| v369 | 13 | witness | wellness, wiring, wireless | waiter, winner, walk-in | 규칙 5: wellness·wiring·wireless→waiter·winner·walk-in. 예문에 증인이 하는 일을 넣었다 |
+| v375 | 13 | attorney | attention, authority, audio | attendee, author, applicant | 규칙 5: attention·authority·audio→attendee·author·applicant. 예문에 '법적 문제'를 넣었다 (auditor는 통해서 제외) |
+| v388 | 13 | counterpart | counteroffer, countdown, counter | colleague, courier, customer | 규칙 5: counteroffer·countdown·counter→colleague·courier·customer. 예문에 '상대 회사에서 같은 일을 하는'을 넣었다 (cousin은 통해서 제외) |
+| v405 | 14 | representative | reputation, restoration, registration | recipient, reporter, rival | 규칙 5: reputation·restoration·registration→recipient·reporter·rival. 예문에 '고객 서비스'를 넣었다 (receptionist는 통해서 제외) |
+| v418 | 14 | walk-in | walkway, walkout, workout | waiter, worker, witness | 규칙 5: walkway·walkout·workout→waiter·worker·witness. 예문에 '예약 없이 와도 된다'를 넣었다 |
+| v482 | 17 | tenant | tension, terms, terminal | landlord, tourist, visitor | 규칙 5: tension·terms·terminal→landlord·tourist·visitor. 예문에 '월세를 낸다'를 넣었다 (직업 명사는 세입자일 수 있어 제외) |
+| v483 | 17 | landlord | landmark, landscape, landing | tenant, visitor, trainee | 규칙 5: landmark·landscape·landing→tenant·visitor·trainee. 예문에 '건물을 소유한'을 넣었다 (lawyer는 건물주일 수 있어 제외) |
+| v523 | 18 | organizer | order, organic, overtime | attendee, audience, visitor | 규칙 5: order·organic·overtime→attendee·audience·visitor. 예문에 '신청자가 많아서'를 넣었다 (speaker·operator는 통해서 제외) |
+| v536 | 18 | exhibitor | extinguisher, excerpt, exit | attendee, explorer, spectator | 규칙 5: extinguisher·excerpt·exit→attendee·explorer·spectator. 예문에 '부스 설치'와 관람객 입장을 넣었다 (employee·expert는 통해서 제외) |
+| v543 | 19 | courier | courteous, career, courage | customer, cashier, coach | 규칙 5: courteous·career·courage→customer·cashier·coach. 예문에 '택배 회사에서 온'을 넣었다 |
+| v560 | 19 | recipient | receipt, recipe, record | receptionist, driver, rival | 규칙 5: receipt·recipe·record→receptionist·driver·rival. 예문에 '라벨에 이름이 적힌'을 넣었다 |
+| v571 | 20 | physician | physicist, physics, photo | physicist, patient, pilot | 규칙 5: physics·photo→patient·pilot. '목을 진찰하고 검사를 권했다'가 의사만 맞게 한다 |
+| v574 | 20 | outpatient | inpatient, outing, outlet | inpatient, physician, receptionist | 규칙 5: outing·outlet→physician·receptionist. 예문의 An ___이 모음으로 시작하는 보기만 남기는 단서라 'A hospital ___'로 바꿨다 |
+| v575 | 20 | inpatient | impatient, input, patent | outpatient, inspector, instructor | 규칙 5: impatient·input·patent→outpatient·inspector·instructor. 예문에 '밤을 보낸다'를 넣었다 |
+| v588 | 20 | receptionist | recession, receipt, regulation | recipient, reporter, patient | 규칙 5: recession·receipt·regulation→recipient·reporter·patient. 예문에 '접수처'와 진료를 넣었다 |
+| v589 | 20 | specialist | specialty, spectator, speaker | spectator, speaker, supplier | 규칙 5: specialty→supplier. 'A heart ___ visits this clinic'은 전문의만 맞는다 (patient는 통해서 제외) |
+| v636 | 22 | instructor | inspector, investor, instrument | inspector, investor, inventor | 규칙 5: instrument→inventor. '운동을 시범 보이고 자세를 고쳐 줬다'가 강사만 맞게 한다 |
+| v641 | 22 | tutor | tailor, tenant, tower | tailor, tenant, trader | 규칙 5: tower→trader. '수학 숙제를 도와준다'가 과외 교사만 맞게 한다 |
+| v648 | 22 | faculty | facility, faucet, difficulty | family, fan, farmer | 규칙 5: facility·faucet·difficulty→family·fan·farmer. 예문에 '교수 전원으로 이루어진'을 넣었다 |
+| v694 | 24 | cashier | banker, cash, casual | banker, captain, cleaner | 규칙 5: cash·casual→captain·cleaner. '물건을 스캔하고 쿠폰을 묻는다'가 계산원만 맞게 한다 (customer는 셀프 계산대로 통해서 제외) |
+| v708 | 24 | floor staff | floor plan, floor lamp, staff room | shareholder, landlord, pilot | 규칙 5: floor plan·floor lamp·staff room→shareholder·landlord·pilot. '질문에 답하고 진열대를 정리'가 매장 직원만 맞게 한다 (cashier는 통해서 제외) |
+
+규칙 5에서 뺀 세트
+
+| 세트 | 이유 |
+|---|---|
+| v169 reference | '추천서'라는 사물 뜻도 있어 사물 오답(refund·receipt·revenue)을 둔다 |
+| v230 subscriber, v656 facilitator | 이미 사람 오답이고 예문으로 걸러진다 |
+| v168 personnel, v180 headquarters, v354 technical support | 사람이 아니라 부서·조직이다 |
+
+### 예문을 고친 세트 (34)
+
+| id | 단어 | 전 | 후 |
+|---|---|---|---|
+| v294 | lodging | Lodging expenses are reimbursed. | Lodging expenses are reimbursed, so keep your hotel receipts. |
+| v303 | defective | The defective units were returned. | The defective units were returned because they stopped working after one day. |
+| v304 | inspection | The annual inspection is scheduled for May. | The annual safety inspection is scheduled for May, when every machine will be checked. |
+| v306 | output | Output increased by fifteen percent. | Output increased by fifteen percent, so the factory now makes 1,150 chairs a day. |
+| v328 | automate | We automated the packing process. | We automated the packing process, so robots now do the work that ten people used to do. |
+| v340 | attachment | I couldn't open the attachment. | I couldn't open the attachment to your email. |
+| v344 | interface | The new interface is easier to use. | The new interface is easier to use, with bigger buttons and a clearer menu. |
+| v354 | technical support | Contact technical support for help. | Contact technical support if your computer will not start. |
+| v009 | customer | The customer returned the shoes to the store and asked for a refund. | We lost our biggest customer when a hotel chain started buying its towels from another company. |
+| v047 | supervisor | If you need a day off, please ask your supervisor. | If you need a day off, ask your supervisor, who will approve it and update the schedule. |
+| v055 | client | Our lawyer has a meeting with a new client who needs legal advice. | The lawyer charges each client $200 an hour for legal advice. |
+| v063 | candidate | We interviewed five candidates for the open position. | We interviewed five candidates for the open position and will hire one of them next week. |
+| v094 | applicant | All applicants must submit a resume. | All applicants must submit a résumé by May 1 to be considered for the job. |
+| v167 | staff | All staff must attend the meeting. | All staff must attend the meeting, because the manager will explain the new work schedule. |
+| v182 | attendee | All attendees received a handout. | All attendees of the workshop received a handout when they came in. |
+| v183 | chairperson | The chairperson ran the meeting and asked members to vote on the proposal. | As chairperson, Ms. Ortiz ran the meeting and asked the board members to vote. |
+| v255 | shareholder | The shareholders approved the merger. | Shareholders receive dividends twice a year. |
+| v296 | traveler | Travelers flying abroad must check in two hours before departure. | This guidebook has tips for travelers, such as how to change money and use the subway in each city. |
+| v330 | subcontractor | We hired a subcontractor for the wiring. | We hired a subcontractor to do the wiring because our own staff could not finish it in time. |
+| v369 | witness | The signature requires a witness. | A witness must watch you sign the contract and then sign it too. |
+| v375 | attorney | Our attorney reviewed the contract before we signed it. | Our attorney reviewed the contract and told us which clauses could cause legal problems. |
+| v388 | counterpart | I'll discuss it with my counterpart. | I'll discuss the price with my counterpart at the other company, who has the same job as me there. |
+| v405 | representative | A representative will call you shortly. | A customer service representative will call you shortly to answer your question about the bill. |
+| v418 | walk-in | We accept walk-ins after two o'clock. | We accept walk-ins after two o'clock, so you can come without a reservation. |
+| v482 | tenant | The new tenant will move in on June 1. | The new tenant will move in on June 1 and pay rent to the building owner every month. |
+| v483 | landlord | The landlord agreed to repaint the walls. | The landlord, who owns the building, agreed to repaint the walls before the new renter moves in. |
+| v523 | organizer | The organizers added a second session. | The organizers of the conference added a second session because so many people signed up. |
+| v536 | exhibitor | Exhibitors may set up from 7 A.M. | Exhibitors may set up their booths from 7 A.M., and visitors are allowed in at nine. |
+| v543 | courier | A courier will pick up the documents at four. | A courier from the delivery company will pick up the documents at four and take them to the airport. |
+| v560 | recipient | The recipient must sign for the package. | The recipient, whose name is on the delivery label, must sign for the package when it arrives. |
+| v574 | outpatient | An outpatient does not stay overnight in the hospital. | A hospital outpatient comes in for treatment and goes home the same day. |
+| v575 | inpatient | Inpatients wear a wristband with their name and date of birth. | Inpatients stay in the hospital overnight and wear a wristband with their name and date of birth. |
+| v588 | receptionist | The receptionist will call your name when it is your turn. | The receptionist at the front desk will call your name when it is your turn to see the doctor. |
+| v648 | faculty | The faculty voted to add a new elective. | The faculty, made up of all the professors in the department, voted to add a new elective. |
+
+## 0. 지난 판단 반영 (문법)
+
+| 항목 | 한 일 |
+|---|---|
+| 구어 변형 | q016 were·q086 me·q180 less·q059 in은 그대로 둔다 (토익 함정 자체) |
+| q006 | 오답 account → accountably. account department는 실제로 쓰이는 말이라 결함이었다. accountable도 'the accountable department'(책임 부서)로 통해서 쓰지 않았다 |
+| g06 예문 | "Please direct your questions to Ms. Kim." → "Please direct all complaints to our service desk." |
+| 노트 예문 중복 검사 | 범위를 넓혔다 (`notePassageOverlap`). 아래 참고 |
+
+### 넓힌 중복 검사
+
+- 노트 영어 문장(예문 good과 설명 속 문장)을 다음과 대조한다: Part 6 지문(빈칸에 정답을 채운 문장), Part 7 지문, Part 1 보기, Part 2 질문·보기, Part 3·4 스크립트, 받아쓰기 문장.
+- 대상 문장은 748개다.
+- **Part 6 문법 빈칸:** 문법 문항과 같은 기준(정답이 드러나는지까지)으로 본다. 어휘 빈칸은 정답이 흔한 명사 하나라(enough room) 정답이 그대로 나오는지는 보지 않는다.
+- **나머지:** 지문 문장이 길어 두 단어 겹침은 흔하다. 그래서 내용어 3개 이상이 겹치거나 문장 틀이 겹칠 때만 실패로 본다.
+- 버그 심기: 저장소 복사본에서 옛 g06 예문을 되살리니 "Part 6 p601 빈칸 4"로 실패했다.
+
+새로 걸린 겹침과 고친 노트 문장
+
+| 노트 | 전 | 겹친 곳 | 후 |
+|---|---|---|---|
+| g06 trap | Please direct your questions to Ms. Kim. | Part 6 p601 빈칸 4 "Please direct any questions ___ the facilities manager." | Please direct all complaints to our service desk. |
+| g06 예문 | The flight was delayed for three hours. | 받아쓰기 d14 "The flight has been delayed by two hours." | The train was delayed for forty minutes. |
+| g14 예문 | You may pay by credit card or in cash. | Part 2 p226 "Can I pay by credit card?" | You may pay by check or in cash. |
+| g05 예문 | I want to go. | Part 4 pt407 "I want to go over the results" | I want to rest. |
+| g04 예문 | The garden will be watered tonight. | Part 7 rp15 "The garden will be free to enter" | The plants will be watered tonight. |
