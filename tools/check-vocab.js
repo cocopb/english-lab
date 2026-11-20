@@ -222,6 +222,160 @@ vocabulary.forEach(function (item, index) {
   }
 });
 
+// ---------------------------------------------------------------------------
+// C. 같은 Day(회화는 같은 상황) 안 한국어 뜻 겹침
+// 뜻 시험은 같은 Day에서 오답 뜻을 가져온다. 유사도 가드(meaningsTooSimilar)가 잡는 쌍은 한 문제에 함께 나오지 않으므로
+// 괜찮고, 가드를 통과하면서 뜻이 사실상 같은 쌍이 문제다(정답이 둘이 됨). 그런 쌍을 두 규칙으로 찾는다.
+//  1) 통째 포함: 한쪽 뜻 조각이 통째로 다른 쪽 뜻 안에 낱말로 들어 있다 (조사 과/와/을/를/이/가/의/에/로/은/는을 떼고 비교)
+//     예) publicity "홍보" ↔ campaign "홍보 활동", property "건물" ↔ premises "건물과 부지"
+//  2) 동의어 표: 아래 표의 서로 다른 말을 양쪽이 하나씩 쓴다 (글자가 안 겹치는 동의어용)
+//     예) hire "고용하다" ↔ recruit "채용하다", flyer "전단지" ↔ brochure "팸플릿"
+// 검토해서 구분된다고 판단한 쌍은 REVIEWED_MEANING_PAIRS에 이유와 함께 둔다. 새 쌍이 걸리면 한쪽 뜻을 좁히거나 검토 후 추가한다.
+var MEANING_SYNONYMS = [["고용", "채용"], ["인력", "직원"], ["팸플릿", "전단지", "리플릿"], ["규격", "표준"], ["장비", "기기", "장치"], ["장려금", "보조금"], ["요금", "이용료"]];
+var REVIEWED_MEANING_PAIRS = {
+  "operate|shut down": "'가동'이 겹치지만 shut down은 '가동을 중단하다'로 반대 뜻",
+  "downtime|operate": "'가동'이 겹치지만 downtime은 '가동 중단 시간'으로 반대 뜻",
+  "address|ticket": "'처리'가 겹치지만 address는 동사(처리하다, 다루다), ticket은 명사(접수 건)"
+};
+var MEANING_PARTICLE = /(과|와|을|를|이|가|의|에|로|으로|은|는)$/;
+function meaningWords(meaning) {
+  return meaningPieces(meaning).join(" ").split(/[\s,·~]+/).map(function (word) {
+    return word.replace(/[^가-힣]/g, "").replace(MEANING_PARTICLE, "");
+  }).filter(function (word) { return word.length >= 2; });
+}
+function meaningOverlapReasons(a, b) {
+  var reasons = [];
+  [[a, b], [b, a]].forEach(function (pair) {
+    var inside = meaningWords(pair[1]);
+    meaningPieces(pair[0]).forEach(function (piece) {
+      var core = piece.replace(/[^가-힣]/g, "");
+      if (core.length >= 2 && inside.indexOf(core) !== -1) reasons.push("통째 포함 '" + core + "'");
+    });
+  });
+  var left = meaningPieces(a).join(" "), right = meaningPieces(b).join(" ");
+  MEANING_SYNONYMS.forEach(function (group) {
+    group.forEach(function (x) {
+      group.forEach(function (y) {
+        if (x !== y && left.indexOf(x) !== -1 && right.indexOf(y) !== -1) reasons.push("동의어 " + x + "≈" + y);
+      });
+    });
+  });
+  return reasons;
+}
+failures.meaningOverlap = [];
+var meaningGroups = Object.create(null);
+vocabulary.forEach(function (item) {
+  if (!item || typeof item.meaning !== "string") return;
+  var key = String(item.track) + ":" + String(item.situation || item.day);
+  (meaningGroups[key] = meaningGroups[key] || []).push(item);
+});
+var reviewedPairsUsed = Object.create(null);
+Object.keys(meaningGroups).forEach(function (key) {
+  var list = meaningGroups[key];
+  for (var i = 0; i < list.length; i += 1) {
+    for (var j = i + 1; j < list.length; j += 1) {
+      if (meaningsTooSimilar(list[i].meaning, list[j].meaning)) continue; // 가드가 같은 문제에 못 나오게 막는다
+      var reasons = meaningOverlapReasons(list[i].meaning, list[j].meaning);
+      if (!reasons.length) continue;
+      var pairKey = [list[i].word, list[j].word].sort().join("|");
+      if (REVIEWED_MEANING_PAIRS[pairKey]) { reviewedPairsUsed[pairKey] = true; continue; }
+      failures.meaningOverlap.push({ group: key, pair: list[i].id + " " + list[i].word + "「" + list[i].meaning + "」 ↔ " + list[j].id + " " + list[j].word + "「" + list[j].meaning + "」", reasons: reasons });
+    }
+  }
+});
+// 검토 목록에 있는데 더는 걸리지 않는 쌍은 목록에서 지우라고 알린다 (목록이 낡지 않게)
+Object.keys(REVIEWED_MEANING_PAIRS).forEach(function (pairKey) {
+  if (!reviewedPairsUsed[pairKey]) failures.meaningOverlap.push({ reviewedPair: pairKey, reason: "REVIEWED_MEANING_PAIRS에 있지만 더 이상 걸리지 않음 — 목록에서 지우기" });
+});
+
+// ---------------------------------------------------------------------------
+// E. 품사와 한국어 뜻의 모양 (뜻 시험에서 품사가 단서가 되지 않게)
+// 뜻을 쉼표와 " / "로 나눈 조각마다 본다. 품사가 여러 개(n./v.)면 그중 하나에 맞으면 된다. 표현(회화)은 보지 않는다.
+//  명사·형용사: "~다"(동사형)나 "~하게·~히·~적으로·~에·미리·곧"(부사형)으로 끝나면 안 된다
+//  동사: "~다"로 끝나야 한다   부사: "~다"나 "~한·~된·~적인·~있는"(형용사형)으로 끝나면 안 된다
+//  "주문(하다)"처럼 괄호로 동사를 붙인 조각은 명사·동사 겸용으로 본다
+var POS_VERB = /다$/;
+var POS_ADVERB = /(하게|히|적으로|스럽게|에)$|^(미리|곧|바로|자주|함께|먼저|나중에|이미)$/;
+var POS_ADJ_FORM = /(한|된|적인|있는|없는|쉬운|운)$/;
+failures.posMeaningShape = [];
+vocabulary.forEach(function (item) {
+  if (!item || typeof item.meaning !== "string" || typeof item.pos !== "string" || item.pos === "표현") return;
+  var parts = item.pos.split("/");
+  item.meaning.split(/\s\/\s|,\s*/).forEach(function (raw) {
+    if (/\((하다|되다)\)\s*$/.test(raw.trim())) return;
+    var piece = raw.replace(/\([^)]*\)/g, "").replace(/[~…]/g, "").replace(/\s+/g, " ").trim();
+    if (!piece) return;
+    var verb = POS_VERB.test(piece), adverb = POS_ADVERB.test(piece), adjForm = POS_ADJ_FORM.test(piece);
+    var fits = parts.some(function (part) {
+      if (part === "n." || part === "adj.") return !verb && !adverb;
+      if (part === "v.") return verb;
+      if (part === "adv.") return !verb && !adjForm;
+      return true;
+    });
+    if (!fits) failures.posMeaningShape.push({ id: item.id, word: item.word, pos: item.pos, meaning: item.meaning,
+      piece: raw.trim(), shape: verb ? "동사형(~다)" : adverb ? "부사형" : adjForm ? "형용사형" : "명사형" });
+  });
+});
+
+// ---------------------------------------------------------------------------
+// D. 영어 문장 형식 (저장소 전체: vocab·grammar·reading·listening·part1·speaking)
+// 기계로 판정할 수 있는 것만 실패로 본다: 영어 칸의 한글, 전각 문자, 둥근 따옴표·아포스트로피(’ “ ”),
+// 비표준 하이픈(‐ ‑ ‒ −), 줄바꿈 없는 공백, 두 칸 띄어쓰기, 같은 글자 세 번 연속(www 제외),
+// 문장 끝 문장부호 누락(단어 예문·받아쓰기·대본·Part 1 문장·회화 문장, 4단어 이상), 한국어 뜻에 영어.
+// Part 6 지문 조각(빈칸 앞뒤로 잘린 글)은 앞뒤 공백·문장부호를 보지 않는다. 독해 지문은 서식(표·영수증·서명)이 많아 문장부호를 보지 않는다.
+// 오타 후보(한 번만 나오는 단어)는 사람이 봐야 하므로 개수만 알리고 목록은 node tools/list-rare-words.js로 본다.
+var ENGLISH_FIELDS = {
+  vocab: { keys: ["word", "example", "distractors"], sentences: ["example"] },
+  grammar: { keys: ["good", "bad", "question", "choices"], sentences: [] },
+  reading: { keys: ["header", "en", "w", "q", "choices"], sentences: [] },
+  listening: { keys: ["text", "question", "choices", "q", "script"], sentences: ["text", "script"] },
+  part1: { keys: ["choices"], sentences: ["choices"] },
+  speaking: { keys: ["english", "pattern", "en", "model", "alts"], sentences: ["en", "model"] }
+};
+failures.textFormat = [];
+var englishWordCounts = Object.create(null);
+Object.keys(ENGLISH_FIELDS).forEach(function (name) {
+  var spec = ENGLISH_FIELDS[name];
+  var dataContext = { window: {} };
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname, "..", "data", name + ".js"), "utf8"), dataContext, { filename: name + ".js" });
+  function check(text, key, where, fragment) {
+    var at = name + ":" + where + " [" + key + "]";
+    var problems = [];
+    if (/[가-힣]/.test(text)) problems.push("영어 칸에 한글");
+    if (/[！-～　]/.test(text)) problems.push("전각 문자");
+    if (/[‘’“”]/.test(text)) problems.push("둥근 따옴표·아포스트로피");
+    if (/[‐‑‒−]/.test(text)) problems.push("비표준 하이픈");
+    if (/ /.test(text)) problems.push("줄바꿈 없는 공백");
+    if (/ {2,}/.test(text) || (!fragment && /^\s|\s$/.test(text))) problems.push("두 칸 띄어쓰기·앞뒤 공백");
+    if (/([A-Za-z])\1\1/.test(text.replace(/www\./gi, ""))) problems.push("같은 글자 세 번 연속");
+    if (!fragment && spec.sentences.indexOf(key) !== -1 && text.trim().split(/\s+/).length >= 4 && /[A-Za-z0-9]$/.test(text.trim())) problems.push("문장 끝 문장부호 없음");
+    if (problems.length) failures.textFormat.push({ at: at, problems: problems, text: text.slice(0, 80) });
+    (text.match(/[A-Za-z]+(?:'[A-Za-z]+)*/g) || []).forEach(function (word) {
+      var lower = word.toLowerCase();
+      englishWordCounts[lower] = (englishWordCounts[lower] || 0) + 1;
+    });
+  }
+  function walk(value, key, where, fragment) {
+    if (typeof value === "string") { if (spec.keys.indexOf(key) !== -1) check(value, key, where, fragment); return; }
+    if (Array.isArray(value)) { value.forEach(function (child) { walk(child, key, where, fragment); }); return; }
+    if (value && typeof value === "object") {
+      var isFragment = fragment || value.type === "text"; // Part 6 지문 조각
+      Object.keys(value).forEach(function (childKey) {
+        walk(value[childKey], /^\d+$/.test(childKey) ? key : childKey, value.id || where, isFragment);
+      });
+    }
+  }
+  Object.keys(dataContext.window).filter(function (global) {
+    return !/DISTRACTOR_MEANINGS|WRONG_FORMS/.test(global); // 뜻 사전과 일부러 틀린 표현은 제외
+  }).forEach(function (global) { walk(dataContext.window[global], global, global, false); });
+});
+vocabulary.forEach(function (item) {
+  if (!item) return;
+  if (/[A-Za-z]/.test(item.meaning || "")) failures.textFormat.push({ at: "vocab:" + item.id + " [meaning]", problems: ["한국어 뜻에 영어"], text: item.meaning });
+  if (/ {2,}|[！-～]/.test((item.meaning || "") + (item.exampleKo || ""))) failures.textFormat.push({ at: "vocab:" + item.id + " [meaning/exampleKo]", problems: ["한국어 칸 두 칸 띄어쓰기·전각"], text: item.meaning });
+});
+var rareWordCount = Object.keys(englishWordCounts).filter(function (word) { return englishWordCounts[word] === 1; }).length;
+
 var failureCount = Object.keys(failures).reduce(function (total, key) {
   return total + failures[key].length;
 }, 0);
@@ -264,6 +418,11 @@ if (!duplicateWordWarnings.length) console.log("  없음");
 duplicateWordWarnings.forEach(function (warning) {
   console.log("  ⚠ [" + warning.track + "] " + warning.word + " — " + warning.entries.join(" / "));
 });
+
+console.log("\nrareEnglishWords — 참고: 저장소 영어 문장의 서로 다른 단어 " + Object.keys(englishWordCounts).length + "개 중 한 번만 나오는 단어 " + rareWordCount +
+  "개 (오타는 거의 한 번만 나온다. 목록: node tools/list-rare-words.js)");
+console.log("\nreviewedMeaningPairs — 검토 후 구분된다고 본 쌍 (" + Object.keys(REVIEWED_MEANING_PAIRS).length + ")");
+Object.keys(REVIEWED_MEANING_PAIRS).forEach(function (pairKey) { console.log("  " + pairKey + " — " + REVIEWED_MEANING_PAIRS[pairKey]); });
 
 console.log("\nmissingDistractorMeanings — 경고 (" + missingDistractorMeanings.length + ")");
 console.log(missingDistractorMeanings.length

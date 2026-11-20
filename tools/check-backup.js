@@ -312,6 +312,90 @@ function runAll(sources) {
   t("설정·진행 중 시험은 파일에 없음", !Object.keys(otherFile.data).some(k => /Theme|Speech|Vocab|Save$/.test(k)));
   importText(s1, JSON.stringify(otherFile), "overwrite");
   t("덮어쓰기를 해도 이 기기의 설정·진행 중 시험은 그대로", ["englishLabTheme", "englishLabSpeechSettings", "englishLabVocabSelection", "englishLabFullSetSave"].every(k => s1.store.get(k) === "keep-" + k));
+
+  // ---------- 7. 장부 멱등성: 여러 번 주고받아도 누적 숫자 = 실제로 공부한 총합 ----------
+  // 공부할 때마다 "실제로 늘어난 양"을 따로 세어 두고(truth), 기기 화면의 합계와 비교한다.
+  const COUNTERS = ["quizSolved", "grammarStats|g01|solved", "listeningStats|part2|solved", "listeningStats|dictation|attempted", "speakingStats|shadowingCount"];
+  let wordSeq = 0;
+  function session(dev, n, truth) {
+    const plan = { vocab: [], grammar: [], listening: [], dictation: [], shadowing: [] };
+    for (let k = 0; k < n; k++) {
+      plan.vocab.push(["lw" + (wordSeq++ % 7), k % 3 !== 0]);
+      plan.grammar.push(["g01", k % 2 === 0]);
+      plan.listening.push(["part2", true]);
+      plan.dictation.push(0.5 + (k % 5) / 10);
+      plan.shadowing.push(0.6);
+    }
+    study(dev, plan);
+    if (truth) COUNTERS.forEach(p => { truth[p] = (truth[p] || 0) + n; });
+  }
+  const totalsMatch = (dev, truth) => COUNTERS.every(p => (totalsOf(dev)[p] || 0) === (truth[p] || 0));
+  const showTotals = (dev, truth) => COUNTERS.map(p => p.split("|").slice(-2).join(".") + " " + (totalsOf(dev)[p] || 0) + "/" + (truth[p] || 0)).join(", ");
+
+  // 7-1. 두 기기 A→B→A→B 3바퀴, 매번 양쪽에서 공부 (받는 쪽은 보내는 쪽보다 뒤에 공부한 몫이 없도록 순서를 맞춤)
+  const truth1 = {};
+  const A = makeDevice("d-loopa0001", sources), Bdev = makeDevice("d-loopb0001", sources);
+  const stepProblems = [];
+  for (let lap = 1; lap <= 3; lap++) {
+    session(A, 2 + lap, truth1);
+    importText(Bdev, exportText(A));            // A → B
+    if (!totalsMatch(Bdev, truth1)) stepProblems.push(lap + "바퀴 A→B 뒤 B: " + showTotals(Bdev, truth1));
+    session(Bdev, 1 + lap, truth1);
+    importText(A, exportText(Bdev));            // B → A
+    if (!totalsMatch(A, truth1)) stepProblems.push(lap + "바퀴 B→A 뒤 A: " + showTotals(A, truth1));
+    importText(Bdev, exportText(A));            // 이미 받은 기록을 한 번 더 (멱등)
+    importText(A, exportText(Bdev));
+    if (!totalsMatch(A, truth1) || !totalsMatch(Bdev, truth1)) stepProblems.push(lap + "바퀴 재전송 뒤 어긋남");
+  }
+  t("7 두 기기 A→B→A→B 3바퀴(+재전송): 매 단계 받은 쪽 합계 = 실제 공부 총합", !stepProblems.length && ledgerConsistent(A) && ledgerConsistent(Bdev),
+    stepProblems[0] || showTotals(A, truth1));
+
+  // 7-2. 기기 셋: 옛 파일(늦게 전달된 파일)과 순서가 섞인 전달을 포함
+  const truth2 = {};
+  const pc3 = makeDevice("d-tripc0001", sources), ph3 = makeDevice("d-triph0001", sources), br3 = makeDevice("d-tribr0001", sources);
+  session(pc3, 4, truth2); session(ph3, 3, truth2); session(br3, 2, truth2);
+  const stalePc = exportText(pc3);                      // 나중에 늦게 전달할 컴퓨터 옛 파일
+  importText(ph3, exportText(pc3)); session(ph3, 2, truth2);
+  importText(br3, exportText(ph3)); session(br3, 3, truth2);
+  session(pc3, 1, truth2);
+  importText(pc3, exportText(br3));                     // 컴퓨터는 이제 셋 모두의 몫을 앎
+  importText(br3, stalePc);                             // 옛 파일이 늦게 도착
+  importText(ph3, exportText(pc3)); importText(br3, exportText(ph3)); importText(pc3, exportText(br3));
+  t("7 기기 셋(늦게 도착한 옛 파일 포함): 세 기기 모두 합계 = 실제 공부 총합",
+    [pc3, ph3, br3].every(d => totalsMatch(d, truth2) && ledgerConsistent(d)), [pc3, ph3, br3].map(d => showTotals(d, truth2)).join(" | "));
+
+  // 7-3. 덮어쓰기 뒤 내보내기: 남의 장부를 받은 상태에서 이 기기 몫을 다시 계산해도 망가지지 않는지
+  const ow1 = makeDevice("d-owaaaa001", sources), ow2 = makeDevice("d-owbbbb001", sources);
+  session(ow1, 3); session(ow2, 2);
+  importText(ow1, exportText(ow2));                     // ow1 장부에 ow2 몫(2)이 들어감
+  session(ow2, 4);                                      // ow2가 혼자 더 공부 (덮어쓰기로 사라질 몫)
+  session(ow1, 1);
+  importText(ow2, exportText(ow1), "overwrite");        // ow2: ow1 기록으로 덮어씀 → ow2의 혼자 공부한 4는 사라짐
+  const afterOverwrite = totalsOf(ow2).quizSolved;
+  t("7 덮어쓰기 직후 합계 = 덮어쓴 파일의 합계 (3+2+1 = 6)", afterOverwrite === 6 && ledgerConsistent(ow2), "quizSolved " + afterOverwrite);
+  session(ow2, 5);                                      // 덮어쓴 뒤 ow2가 더 공부
+  session(ow1, 2);
+  const ow2File = exportText(ow2);
+  const ow2Ledger = JSON.parse(ow2File).data.englishLabSyncLedger.devices;
+  t("7 덮어쓴 뒤 내보낸 장부: ow2 몫 = 덮어쓰기 전에 넘겨준 2 + 덮어쓴 뒤 공부한 5, ow1 몫 = 4 (음수·중복 없음)",
+    ow2Ledger["d-owbbbb001"] && ow2Ledger["d-owbbbb001"].counters.quizSolved === 7 && ow2Ledger["d-owaaaa001"].counters.quizSolved === 4,
+    JSON.stringify(Object.keys(ow2Ledger).map(id => id + ":" + ow2Ledger[id].counters.quizSolved)));
+  importText(ow1, ow2File); importText(ow1, ow2File);
+  t("7 그 파일을 원래 기기에 (두 번) 합치면 = ow1 6 + ow2 7 = 13 (사라진 4는 다시 생기지 않음)", totalsOf(ow1).quizSolved === 13 && ledgerConsistent(ow1),
+    "quizSolved " + totalsOf(ow1).quizSolved);
+
+  // 7-4. 장부 키가 없는 옛 파일 (schema 1, englishLabSyncLedger 없음 · deviceId 있음/없음)
+  const legacySrc = makeDevice("d-oldsrc001", sources);
+  session(legacySrc, 3);
+  const noLedger = JSON.parse(exportText(legacySrc)); delete noLedger.data.englishLabSyncLedger;
+  const noLedgerNoId = JSON.parse(JSON.stringify(noLedger)); delete noLedgerNoId.deviceId;
+  [["deviceId 있음", noLedger], ["deviceId도 없음", noLedgerNoId]].forEach(([label, file]) => {
+    const dst = makeDevice(label === "deviceId 있음" ? "d-olddst001" : "d-olddst002", sources);
+    session(dst, 2);
+    importText(dst, JSON.stringify(file)); importText(dst, JSON.stringify(file)); // 두 번 가져와도
+    t("7 장부 없는 옛 파일(" + label + "): 합계 = 내 몫 2 + 파일 3 = 5 · 두 번 가져와도 그대로", totalsOf(dst).quizSolved === 5 && ledgerConsistent(dst),
+      "quizSolved " + totalsOf(dst).quizSolved);
+  });
   return out;
 }
 
