@@ -14,15 +14,16 @@
 
 | 품사 | 표기 | 개수 |
 | --- | --- | ---: |
-| 명사 | `n.` | 450 |
+| 명사 | `n.` | 449 |
 | 동사 | `v.` | 157 |
 | 형용사 | `adj.` | 82 |
 | 표현 | `표현` | 43 |
-| 명사/동사 | `n./v.` | 24 |
+| 명사/동사 | `n./v.` | 23 |
 | 부사 | `adv.` | 13 |
-| 동사/명사 | `v./n.` | 12 |
+| 동사/명사 | `v./n.` | 13 |
 | 명사/형용사 | `n./adj.` | 4 |
 | 형용사/동사 | `adj./v.` | 2 |
+| 숙어 | `숙어` | 1 |
 | 형용사/부사 | `adj./adv.` | 1 |
 | 전치사 | `prep.` | 1 |
 | 동사/부사 | `v./adv.` | 1 |
@@ -70,7 +71,7 @@ agenda, assign, candidate, charge, contract, depart, discount, enclose, expire, 
 
 ### Day 4 — 사무·행정 빈출 (승인·검사·설치·환급) (30개)
 
-accurate, advance, alternative, applicant, appointment, assemble, attendance, authorize, beverage, competitive, confidential, consult, dedicate, demonstrate, distribute, eligible, exceed, forward, inspect, install, itinerary, mandatory, obtain, occupy, proceed, receipt, reimburse, renovate, sufficient, verify
+accurate, in advance, alternative, applicant, appointment, assemble, attendance, authorize, beverage, competitive, confidential, consult, dedicate, demonstrate, distribute, eligible, exceed, forward, inspect, install, itinerary, mandatory, obtain, occupy, proceed, receipt, reimburse, renovate, sufficient, verify
 
 ### Day 5 — 업무 고급 빈출 (평가·준수·효율화·임시) (30개)
 

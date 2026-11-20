@@ -234,8 +234,7 @@ vocabulary.forEach(function (item, index) {
 var MEANING_SYNONYMS = [["고용", "채용"], ["인력", "직원"], ["팸플릿", "전단지", "리플릿"], ["규격", "표준"], ["장비", "기기", "장치"], ["장려금", "보조금"], ["요금", "이용료"]];
 var REVIEWED_MEANING_PAIRS = {
   "operate|shut down": "'가동'이 겹치지만 shut down은 '가동을 중단하다'로 반대 뜻",
-  "downtime|operate": "'가동'이 겹치지만 downtime은 '가동 중단 시간'으로 반대 뜻",
-  "address|ticket": "'처리'가 겹치지만 address는 동사(처리하다, 다루다), ticket은 명사(접수 건)"
+  "downtime|operate": "'가동'이 겹치지만 downtime은 '가동 중단 시간'으로 반대 뜻"
 };
 var MEANING_PARTICLE = /(과|와|을|를|이|가|의|에|로|으로|은|는)$/;
 function meaningWords(meaning) {

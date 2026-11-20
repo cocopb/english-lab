@@ -724,7 +724,7 @@ window.PASSAGES = [
         header: ["Thornbury Public Library — Part-Time Archivist"],
         sentences: [
           { en: "Thornbury Public Library seeks a part-time archivist to organize our local history collection.", ko: "손버리 공립 도서관은 지역 역사 자료를 정리할 시간제 기록물 관리자를 구합니다." },
-          { en: "Responsibilities include cataloguing documents, scanning photographs, and assisting researchers.", ko: "업무에는 문서 목록 작성, 사진 스캔, 연구자 지원이 포함됩니다." },
+          { en: "Responsibilities include cataloging documents, scanning photographs, and assisting researchers.", ko: "업무에는 문서 목록 작성, 사진 스캔, 연구자 지원이 포함됩니다." },
           { en: "Candidates must have a degree in library science and at least two years of archival experience.", ko: "지원자는 문헌정보학 학위와 최소 2년의 기록물 관리 경력이 있어야 합니다." },
           { en: "The position is twenty hours per week, with occasional Saturday shifts.", ko: "근무는 주 20시간이며, 간혹 토요일 근무가 있습니다." },
           { en: "Send a résumé and a brief cover letter to hr@thornburylibrary.org by March 20.", ko: "3월 20일까지 이력서와 간단한 자기소개서를 hr@thornburylibrary.org로 보내주세요." }
@@ -745,13 +745,13 @@ window.PASSAGES = [
     ],
     vocab: [
       { w: "archivist", m: "기록물 관리자" },
-      { w: "catalogue", m: "목록을 작성하다" },
+      { w: "catalog", m: "목록을 작성하다" },
       { w: "candidate", m: "지원자, 후보자" },
       { w: "shift", m: "교대 근무" },
       { w: "cover letter", m: "자기소개서" }
     ],
     questions: [
-      { q: "What is one responsibility of the position?", choices: ["Repairing damaged books", "Scanning photographs", "Leading school tours", "Managing a budget"], answer: 1, explanation: "Responsibilities include cataloguing documents, scanning photographs, and assisting researchers." },
+      { q: "What is one responsibility of the position?", choices: ["Repairing damaged books", "Scanning photographs", "Leading school tours", "Managing a budget"], answer: 1, explanation: "Responsibilities include cataloging documents, scanning photographs, and assisting researchers." },
       { q: "How did Ms. Bello learn about the job?", choices: ["From a newspaper", "From the library's website", "From a former colleague", "At a job fair"], answer: 1, explanation: "the archivist position advertised on your website." },
       { q: "What is suggested about Ms. Bello's availability?", choices: ["She can work on Saturdays when needed", "She can work only on weekday mornings", "She needs a full-time schedule", "She is unavailable until April"], answer: 0, explanation: "연계 문제다. 공고에 간혹 토요일 근무가 있다고 했고, 이메일에서 주말에도 가능하다고 했다." },
       { q: "What does Ms. Bello offer to provide?", choices: ["A photograph sample", "References", "A writing sample", "A university transcript"], answer: 1, explanation: "I would be glad to provide references if needed." }
@@ -762,18 +762,18 @@ window.PASSAGES = [
     parts: [
       {
         label: "지문 1 — 예약 확인서",
-        header: ["MERIDIAN HARBOUR HOTEL — Reservation Confirmation"],
+        header: ["MERIDIAN HARBOR HOTEL — Reservation Confirmation"],
         sentences: [
           { en: "Guest: Dr. Felix Osei | Confirmation number: MH-20714", ko: "투숙객: 펠릭스 오세이 박사 | 예약 번호: MH-20714" },
           { en: "Check-in: October 8 | Check-out: October 11", ko: "입실: 10월 8일 | 퇴실: 10월 11일" },
-          { en: "Room type: Deluxe king, harbour view — $180 per night", ko: "객실 종류: 디럭스 킹, 항구 전망 — 1박 180달러" },
+          { en: "Room type: Deluxe king, harbor view — $180 per night", ko: "객실 종류: 디럭스 킹, 항구 전망 — 1박 180달러" },
           { en: "Breakfast is included in the room rate. Parking is $15 per day.", ko: "조식은 객실 요금에 포함됩니다. 주차는 1일 15달러입니다." },
           { en: "Changes made more than 48 hours before check-in are free of charge.", ko: "입실 48시간 이전에 하는 변경은 수수료가 없습니다." }
         ]
       },
       {
         label: "지문 2 — 변경 요청 이메일",
-        header: ["From: Felix Osei", "To: reservations@meridianharbour.com", "Subject: Confirmation MH-20714"],
+        header: ["From: Felix Osei", "To: reservations@meridianharbor.com", "Subject: Confirmation MH-20714"],
         sentences: [
           { en: "Hello,", ko: "안녕하세요," },
           { en: "My conference now ends a day later than planned, so I would like to stay until October 12.", ko: "학회가 예정보다 하루 늦게 끝나게 되어 10월 12일까지 머물고 싶습니다." },
@@ -904,7 +904,7 @@ window.PASSAGES = [
           { en: "Six weekly sessions, Wednesdays 7:00-8:30 P.M.", ko: "6주간 매주 수요일 오후 7시부터 8시 30분까지." },
           { en: "Session 1 Formulas | Session 2 Charts | Session 3 Pivot tables", ko: "1회차 수식 | 2회차 차트 | 3회차 피벗 테이블" },
           { en: "Session 4 Data cleaning | Session 5 Macros | Session 6 Final project", ko: "4회차 데이터 정리 | 5회차 매크로 | 6회차 최종 과제" },
-          { en: "Fee: $120, or $90 for students with proof of enrolment.", ko: "수강료: 120달러, 재학 증명을 제출한 학생은 90달러." },
+          { en: "Fee: $120, or $90 for students with proof of enrollment.", ko: "수강료: 120달러, 재학 증명을 제출한 학생은 90달러." },
           { en: "Recordings stay available for three months after the course ends.", ko: "녹화 강의는 과정이 끝난 뒤 3개월간 볼 수 있습니다." },
           { en: "Instructor: Beatriz Nunes", ko: "강사: 베아트리스 누네스" }
         ]
@@ -935,7 +935,7 @@ window.PASSAGES = [
     ],
     vocab: [
       { w: "session", m: "회차, 수업" },
-      { w: "proof of enrolment", m: "재학 증명" },
+      { w: "proof of enrollment", m: "재학 증명" },
       { w: "recording", m: "녹화 강의" },
       { w: "sign up for", m: "~에 신청하다" },
       { w: "follow-up", m: "후속의" }
