@@ -147,6 +147,147 @@ topics.forEach(function (topic) {
   });
 });
 
+// 노트 설명 속 영어 문장도 같은 기준으로 본다 (oneLine·trap·toeicPattern·표 칸).
+// 예문 칸만 보던 때 trap·표에 문항과 같은 문장이 남아 있었다 (2026-11-20: g01 trap ↔ q027, g13 표 ↔ q121, g16 trap ↔ q012·q016).
+// 영어 문장 = 대문자로 시작해 . ? !로 끝나는 3단어 이상 덩어리.
+// 정답 단어가 노트가 가르치는 형태 그 자체라서 겹칠 수밖에 없는 경우만 NOTE_TEXT_OVERLAP_ALLOWED에 이유와 함께 적는다.
+var NOTE_TEXT_OVERLAP_ALLOWED = {
+  "g09|It's too late to call him.|q090": "its/it's를 가르는 trap이라 정답 It's가 나올 수밖에 없다. 문장 내용은 겹치지 않는다",
+  "g15|Given the delay, we rescheduled the launch.|q169": "Given + 명사를 가르치는 표의 예라 정답 Given이 나올 수밖에 없다. 문장 내용은 겹치지 않는다",
+  "g15|Given the delay, we rescheduled.|q169": "위와 같다 (trap의 짧은 예)"
+};
+function noteTextEnglishSentences(topic) {
+  var texts = [topic.oneLine, topic.trap, topic.toeicPattern];
+  ((topic.table && topic.table.rows) || []).forEach(function (row) { texts = texts.concat(row); });
+  var found = [];
+  texts.forEach(function (text) {
+    (String(text || "").match(/[A-Z][A-Za-z0-9 ,'’-]+[.?!]/g) || []).forEach(function (sentence) {
+      if (sentence.split(/\s+/).length >= 3 && found.indexOf(sentence) === -1) found.push(sentence);
+    });
+  });
+  return found;
+}
+failures.noteTextOverlap = [];
+var noteTextAllowedUsed = Object.create(null);
+topics.forEach(function (topic) {
+  noteTextEnglishSentences(topic).forEach(function (sentence) {
+    questions.forEach(function (question) {
+      if (!Array.isArray(question.choices) || typeof question.question !== "string") return;
+      var reasons = exampleOverlapReasons(sentence, question);
+      if (!reasons.length) return;
+      var allowKey = topic.id + "|" + sentence + "|" + question.id;
+      if (NOTE_TEXT_OVERLAP_ALLOWED[allowKey]) { noteTextAllowedUsed[allowKey] = true; return; }
+      var entry = { note: topic.id, example: "설명", kind: "text", sentence: sentence, question: question.id, ruleId: question.ruleId, reasons: reasons.join(" / ") };
+      if (question.ruleId === topic.id) failures.noteTextOverlap.push(entry);
+      else crossOverlapWarnings.push(entry);
+    });
+  });
+});
+failures.noteTextOverlapAllowedStale = Object.keys(NOTE_TEXT_OVERLAP_ALLOWED).filter(function (key) { return !noteTextAllowedUsed[key]; })
+  .map(function (key) { return { key: key, hint: "더 이상 겹치지 않거나 문장이 바뀌었다. 목록에서 지운다" }; });
+
+// ---------------------------------------------------------------------------
+// 단정 표현 대조: 노트 문구(oneLine·trap·toeicPattern·표·예문 설명)에서 "무조건·항상·절대·반드시·언제나·
+// 어떤 경우에도·~만·~뿐" 같은 단정이 든 문장을 뽑아, 대조할 문항 후보와 함께 보여 준다.
+// 후보 = 같은 유형 문항 전부 + 그 문장에 나온 영어 단어(기능어 제외)가 정답 문장에 든 다른 유형 문항.
+// 반례 판단은 사람이 한다. 180문항과 대조해 반례가 없다고 확인한 문장은 REVIEWED_ABSOLUTE_CLAIMS에
+// "노트 id|문장" 그대로 이유와 함께 적는다. 목록에 없는 단정 문장이 생기면(새 노트·문구 수정) 실패로 알려
+// 문항과 대조하게 한다. 목록에 있는데 노트에서 사라진 문장도 실패다 (목록을 지워야 한다).
+// 예전 예: g05 "전치사 뒤에는 무조건 -ing" ↔ q081 to me, q084 by himself (전치사 뒤 명사·대명사)
+// ---------------------------------------------------------------------------
+// "~지만"(그러나)은 단정이 아니라서 뺀다
+var ABSOLUTE_PATTERN = /무조건|항상|절대|반드시|언제나|어떤 경우에도|모든 경우|예외 없이|뿐이다|[가-힣A-Za-z)\]](?<!지)만(?=[\s.,)]|$)|에만/;
+var REVIEWED_ABSOLUTE_CLAIMS = {
+  "g01|먼저 빈칸 앞뒤로 품사를 정하고, 같은 품사가 둘 이상 남을 때만 뜻으로 가른다.":
+    "풀이 순서 안내다. 같은 품사가 둘 남는 q006(accounting·accountant)·q008(impressive·impressed)은 뜻·g15 기준으로 가르고, 나머지 g01 문항은 품사만으로 풀린다",
+  "g07|뒤에 '주어+동사'가 오면 접속사, 명사 덩어리만 오면 전치사다.":
+    "g07 10문항이 모두 이대로 풀린다. 생략으로 -ing·p.p.가 바로 오는 경우는 trap이 따로 다룬다. 다른 유형의 when(q119)·before(q147)·during(q058)도 맞다",
+  "g07|despite 또는 in spite of 둘 중 하나만 쓴다.":
+    "q064 Despite, q070 In spite of 모두 맞다. despite of는 어느 문항에도 없다",
+  "g07|주어+동사가 보이면 접속사, 명사만 보이면 전치사. Part 5에서 품사 자리 다음으로 많이 나온다.":
+    "oneLine과 같은 기준이다. g07 10문항 모두 맞다",
+  "g07|뒤에 명사만 → 전치사":
+    "예문 설명이다. q061·q064·q065·q067·q069·q070 모두 명사 앞 전치사다",
+  "g10|비교급 강조 자리에는 very를 넣은 오답이 거의 항상 하나 들어 있다.":
+    "'거의'로 단정을 피했다. 강조 자리 문항 q100·q154·q159 모두 very가 오답에 있다",
+  "g12|영어 문장에는 주어와 동사가 있어야 하고(명령문만 주어 you를 생략한다), 꾸밈말은 정해진 자리에 간다.":
+    "주어가 없는 문장 q052·q108·q119·q131·q137은 모두 명령문이다. and 병렬(q126)은 trap에서 주어를 함께 쓰는 것으로 설명한다",
+  "g12|주어를 빼는 것은 명령문뿐이다.":
+    "oneLine과 같다. 바로 뒤 문장이 and 병렬(q126)을 따로 설명한다",
+  "g13|조동사 뒤에는 어떤 경우에도 동사원형이 온다.":
+    "조동사 뒤 빈칸 q005·q033·q034·q121~q130 모두 원형이다. q125 should have been(have가 원형), q130 will not be able(not 다음 원형), q117 Could you please confirm(please 다음 원형)도 맞다. 완료 have·진행 be 뒤는 trap에서 뺐다",
+  "g16|선택지가 is / are처럼 동사로만 나와도 주어 앞의 수량 표현부터 본다.":
+    "동사 빈칸인 q012·q016·q017·q020·q175가 모두 주어 앞 수량 표현으로 풀린다"
+};
+// 문장 나누기: 줄바꿈과 마침표 뒤 공백. 예문 속 영어 마침표에서도 나뉘지만 후보를 뽑는 데는 지장이 없다.
+function noteSentences(topic) {
+  var parts = [];
+  function push(field, text) {
+    String(text || "").split(/\n+/).forEach(function (line) {
+      line.split(/(?<=[다요]\.)\s+/).forEach(function (sentence) {
+        sentence = sentence.trim();
+        if (sentence) parts.push({ field: field, text: sentence });
+      });
+    });
+  }
+  push("oneLine", topic.oneLine);
+  push("trap", topic.trap);
+  push("toeicPattern", topic.toeicPattern);
+  ((topic.table && topic.table.rows) || []).forEach(function (row, index) { push("table" + (index + 1), row.join(" | ")); });
+  (topic.examples || []).forEach(function (example, index) { push("example" + (index + 1), example.note); });
+  return parts;
+}
+var CLAIM_KEYWORD_STOP = new Set(("a an the is are be to of in on at for by and or not no it this that than as " +
+  "ing p.p. do does did").split(" "));
+function claimKeywords(text) {
+  return Array.from(new Set((String(text).match(/[A-Za-z][A-Za-z'-]*/g) || []).map(function (word) { return word.toLowerCase(); })))
+    .filter(function (word) { return word.length > 1 && !CLAIM_KEYWORD_STOP.has(word); });
+}
+// "전치사 뒤·조동사 뒤·be동사 뒤"처럼 자리를 말하는 단정은 문장에 영어 단어가 없어도 그 자리 문항을 후보로 뽑는다.
+// 빈칸 바로 앞 단어로 자리를 판단한다 (예: 전치사 뒤 → to me, by himself도 후보로 나온다).
+var POSITION_HINTS = [
+  { term: /전치사 뒤/, label: "전치사 뒤", words: "to of for by with in on at from about after before into without".split(" ") },
+  { term: /조동사 뒤/, label: "조동사 뒤", words: "will can could would should must may might cannot".split(" ") },
+  { term: /be동사 (바로 )?뒤/, label: "be동사 뒤", words: "is are was were be been am".split(" ") }
+];
+function wordBeforeBlank(question) {
+  var tokens = overlapTokens(String(question.question).replace(/_{2,}/, " zzblank "));
+  var index = tokens.indexOf("zzblank");
+  return index > 0 ? tokens[index - 1] : null;
+}
+var absoluteClaims = [];
+var absoluteSeen = Object.create(null);
+topics.forEach(function (topic) {
+  noteSentences(topic).forEach(function (part) {
+    if (!ABSOLUTE_PATTERN.test(part.text)) return;
+    var key = topic.id + "|" + part.text;
+    absoluteSeen[key] = true;
+    var keywords = claimKeywords(part.text);
+    var sameRule = questions.filter(function (question) { return question.ruleId === topic.id; }).map(function (question) { return question.id; });
+    var otherRule = questions.filter(function (question) {
+      if (question.ruleId === topic.id || !Array.isArray(question.choices)) return false;
+      var full = " " + overlapTokens(String(question.question).replace(/_{2,}/, question.choices[question.answer])).join(" ") + " ";
+      return keywords.some(function (word) { return full.indexOf(" " + word + " ") !== -1; });
+    }).map(function (question) { return question.id + "[" + question.ruleId + "]"; });
+    POSITION_HINTS.forEach(function (hint) {
+      if (!hint.term.test(part.text)) return;
+      questions.forEach(function (question) {
+        var label = question.id + "[" + question.ruleId + "]";
+        if (question.ruleId !== topic.id && otherRule.indexOf(label) === -1 && hint.words.indexOf(wordBeforeBlank(question)) !== -1) {
+          otherRule.push(label + "(" + hint.label + ")");
+        }
+      });
+    });
+    absoluteClaims.push({ key: key, note: topic.id, field: part.field, text: part.text, sameRule: sameRule, otherRule: otherRule,
+      reviewed: REVIEWED_ABSOLUTE_CLAIMS[key] || null });
+  });
+});
+failures.absoluteClaimUnreviewed = absoluteClaims.filter(function (claim) { return !claim.reviewed; }).map(function (claim) {
+  return { note: claim.note, field: claim.field, text: claim.text, sameRule: claim.sameRule.length + "문항", otherRuleCandidates: claim.otherRule.slice(0, 15) };
+});
+failures.absoluteClaimStale = Object.keys(REVIEWED_ABSOLUTE_CLAIMS).filter(function (key) { return !absoluteSeen[key]; })
+  .map(function (key) { return { key: key, hint: "노트에서 이 문장이 바뀌었거나 사라졌다. 새 문장을 다시 대조하고 목록을 고친다" }; });
+
 var failureCount = Object.keys(failures).reduce(function (total, key) {
   return total + failures[key].length;
 }, 0);
@@ -170,6 +311,18 @@ crossOverlapWarnings.forEach(function (warning) {
   console.log("  ⚠ " + warning.note + " 예문" + warning.example + "(" + warning.kind + ") \"" + warning.sentence + "\" ↔ " +
     warning.question + "[" + warning.ruleId + "] — " + warning.reasons);
 });
+console.log("\nabsoluteClaims — 단정 표현 " + absoluteClaims.length + "개 (검토 완료 " +
+  absoluteClaims.filter(function (claim) { return claim.reviewed; }).length + ")");
+absoluteClaims.forEach(function (claim) {
+  console.log("  " + (claim.reviewed ? "✔ " : "⚠ ") + claim.note + " " + claim.field + " \"" + claim.text + "\"");
+  console.log("      같은 유형 " + claim.sameRule.length + "문항 · 키워드가 든 다른 유형: " + (claim.otherRule.join(", ") || "없음"));
+  if (claim.reviewed) console.log("      검토: " + claim.reviewed);
+});
+
+// 해설의 단정 표현은 실패로 보지 않고 개수만 알린다 (문항 하나에 대한 설명이라 반례 범위가 좁다)
+var explanationClaims = questions.filter(function (question) { return ABSOLUTE_PATTERN.test(String(question.explanation)); });
+console.log("\nexplanationAbsoluteClaims — 참고 (" + explanationClaims.length + ")");
+explanationClaims.forEach(function (question) { console.log("  · " + question.id + "[" + question.ruleId + "] " + question.explanation); });
 
 // ---------------------------------------------------------------------------
 // 화면 검사: 문법 페이지(common.js + grammar.js)를 가짜 DOM·가짜 localStorage로 실행한다.

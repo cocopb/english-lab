@@ -8,10 +8,11 @@ window.GRAMMAR = [
     table: {
       headers: ["빈칸 위치", "들어갈 품사"],
       rows: [
-        ["the ___ / a ___ / 형용사 ___", "명사"],
-        ["주어 ___ 목적어", "동사"],
-        ["___ + 명사", "형용사"],
-        ["일반동사 ___ / 문장 맨 앞 ___", "부사"],
+        ["the ___ / a ___ / 형용사 ___ (빈칸 뒤에 명사가 없을 때)", "명사"],
+        ["(the·a) ___ + 명사", "형용사 (명사가 명사를 꾸미는 복합명사도 있다: sales figures, accounting department)"],
+        ["주어 ___ 목적어 (문장에 다른 동사가 없을 때)", "동사"],
+        ["조동사(will·can·must) ___", "동사원형 (g13)"],
+        ["일반동사 (+ 목적어) ___ / 수동태 be p.p. ___ / 문장 맨 앞 ___ + 콤마", "부사"],
         ["be ___ -ing / be ___ p.p.", "부사"]
       ]
     },
@@ -20,8 +21,8 @@ window.GRAMMAR = [
       { good: "The train runs smoothly.", bad: "The train runs smooth.", note: "일반동사 뒤 → 부사" },
       { good: "This is an effective plan.", bad: "This is an effect plan.", note: "명사 앞 → 형용사" }
     ],
-    trap: "very, so 같은 수식어에 속지 마라. 꾸밈 받는 대상을 봐야 한다.\nShe is very careful. (be동사 뒤 → 형용사)\nShe works very carefully. (일반동사 뒤 → 부사)\nbe동사 바로 뒤는 형용사 자리지만, be ___ -ing나 be ___ p.p.처럼 뒤에 동사가 이어지면 그 사이는 부사 자리다.\nThe office is currently undergoing renovation.",
-    toeicPattern: "선택지가 decide / decision / decisive / decisively 처럼 한 뿌리의 네 품사로 나오면 거의 이 유형이다. 먼저 빈칸 앞뒤로 품사를 정하고, 같은 품사가 둘 이상 남을 때만 뜻으로 가른다."
+    trap: "very, so 같은 수식어에 속지 마라. 꾸밈 받는 대상을 봐야 한다.\nHe was very polite. (be동사 뒤 → 형용사)\nHe answered very politely. (일반동사 뒤 → 부사)\nbe동사 바로 뒤는 보통 형용사 자리다. 명사·대명사가 올 수도 있다 (He is a manager.). be ___ -ing나 be ___ p.p.처럼 뒤에 동사가 이어지면 그 사이는 부사 자리다.\nThe bridge is slowly being rebuilt.\n빈칸 바로 뒤에 명사가 오면 앞에 the·a가 있어도 보통 형용사 자리다 (명사가 명사를 꾸미는 복합명사는 표 참고). the ___ 뒤가 동사나 전치사이면 명사 자리다. 단 the highest in the country처럼 최상급이 오는 자리는 g10이다.\na quick reply (빈칸 뒤가 명사 reply → 형용사 quick) / The reply was quick. (the 뒤가 동사 was → 명사 reply)\n'주어 ___ 목적어'라도 문장에 이미 동사가 있으면 빈칸은 동사가 아니라 꾸밈말(분사) 자리다. g15 참고.",
+    toeicPattern: "선택지가 decide / decision / decisive / decisively 처럼 한 뿌리의 네 품사로 나오면 거의 이 유형이다. 먼저 빈칸 앞뒤로 품사를 정하고, 같은 품사가 둘 이상 남을 때만 뜻으로 가른다.\n형용사 자리에 -ing와 p.p.(impressive·impressed, exciting·excited)가 함께 남으면 g15(분사·감정 동사) 기준으로 가른다. 원급·비교급·최상급이 섞여 있으면 g10이다."
   },
   {
     id: "g02",
@@ -35,7 +36,8 @@ window.GRAMMAR = [
         ["단수 (he, she, it, the report)", "works / is / has"],
         ["복수 (they, we, the reports)", "work / are / have"],
         ["셀 수 없는 명사 (information)", "단수 취급"],
-            ["There is / There are", "뒤에 오는 명사가 주어"]
+        ["A and B (the manager and her assistant)", "복수 취급 (either A or B 같은 짝은 g14)"],
+        ["There is / There are", "뒤에 오는 명사가 주어"]
       ]
     },
     examples: [
@@ -43,8 +45,8 @@ window.GRAMMAR = [
       { good: "The keys to the storage room are on my desk.", bad: "The keys to the storage room is on my desk.", note: "주어는 keys, to the storage room은 전치사구" },
       { good: "This advice is helpful.", bad: "These advices are helpful.", note: "advice는 셀 수 없음" }
     ],
-    trap: "주어와 동사 사이에 낀 전치사구에 속지 마라.\nThe color of the chairs ___ .\n→ 주어는 color(단수)지 chairs가 아니다.\neach·every·neither·the number of처럼 주어 앞에 수량 표현이 붙어 수가 정해지는 경우는 g16(수량 표현)에서 다룬다.",
-    toeicPattern: "주어와 빈칸 사이에 of, in, with로 시작하는 덩어리가 길게 끼어 있으면 이 유형이다. 그 덩어리를 손으로 가리고 진짜 주어를 찾아라."
+    trap: "주어와 동사 사이에 낀 전치사구에 속지 마라.\nThe color of the chairs ___ .\n→ 주어는 color(단수)지 chairs가 아니다.\neach·every·neither·a number of·the number of처럼 주어 앞에 수량 표현이 붙어 수가 정해지는 경우는 g16(수량 표현)에서 다룬다.",
+    toeicPattern: "주어와 빈칸 사이에 of, in, with로 시작하는 덩어리가 길게 끼어 있으면 이 유형이다. 그 덩어리를 손으로 가리고 진짜 주어를 찾아라.\n단 a number of(많은) + 복수 명사는 of 덩어리를 가리면 안 된다. a number of는 '많은'이라는 꾸밈말이고 뒤의 복수 명사가 주어라서 복수 동사를 쓴다 (g16)."
   },
   {
     id: "g03", order: 3, title: "시제", weight: "빈출",
@@ -62,8 +64,8 @@ window.GRAMMAR = [
       { good: "I have taught here for three years.", bad: "I teach here for three years.", note: "for + 기간, 과거부터 지금까지 이어짐" },
       { good: "He will call you tomorrow.", bad: "He called you tomorrow.", note: "tomorrow는 미래" }
     ],
-    trap: "since + 시점(~이래로)은 현재완료와 짝을 이룬다. for + 기간은 지금까지 이어지면 현재완료, 과거에 끝났으면 과거형이다.\n(접속사 since '~때문에'는 다른 쓰임이다. g07 참고)",
-    toeicPattern: "빈칸이 동사이고 선택지가 같은 동사의 시제 변형이면, 문장에서 시간 표시어를 먼저 찾아라. yesterday·last·ago가 보이면 과거다. since와 for는 조금 더 봐야 한다. 지금까지 이어지면 현재완료, 과거에 끝났으면 과거형이다."
+    trap: "since + 시점(~이래로)은 현재완료와 짝을 이룬다. for + 기간은 지금까지 이어지면 현재완료, 과거에 끝났으면 과거형이다.\n(접속사 since '~때문에'는 다른 쓰임이다. g07 참고)\nif·when·before·after·until·as soon as로 시작하는 조건·시간 부사절 안에서는 tomorrow가 있어도 will 없이 현재형을 쓴다. will은 주절에 쓴다. 단 '~인지'라는 뜻의 if·when 절에는 will이 올 수 있다 (g11).\nWhen the manager arrives tomorrow, we will start. (will arrive ❌, g11 참고)",
+    toeicPattern: "빈칸이 동사이고 선택지가 같은 동사의 시제 변형이면, 문장에서 시간 표시어를 먼저 찾아라. yesterday·last·ago가 보이면 과거다. 조동사 뒤라면 과거를 have p.p.로 나타낸다 (should have been sent, g13). since와 for는 조금 더 봐야 한다. 지금까지 이어지면 현재완료, 과거에 끝났으면 과거형이다."
   },
   {
     id: "g04", order: 4, title: "능동 / 수동", weight: "빈출",
@@ -79,17 +81,17 @@ window.GRAMMAR = [
       { good: "They painted the lobby.", bad: "They were painted the lobby.", note: "사람은 칠하는 쪽" },
       { good: "The garden will be watered tonight.", bad: "The garden will water tonight.", note: "정원은 물을 받는 쪽" }
     ],
-    trap: "가장 빠른 판별법은 빈칸 뒤를 보는 것이다.\n빈칸 뒤에 목적어(명사)가 있으면 능동, 없으면 수동일 확률이 높다.",
+    trap: "가장 빠른 판별법은 빈칸 뒤를 보는 것이다.\n빈칸 뒤에 목적어(명사)가 있으면 능동, 없으면 수동일 확률이 높다.\n단 arrive·happen·occur·rise·open(가게가 열다)·take place처럼 목적어를 받지 않는 동사는 수동이 없다. 목적어가 없어도 능동이다.\nThe accident happened at noon. (was happened ❌)",
     toeicPattern: "선택지에 announce / announced / was announced / announcing이 섞여 있으면 이 유형이다. 해석보다 빈칸 뒤에 명사가 있는지부터 확인하라."
   },
   {
     id: "g05", order: 5, title: "to부정사 vs 동명사", weight: "빈출",
-    oneLine: "동사 뒤에 어떤 형태가 오는지는 앞의 동사가 정한다. 전치사 뒤에 동사가 오면 -ing다.",
+    oneLine: "동사 뒤에 어떤 형태가 오는지는 앞의 동사가 정한다. 전치사 뒤에 동사가 오면 -ing다 (during은 예외, g07).",
     table: { headers: ["뒤에 오는 형태", "해당 동사"], rows: [
       ["뒤에 to부정사가 오는 동사", "want, plan, decide, hope, agree, need, offer, afford, refuse, promise, expect, fail"],
       ["뒤에 -ing가 오는 동사", "enjoy, finish, avoid, consider, recommend, suggest, mind, keep, postpone, quit"],
       ["둘 다 가능 · 뜻이 같다", "like, love, prefer, start, begin, continue"],
-      ["둘 다 가능 · 뜻이 다르다", "remember, forget, stop, regret (to는 앞으로 할 일, -ing는 이미 한 일)"]
+      ["둘 다 가능 · 뜻이 다르다", "remember, forget, regret (to는 앞으로 할 일, -ing는 이미 한 일) / stop (to는 ~하려고 멈추다, -ing는 ~하던 것을 그만두다)"]
     ] },
     examples: [
       { good: "I want to go.", bad: "I want going.", note: "want 뒤에는 to부정사" },
@@ -100,16 +102,19 @@ window.GRAMMAR = [
       { good: "We stopped printing the catalog, so it is now online only.", bad: "We stopped to print the catalog, so it is now online only.", note: "stop -ing는 '~하던 것을 그만두다', stop to는 '~하려고 멈추다'" },
       { good: "Painting the fence took all weekend.", bad: "Paint the fence took all weekend.", note: "주어 자리에는 동사원형을 쓸 수 없다" }
     ],
-    trap: "이 표는 '빈칸 바로 뒤'에 무엇이 오는지를 가리는 기준이다. that절처럼 다른 구조를 따로 갖는 동사도 있다.\n전치사 뒤에 동사가 오면 -ing다. 특히 to가 전치사인 표현에 주의한다. 이때 to 뒤에 동사원형을 쓰면 틀린다.\nlook forward to / be used to / be committed to / be opposed to / in addition to / contribute to\nI look forward to meeting you. (to meet ❌)\nbe used to -ing(~에 익숙하다)와 used to + 동사원형(과거에 ~했다)은 다른 표현이다.\n단 let·make·have + 목적어 뒤에는 동사원형이 온다. Please let me know. (to know ❌)\nneed처럼 -ing도 가능한 동사가 있다. The car needs washing.",
+    trap: "이 표는 '빈칸 바로 뒤'에 무엇이 오는지를 가리는 기준이다. that절처럼 다른 구조를 따로 갖는 동사도 있다.\n전치사 뒤에 동사가 오면 -ing다. 단 during은 -ing를 받지 않는다. 동작을 말할 때는 while -ing로 쓴다 (during waiting ❌ / while waiting ⭕, g07).\n특히 to가 전치사인 표현에 주의한다. 이때 to 뒤에 동사원형을 쓰면 틀린다.\nlook forward to / be used to / be committed to / be opposed to / in addition to / contribute to\nEveryone contributed to planning the party. (to plan ❌)\nbe used to -ing(~에 익숙하다)와 used to + 동사원형(과거에 ~했다)은 다른 표현이다.\n단 let·make·have + 목적어 뒤에는 동사원형이 온다. The boss made us wait. (to wait ❌)\nneed처럼 -ing도 가능한 동사가 있다. The car needs washing.",
     toeicPattern: "빈칸 앞을 먼저 본다. 전치사면 -ing, 동사면 그 동사가 어느 쪽을 받는지 표에서 찾는다. 선택지는 send / sends / sending / to send처럼 한 동사의 네 형태로 나온다.\nlook forward to, be committed to처럼 to가 전치사인 경우는 뒤에 -ing가 오므로 따로 외워야 한다. Part 6 이메일 맺음말의 단골이다."
   },
   {
     id: "g06", order: 6, title: "전치사", weight: "빈출",
-    oneLine: "in(넓음) → on(면·날짜) → at(점·시각) 순으로 범위가 좁아진다.",
+    oneLine: "시각과 장소는 in(넓음) → on(면·날짜) → at(점·시각) 순으로 범위가 좁아진다. 기간과 마감은 for·during·since·by·until을 뜻으로 가른다.",
     table: { headers: ["전치사", "시간", "장소"], rows: [
-      ["in", "월·연도·계절 (in May)", "넓은 공간·건물 안 (in Seoul, in the room)"],
+      ["in", "월·연도·계절 (in May) / 기간 뒤 (in two weeks = 2주 뒤에)", "넓은 공간·건물 안 (in Seoul, in the room)"],
       ["on", "날짜·요일 (on Monday)", "표면 위 (on the desk, on Main Street)"],
-      ["at", "시각 (at 7 p.m.)", "지점·특정 위치 (at the station, at the corner)"]
+      ["at", "시각 (at 7 p.m.)", "지점·특정 위치 (at the station, at the corner)"],
+      ["for / during", "for + 숫자 기간 (for two weeks) / during + 사건·기간 명사 (during the holidays)", "—"],
+      ["since", "시점부터 지금까지 (since 2015). 현재완료와 함께 쓴다 (g03)", "—"],
+      ["by / until", "by = 그때까지 끝낸다 (마감) / until = 그때까지 계속한다", "—"]
     ] },
     examples: [
       { good: "The meeting is on Monday.", bad: "The meeting is in Monday.", note: "요일은 on" },
@@ -117,7 +122,7 @@ window.GRAMMAR = [
       { good: "The flight was delayed for three hours.", bad: "The flight was delayed during three hours.", note: "for + 숫자 기간" }
     ],
     trap: "by와 until을 구분하라.\nby 5 = 5시 전까지 끝내라 (마감)\nuntil 5 = 5시까지 계속하라 (지속)\n뜻이 완전히 다르다.",
-    toeicPattern: "빈칸 뒤 명사를 보고 고른다. 숫자 기간(two weeks)이면 for, 사건이나 기간을 가리키는 명사(the meeting, the holidays)면 during이다."
+    toeicPattern: "빈칸 뒤 명사를 보고 고른다. 숫자 기간(two weeks)이면 for, 사건이나 기간을 가리키는 명사(the meeting, the holidays)면 during이다.\n단 숫자 기간 앞이라도 '그만큼 지나서'라는 뜻이면 in이다. 미래 문장에 자주 나온다. The results will be ready in two weeks. (2주 뒤에) / for two weeks (2주 동안)\n뒤가 연도·날짜 같은 시점이고 지금까지 이어지면 since다."
   },
   {
     id: "g07", order: 7, title: "접속사 vs 전치사", weight: "최다 빈출",
@@ -137,7 +142,7 @@ window.GRAMMAR = [
   },
   {
     id: "g08", order: 8, title: "관계대명사", weight: "보통",
-    oneLine: "앞의 명사가 사람이면 who, 사물이면 which, 둘 다 되면 that이다.",
+    oneLine: "빈칸 뒤를 보고 주격·목적격·소유격을 먼저 가른다. 그다음 앞의 명사가 사람이면 who(목적격 whom), 사물이면 which를 쓴다. that은 둘 다 되고, 소유격 whose는 사람·사물 모두에 쓴다.",
     table: { headers: ["앞의 명사", "주격", "목적격", "소유격"], rows: [
       ["사람", "who", "whom / who", "whose"],
       ["사물", "which", "which", "whose"],
@@ -164,8 +169,8 @@ window.GRAMMAR = [
       { good: "This book is mine.", bad: "This book is my.", note: "뒤에 명사가 없으면 소유대명사" },
       { good: "She fixed the printer herself.", bad: "She fixed the printer her.", note: "주어와 같은 대상 → 재귀대명사" }
     ],
-    trap: "its와 it's를 구분하라.\nits = 그것의 (소유격)\nit's = it is의 줄임\n아포스트로피가 있으면 it is다. 위 ①~④로 풀리지 않고 '~이다'로 해석되면 it's를 의심하라.\nIt's a good idea. (It is a good idea.)",
-    toeicPattern: "순서대로 보면 된다.\n① 빈칸 바로 뒤에 관사(a/the) 없이 명사가 오면 소유격 (my, its, their)\n② 목적어가 주어와 같은 사람이면 재귀대명사 (himself)\n③ 그 밖에 주어 자리면 주격, 동사·전치사의 목적어 자리면 목적격 (be동사 뒤는 목적어가 아니다)\n④ 명사 없이 '~의 것'을 뜻하면 소유대명사 (mine, theirs)"
+    trap: "its와 it's를 구분하라.\nits = 그것의 (소유격)\nit's = it is의 줄임\n아포스트로피가 있으면 it is다. 위 ①~④로 풀리지 않고 '~이다'로 해석되면 it's를 의심하라.\nIt's too late to call him. (It is too late to call him.)",
+    toeicPattern: "순서대로 보면 된다.\n① 빈칸 뒤에 관사(a/the) 없이 명사가 오면 소유격 (my, its, their). 사이에 형용사가 끼어도 같다 (their new office)\n② 목적어가 주어와 같은 사람이거나, '직접·혼자서'라는 뜻으로 주어를 강조하면 재귀대명사 (himself, by herself)\n③ 그 밖에 주어 자리면 주격, 동사·전치사의 목적어 자리면 목적격 (be동사 뒤는 목적어가 아니다)\n④ 명사 없이 '~의 것'을 뜻하면 소유대명사 (mine, theirs)"
   },
   {
     id: "g10", order: 10, title: "비교급 / 최상급", weight: "빈출",
@@ -177,7 +182,8 @@ window.GRAMMAR = [
       ["원급 비교", "as + 원급 + as: as soon as possible"],
       ["최상급 범위", "the + 최상급 + in/of 범위: the largest in the country"],
       ["비교급 강조", "much / far / even / still / a lot + 비교급: much cheaper (very cheaper ❌)"],
-      ["배수", "배수 + as + 원급 + as: twice as large as"]
+      ["배수", "배수 + as + 원급 + as: twice as large as"],
+      ["덜 ~한", "less + 원급 + than: less expensive than (긴 단어·짧은 단어 모두 less를 쓴다)"]
     ] },
     examples: [
       { good: "This bag is lighter than that one.", bad: "This bag is more light than that one.", note: "짧은 단어는 -er" },
@@ -195,7 +201,7 @@ window.GRAMMAR = [
     oneLine: "if절의 시제가 핵심이다. 실제로 가능한 조건이면 현재형, 실제와 반대면 한 칸 뒤로 민다.",
     table: { headers: ["종류", "if절", "주절"], rows: [
       ["단순 조건 (실제 가능)", "If + 현재", "will + 동사원형 (또는 명령문)"],
-      ["현재 사실의 반대", "If + 과거", "would + 동사원형"],
+      ["현재 사실의 반대", "If + 과거 (be동사는 주어와 상관없이 were)", "would + 동사원형"],
       ["과거 사실의 반대", "If + had p.p.", "would have p.p."]
     ] },
     examples: [
@@ -203,37 +209,37 @@ window.GRAMMAR = [
       { good: "If we had a bigger budget, we would hire more staff.", bad: "If we have a bigger budget, we would hire more staff.", note: "현재 사실의 반대 → 과거형" },
       { good: "If I had known, I would have told you.", bad: "If I knew, I would have told you.", note: "과거 사실의 반대 → had p.p." }
     ],
-    trap: "조건을 뜻하는 if절 안에는 will을 쓰지 않는다. 미래를 말하더라도 현재형을 쓴다.\n단 '~인지'라는 뜻의 if는 조건이 아니라서 will이 올 수 있다.\nLet me know if he will come. (그가 올지 알려주세요)",
+    trap: "조건을 뜻하는 if절 안에는 will을 쓰지 않는다. 미래를 말하더라도 현재형을 쓴다.\n단 '~인지'라는 뜻의 if는 조건이 아니라서 will이 올 수 있다.\nI'm not sure if Mina will join us. (미나가 올지 모르겠다)",
     toeicPattern: "토익에서는 단순 조건(If + 현재, will)이 가장 많이 나온다. if절에 will이 들어간 선택지는 거의 오답이다."
   },
   {
     id: "g12", order: 12, title: "어순 · 기타", weight: "보통",
-    oneLine: "영어 문장에는 주어와 동사가 반드시 있어야 하고, 꾸밈말은 정해진 자리에 간다.",
+    oneLine: "영어 문장에는 주어와 동사가 있어야 하고(명령문만 주어 you를 생략한다), 꾸밈말은 정해진 자리에 간다.",
     table: { headers: ["항목", "규칙"], rows: [
       ["기본 어순", "주어 + 동사 + 목적어"],
       ["빈도부사", "be동사 뒤 / 일반동사 앞 / 조동사 뒤 (always, often, never)"],
       ["간접의문문", "의문사 + 주어 + 동사 (의문문 어순이 아님)"],
-      ["간접의문문 (의문사가 주어)", "의문사 + 동사 — Do you know who called?"]
+      ["간접의문문 (의문사가 주어)", "의문사 + 동사 — Do you know who wrote this?"]
     ] },
     examples: [
       { good: "She is usually busy on Mondays.", bad: "She usually is busy on Mondays.", note: "be동사 뒤" },
       { good: "We asked how long the repair would last.", bad: "We asked how long would the repair last.", note: "문장 안에 들어가면 평서문 어순" },
       { good: "I am ready.", bad: "I ready.", note: "형용사 앞에는 be동사가 필요하다" }
     ],
-    trap: "한국어는 주어나 동사를 생략해도 말이 되지만 영어는 안 된다.\n말하기 전에 '내 문장에 동사가 있나'를 확인하는 습관을 들여라.",
+    trap: "한국어는 주어나 동사를 생략해도 말이 되지만 영어는 안 된다.\n말하기 전에 '내 문장에 동사가 있나'를 확인하는 습관을 들여라.\n주어를 빼는 것은 명령문뿐이다. 명령문은 동사원형으로 시작한다 (Please call me back.).\nand로 동사 둘을 이을 때 뒤에 주어를 다시 쓰지 않는 것(She will check the room and call you.)은 빼는 것이 아니라 앞의 주어를 함께 쓰는 것이다 (g13 병렬).",
     toeicPattern: "간접의문문 어순은 Part 5와 6에 꾸준히 나온다. 의문사 뒤가 '주어 + 동사' 순인 선택지를 고르면 된다."
   },
   {
     id: "g13", order: 13, title: "조동사 + 동사원형", weight: "빈출",
     oneLine: "조동사 뒤에는 어떤 경우에도 동사원형이 온다. 주어가 3인칭 단수여도 -s를 붙이지 않는다.",
     table: { headers: ["조동사", "뜻", "예"], rows: [
-      ["can", "~할 수 있다 / ~해도 된다", "You can park in the west lot."],
-      ["will", "~할 것이다", "The shipment will arrive on Friday."],
-      ["should", "~해야 한다 (권고)", "You should confirm the booking."],
-      ["must", "~해야 한다 (의무) / ~임이 틀림없다", "All visitors must sign in."],
+      ["can", "~할 수 있다 / ~해도 된다", "You can park behind the building."],
+      ["will", "~할 것이다", "The package will arrive tomorrow."],
+      ["should", "~해야 한다 (권고)", "You should check the weather first."],
+      ["must", "~해야 한다 (의무) / ~임이 틀림없다", "Drivers must wear seat belts."],
       ["may / might", "~해도 된다 / ~일 수도 있다", "Prices may change without notice."],
-      ["would", "~하겠다 (정중), ~할 것이다", "Would you send me the file?"],
-      ["could", "~해 주시겠어요, ~할 수 있었다", "Could you confirm the meeting time?"]
+      ["would", "~하겠다 (정중), ~할 것이다", "Would you open the window?"],
+      ["could", "~해 주시겠어요, ~할 수 있었다", "Could you call me back later?"]
     ] },
     examples: [
       { good: "The technician will inspect the machine tomorrow.", bad: "The technician will inspects the machine tomorrow.", note: "will 뒤 → 동사원형 (inspects ❌ / inspecting ❌)" },
@@ -266,8 +272,8 @@ window.GRAMMAR = [
       { good: "She speaks neither French nor German.", bad: "She speaks neither French or German.", note: "neither는 nor와 짝" },
       { good: "Not only the hotel but also the restaurants were fully booked.", bad: "Not only the hotel and also the restaurants were fully booked.", note: "not only는 but also와 짝. 동사는 B(the restaurants)에 맞춘다" }
     ],
-    trap: "짝을 섞으면 안 된다. either ... nor ❌ / neither ... or ❌\n수 일치가 짝마다 다르다.\nboth A and B는 복수 동사 (Both the printer and the scanner have been repaired.)\neither A or B / neither A nor B / not only A but also B는 B에 맞춘다 (Neither the supervisor nor the technicians are available.)\n단 nor 없이 쓰는 neither는 g16(수량 표현) 규칙대로 단수다. Neither of the proposals was approved. / Neither proposal was approved.\nbetween A and B의 and를 or로 바꿀 수 없다.",
-    toeicPattern: "빈칸 앞에 either·neither·not only·both가 보이면 짝을 찾는 문제다. 뜻을 읽지 않고 짝만 보고 고를 수 있으니 이것부터 확인한다.\n짝 신호가 없고 선택지가 and / but / or / nor 네 개면 문법 문제가 아니라 뜻 문제다. 앞뒤 절이 같은 방향인지 뒤집히는지를 먼저 본다."
+    trap: "짝을 섞으면 안 된다. either ... nor ❌ / neither ... or ❌\n수 일치가 짝마다 다르다.\nboth A and B는 복수 동사 (Both the printer and the scanner have been cleaned.)\neither A or B / neither A nor B / not only A but also B는 B에 맞춘다 (Neither the supervisor nor the technicians know the password.)\n단 nor 없이 쓰는 neither는 g16(수량 표현) 규칙대로 단수다. Neither of the two hotels was full. / Neither hotel was full.\nbetween A and B의 and를 or로 바꿀 수 없다.",
+    toeicPattern: "빈칸 앞에 either·neither·not only·both가 보이면 짝을 찾는 문제다. 빈칸이 짝 자리(or·nor·but·and)면 뜻을 읽지 않고 짝으로 고를 수 있으니 이것부터 확인한다. 빈칸이 동사 자리면 짝에 따라 수를 맞춘다 (both는 복수, 나머지는 B에 맞춘다).\n짝 신호가 없고 선택지가 and / but / or / nor 네 개면 문법 문제가 아니라 뜻 문제다. 앞뒤 절이 같은 방향인지 뒤집히는지를 먼저 본다."
   },
   {
     id: "g15", order: 15, title: "분사", weight: "빈출",
@@ -276,8 +282,8 @@ window.GRAMMAR = [
       ["명사 앞 (능동)","-ing + 명사","the rising cost (비용이 오른다)"],
       ["명사 앞 (수동)","p.p. + 명사","the attached file (파일이 첨부된다)"],
       ["명사 뒤","명사 + 분사 + 딸린 말","the form signed by the manager"],
-      ["분사구문 (능동)","-ing ~, 주절","Having reviewed the data, we revised the plan."],
-      ["분사구문 (수동)","p.p. ~, 주절","Delayed by snow, the shipment arrived on Monday."],
+      ["분사구문 (능동)","-ing ~, 주절","Having reviewed the data, we changed the plan."],
+      ["분사구문 (수동)","p.p. ~, 주절","Delayed by snow, the train reached Busan at noon."],
       ["감정 동사","사물·일엔 -ing, 사람엔 p.p.","an exciting offer / the excited customers"],
       ["전치사처럼 굳은 분사","given, including, following, regarding + 명사","Given the delay, we rescheduled the launch."]
     ] },
@@ -294,7 +300,7 @@ window.GRAMMAR = [
   },
   {
     id: "g16", order: 16, title: "수량 표현", weight: "빈출",
-    oneLine: "셀 수 있는 명사에 붙는지, 셀 수 없는 명사에 붙는지로 거의 다 갈린다.",
+    oneLine: "빈칸 뒤 명사가 셀 수 있는 복수인지, 셀 수 없는지, 단수인지로 고른다. 수량 표현이 주어에 붙으면 동사의 수도 그 표현이 정한다.",
     table: { headers: ["붙는 명사","표현","예"], rows: [
       ["셀 수 있는 복수","many, few, a few, several, both, a number of","many orders"],
       ["셀 수 없는 명사","much, little, a little, a great deal of, a large amount of","much time"],
@@ -309,7 +315,7 @@ window.GRAMMAR = [
       { good: "A few seats are left for the evening show.", bad: "A little seats are left for the evening show.", note: "a few는 셀 수 있는 명사에 붙고 '몇 개 있다'. Few seats are left.는 '거의 없다'" },
       { good: "A number of trucks are waiting at the gate.", bad: "A number of trucks is waiting at the gate.", note: "a number of(많은)는 복수 동사. The number of trucks is small.은 '수 그 자체'라 단수" }
     ],
-    trap: "a few / a little(약간 있다)과 few / little(거의 없다)은 뜻이 반대다. a가 붙으면 긍정이다.\neach, every, another 뒤에는 단수 명사가 오고 동사도 단수다. each of the + 복수 명사도 동사는 단수다. Each of the applicants is required ... (are ❌)\na number of + 복수 명사는 복수 동사, the number of + 복수 명사는 단수 동사다. the가 붙으면 '수 그 자체'라서 단수다.\neither, neither 뒤에 바로 명사나 of가 오면 이 유형이고 단수 취급한다. Neither of the proposals was approved. 뒤에 or / nor가 이어지는 either A or B, neither A nor B는 상관 접속사(g14)라서 동사를 B에 맞춘다.\n셀 수 있는 명사의 비교는 fewer, 셀 수 없는 명사는 less다. fewer complaints / less paperwork. 단 less + 형용사(less expensive)는 비교급(g10)이다.",
+    trap: "a few / a little(약간 있다)과 few / little(거의 없다)은 뜻이 반대다. a가 붙으면 긍정이다.\neach, every, another 뒤에는 단수 명사가 오고 동사도 단수다. each of the + 복수 명사도 동사는 단수다. Each of the drivers has a key. (have ❌)\na number of + 복수 명사는 복수 동사, the number of + 복수 명사는 단수 동사다. the가 붙으면 '수 그 자체'라서 단수다.\neither, neither 뒤에 바로 명사나 of가 오면 이 유형이고 단수 취급한다. Neither of the two hotels was full. 뒤에 or / nor가 이어지는 either A or B, neither A nor B는 상관 접속사(g14)라서 동사를 B에 맞춘다.\n셀 수 있는 명사의 비교는 fewer, 셀 수 없는 명사는 less다. fewer complaints / less paperwork. 단 less + 형용사(less expensive)는 비교급(g10)이다.",
     toeicPattern: "빈칸 뒤 명사가 단수인지 복수인지 셀 수 없는지를 먼저 본다. 선택지가 much / many / few / every처럼 수량 표현 넷이면 이 유형이다.\na number of / the number of, each of처럼 수량 표현이 주어에 붙으면 동사의 수까지 함께 묻는다. 선택지가 is / are처럼 동사로만 나와도 주어 앞의 수량 표현부터 본다."
   }
 ];
@@ -340,7 +346,7 @@ window.GRAMMAR_QUIZ = [
   { id: "q022", ruleId: "g03", question: "She ____ for this company since 2019.", choices: ["works", "worked", "has worked", "will work"], answer: 2, explanation: "since + 시점은 현재완료와 짝을 이룬다. 2019년부터 지금까지 이어진다는 뜻이다.", difficulty: "medium" },
   { id: "q023", ruleId: "g03", question: "We ____ the new system next month.", choices: ["launching", "launched", "have launched", "will launch"], answer: 3, explanation: "next month는 미래 시점이므로 will + 동사원형.", difficulty: "easy" },
   { id: "q024", ruleId: "g03", question: "I ____ the report when the manager called.", choices: ["was writing", "am writing", "have written", "write"], answer: 0, explanation: "과거의 한 시점에 진행 중이던 일은 과거진행형(was/were -ing)으로 쓴다.", difficulty: "medium" },
-  { id: "q025", ruleId: "g03", question: "The team ____ the project two weeks ago.", choices: ["completes", "completed", "has completed", "will complete"], answer: 1, explanation: "ago가 있으면 무조건 과거형이다. 현재완료와 절대 함께 쓰지 않는다.", difficulty: "easy" },
+  { id: "q025", ruleId: "g03", question: "The team ____ the project two weeks ago.", choices: ["completes", "completed", "has completed", "will complete"], answer: 1, explanation: "ago(~ 전에)는 이미 끝난 과거 시점이라 현재완료와 함께 쓰지 않는다. 여기서는 과거형 completed.", difficulty: "easy" },
   { id: "q026", ruleId: "g03", question: "Mr. Lee ____ in Seoul for ten years before moving to Busan.", choices: ["lives", "lived", "has lived", "will live"], answer: 1, explanation: "before moving으로 이미 끝난 일임이 드러난다. for가 있어도 과거에 끝났으면 과거형이다.", difficulty: "hard" },
   { id: "q027", ruleId: "g01", question: "The office is ____ undergoing renovation.", choices: ["current", "currently", "currency", "current time"], answer: 1, explanation: "현재진행형과 어울리는 부사 currently가 와야 한다. 동사를 꾸미므로 부사형이다.", difficulty: "medium" },
   { id: "q028", ruleId: "g03", question: "We have not received your payment ____.", choices: ["already", "yet", "ago", "soon"], answer: 1, explanation: "yet은 부정문에서 '아직'이라는 뜻으로 현재완료와 짝을 이룬다.", difficulty: "medium" },
@@ -432,8 +438,8 @@ window.GRAMMAR_QUIZ = [
   { id: "q114", ruleId: "g12", question: "He ____ checks his email in the morning.", choices: ["always", "is always", "always is", "does always"], answer: 0, explanation: "빈도부사 always는 일반동사 앞에 온다.", difficulty: "easy" },
   { id: "q115", ruleId: "g12", question: "I wonder why ____ the meeting.", choices: ["did she cancel", "she canceled", "she did cancel", "canceled she"], answer: 1, explanation: "간접의문문이므로 주어 + 동사 순서다.", difficulty: "medium" },
   { id: "q116", ruleId: "g12", question: "The manager ____ busy this week.", choices: ["is very", "very is", "being very", "very being"], answer: 0, explanation: "형용사 앞에는 be동사가 필요하고, very는 형용사 바로 앞에 온다.", difficulty: "easy" },
-  { id: "q117", ruleId: "g12", question: "____ you please confirm the date?", choices: ["Could", "Must", "Should", "Shall"], answer: 0, explanation: "정중한 요청은 Could you ~? 로 시작한다.", difficulty: "easy" },
-  { id: "q118", ruleId: "g12", question: "She ____ to the conference every year.", choices: ["goes often", "often goes", "going often", "often going"], answer: 1, explanation: "빈도부사 often은 일반동사 앞에 온다.", difficulty: "medium" },
+  { id: "q117", ruleId: "g13", question: "____ you please confirm the date?", choices: ["Could", "Must", "Should", "Shall"], answer: 0, explanation: "정중한 요청은 Could you ~? 로 시작한다. must·should는 의무·권고라 부탁하는 말이 아니고, Shall you ~?라고는 쓰지 않는다.", difficulty: "easy" },
+  { id: "q118", ruleId: "g12", question: "She ____ to the gym after work.", choices: ["goes often", "often goes", "going often", "often going"], answer: 1, explanation: "빈도부사 often은 일반동사 앞에 온다.", difficulty: "medium" },
   { id: "q119", ruleId: "g12", question: "Please let me know ____ the report is ready.", choices: ["does when", "when", "when does", "that when"], answer: 1, explanation: "뒤에 주어+동사가 이어지므로 접속사 when 하나면 된다.", difficulty: "medium" },
   { id: "q120", ruleId: "g02", question: "____ there any questions about the agenda?", choices: ["Is", "Are", "Do", "Does"], answer: 1, explanation: "There 구문은 뒤의 명사가 주어다. questions가 복수이므로 Are.", difficulty: "medium" },
   { id: "q121", ruleId: "g13", question: "All visitors must ____ in at the front desk.", choices: ["signs", "signing", "sign", "signed"], answer: 2, explanation: "조동사 must 뒤에는 동사원형이 온다. sign in = 이름을 적고 들어가다.", difficulty: "easy" },
@@ -488,7 +494,7 @@ window.GRAMMAR_QUIZ = [
   { id: "q170", ruleId: "g15", question: "We expect ____ results from the new campaign.", choices: ["encourage", "encouraged", "encouragement", "encouraging"], answer: 3, explanation: "결과(일)가 고무적인 쪽이므로 -ing. 감정 동사는 사물·일에 -ing를 쓴다.", difficulty: "medium" },
   { id: "q171", ruleId: "g16", question: "____ applicants submitted their résumés before the deadline.", choices: ["Much", "Every", "Many", "A little"], answer: 2, explanation: "applicants는 셀 수 있는 복수 명사이므로 many. much·a little은 셀 수 없는 명사에, every는 단수 명사에 붙는다.", difficulty: "easy" },
   { id: "q172", ruleId: "g16", question: "There is not ____ time left before the deadline.", choices: ["many", "much", "few", "several"], answer: 1, explanation: "time은 셀 수 없는 명사이므로 much. many·few·several은 셀 수 있는 복수 명사에 붙는다.", difficulty: "easy" },
-  { id: "q173", ruleId: "g16", question: "____ employee must complete the safety training.", choices: ["All", "Many", "Few", "Each"], answer: 3, explanation: "빈칸 뒤 employee가 단수 명사이므로 each. all·many·few는 복수 명사에 붙는다.", difficulty: "easy" },
+  { id: "q173", ruleId: "g16", question: "____ employee must complete the safety training.", choices: ["All", "Many", "Few", "Each"], answer: 3, explanation: "빈칸 뒤 employee가 단수 명사이므로 each. all·many·few는 셀 수 있는 명사라면 복수형에 붙는다 (all employees).", difficulty: "easy" },
   { id: "q174", ruleId: "g16", question: "Only ____ of the rooms are still available, so book early.", choices: ["a few", "a little", "much", "every"], answer: 0, explanation: "rooms는 셀 수 있는 복수이므로 a few. only a few = 몇 개밖에 안 되는. every는 of와 함께 쓰지 않는다.", difficulty: "medium" },
   { id: "q175", ruleId: "g16", question: "A number of packages ____ damaged during shipping.", choices: ["was", "is", "were", "has"], answer: 2, explanation: "a number of(많은) + 복수 명사는 복수 동사를 쓴다.", difficulty: "medium" },
   { id: "q176", ruleId: "g16", question: "____ number of employees have asked about the new parking policy.", choices: ["The", "A", "Much", "Every"], answer: 1, explanation: "동사 have가 복수이므로 a number of(많은). the number of는 '수 그 자체'라서 단수 동사(has)를 쓴다.", difficulty: "hard" },

@@ -792,3 +792,163 @@ README '검사가 실제로 잡는지 확인할 때'에 적었다. 요약하면 
 | 9 | A | passport: 오답 password는 그대로 두고 예문을 '탑승구에서 여권과 탑승권을 보여 주세요'로 바꿈 | 오답을 바꾸는 쪽이 나은지 |
 | 10 | C | 오답 뜻 가운데 영국 쓰임을 적은 것: flat '평평한 / 아파트(영국)', underground '지하의 / 지하철(영국)' | 미국식 통일 원칙에 맞춰 영국 쓰임을 뺄지 |
 
+# 3차 정리 — 오답 기준 확정, "말이 안 돼서" 지워지는 오답 교체 (2026-11-20)
+
+## 0-1 오답 기준
+
+- 통과 규칙: **790단어장 표제어 ∪ 그 파생형 ∪ 기초 목록**. 셋 다 아니면 교체 대상이다.
+- 기초 목록(중학교 교과서 수준, 1,639개)과 파생형 판정 규칙은 `docs/basic-words.md`에 있다.
+- 남은 교체 대상은 `node tools/list-unknown-distractors.js`로 본다.
+- 숫자 (TOEIC Day 1부터 24까지. 생존 트랙은 일부러 틀린 표현이라 제외)
+  - 기초 목록을 만든 직후: 519세트, 오답 811개
+  - 아래 0-2 교체 뒤: **505세트, 오답 775개**
+- "수십 세트" 규모가 아니라서 이번에는 교체하지 않고 숫자만 확인했다.
+
+## 0-2 "말이 안 돼서" 지워지는 오답 (126세트)
+
+- 동물·음식·몸·가구·놀이·날씨·가족처럼 업무 문장에 나올 수 없는 영역의 오답을 찾아, 790단어장의 업무 단어로 바꿨다.
+- 철자가 비슷한 업무 단어가 없으면 철자를 포기하고 같은 주제의 단어를 썼다.
+- 새 단어는 빈칸에 넣어 문법은 되더라도 뜻이 통하지 않는지 확인했다. 통하는 후보는 이유 칸에 "통해서 제외"로 적었다.
+- 새 단어가 모두 790단어장 표제어라 뜻은 표제어 뜻을 그대로 쓴다 (뜻 누락 0).
+- v255의 placeholder도 이때 바꿨다.
+
+| id | 단어 | 전 | 후 | 이유 |
+|---|---|---|---|---|
+| v031 | proposal | proportion, protein, purpose | proportion, profit, purpose | protein→profit |
+| v054 | brief | bright, brave, bread | bright, brave, binding | bread→binding |
+| v063 | candidate | candle, candy, camera | capacity, campaign, coupon | candle·candy·camera→capacity·campaign·coupon (사람 명사는 다 통해서 사물 업무어) |
+| v075 | launch | lunch, lecture, lounge | waive, lecture, lounge | lunch→waive (lease·label은 통해서 제외) |
+| v106 | eligible | elegant, electric, elephant | elegant, electric, liable | elephant→liable |
+| v137 | pending | permanent, persistent, penguin | permanent, persistent, punctual | penguin→punctual |
+| v142 | streamline | strengthen, structure, stream | strengthen, structure, submit | stream→submit (standardize·revise는 통해서 제외) |
+| v143 | tentative | territorial, technical, tennis | territorial, technical, thorough | tennis→thorough (temporary는 통해서 제외) |
+| v169 | reference | reflection, refrain, refrigerator | reflection, refrain, refund | refrigerator→refund (referral은 통해서 제외) |
+| v173 | performance | persistence, perfume, pepper | persistence, pharmacy, prototype | perfume·pepper→pharmacy·prototype (permit·penalty는 통해서 제외) |
+| v181 | minutes | agenda, notices, mittens | agenda, notices, milestone | mittens→milestone |
+| v183 | chairperson | champagne, chart, charger | chain, chart, charger | champagne→chain |
+| v186 | projector | protector, protest, protein | protector, protest, probation | protein→probation |
+| v188 | brainstorm | breakthrough, breakdown, breakfast | breakthrough, breakdown, restock | breakfast→restock (brief·sponsor는 통해서 제외) |
+| v200 | summary | salary, surgery, summer | salary, surgery, surplus | summer→surplus (survey는 통해서 제외) |
+| v204 | punctual | punctuation, particular, punch | punctuation, particular, pending | punch→pending |
+| v213 | brand | blend, board, bread | blend, board, breach | bread→breach |
+| v218 | trend | trade, treat, tray | trade, treat, tax | tray→tax (target은 통해서 제외) |
+| v220 | brochure | branch, budget, brush | branch, budget, breach | brush→breach |
+| v221 | flyer | filter, feature, flavor | filter, feature, fare | flavor→fare |
+| v229 | loyalty | royalty, liability, lottery | royalty, liability, leak | lottery→leak (lodging·loan은 통해서 제외) |
+| v230 | subscriber | supplier, successor, submarine | supplier, successor, supervisor | submarine→supervisor (subscription은 통해서 제외) |
+| v238 | forecast | footnote, football, forehead | footnote, forklift, freight | football·forehead→forklift·freight |
+| v248 | fiscal | physical, facial, famous | physical, feasible, famous | facial→feasible (annual은 통해서 제외) |
+| v255 | shareholder | shoulder, placeholder, sharpener | shelter, shelf, shortage | shoulder·placeholder·sharpener→shelter·shelf·shortage (사람 명사는 다 통해서 사물 업무어) |
+| v262 | payroll | payable, parcel, pillow | payable, parcel, passport | pillow→passport (personnel은 통해서 제외) |
+| v263 | tax | task, text, tea | task, text, tip | tea→tip (tariff·fee는 통해서 제외. tip은 '정부로 간다'에서 뜻으로 지워진다) |
+| v277 | lobby | hobby, lobster, laptop | hobby, loan, laptop | lobster→loan (lodging은 통해서 제외) |
+| v278 | concierge | conference, concert, container | conference, contract, container | concert→contract |
+| v286 | visa | visit, vase, vision | visit, venue, vision | vase→venue |
+| v287 | boarding | bordering, bowling, borrowing | bordering, brand, borrowing | bowling→brand (training은 통해서 제외) |
+| v289 | overbook | overlook, overeat, overcook | overlook, overlap, oversee | overeat·overcook→overlap·oversee |
+| v296 | traveler | trailer, tractor, tracker | trend, turnover, treatment | trailer·tractor·tracker→trend·turnover·treatment (사람 명사는 다 통해서 사물 업무어) |
+| v298 | landmark | bookmark, benchmark, birthmark | bookmark, benchmark, landlord | birthmark→landlord |
+| v302 | assembly line | finish line, punch line, waiting line | deadline, timeline, waiting line | finish line·punch line→deadline·timeline |
+| v311 | prototype | protest, prompt, protein | protest, prompt, promotion | protein→promotion (protocol은 통해서 제외) |
+| v317 | warehouse | wholesale, warrior, wardrobe | wholesale, warranty, workforce | warrior·wardrobe→warranty·workforce |
+| v319 | operate | operator, opponent, opera | operator, opponent, overlap | opera→overlap |
+| v321 | specification | special, species, specialization | special, resignation, specialization | species→resignation (certification·specialist는 통해서 제외) |
+| v323 | supervise | supervisor, supper, summarize | supervisor, subscribe, summarize | supper→subscribe |
+| v325 | waste | waist, wasteful, west | waiver, wasteful, ward | waist·west→waiver·ward (warranty·asset은 통해서 제외) |
+| v331 | software | hardware, firewood, freeware | hardware, staff, freeware | firewood→staff (suite는 통해서 제외) |
+| v334 | database | date, daylight, daycare | date, deadline, demand | daylight·daycare→deadline·demand (device는 통해서 제외) |
+| v342 | troubleshoot | troublemaker, treasure, overseas | troublemaker, restock, overseas | treasure→restock (transfer·submit은 통해서 제외) |
+| v346 | firewall | fireplace, fireworks, firsthand | forecast, feedback, firsthand | fireplace·fireworks→forecast·feedback |
+| v347 | bandwidth | bandage, band, brand | bandage, banquet, brand | band→banquet |
+| v355 | shortcut | shortage, shortfall, short story | shortage, shortfall, shuttle | short story→shuttle (shift는 Shift 키라 제외) |
+| v356 | storage | shortage, station, statue | shortage, station, status | statue→status (staff는 통해서 제외) |
+| v358 | sync | sink, sing, sick | hire, vote, sick | sink·sing→hire·vote (renew·submit·launch는 통해서 제외) |
+| v360 | glitch | glitter, gadget, gauge | grid, gadget, gauge | glitter→grid (policy는 통해서 제외) |
+| v361 | agreement | ornament, argument, announcement | treatment, argument, announcement | ornament→treatment (attachment·agenda는 통해서 제외) |
+| v363 | terms | tennis, temples, tents | terminal, tenant, tuition | tennis·temples·tents→terminal·tenant·tuition |
+| v368 | party | partial, parent, parcel | partial, plant, parcel | parent→plant |
+| v369 | witness | wellness, window, wireless | wellness, wiring, wireless | window→wiring (waiver는 통해서 제외) |
+| v380 | waiver | waiter, water, weather | waiter, ward, waste | water·weather→ward·waste (warranty는 통해서 제외) |
+| v385 | jurisdiction | justification, juice, journey | justification, notification, orientation | juice·journey→notification·orientation |
+| v401 | concern | conference, consent, concert | conference, consent, consumer | concert→consumer (contract는 통해서 제외) |
+| v407 | status | statue, station, stadium | staff, station, surplus | statue·stadium→staff·surplus (statement·stage는 통해서 제외) |
+| v411 | rating | raincoat, railing, raising | refund, retail, raising | raincoat·railing→refund·retail |
+| v414 | goodwill | goldfish, guideline, goalkeeper | grade, guideline, grid | goldfish·goalkeeper→grade·grid (guarantee는 통해서 제외) |
+| v420 | ticket | toilet, tiger, tackle | target, tenant, tariff | toilet·tiger·tackle→target·tenant·tariff (terminal은 통해서 제외) |
+| v422 | hazard | harbor, hamster, heritage | harbor, handout, heritage | hamster→handout |
+| v429 | drill | drain, drift, dress | drain, drift, draft | dress→draft |
+| v432 | ventilation | vacation, vegetation, variation | vacation, vaccination, variation | vegetation→vaccination (insulation은 통해서 제외) |
+| v437 | signage | signature, sausage, sightseeing | signature, shortage, salary | sausage·sightseeing→shortage·salary (storage·slide는 통해서 제외) |
+| v438 | wellness | window, willingness, weakness | wholesale, willingness, weakness | window→wholesale |
+| v445 | fatigue | feature, furniture, fortune | feature, freight, fortune | furniture→freight |
+| v449 | shelter | shoulder, shampoo, sheet | shelf, shift, sheet | shoulder·shampoo→shelf·shift |
+| v451 | sustainable | suspicious, suspended, sunny | suspicious, suspended, toxic | sunny→toxic (substantial·sufficient·solar는 통해서 제외) |
+| v458 | solar | polar, sofa, soldier | polar, seasonal, valid | sofa·soldier→seasonal·valid (toxic은 통해서 제외) |
+| v465 | biodegradable | bicycle, bilingual, big | binding, bilingual, big | bicycle→binding (refundable은 통해서 제외) |
+| v470 | wind power | wind tunnel, window, windshield | wind tunnel, waiver, windshield | window→waiver (wiring·wholesale은 통해서 제외) |
+| v482 | tenant | tension, tennis, tent | tension, terms, terminal | tennis·tent→terms·terminal |
+| v484 | rent | rest, refund, rain | rest, refund, resume | rain→resume (receipt는 통해서 제외) |
+| v489 | furnished | furious, fried, funny | furious, fiscal, fragile | fried·funny→fiscal·fragile |
+| v495 | plumbing | planning, publishing, plum | planning, publishing, premium | plum→premium (plant·policy는 통해서 제외) |
+| v499 | corridor | cookie, calendar, curtain | courtesy, calendar, coverage | cookie·curtain→courtesy·coverage |
+| v503 | heating | hearing, heading, headache | hearing, heading, rating | headache→rating (lodging은 통해서 제외) |
+| v513 | booth | both, tooth, bath | both, batch, budget | tooth·bath→batch·budget (billboard는 통해서 제외) |
+| v523 | organizer | organ, organic, orange | order, organic, overtime | organ·orange→order·overtime |
+| v533 | lineup | linen, pickup, lemon | license, pickup, lease | linen·lemon→license·lease |
+| v540 | turnout | turnover, turnaround, turtle | turnover, turnaround, tuition | turtle→tuition |
+| v541 | freight | fright, fruit, free | fright, fare, free | fruit→fare |
+| v545 | packing slip | pay slip, parking slot, slipper | pay slip, parking slot, payroll | slipper→payroll |
+| v546 | pallet | ballot, palace, pilot | ballot, policy, profit | palace·pilot→policy·profit (shelf는 통해서 제외) |
+| v547 | forklift | forecast, fork, forehead | forecast, fare, feedback | fork·forehead→fare·feedback (facility·firewall·workshop은 통해서 제외) |
+| v556 | out of stock | out of touch, out of breath, out of town | out of touch, on call, out of town | out of breath→on call |
+| v559 | carrier | barrier, carrot, carpet | barrier, campaign, coupon | carrot·carpet→campaign·coupon (courier·catering·cargo는 통해서 제외) |
+| v561 | perishable | publishable, purple, polite | publishable, punctual, polite | purple→punctual |
+| v562 | fragile | fragrant, frank, fried | fragrant, frank, fiscal | fried→fiscal (flammable은 통해서 제외) |
+| v565 | unload | download, upload, uncle | download, upload, enroll | uncle→enroll (upgrade·utilize는 통해서 제외) |
+| v580 | pharmacy | pharmaceutical, farm, family | pharmaceutical, policy, warranty | farm·family→policy·warranty (party는 통해서 제외) |
+| v581 | dosage | postage, sausage, garage | postage, deadline, demand | sausage·garage→deadline·demand (device는 통해서 제외) |
+| v584 | treatment | treadmill, treasure, treat | trend, target, treat | treadmill·treasure→trend·target (training은 통해서 제외) |
+| v585 | surgery | surgical, sugar, sunset | surgical, surplus, suite | sugar·sunset→surplus·suite (survey·summary는 통해서 제외) |
+| v588 | receptionist | recession, recipe, rectangle | recession, receipt, regulation | recipe·rectangle→receipt·regulation (recipient는 통해서 제외) |
+| v596 | consent form | consensus, content, concert | consensus, content, conveyor | concert→conveyor (contract는 통해서 제외) |
+| v597 | medication | meditation, dedication, medal | meditation, dedication, regulation | medal→regulation (position은 통해서 제외) |
+| v599 | chronic | chronicle, chronological, comic | chronicle, chronological, toxic | comic→toxic |
+| v600 | ambulance | ambience, ambition, amber | ambience, ambition, amenity | amber→amenity |
+| v613 | diminish | dismiss, dish, diamond | dismiss, dispatch, devise | dish·diamond→dispatch·devise |
+| v618 | fluctuate | flute, fluent, flat | fulfill, fluent, flat | flute→fulfill (escalate는 통해서 제외) |
+| v622 | jeopardize | jealous, journey, joke | jealous, journey, notarize | joke→notarize (expire는 통해서 제외) |
+| v623 | justify | justice, jump, juice | justice, install, recycle | jump·juice→install·recycle (verify·clarify·certify·assign은 통해서 제외) |
+| v627 | oversee | overseas, overeat, overcome | overseas, overbook, overcome | overeat→overbook |
+| v630 | pursue | persuade, purse, pour | persuade, purchase, provide | purse·pour→purchase·provide (permit은 통해서 제외) |
+| v635 | lecture | lecturer, letter, lettuce | lecturer, letter, lease | lettuce→lease |
+| v639 | semester | semicolon, cemetery, sesame | semicolon, shelter, server | cemetery·sesame→shelter·server (seminar·shuttle·surcharge는 통해서 제외) |
+| v642 | seminar | similar, summary, sunshine | similar, summary, salary | sunshine→salary (server는 통해서 제외) |
+| v643 | diploma | diplomat, dilemma, dinosaur | diplomat, dilemma, disposal | dinosaur→disposal (discount·deposit은 통해서 제외) |
+| v644 | degree | agree, green, deer | agree, green, deficit | deer→deficit |
+| v649 | credit | creditor, cream, crew | creditor, claim, crew | cream→claim |
+| v651 | grade | grace, grape, grass | grace, grid, giveaway | grape·grass→grid·giveaway (draft는 통해서 제외) |
+| v657 | module | model, middle, monkey | model, middle, margin | monkey→margin (milestone·meter·minutes는 통해서 제외) |
+| v660 | trainee | trainer, traffic, tray | trainer, traffic, training | tray→training |
+| v661 | feasible | visible, festive, famous | visible, flammable, famous | festive→flammable (fragile·eligible은 통해서 제외) |
+| v663 | subsequent | subway, sequence, sunflower | sufficient, sequence, sustainable | subway·sunflower→sufficient·sustainable (stringent는 통해서 제외) |
+| v667 | apparent | apparel, appearance, apple | apparel, appearance, adjacent | apple→adjacent (urgent는 통해서 제외) |
+| v669 | diverse | adverse, divorce, division | adverse, durable, division | divorce→durable |
+| v672 | meticulous | ridiculous, musical, magical | ridiculous, courteous, reluctant | musical·magical→courteous·reluctant (mandatory·accurate는 통해서 제외) |
+| v689 | barely | barley, rarely, comfortably | relatively, rarely, comfortably | barley→relatively (eventually는 통해서 제외) |
+| v690 | mutually | mutual, multiply, musically | mutual, multiply, primarily | musically→primarily (relatively·barely는 통해서 제외) |
+| v692 | aisle | isle, aid, idol | isle, aid, asset | idol→asset |
+| v709 | storefront | storyline, seafront, storm | storyline, seafront, statement | storm→statement (storage·stage는 통해서 제외) |
+| v712 | chain | change, chair, chance | change, clause, chance | chair→clause (client는 통해서 제외) |
+| v720 | storewide | store-bought, story, stormy | store-bought, stringent, solar | story·stormy→stringent·solar (seasonal은 통해서 제외) |
+
+## 0-3 production ↔ productivity
+
+- v324 productivity의 예문 "Worker productivity rose after the training."에는 production을 넣어도 말이 된다 (교육 뒤 생산량이 늘었다). 뜻으로 지워지지 않는다.
+- 예문을 바꿨다: "We still make 500 chairs a week, but now with fewer working hours, so our productivity has gone up."
+  - 생산량(500개)은 그대로이고 시간만 줄었으므로 production을 넣으면 앞뒤가 어긋난다.
+- v161 promotion·v170 probation의 오답 production은 "a production to senior manager" 등으로 뜻이 통하지 않아 그대로 두었다.
+
+## 0-4 새 오답 뜻이 뜻 시험 보기에 쓰이는가
+
+- 쓰이지 않는다. 뜻 시험 보기는 `assets/js/vocab.js`의 questionChoices가 같은 Day(같은 상황), 그다음 같은 트랙의 **표제어 뜻**에서만 뽑는다.
+- `VOCAB_DISTRACTOR_MEANINGS`는 단어장 상세의 "혼동 단어" 줄에만 쓰인다. 그래서 subsidy 문제에 오답 뜻이 보기로 뜰 수 없고, 검사 범위를 넓힐 필요가 없다.

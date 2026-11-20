@@ -17,39 +17,39 @@
 | g02 | 수 일치 | 빈출 | 동사의 모양은 주어 하나로 정해진다. 주어를 먼저 찾아라. | 7 | 1 |
 | g03 | 시제 | 빈출 | 문장에 있는 시간 표시어가 시제를 결정한다. | 9 | 0 |
 | g04 | 능동 / 수동 | 빈출 | 주어가 하는 쪽이면 능동, 당하는 쪽이면 수동(be + p.p.)이다. | 10 | 2 |
-| g05 | to부정사 vs 동명사 | 빈출 | 동사 뒤에 어떤 형태가 오는지는 앞의 동사가 정한다. 전치사 뒤에 동사가 오면 -ing다. | 20 | 1 |
-| g06 | 전치사 | 빈출 | in(넓음) → on(면·날짜) → at(점·시각) 순으로 범위가 좁아진다. | 10 | 4 |
+| g05 | to부정사 vs 동명사 | 빈출 | 동사 뒤에 어떤 형태가 오는지는 앞의 동사가 정한다. 전치사 뒤에 동사가 오면 -ing다 (during은 예외, g07). | 20 | 1 |
+| g06 | 전치사 | 빈출 | 시각과 장소는 in(넓음) → on(면·날짜) → at(점·시각) 순으로 범위가 좁아진다. 기간과 마감은 for·during·since·by·until을 뜻으로 가른다. | 10 | 4 |
 | g07 | 접속사 vs 전치사 | 최다 빈출 | 뒤에 '주어+동사'가 오면 접속사, 명사 덩어리만 오면 전치사다. | 10 | 1 |
-| g08 | 관계대명사 | 보통 | 앞의 명사가 사람이면 who, 사물이면 which, 둘 다 되면 that이다. | 10 | 1 |
+| g08 | 관계대명사 | 보통 | 빈칸 뒤를 보고 주격·목적격·소유격을 먼저 가른다. 그다음 앞의 명사가 사람이면 who(목적격 whom), 사물이면 which를 쓴다. that은 둘 다 되고, 소유격 whose는 사람·사물 모두에 쓴다. | 10 | 1 |
 | g09 | 대명사 | 보통 | 자리에 따라 모양이 바뀐다. 주어 자리인지 목적어 자리인지 봐라. | 10 | 0 |
 | g10 | 비교급 / 최상급 | 빈출 | 둘을 비교하면 -er than, 셋 이상 중 하나면 the -est다. as ~ as 사이에는 원급이 온다. | 20 | 1 |
 | g11 | 가정법 | 낮음 | if절의 시제가 핵심이다. 실제로 가능한 조건이면 현재형, 실제와 반대면 한 칸 뒤로 민다. | 10 | 0 |
-| g12 | 어순 · 기타 | 보통 | 영어 문장에는 주어와 동사가 반드시 있어야 하고, 꾸밈말은 정해진 자리에 간다. | 9 | 1 |
-| g13 | 조동사 + 동사원형 | 빈출 | 조동사 뒤에는 어떤 경우에도 동사원형이 온다. 주어가 3인칭 단수여도 -s를 붙이지 않는다. | 10 | 5 |
+| g12 | 어순 · 기타 | 보통 | 영어 문장에는 주어와 동사가 있어야 하고(명령문만 주어 you를 생략한다), 꾸밈말은 정해진 자리에 간다. | 8 | 1 |
+| g13 | 조동사 + 동사원형 | 빈출 | 조동사 뒤에는 어떤 경우에도 동사원형이 온다. 주어가 3인칭 단수여도 -s를 붙이지 않는다. | 11 | 5 |
 | g14 | 등위 · 상관 접속사 | 빈출 | and·but·or·nor는 문법이 아니라 뜻으로 고른다. 짝으로 쓰는 상관 접속사는 짝을 외워야 한다. | 10 | 1 |
 | g15 | 분사 | 빈출 | 명사를 꾸밀 때 그 명사가 하는 쪽이면 -ing, 당하는 쪽이면 p.p.다. 문장 앞에 콤마로 붙는 분사구문도 같은 기준이다. | 10 | 2 |
-| g16 | 수량 표현 | 빈출 | 셀 수 있는 명사에 붙는지, 셀 수 없는 명사에 붙는지로 거의 다 갈린다. | 14 | 0 |
+| g16 | 수량 표현 | 빈출 | 빈칸 뒤 명사가 셀 수 있는 복수인지, 셀 수 없는지, 단수인지로 고른다. 수량 표현이 주어에 붙으면 동사의 수도 그 표현이 정한다. | 14 | 0 |
 
 ## trap (충돌 확인용)
 
 노트마다 trap 전체를 한 줄로 이었다 (원문 줄바꿈은 ` / `). 새 trap이 아래 규칙이나 기존 문항의 정답·해설과 어긋나지 않는지 본다.
 
-- **g01 품사 자리**: very, so 같은 수식어에 속지 마라. 꾸밈 받는 대상을 봐야 한다. / She is very careful. (be동사 뒤 → 형용사) / She works very carefully. (일반동사 뒤 → 부사) / be동사 바로 뒤는 형용사 자리지만, be ___ -ing나 be ___ p.p.처럼 뒤에 동사가 이어지면 그 사이는 부사 자리다. / The office is currently undergoing renovation.
-- **g02 수 일치**: 주어와 동사 사이에 낀 전치사구에 속지 마라. / The color of the chairs ___ . / → 주어는 color(단수)지 chairs가 아니다. / each·every·neither·the number of처럼 주어 앞에 수량 표현이 붙어 수가 정해지는 경우는 g16(수량 표현)에서 다룬다.
-- **g03 시제**: since + 시점(~이래로)은 현재완료와 짝을 이룬다. for + 기간은 지금까지 이어지면 현재완료, 과거에 끝났으면 과거형이다. / (접속사 since '~때문에'는 다른 쓰임이다. g07 참고)
-- **g04 능동 / 수동**: 가장 빠른 판별법은 빈칸 뒤를 보는 것이다. / 빈칸 뒤에 목적어(명사)가 있으면 능동, 없으면 수동일 확률이 높다.
-- **g05 to부정사 vs 동명사**: 이 표는 '빈칸 바로 뒤'에 무엇이 오는지를 가리는 기준이다. that절처럼 다른 구조를 따로 갖는 동사도 있다. / 전치사 뒤에 동사가 오면 -ing다. 특히 to가 전치사인 표현에 주의한다. 이때 to 뒤에 동사원형을 쓰면 틀린다. / look forward to / be used to / be committed to / be opposed to / in addition to / contribute to / I look forward to meeting you. (to meet ❌) / be used to -ing(~에 익숙하다)와 used to + 동사원형(과거에 ~했다)은 다른 표현이다. / 단 let·make·have + 목적어 뒤에는 동사원형이 온다. Please let me know. (to know ❌) / need처럼 -ing도 가능한 동사가 있다. The car needs washing.
+- **g01 품사 자리**: very, so 같은 수식어에 속지 마라. 꾸밈 받는 대상을 봐야 한다. / He was very polite. (be동사 뒤 → 형용사) / He answered very politely. (일반동사 뒤 → 부사) / be동사 바로 뒤는 보통 형용사 자리다. 명사·대명사가 올 수도 있다 (He is a manager.). be ___ -ing나 be ___ p.p.처럼 뒤에 동사가 이어지면 그 사이는 부사 자리다. / The bridge is slowly being rebuilt. / 빈칸 바로 뒤에 명사가 오면 앞에 the·a가 있어도 보통 형용사 자리다 (명사가 명사를 꾸미는 복합명사는 표 참고). the ___ 뒤가 동사나 전치사이면 명사 자리다. 단 the highest in the country처럼 최상급이 오는 자리는 g10이다. / a quick reply (빈칸 뒤가 명사 reply → 형용사 quick) / The reply was quick. (the 뒤가 동사 was → 명사 reply) / '주어 ___ 목적어'라도 문장에 이미 동사가 있으면 빈칸은 동사가 아니라 꾸밈말(분사) 자리다. g15 참고.
+- **g02 수 일치**: 주어와 동사 사이에 낀 전치사구에 속지 마라. / The color of the chairs ___ . / → 주어는 color(단수)지 chairs가 아니다. / each·every·neither·a number of·the number of처럼 주어 앞에 수량 표현이 붙어 수가 정해지는 경우는 g16(수량 표현)에서 다룬다.
+- **g03 시제**: since + 시점(~이래로)은 현재완료와 짝을 이룬다. for + 기간은 지금까지 이어지면 현재완료, 과거에 끝났으면 과거형이다. / (접속사 since '~때문에'는 다른 쓰임이다. g07 참고) / if·when·before·after·until·as soon as로 시작하는 조건·시간 부사절 안에서는 tomorrow가 있어도 will 없이 현재형을 쓴다. will은 주절에 쓴다. 단 '~인지'라는 뜻의 if·when 절에는 will이 올 수 있다 (g11). / When the manager arrives tomorrow, we will start. (will arrive ❌, g11 참고)
+- **g04 능동 / 수동**: 가장 빠른 판별법은 빈칸 뒤를 보는 것이다. / 빈칸 뒤에 목적어(명사)가 있으면 능동, 없으면 수동일 확률이 높다. / 단 arrive·happen·occur·rise·open(가게가 열다)·take place처럼 목적어를 받지 않는 동사는 수동이 없다. 목적어가 없어도 능동이다. / The accident happened at noon. (was happened ❌)
+- **g05 to부정사 vs 동명사**: 이 표는 '빈칸 바로 뒤'에 무엇이 오는지를 가리는 기준이다. that절처럼 다른 구조를 따로 갖는 동사도 있다. / 전치사 뒤에 동사가 오면 -ing다. 단 during은 -ing를 받지 않는다. 동작을 말할 때는 while -ing로 쓴다 (during waiting ❌ / while waiting ⭕, g07). / 특히 to가 전치사인 표현에 주의한다. 이때 to 뒤에 동사원형을 쓰면 틀린다. / look forward to / be used to / be committed to / be opposed to / in addition to / contribute to / Everyone contributed to planning the party. (to plan ❌) / be used to -ing(~에 익숙하다)와 used to + 동사원형(과거에 ~했다)은 다른 표현이다. / 단 let·make·have + 목적어 뒤에는 동사원형이 온다. The boss made us wait. (to wait ❌) / need처럼 -ing도 가능한 동사가 있다. The car needs washing.
 - **g06 전치사**: by와 until을 구분하라. / by 5 = 5시 전까지 끝내라 (마감) / until 5 = 5시까지 계속하라 (지속) / 뜻이 완전히 다르다.
 - **g07 접속사 vs 전치사**: despite of는 존재하지 않는 표현이다. despite 또는 in spite of 둘 중 하나만 쓴다. / 접속사 뒤에서 '주어 + be동사'가 생략되면 -ing나 p.p.가 바로 온다. / p.p.가 바로 오면 접속사다. although delayed (although it was delayed), despite delayed ❌ / -ing는 전치사 뒤에도 올 수 있으니 짝을 봐라. while waiting ⭕ / during waiting ❌ / despite being late ⭕
 - **g08 관계대명사**: 순서대로 가른다. / ① 빈칸 뒤에 명사가 바로 오고 소유 관계면 whose / ② 그렇지 않고 뒤에 주어가 없으면 주격 (who / which / that) / ③ 뒤에 주어가 있으면 목적격이고, 이때는 생략할 수 있다 / the report (that) I sent
-- **g09 대명사**: its와 it's를 구분하라. / its = 그것의 (소유격) / it's = it is의 줄임 / 아포스트로피가 있으면 it is다. 위 ①~④로 풀리지 않고 '~이다'로 해석되면 it's를 의심하라. / It's a good idea. (It is a good idea.)
+- **g09 대명사**: its와 it's를 구분하라. / its = 그것의 (소유격) / it's = it is의 줄임 / 아포스트로피가 있으면 it is다. 위 ①~④로 풀리지 않고 '~이다'로 해석되면 it's를 의심하라. / It's too late to call him. (It is too late to call him.)
 - **g10 비교급 / 최상급**: than이 보이면 비교급, the와 in/of + 범위나 ever가 보이면 최상급이다. 이게 1순위 단서다. 단 rather than, other than의 than은 비교급과 관계가 없다. / 비교급을 강조할 때는 very를 쓰지 않는다. / much better / far better / even better / still better / a lot better (⭕) / very better (❌) / -er과 more를 겹쳐 쓰지 않는다. more cheaper (❌) / 최상급 앞에 소유격이 오면 the를 쓰지 않는다. our best seller (⭕) / our the best seller (❌) / as ~ as 사이에는 비교급이 아니라 원급이 온다. as cheaper as (❌)
-- **g11 가정법**: 조건을 뜻하는 if절 안에는 will을 쓰지 않는다. 미래를 말하더라도 현재형을 쓴다. / 단 '~인지'라는 뜻의 if는 조건이 아니라서 will이 올 수 있다. / Let me know if he will come. (그가 올지 알려주세요)
-- **g12 어순 · 기타**: 한국어는 주어나 동사를 생략해도 말이 되지만 영어는 안 된다. / 말하기 전에 '내 문장에 동사가 있나'를 확인하는 습관을 들여라.
+- **g11 가정법**: 조건을 뜻하는 if절 안에는 will을 쓰지 않는다. 미래를 말하더라도 현재형을 쓴다. / 단 '~인지'라는 뜻의 if는 조건이 아니라서 will이 올 수 있다. / I'm not sure if Mina will join us. (미나가 올지 모르겠다)
+- **g12 어순 · 기타**: 한국어는 주어나 동사를 생략해도 말이 되지만 영어는 안 된다. / 말하기 전에 '내 문장에 동사가 있나'를 확인하는 습관을 들여라. / 주어를 빼는 것은 명령문뿐이다. 명령문은 동사원형으로 시작한다 (Please call me back.). / and로 동사 둘을 이을 때 뒤에 주어를 다시 쓰지 않는 것(She will check the room and call you.)은 빼는 것이 아니라 앞의 주어를 함께 쓰는 것이다 (g13 병렬).
 - **g13 조동사 + 동사원형**: 조동사 두 개를 연달아 쓸 수 없다. / will can ❌ → will be able to ⭕ / will must ❌ → will have to ⭕ / have to는 조동사가 아니라 일반동사라 주어에 따라 변한다 (He has to go). 그래서 조동사 뒤에도 올 수 있고, must 대신 has to를 쓸 수도 있다. / 수동태도 원형이 먼저 온다. will be delivered ⭕ / will is delivered ❌ / 여기서 말하는 조동사는 will·can·should·must 같은 말이다. 완료의 have, 진행·수동의 be 뒤에는 원형이 아니라 p.p.나 -ing가 온다. (has been sent, is undergoing)
-- **g14 등위 · 상관 접속사**: 짝을 섞으면 안 된다. either ... nor ❌ / neither ... or ❌ / 수 일치가 짝마다 다르다. / both A and B는 복수 동사 (Both the printer and the scanner have been repaired.) / either A or B / neither A nor B / not only A but also B는 B에 맞춘다 (Neither the supervisor nor the technicians are available.) / 단 nor 없이 쓰는 neither는 g16(수량 표현) 규칙대로 단수다. Neither of the proposals was approved. / Neither proposal was approved. / between A and B의 and를 or로 바꿀 수 없다.
+- **g14 등위 · 상관 접속사**: 짝을 섞으면 안 된다. either ... nor ❌ / neither ... or ❌ / 수 일치가 짝마다 다르다. / both A and B는 복수 동사 (Both the printer and the scanner have been cleaned.) / either A or B / neither A nor B / not only A but also B는 B에 맞춘다 (Neither the supervisor nor the technicians know the password.) / 단 nor 없이 쓰는 neither는 g16(수량 표현) 규칙대로 단수다. Neither of the two hotels was full. / Neither hotel was full. / between A and B의 and를 or로 바꿀 수 없다.
 - **g15 분사**: 명사 앞의 -ing와 p.p.는 그 명사가 하는 쪽인지 당하는 쪽인지로 가른다. 뜻이 아니라 관계로 판단한다. 빈칸 뒤에 목적어가 있으면 -ing라는 g04의 기준도 그대로 통한다. / 단 waiting room, training session, accounting department처럼 '~하는 용도'를 뜻하는 -ing는 분사가 아니라 명사 앞에 붙은 동명사다. 이때는 관계로 가르지 않는다. / 감정을 나타내는 동사(interest, excite, surprise, disappoint, satisfy, impress)는 사물·일에 -ing, 사람에 p.p.를 쓴다. an exciting offer / excited customers / 분사구문의 숨은 주어는 주절의 주어와 같다. 다르면 분사구문을 쓸 수 없다. / 단 given, including, following, regarding은 전치사처럼 굳어서 이 규칙을 따르지 않는다. Given the delay, we rescheduled. (지연을 고려해) / 명사 뒤에서 꾸밀 때는 관계대명사 + be동사가 생략된 것이다. the report (which was) submitted last week
-- **g16 수량 표현**: a few / a little(약간 있다)과 few / little(거의 없다)은 뜻이 반대다. a가 붙으면 긍정이다. / each, every, another 뒤에는 단수 명사가 오고 동사도 단수다. each of the + 복수 명사도 동사는 단수다. Each of the applicants is required ... (are ❌) / a number of + 복수 명사는 복수 동사, the number of + 복수 명사는 단수 동사다. the가 붙으면 '수 그 자체'라서 단수다. / either, neither 뒤에 바로 명사나 of가 오면 이 유형이고 단수 취급한다. Neither of the proposals was approved. 뒤에 or / nor가 이어지는 either A or B, neither A nor B는 상관 접속사(g14)라서 동사를 B에 맞춘다. / 셀 수 있는 명사의 비교는 fewer, 셀 수 없는 명사는 less다. fewer complaints / less paperwork. 단 less + 형용사(less expensive)는 비교급(g10)이다.
+- **g16 수량 표현**: a few / a little(약간 있다)과 few / little(거의 없다)은 뜻이 반대다. a가 붙으면 긍정이다. / each, every, another 뒤에는 단수 명사가 오고 동사도 단수다. each of the + 복수 명사도 동사는 단수다. Each of the drivers has a key. (have ❌) / a number of + 복수 명사는 복수 동사, the number of + 복수 명사는 단수 동사다. the가 붙으면 '수 그 자체'라서 단수다. / either, neither 뒤에 바로 명사나 of가 오면 이 유형이고 단수 취급한다. Neither of the two hotels was full. 뒤에 or / nor가 이어지는 either A or B, neither A nor B는 상관 접속사(g14)라서 동사를 B에 맞춘다. / 셀 수 있는 명사의 비교는 fewer, 셀 수 없는 명사는 less다. fewer complaints / less paperwork. 단 less + 형용사(less expensive)는 비교급(g10)이다.
 
 ## Part 6 빈칸 ruleId 분포
 
@@ -193,8 +193,8 @@
 | q114 | g12 | He ____ checks his email in the morning. | always |
 | q115 | g12 | I wonder why ____ the meeting. | she canceled |
 | q116 | g12 | The manager ____ busy this week. | is very |
-| q117 | g12 | ____ you please confirm the date? | Could |
-| q118 | g12 | She ____ to the conference every year. | often goes |
+| q117 | g13 | ____ you please confirm the date? | Could |
+| q118 | g12 | She ____ to the gym after work. | often goes |
 | q119 | g12 | Please let me know ____ the report is ready. | when |
 | q120 | g02 | ____ there any questions about the agenda? | Are |
 | q121 | g13 | All visitors must ____ in at the front desk. | sign |
