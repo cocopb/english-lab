@@ -11,7 +11,7 @@ english-lab/
 ├─ assets/
 │  ├─ css/style.css       # 디자인 시스템과 반응형 스타일
 │  ├─ img/part1/          # Part 1 사진 ph01~ph34 (JPEG, 긴 변 1200px 이하, 장당 300KB 이하)
-│  └─ js/                 # 공통 UI/진도, 퀴즈, 보카 시험, 실전 모의고사 동작
+│  └─ js/                 # 공통 UI/진도, 퀴즈, 보카 시험, 실전 모의고사, 기록 옮기기(backup.js) 동작
 ├─ data/                  # 전역 배열로 제공하는 샘플 콘텐츠
 ├─ tools/
 │  ├─ check-vocab.js      # 보카 데이터와 빈칸 예문 검사 + 가짜 DOM으로 단어장 화면(마지막 Day의 단어장·뜻 시험·빈칸 시험) 검사
@@ -21,6 +21,7 @@ english-lab/
 │  ├─ check-part1.js      # Part 1 사진 데이터·문장 중복·이미지 파일·표시 크기·정답 위치·사진 alt 검사 + 가짜 DOM으로 리스닝 탭 Part 1 화면 검사
 │  ├─ check-speaking.js   # 회화 패턴·롤플레이·쉐도잉 데이터 검사 + 가짜 DOM으로 회화 화면 로드·채점 검사
 │  ├─ check-practice.js   # 가짜 DOM으로 실전 페이지(모의고사·OMR·타이머·기록) 동작 검사
+│  ├─ check-backup.js     # 기록 내보내기·가져오기 합치기 규칙·잘못된 파일 거절·되돌리기 검사 (가짜 기기 여러 대, 버그를 심어 검사가 잡는지도 확인)
 │  ├─ build-vocab-index.js # 보카 색인(docs/vocab-index.md) 생성
 │  └─ build-grammar-index.js # 문법 색인(docs/grammar-index.md) 생성
 ├─ docs/vocab-index.md    # Day별·상황별 표제어 색인 (자동 생성, 직접 수정 금지)
@@ -40,9 +41,10 @@ node tools/check-listening.js  # 리스닝: 받아쓰기 text/ko/level, Part 2 �
 node tools/check-part1.js      # Part 1: 34문항 choices 4개·answer 범위·해설·kind, 문장 중복(다른 사진의 정답끼리·한 사진의 선택지끼리: 같은 문장, 내용어 겹침, 3단어 틀, 내용어가 든 4단어 표현), 이미지 파일 34개 존재(JPEG·300KB 이하), 표시 크기(원본이 작아도 작게 보이지 않음), 정답 위치 분포·연속 금지, alt가 "Part 1 사진 N"이고 선택지 내용어 없음 + 화면: 사진 표시, (A)~(D) 음성, 채점 전 문장 글자 없음, 채점 후 네 문장·해설, 로딩 실패 대체 문구
 node tools/check-speaking.js   # 회화: 패턴 pattern/meaning/tip/drills, 드릴 ko/en, 롤플레이 me 턴 instruction/model/comment, 쉐도잉 en/ko/level, ID 중복 + 화면 로드·채점(패턴·쉐도잉·롤플레이 끝까지 진행, 괄호 지문 음성 제외) + TTS 재생(음성 목록이 빈 모바일·데스크톱)
 node tools/check-practice.js   # 실전: 메뉴 7개, 30문항 구성, OMR 이동, 타이머 색·자동 제출, 결과 집계, 기록 저장, 파트별 연습
+node tools/check-backup.js     # 기록 옮기기: 옛 파일을 가져와도 진도가 줄지 않음, 시험 기록 중복 없음, 나중에 맞힌 문제가 되살아나지 않음, 왕복, 잘못된 파일 거절, 빈 기록, 백업·되돌리기 + 일부러 심은 버그 8종을 잡는지
 ```
 
-데이터를 추가하거나 화면 코드를 바꾼 뒤에는 일곱 스크립트를 모두 실행해 확인합니다. `check-practice.js`는 모의고사를 매번 무작위로 출제하므로 여러 번 실행해 보는 것이 좋습니다.
+데이터를 추가하거나 화면 코드를 바꾼 뒤에는 여덟 스크립트를 모두 실행해 확인합니다. `check-practice.js`는 모의고사를 매번 무작위로 출제하므로 여러 번 실행해 보는 것이 좋습니다.
 
 보카 데이터를 바꾼 뒤에는 `node tools/build-vocab-index.js`로 `docs/vocab-index.md`(Day별 주제·표제어, 상황별 표제어, 품사별 집계, 여러 곳에 있는 표제어)를 다시 만듭니다. 새 Day 주제를 고를 때 기존 표제어와 겹치지 않는지 이 파일로 확인합니다. 새 Day를 추가하면 `tools/build-vocab-index.js`의 `DAY_TOPICS`에 주제 한 줄을 넣습니다(없으면 "(주제 미정)"으로 표시하고 경고합니다).
 
@@ -69,6 +71,37 @@ node tools/check-practice.js   # 실전: 메뉴 7개, 30문항 구성, OMR 이�
 - 결과 화면의 RC 예상 점수대는 맞은 개수 구간으로 정한 **참고용 추정치**입니다.
 
 `data/reading.js`의 `window.PART6` 항목은 `id`, `title`, `header`, `blocks`(`{type:"text", en}` 또는 `{type:"blank", n}`), `ko`, `questions`(`n`, `choices` 4개, `answer`, `explanation`, `ruleId` 또는 `null`)로 구성합니다. `PASSAGES` 항목은 단일 지문(`header` + `sentences`) 대신 `parts`(`label`, `header`, `sentences`) 배열로 이중 지문을 만들 수 있습니다.
+
+## 기록 옮기기 (pages/sync.html)
+
+컴퓨터와 휴대폰처럼 두 기기에서 공부할 때 기록을 JSON 하나로 주고받습니다. 홈의 학습 현황 아래 링크와 모든 페이지 맨 아래(푸터)의 "기록 옮기기"로 들어갑니다. 상단 메뉴에는 넣지 않았습니다.
+
+- **내보내기**: 파일로 저장(`english-lab-progress-YYYY-MM-DD.json`) 또는 텍스트로 보기 + 복사(복사가 막히면 전체 선택 상태로 둠). 파일 형식은 `{ app: "english-lab", schema: 1, exportedAt(시간대 포함), device(기기 이름), deviceId, data: { 키: 값 } }`.
+- **가져오기**: 파일 고르기(FileReader) 또는 텍스트 붙여 넣기. 먼저 요약(내보낸 때·기기, 항목별 이 기기 / 가져올 기록 / 합친 뒤)을 보여 주고 합치기(기본) 또는 덮어쓰기(경고 + 동의 체크)를 고른 뒤 실행합니다. 실행 직전 현재 기록을 `englishLabImportBackup`에 하나 보관하고 "되돌리기"로 복구할 수 있습니다. 실행 뒤 페이지를 새로고침합니다.
+- **거절**(기록은 그대로): app 불일치, 모르는 schema 번호, 깨진 JSON(줄·글자 위치 안내, 중간에 잘린 경우 따로 안내), 빈 파일, data 없음·손상.
+
+### localStorage 키
+
+| 키 | 담는 것 | 파일에 담음 |
+|---|---|---|
+| `englishLabProgress` | 학습 진도 전체 (단어 복습 상태, 문법·리스닝·독해·회화 통계, 미니 모의고사 기록, 학습한 날 등) | ○ |
+| `englishLabFullSetHistory` / `englishLabLcFullSetHistory` | RC·LC 풀세트 응시 기록 (최근 20회) | ○ |
+| `englishLabSyncLedger` | 기기별 누적 장부 `{ version, devices: { 기기id: { counters: {경로: 값}, dictation: [] } } }` | ○ |
+| `englishLabFullSetSave` / `englishLabLcFullSetSave` | 진행 중인 RC·LC 풀세트 | ✕ (그 기기의 시험 중 상태) |
+| `englishLabSpeechSettings` | 음성 속도·발음 (기기마다 음성이 다름) | ✕ |
+| `englishLabTheme` | 다크/라이트 모드 | ✕ |
+| `englishLabVocabSelection` / `englishLabVocabHideMeaning` | 단어장 트랙·Day 선택, 뜻 가리기 | ✕ |
+| `englishLabDeviceId` / `englishLabDeviceName` | 이 기기 id(자동)·이름 | ✕ |
+| `englishLabImportBackup` | 가져오기 직전 백업 1개 | ✕ |
+
+### 합치기 규칙
+
+- **누적 숫자**(단어 시험 답 수·정답 수, 문법·리스닝·독해 푼 문항·정답, 받아쓰기·쉐도잉 횟수, 단어별 틀린 횟수): 목록이 남지 않는 숫자라 다시 셀 수 없으므로, 기기마다 "그 기기에서 늘어난 몫"을 장부에 둡니다. 합칠 때는 기기별로 큰 값을 고르고(같은 기기의 옛 파일은 값이 작아 무시) 전체를 다시 더합니다. 이 기기의 몫 = 현재 합계 − 다른 기기 몫. 쉐도잉 평균은 합계에서 다시 계산합니다.
+- **단어 복습 상태**: 마지막으로 답한 시각(`lastAt`)이 늦은 쪽 → 같은 시각이 없으면 `lastDate` → 그래도 같으면 단계가 높은 쪽.
+- **독해 오답**: 문항별 마지막 결과(`questionResults[번호] = { wrong, at }`)가 늦은 쪽. 나중에 맞힌 문항은 오답 목록에서 빠지며, 시각이 없는 옛 오답은 시각 있는 결과에 집니다. (같은 기기에서도 다시 맞히면 빠집니다.)
+- **미니 모의고사·RC·LC 기록**: 합집합에서 같은 기록을 하나로 줄이고 시간순(미니 100회, 풀세트 20회까지). 같은 기록 = 시각(ms) + 문항 수 + 맞은 수 + 소요 시간이 모두 같음.
+- **학습한 날·통과한 회화 패턴·롤플레이·계획 완료**: 합집합. **단어 Day 진도·문법/독해 마지막 학습일**: 큰 값.
+- **덮어쓰기**: 파일에 담는 네 키를 파일 내용으로 바꿉니다. 기기 설정과 진행 중인 시험은 건드리지 않습니다.
 
 ## 로컬 실행
 

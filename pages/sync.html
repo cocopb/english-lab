@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#FAF8F6">
+  <title>기록 옮기기 — English Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/common.js" defer></script>
+  <script src="../assets/js/backup.js" defer></script>
+</head>
+<body>
+  <div id="site-header"></div>
+  <main class="container" id="sync-root">
+    <header class="page-intro">
+      <p class="eyebrow">SYNC</p>
+      <h1>기록 옮기기</h1>
+      <p>컴퓨터와 휴대폰의 학습 기록은 브라우저마다 따로 저장돼요. 한쪽에서 내보내고 다른 쪽에서 가져오면 두 기록이 합쳐져요.</p>
+    </header>
+    <p class="sync-notice" id="sync-notice" role="status" hidden></p>
+    <section class="content-section sync-workspace">
+      <section class="panel sync-section" aria-labelledby="sync-export-title">
+        <h2 id="sync-export-title">1. 내보내기</h2>
+        <p class="sync-help" id="sync-current"></p>
+        <label class="field" for="sync-device-name">이 기기 이름 (다른 기기에서 가져올 때 보여요)
+          <input id="sync-device-name" type="text" maxlength="40" autocomplete="off" placeholder="예: 노트북, 휴대폰">
+        </label>
+        <div class="sync-actions">
+          <button class="button button-primary" id="sync-export-file" type="button">파일로 저장</button>
+          <button class="button button-quiet" id="sync-export-text" type="button">텍스트로 보기 (휴대폰용)</button>
+        </div>
+        <div class="sync-export-box" id="sync-export-box" hidden>
+          <label class="field" for="sync-export-area">내보낸 기록 (전부 복사하세요)
+            <textarea id="sync-export-area" rows="8" readonly spellcheck="false"></textarea>
+          </label>
+          <button class="button button-primary" id="sync-copy" type="button">복사</button>
+        </div>
+        <p class="sync-message" id="sync-export-message" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="panel sync-section" aria-labelledby="sync-import-title">
+        <h2 id="sync-import-title">2. 가져오기</h2>
+        <p class="sync-help">파일을 고르거나, 복사해 온 텍스트를 붙여 넣으세요. 바로 바뀌지 않고 먼저 내용을 보여 드려요.</p>
+        <label class="field sync-file" for="sync-import-file">기록 파일 고르기
+          <input id="sync-import-file" type="file" accept=".json,application/json,text/plain">
+        </label>
+        <label class="field" for="sync-import-area">또는 텍스트 붙여 넣기
+          <textarea id="sync-import-area" rows="6" spellcheck="false" placeholder='{"app": "english-lab", ... }'></textarea>
+        </label>
+        <div class="sync-actions">
+          <button class="button button-quiet" id="sync-import-check" type="button">붙여 넣은 내용 확인</button>
+        </div>
+        <p class="sync-error" id="sync-import-error" role="alert" hidden></p>
+        <div class="sync-preview" id="sync-preview" hidden></div>
+      </section>
+
+      <section class="panel sync-section" id="sync-undo" aria-live="polite"></section>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+</body>
+</html>

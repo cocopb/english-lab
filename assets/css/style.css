@@ -734,3 +734,48 @@ h1, h2, h3, p { overflow-wrap: anywhere; }
 @media (max-width: 380px) {
   .vocab-inline-tags { max-width: 78px; overflow-wrap: anywhere; }
 }
+
+/* 기록 옮기기 (pages/sync.html) */
+.sync-workspace { display: grid; gap: 16px; max-width: 760px; margin-inline: auto; }
+.sync-section h2 { margin: 0 0 8px; font-size: 18px; }
+.sync-help { margin: 0 0 10px; color: var(--ink-soft); font-size: 13px; }
+.sync-section .field { margin: 10px 0; }
+.sync-section .field input[type="text"], .sync-section textarea { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); background: var(--paper); font: inherit; font-size: 14px; }
+.sync-section textarea { font-family: "IBM Plex Mono", monospace; font-size: 12px; resize: vertical; }
+.sync-file input[type="file"] { min-height: 44px; font-size: 13px; }
+.sync-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0 0; }
+.sync-actions .button { min-height: 48px; }
+.sync-message { min-height: 18px; margin: 10px 0 0; color: var(--ink-soft); font-size: 12px; }
+.sync-error { margin: 12px 0 0; padding: 12px 14px; border: 1px solid var(--red); border-radius: 9px; color: var(--red); background: var(--red-soft); font-size: 13px; }
+.sync-notice { max-width: 760px; margin: 0 auto 16px; padding: 12px 14px; border: 1px solid var(--green); border-radius: 9px; color: var(--green); background: var(--green-soft); font-size: 13px; }
+.sync-preview { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
+.sync-preview h3 { margin: 0 0 6px; font-size: 16px; }
+.sync-preview-meta { margin: 0 0 10px; color: var(--ink-soft); font-size: 13px; }
+.sync-compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+.sync-compare th, .sync-compare td { padding: 7px 6px; border-bottom: 1px solid var(--line); text-align: right; }
+.sync-compare th:first-child { text-align: left; font-weight: 600; }
+.sync-compare thead th { color: var(--ink-faint); font-size: 11px; font-weight: 600; }
+.sync-compare td.is-more { color: var(--blue); font-weight: 700; }
+.sync-verdict { margin: 10px 0; font-size: 13px; font-weight: 600; }
+.sync-modes { display: grid; gap: 8px; margin: 12px 0 0; padding: 0; border: 0; }
+.sync-modes legend { margin-bottom: 6px; color: var(--ink-soft); font-size: 12px; }
+.sync-mode { display: flex; gap: 10px; align-items: flex-start; min-height: 48px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 9px; cursor: pointer; }
+.sync-mode input { width: 20px; height: 20px; margin: 2px 0 0; flex: 0 0 auto; }
+.sync-mode strong { display: block; font-size: 14px; }
+.sync-mode-note { display: block; color: var(--ink-soft); font-size: 12px; }
+.sync-overwrite-warning { margin-top: 10px; padding: 12px 14px; border: 1px solid var(--red); border-radius: 9px; background: var(--red-soft); color: var(--red); font-size: 13px; }
+.sync-overwrite-warning p { margin: 0 0 8px; }
+.sync-agree { display: flex; gap: 10px; align-items: center; min-height: 44px; color: var(--ink); cursor: pointer; }
+.sync-agree input { width: 22px; height: 22px; flex: 0 0 auto; }
+.button.is-danger { color: var(--surface); background: var(--red); }
+.sync-actions .button:disabled { cursor: not-allowed; opacity: .5; transform: none; }
+.sync-home-link { margin: 12px 0 0; font-size: 13px; }
+.sync-home-link a { color: var(--blue); font-weight: 700; }
+.sync-home-link span { color: var(--ink-faint); font-size: 12px; }
+.site-footer .footer-sync { padding-top: 0; }
+.footer-sync-link { display: inline-flex; min-height: 44px; align-items: center; color: var(--ink-soft); text-decoration: underline; }
+@media (max-width: 560px) {
+  .sync-actions .button { flex: 1 1 100%; }
+  .sync-compare { font-size: 12px; }
+  .sync-compare th, .sync-compare td { padding: 6px 3px; }
+}

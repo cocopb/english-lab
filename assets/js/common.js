@@ -46,6 +46,10 @@
     return Math.max(0, Math.floor(Number(value) || 0));
   }
 
+  function validIso(value) {
+    return typeof value === "string" && /^\d{4}-\d{2}-\d{2}T/.test(value) && !Number.isNaN(Date.parse(value)) ? value : null;
+  }
+
   function normalizePracticeAttempt(attempt) {
     if (!attempt || typeof attempt !== "object") return null;
     var total = nonNegativeInt(attempt.total);
@@ -143,17 +147,33 @@
       var total = Math.max(0, Math.floor(Number(stats.total) || 0));
       var correct = Math.min(total, Math.max(0, Math.floor(Number(stats.correct) || 0)));
       var lastDate = typeof stats.lastDate === "string" && /^\d{4}-\d{2}-\d{2}$/.test(stats.lastDate) ? stats.lastDate : null;
-      var wrongQuestionIndexes = Array.isArray(stats.wrongQuestionIndexes)
+      var legacyWrong = Array.isArray(stats.wrongQuestionIndexes)
         ? Array.from(new Set(stats.wrongQuestionIndexes.filter(function (index) {
           return Number.isInteger(index) && index >= 0 && index < total;
         })))
         : [];
+      // questionResults: 문항별 마지막 결과 { "문항 번호": { wrong, at(ISO 시각) } }. 나중에 맞힌 문항은 오답 목록에서 빠진다.
+      // 이 필드가 없던 기록은 wrongQuestionIndexes를 "시각 모름(at: null)인 오답"으로 옮긴다.
+      var rawResults = stats.questionResults && typeof stats.questionResults === "object" ? stats.questionResults : null;
+      var questionResults = {};
+      if (rawResults) {
+        Object.keys(rawResults).forEach(function (key) {
+          var index = Number(key);
+          var entry = rawResults[key];
+          if (!Number.isInteger(index) || index < 0 || index >= total || !entry || typeof entry !== "object") return;
+          questionResults[index] = { wrong: entry.wrong === true, at: validIso(entry.at) };
+        });
+      } else {
+        legacyWrong.forEach(function (index) { questionResults[index] = { wrong: true, at: null }; });
+      }
       result.readingStats[passageId] = {
         attempted: attempted,
         correct: correct,
         total: total,
         lastDate: lastDate,
-        wrongQuestionIndexes: wrongQuestionIndexes
+        wrongQuestionIndexes: Object.keys(questionResults).map(Number).sort(function (a, b) { return a - b; })
+          .filter(function (index) { return questionResults[index].wrong; }),
+        questionResults: questionResults
       };
     });
     var speakingStats = result.speakingStats && typeof result.speakingStats === "object" ? result.speakingStats : {};
@@ -196,6 +216,9 @@
         nextDue: nextDue,
         wrongCount: Math.max(0, Math.floor(Number(status.wrongCount) || 0))
       };
+      // lastAt: 마지막으로 답한 정확한 시각(ISO). 두 기기 기록을 합칠 때 같은 날 안에서도 나중 기록을 고르려고 둔다.
+      var lastAt = validIso(status.lastAt);
+      if (lastAt) result.vocabProgress[wordId].lastAt = lastAt;
     });
     result.vocabDay = Number.isFinite(Number(result.vocabDay)) ? Number(result.vocabDay) : 0;
     result.quizSolved = Number.isFinite(Number(result.quizSolved)) ? Number(result.quizSolved) : 0;
@@ -243,6 +266,178 @@
       console.warn("학습 진도를 저장하지 못했습니다.", error);
     }
     return updated;
+  }
+
+  // ---------- 기기별 누적 장부 (두 기기 기록 합치기용) ----------
+  // 푼 문항 수 같은 누적 숫자는 하나하나의 기록이 남아 있지 않아 합칠 때 다시 셀 수 없다.
+  // 그래서 "이 기기에서 늘어난 몫"을 기기별로 따로 적어 둔다 (englishLabSyncLedger).
+  // 합칠 때는 기기마다 큰 값을 고르고(같은 기기의 옛 파일은 작으므로 무시됨) 전체를 다시 더한다.
+  // 이 기기의 몫 = 현재 합계 − 다른 기기 몫. 내보내기·가져오기 때 계산하므로 평소 저장(set)에서는 장부를 건드리지 않는다.
+  // 장부에 저장된 것은 사실상 "다른 기기들의 몫"이다 (가져오기 때만 바뀜).
+  var LEDGER_KEY = "englishLabSyncLedger";
+  var DEVICE_ID_KEY = "englishLabDeviceId";
+  var LISTENING_PARTS = ["part1", "part2", "part3", "part4"];
+  var cachedDeviceId = null;
+
+  function deviceId() {
+    if (cachedDeviceId) return cachedDeviceId;
+    try {
+      cachedDeviceId = localStorage.getItem(DEVICE_ID_KEY);
+      if (!cachedDeviceId || !/^d-[a-z0-9]{6,}$/.test(cachedDeviceId)) {
+        cachedDeviceId = "d-" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
+        localStorage.setItem(DEVICE_ID_KEY, cachedDeviceId);
+      }
+    } catch (error) {
+      cachedDeviceId = cachedDeviceId || "d-local000";
+    }
+    return cachedDeviceId;
+  }
+
+  // 누적 숫자 목록: "경로" → 값. 경로 구분자는 |
+  function counterTotals(progress) {
+    var totals = { quizSolved: progress.quizSolved, quizCorrect: progress.quizCorrect };
+    Object.keys(progress.grammarStats).forEach(function (id) {
+      totals["grammarStats|" + id + "|solved"] = progress.grammarStats[id].solved;
+      totals["grammarStats|" + id + "|correct"] = progress.grammarStats[id].correct;
+    });
+    totals["listeningStats|dictation|attempted"] = progress.listeningStats.dictation.attempted;
+    LISTENING_PARTS.forEach(function (part) {
+      totals["listeningStats|" + part + "|solved"] = progress.listeningStats[part].solved;
+      totals["listeningStats|" + part + "|correct"] = progress.listeningStats[part].correct;
+    });
+    Object.keys(progress.readingStats).forEach(function (id) {
+      ["attempted", "correct", "total"].forEach(function (field) {
+        totals["readingStats|" + id + "|" + field] = progress.readingStats[id][field];
+      });
+    });
+    totals["speakingStats|shadowingCount"] = progress.speakingStats.shadowingCount;
+    totals["speakingStats|shadowingSum"] = roundFloat(progress.speakingStats.shadowingAvg * progress.speakingStats.shadowingCount);
+    Object.keys(progress.vocabProgress).forEach(function (id) {
+      totals["vocabProgress|" + id + "|wrongCount"] = progress.vocabProgress[id].wrongCount;
+    });
+    Object.keys(totals).forEach(function (path) { if (!totals[path]) delete totals[path]; });
+    return totals;
+  }
+
+  function roundFloat(value) { return Math.round(value * 1e9) / 1e9; }
+
+  // 합계를 진도에 다시 써 넣는다. 받아쓰기 정답률 목록(dictation)도 함께.
+  function applyCounterTotals(progress, totals, dictation) {
+    var result = JSON.parse(JSON.stringify(progress));
+    result.quizSolved = totals.quizSolved || 0;
+    result.quizCorrect = totals.quizCorrect || 0;
+    Object.keys(result.grammarStats).forEach(function (id) { result.grammarStats[id].solved = 0; result.grammarStats[id].correct = 0; });
+    Object.keys(result.readingStats).forEach(function (id) { ["attempted", "correct", "total"].forEach(function (f) { result.readingStats[id][f] = 0; }); });
+    Object.keys(result.vocabProgress).forEach(function (id) { result.vocabProgress[id].wrongCount = 0; });
+    LISTENING_PARTS.forEach(function (part) { result.listeningStats[part] = { solved: 0, correct: 0 }; });
+    result.listeningStats.dictation = { attempted: 0, wordAccuracy: (dictation || []).slice() };
+    var shadowCount = 0, shadowSum = 0;
+    Object.keys(totals).forEach(function (path) {
+      var value = totals[path];
+      var parts = path.split("|");
+      if (parts[0] === "grammarStats") {
+        result.grammarStats[parts[1]] = result.grammarStats[parts[1]] || { solved: 0, correct: 0, lastDate: null };
+        result.grammarStats[parts[1]][parts[2]] = value;
+      } else if (parts[0] === "listeningStats") {
+        result.listeningStats[parts[1]][parts[2]] = value;
+      } else if (parts[0] === "readingStats") {
+        result.readingStats[parts[1]] = result.readingStats[parts[1]] ||
+          { attempted: 0, correct: 0, total: 0, lastDate: null, wrongQuestionIndexes: [], questionResults: {} };
+        result.readingStats[parts[1]][parts[2]] = value;
+      } else if (parts[0] === "vocabProgress") {
+        if (result.vocabProgress[parts[1]]) result.vocabProgress[parts[1]].wrongCount = value;
+      } else if (path === "speakingStats|shadowingCount") {
+        shadowCount = value;
+      } else if (path === "speakingStats|shadowingSum") {
+        shadowSum = value;
+      }
+    });
+    result.speakingStats.shadowingCount = shadowCount;
+    result.speakingStats.shadowingAvg = shadowCount ? roundFloat(shadowSum / shadowCount) : 0;
+    return normalizeProgress(result);
+  }
+
+  function normalizeLedger(value) {
+    var devices = value && typeof value === "object" && value.devices && typeof value.devices === "object" ? value.devices : {};
+    var result = { version: 1, devices: {} };
+    Object.keys(devices).forEach(function (id) {
+      var entry = devices[id];
+      if (!/^d-[a-z0-9]{6,}$/.test(id) || !entry || typeof entry !== "object") return;
+      var counters = {};
+      Object.keys(entry.counters && typeof entry.counters === "object" ? entry.counters : {}).forEach(function (path) {
+        var number = Number(entry.counters[path]);
+        if (Number.isFinite(number) && number > 0) counters[path] = roundFloat(number);
+      });
+      var dictation = Array.isArray(entry.dictation) ? entry.dictation.filter(function (n) {
+        return typeof n === "number" && Number.isFinite(n);
+      }).map(function (n) { return Math.min(1, Math.max(0, n)); }) : [];
+      result.devices[id] = { counters: counters, dictation: dictation };
+    });
+    return result;
+  }
+
+  function readLedger() {
+    try {
+      var raw = localStorage.getItem(LEDGER_KEY);
+      return normalizeLedger(raw ? JSON.parse(raw) : null);
+    } catch (error) {
+      console.warn("기기별 기록 장부를 읽지 못해 새로 만듭니다.", error);
+      return normalizeLedger(null);
+    }
+  }
+
+  function saveLedger(ledger) {
+    try {
+      localStorage.setItem(LEDGER_KEY, JSON.stringify(ledger));
+    } catch (error) {
+      console.warn("기기별 기록 장부를 저장하지 못했습니다.", error);
+    }
+  }
+
+  // 진도(합계)에 맞춰 장부의 이 기기 몫을 다시 계산한다. 진도는 바꾸지 않는다.
+  // 다른 기기 몫이 합계보다 크면(장부만 남고 진도가 지워진 경우 등) 장부를 이 기기 하나로 다시 만든다.
+  function reconcileLedger(ledger, progress, id) {
+    ledger = normalizeLedger(ledger);
+    var totals = counterTotals(progress);
+    var dictation = progress.listeningStats.dictation.wordAccuracy.slice();
+    var others = Object.keys(ledger.devices).filter(function (key) { return key !== id; });
+    var sumOthers = {};
+    others.forEach(function (key) {
+      var counters = ledger.devices[key].counters;
+      Object.keys(counters).forEach(function (path) { sumOthers[path] = (sumOthers[path] || 0) + counters[path]; });
+    });
+    var consistent = Object.keys(sumOthers).every(function (path) { return (totals[path] || 0) + 1e-6 >= sumOthers[path]; });
+    var mine = dictation.slice();
+    others.forEach(function (key) {
+      ledger.devices[key].dictation.forEach(function (value) {
+        var at = mine.indexOf(value);
+        if (at === -1) consistent = false;
+        else mine.splice(at, 1);
+      });
+    });
+    if (!consistent) {
+      return { version: 1, devices: (function () { var d = {}; d[id] = { counters: totals, dictation: dictation }; return d; }()) };
+    }
+    var own = {};
+    Object.keys(totals).forEach(function (path) {
+      var share = roundFloat(totals[path] - (sumOthers[path] || 0));
+      if (share > 1e-9) own[path] = share;
+    });
+    // 이 기기 몫이 하나도 없으면 칸을 만들지 않는다 (가져오기만 한 기기의 장부가 원래 파일과 같아지도록)
+    if (Object.keys(own).length || mine.length) ledger.devices[id] = { counters: own, dictation: mine };
+    else delete ledger.devices[id];
+    return ledger;
+  }
+
+  // 장부 → 합계. 기기 id 순서로 받아쓰기 정답률 목록을 잇는다.
+  function ledgerTotals(ledger) {
+    var totals = {}, dictation = [];
+    Object.keys(ledger.devices).sort().forEach(function (id) {
+      var entry = ledger.devices[id];
+      Object.keys(entry.counters).forEach(function (path) { totals[path] = roundFloat((totals[path] || 0) + entry.counters[path]); });
+      dictation = dictation.concat(entry.dictation);
+    });
+    return { totals: totals, dictation: dictation };
   }
 
   function dateKey(date) {
@@ -319,7 +514,8 @@
       lastResult: isCorrect ? "correct" : "wrong",
       lastDate: today,
       nextDue: isCorrect ? (previousStage < 4 ? addDays(today, reviewIntervals[previousStage]) : "") : addDays(today, 1),
-      wrongCount: Number(previous.wrongCount) + (isCorrect ? 0 : 1)
+      wrongCount: Number(previous.wrongCount) + (isCorrect ? 0 : 1),
+      lastAt: new Date().toISOString()
     };
     progress.vocabProgress[wordId] = result;
     progress.quizSolved += 1;
@@ -413,16 +609,24 @@
       correct: 0,
       total: 0,
       lastDate: null,
-      wrongQuestionIndexes: []
+      wrongQuestionIndexes: [],
+      questionResults: {}
     };
     var missed = Array.isArray(wrongQuestionIndexes) ? wrongQuestionIndexes.filter(function (index) {
       return Number.isInteger(index) && index >= 0 && index < total;
     }) : [];
+    var now = new Date().toISOString();
     stats.attempted += 1;
     stats.correct += correct;
     stats.total += total;
     stats.lastDate = todayDate();
-    stats.wrongQuestionIndexes = Array.from(new Set(stats.wrongQuestionIndexes.concat(missed)));
+    // 이번에 푼 문항 전부의 결과를 새로 적는다. 이번에 맞힌 문항은 오답 목록에서 빠진다.
+    stats.questionResults = stats.questionResults || {};
+    for (var index = 0; index < total; index += 1) {
+      stats.questionResults[index] = { wrong: missed.indexOf(index) !== -1, at: now };
+    }
+    stats.wrongQuestionIndexes = Object.keys(stats.questionResults).map(Number).sort(function (a, b) { return a - b; })
+      .filter(function (key) { return stats.questionResults[key].wrong; });
     progress.readingStats[passageId] = stats;
     set({ readingStats: progress.readingStats });
     return stats;
@@ -527,7 +731,19 @@
     recordShadowingAttempt: recordShadowingAttempt,
     getDueWords: getDueWords,
     getWeakWords: getWeakWords,
-    getGraduated: getGraduated
+    getGraduated: getGraduated,
+    normalize: normalizeProgress,
+    // 기록 옮기기(backup.js)가 쓰는 장부 도구
+    sync: {
+      LEDGER_KEY: LEDGER_KEY,
+      deviceId: deviceId,
+      counterTotals: counterTotals,
+      applyCounterTotals: applyCounterTotals,
+      normalizeLedger: normalizeLedger,
+      readLedger: readLedger,
+      reconcileLedger: reconcileLedger,
+      ledgerTotals: ledgerTotals
+    }
   };
 
   function currentPage() {
@@ -554,7 +770,8 @@
       setupThemeToggle(header.querySelector(".theme-toggle"));
     }
     if (footer) {
-      footer.innerHTML = '<footer class="site-footer"><p><span class="brand-mark small">E</span> English Lab <span class="footer-divider">·</span> 오늘도 꾸준히, 한 줄씩</p></footer>';
+      footer.innerHTML = '<footer class="site-footer"><p><span class="brand-mark small">E</span> English Lab <span class="footer-divider">·</span> 오늘도 꾸준히, 한 줄씩</p>' +
+        '<p class="footer-sync"><a class="footer-sync-link" href="' + base + 'pages/sync.html"' + (page === "sync" ? ' aria-current="page"' : "") + '>기록 옮기기 (다른 기기와 맞추기)</a></p></footer>';
     }
   }
 
