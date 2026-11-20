@@ -877,6 +877,8 @@ function photoProblem(container, item, number) {
   if (img.getAttribute('src') !== '../' + item.img) return 'src ' + img.getAttribute('src');
   if (img.getAttribute('alt') !== 'Part 1 사진 ' + number) return 'alt ' + img.getAttribute('alt');
   if (img.hidden) return '사진이 숨겨짐';
+  // 크기를 고정하면 CSS(틀 폭 100%)가 무시되어 원본이 작은 사진(ph16·ph17)이 작게 보인다.
+  if (['width', 'height', 'style'].some(k => img.getAttribute(k) !== null)) return 'width/height/style이 붙음';
   return null;
 }
 
@@ -959,7 +961,12 @@ async function runLcTests() {
   check('Part 3·4는 듣기 전에 문제가 안 보임', p3PromptLeaks === 0, p3PromptLeaks + '건');
   check('20회 동안 대화·담화가 섞여 나옴 (14개 중 13개, 12개 중 10개)', [...talkUse.keys()].filter(k => k.startsWith('p3:')).length === 14 && [...talkUse.keys()].filter(k => k.startsWith('p4:')).length === 12,
     '대화 ' + [...talkUse.keys()].filter(k => k.startsWith('p3:')).length + '종 · 담화 ' + [...talkUse.keys()].filter(k => k.startsWith('p4:')).length + '종');
-  check('20회 동안 사진이 섞여 나옴 (24장 중 18장 이상)', photoUse.size >= 18, photoUse.size + '장');
+  // 20회 × 6장 = 120장을 뽑는다. 사람 23장·사물 11장이면 기대값은 약 33종이라 28종 미만이면 뽑기가 치우친 것으로 본다.
+  const allPhotos = g.window.PART1;
+  const usedPeople = allPhotos.filter(p => p.kind === 'people' && photoUse.has(p.id)).length;
+  const usedObjects = allPhotos.filter(p => p.kind === 'objects' && photoUse.has(p.id)).length;
+  check('20회 동안 사진이 섞여 나옴 (' + allPhotos.length + '장 중 28종 이상 · 모두 PART1에 있는 사진)', photoUse.size >= 28 && [...photoUse.keys()].every(id => allPhotos.some(p => p.id === id)),
+    photoUse.size + '종 (사람 ' + usedPeople + '/' + allPhotos.filter(p => p.kind === 'people').length + ' · 사물 ' + usedObjects + '/' + allPhotos.filter(p => p.kind === 'objects').length + ')');
 
   // --- 2. 실전 조건: 한 번만 재생 · 되돌아가기 없음 · 스크립트 없음 ---
   console.log('\n[LC 풀세트 — 실전 조건]');

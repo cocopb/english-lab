@@ -1,4 +1,4 @@
-// Part 1 사진 묘사 (24문항). img는 저장소 루트 기준 경로, kind는 people(사람 중심) / objects(사물·풍경).
+// Part 1 사진 묘사 (34문항). img는 저장소 루트 기준 경로, kind는 people(사람 중심) / objects(사물·풍경).
 // 선택지 문장은 음성으로만 들려주고, 채점 뒤에만 글자로 보여 준다. 사진 alt는 화면 코드가 "Part 1 사진 N"으로 붙인다(장면 설명 금지).
 window.PART1 = [
   {
@@ -264,5 +264,115 @@ window.PART1 = [
     ],
     answer: 1,
     explanation: "남자가 상자를 차에 싣고 있어 정답이에요. 손수레에는 상자가 실려 있어 비어 있지(empty) 않고, 트렁크는 열려 있으며, 길을 건너고 있지도 않아요."
+  },
+  {
+    id: "ph25", img: "assets/img/part1/ph25.jpg", kind: "objects",
+    choices: [
+      "Customers are being served drinks.",
+      "The awning has been rolled up.",
+      "Tables and chairs have been set out on the sidewalk.",
+      "A waiter is wiping a table."
+    ],
+    answer: 2,
+    explanation: "보도에 테이블과 의자가 놓여 있어(have been set out) 정답이에요. 손님이 없으니 음료를 받는 장면이 아니고, 차양은 펼쳐져 있으며(rolled up 아님), 테이블을 닦는 직원도 없어요."
+  },
+  {
+    id: "ph26", img: "assets/img/part1/ph26.jpg", kind: "objects",
+    choices: [
+      "Blankets have been draped over the chairs.",
+      "The chairs are stacked in a corner.",
+      "Someone is pouring a cup of coffee.",
+      "The tables have been cleared of everything."
+    ],
+    answer: 0,
+    explanation: "의자 등받이에 담요가 걸쳐져 있어(have been draped over) 정답이에요. 의자는 쌓여 있지 않고, 커피를 따르는 사람이 없으며, 테이블에 컵과 화분이 있어 다 치운(cleared) 상태도 아니에요."
+  },
+  {
+    id: "ph27", img: "assets/img/part1/ph27.jpg", kind: "objects",
+    choices: [
+      "Diners are seated under the fans.",
+      "Chairs are being carried away.",
+      "Someone is watering the plants.",
+      "The tables are unoccupied."
+    ],
+    answer: 3,
+    explanation: "테이블에 아무도 앉아 있지 않아(unoccupied) 정답이에요. 천장 선풍기 아래 앉은 손님도, 의자를 옮기거나 화분에 물을 주는 사람도 없어요."
+  },
+  {
+    id: "ph28", img: "assets/img/part1/ph28.jpg", kind: "people",
+    choices: [
+      "The server is wiping the counter.",
+      "A customer is paying at a counter.",
+      "Customers are seated at tables.",
+      "Snacks are being taken off a rack."
+    ],
+    answer: 1,
+    explanation: "손님이 계산대에서 휴대폰으로 결제하고 있어 정답이에요. 직원은 계산대를 닦지 않고 화면을 보고 있으며, 테이블에 앉은 손님도, 진열대에서 과자를 꺼내는 사람도 없어요."
+  },
+  {
+    id: "ph29", img: "assets/img/part1/ph29.jpg", kind: "people",
+    choices: [
+      "The customer is paying with cash.",
+      "Pastries are being placed in a basket.",
+      "A worker is handing a cup to a customer.",
+      "They're carrying trays to a table."
+    ],
+    answer: 2,
+    explanation: "직원이 손님에게 컵을 건네고 있어 정답이에요. 현금을 내는 장면이 아니고, 빵을 바구니에 담거나 쟁반을 나르는 사람도 없어요."
+  },
+  {
+    id: "ph30", img: "assets/img/part1/ph30.jpg", kind: "objects",
+    choices: [
+      "Cars have been parked in rows.",
+      "The parking lot is empty.",
+      "Vehicles are waiting at a traffic light.",
+      "A truck is being loaded."
+    ],
+    answer: 0,
+    explanation: "차들이 줄지어 주차되어 있어(have been parked in rows) 정답이에요. 주차장은 차로 가득하고, 신호를 기다리는 차나 짐을 싣는 트럭도 없어요."
+  },
+  {
+    id: "ph31", img: "assets/img/part1/ph31.jpg", kind: "objects",
+    choices: [
+      "The garage is under construction.",
+      "A car is pulling out of a space.",
+      "People are walking between the cars.",
+      "Vehicles are parked inside a garage."
+    ],
+    answer: 3,
+    explanation: "실내 주차장 안에 차들이 주차되어 있어 정답이에요. 공사 중인 모습이 아니고, 자리에서 빠져나오는 차나 차 사이를 걷는 사람도 없어요."
+  },
+  {
+    id: "ph32", img: "assets/img/part1/ph32.jpg", kind: "people",
+    choices: [
+      "The room is empty.",
+      "People are seated around a conference table.",
+      "Someone is turning off a monitor.",
+      "They're standing in a circle."
+    ],
+    answer: 1,
+    explanation: "사람들이 회의 테이블에 둘러앉아 있어 정답이에요. 방이 비어 있지 않고, 모니터를 끄는 사람도 없으며, 모두 앉아 있어 둥글게 서 있는 것도 아니에요."
+  },
+  {
+    id: "ph33", img: "assets/img/part1/ph33.jpg", kind: "people",
+    choices: [
+      "A jacket is hanging on the back of a chair.",
+      "They're putting on their coats.",
+      "A man is pouring coffee into a mug.",
+      "The chairs have been pushed under the table."
+    ],
+    answer: 0,
+    explanation: "의자 등받이에 재킷이 걸려 있어 정답이에요. 코트를 입는 동작이나 커피를 따르는 남자가 없고, 의자에 사람들이 앉아 있어 테이블 밑으로 밀어 넣은(pushed under) 상태도 아니에요."
+  },
+  {
+    id: "ph34", img: "assets/img/part1/ph34.jpg", kind: "people",
+    choices: [
+      "She's erasing the board.",
+      "They're all standing up.",
+      "Some books are being placed on a shelf.",
+      "A woman is writing on a board."
+    ],
+    answer: 3,
+    explanation: "여자가 마커로 보드에 쓰고 있어 정답이에요. 지우는(erasing) 동작이 아니고, 다른 사람들은 앉아 있어 모두 서 있지 않으며, 선반에 책을 꽂는 사람도 없어요."
   }
 ];

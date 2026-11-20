@@ -10,7 +10,7 @@ english-lab/
 ├─ pages/                 # 보카, 문법, 리스닝, 독해, 회화, 실전 (+ 메뉴 제외 페이지)
 ├─ assets/
 │  ├─ css/style.css       # 디자인 시스템과 반응형 스타일
-│  ├─ img/part1/          # Part 1 사진 ph01~ph24 (JPEG, 긴 변 1200px 이하, 장당 300KB 이하)
+│  ├─ img/part1/          # Part 1 사진 ph01~ph34 (JPEG, 긴 변 1200px 이하, 장당 300KB 이하)
 │  └─ js/                 # 공통 UI/진도, 퀴즈, 보카 시험, 실전 모의고사 동작
 ├─ data/                  # 전역 배열로 제공하는 샘플 콘텐츠
 ├─ tools/
@@ -18,7 +18,7 @@ english-lab/
 │  ├─ check-grammar.js    # 문법 문제 데이터 검사 + 가짜 DOM으로 문법 화면(노트·유형별 정답률) 검사
 │  ├─ check-reading.js    # 독해·Part 6 데이터 검사 + 가짜 DOM으로 독해 화면 렌더링 검사
 │  ├─ check-listening.js  # 받아쓰기·Part 2·Part 3·Part 4 데이터 검사 + 가짜 DOM으로 리스닝 화면 로드 검사
-│  ├─ check-part1.js      # Part 1 사진 데이터·이미지 파일·정답 위치·사진 alt 검사 + 가짜 DOM으로 리스닝 탭 Part 1 화면 검사
+│  ├─ check-part1.js      # Part 1 사진 데이터·문장 중복·이미지 파일·표시 크기·정답 위치·사진 alt 검사 + 가짜 DOM으로 리스닝 탭 Part 1 화면 검사
 │  ├─ check-speaking.js   # 회화 패턴·롤플레이·쉐도잉 데이터 검사 + 가짜 DOM으로 회화 화면 로드·채점 검사
 │  ├─ check-practice.js   # 가짜 DOM으로 실전 페이지(모의고사·OMR·타이머·기록) 동작 검사
 │  ├─ build-vocab-index.js # 보카 색인(docs/vocab-index.md) 생성
@@ -37,7 +37,7 @@ node tools/check-vocab.js      # 보카: 빈칸 생성 가능 여부, 필수 필
 node tools/check-grammar.js    # 문법 문제: 유형 ID, 선택지 4개, 정답 인덱스, 빈칸, ID 중복, 해설, 중복 선택지, 노트 예문과 같은 유형 문항의 중복(다른 유형은 경고) + 화면: 모든 노트 아코디언(표·예문 개수), 유형 선택, 유형별 정답률(모든 유형을 끝까지 풀고 기록·표시·정렬 확인)
 node tools/check-reading.js    # 독해: 전략 ID, 정답 인덱스, 문장별 en/ko, ID 중복, Part 6 빈칸·문항 일치 + 지문 렌더링
 node tools/check-listening.js  # 리스닝: 받아쓰기 text/ko/level, Part 2 선택지 3개·정답, Part 3 script/questions·선택지 4개·정답, ID 중복, 해설 + 화면 로드 + 음성 재생(음성 목록이 빈 모바일·데스크톱·미지원 브라우저)
-node tools/check-part1.js      # Part 1: 24문항 choices 4개·answer 범위·해설·kind, 이미지 파일 24개 존재(JPEG·300KB 이하), 정답 위치 분포·연속 금지, alt가 "Part 1 사진 N"이고 선택지 내용어 없음 + 화면: 사진 표시, (A)~(D) 음성, 채점 전 문장 글자 없음, 채점 후 네 문장·해설, 로딩 실패 대체 문구
+node tools/check-part1.js      # Part 1: 34문항 choices 4개·answer 범위·해설·kind, 문장 중복(다른 사진의 정답끼리·한 사진의 선택지끼리: 같은 문장, 내용어 겹침, 3단어 틀, 내용어가 든 4단어 표현), 이미지 파일 34개 존재(JPEG·300KB 이하), 표시 크기(원본이 작아도 작게 보이지 않음), 정답 위치 분포·연속 금지, alt가 "Part 1 사진 N"이고 선택지 내용어 없음 + 화면: 사진 표시, (A)~(D) 음성, 채점 전 문장 글자 없음, 채점 후 네 문장·해설, 로딩 실패 대체 문구
 node tools/check-speaking.js   # 회화: 패턴 pattern/meaning/tip/drills, 드릴 ko/en, 롤플레이 me 턴 instruction/model/comment, 쉐도잉 en/ko/level, ID 중복 + 화면 로드·채점(패턴·쉐도잉·롤플레이 끝까지 진행, 괄호 지문 음성 제외) + TTS 재생(음성 목록이 빈 모바일·데스크톱)
 node tools/check-practice.js   # 실전: 메뉴 7개, 30문항 구성, OMR 이동, 타이머 색·자동 제출, 결과 집계, 기록 저장, 파트별 연습
 ```
@@ -63,7 +63,7 @@ node tools/check-practice.js   # 실전: 메뉴 7개, 30문항 구성, OMR 이�
 ## 실전 (pages/practice.html)
 
 - **미니 모의고사**: Part 5 15문항(`GRAMMAR_QUIZ`) + Part 6 8문항(`PART6`) + Part 7 7문항(`PASSAGES`) = 30문항, 제한 시간 25분. 모두 무작위 출제하며, 제출 전에는 정답을 보여주지 않고 시간이 끝나면 자동 제출합니다. Part 6·7은 세트/지문을 무작위로 골라 문항 수가 찰 때까지 담고, 마지막 세트/지문은 앞에서부터 필요한 문항만 사용합니다.
-- **LC 풀세트**: 실제 토익 LC와 같은 100문항 / 45분. Part 1 사진 6장(1~6번, `PART1` 24장 중 사람 사진 4~5장 + 사물 사진 1~2장) → Part 2 25문항(7~31번, `PART2` 45개 중) → Part 3 대화 13개(32~70번, `PART3` 중, 39문항) → Part 4 담화 10개(71~100번, `PART4` 중, 30문항). 음성은 문항(대화·담화)마다 한 번만 재생되고 지나간 문항으로 돌아갈 수 없으며, Part 1·2 선택지 문장과 스크립트는 채점 후 오답 복습에서만 보입니다(Part 1 오답은 사진 + 네 문장 + 해설). 저장 `englishLabLcFullSetSave`(형식 version 2, 이전 94문항 저장값은 지움), 기록 `englishLabLcFullSetHistory`(RC 풀세트와 별도 키). 예상 점수는 맞은 개수를 보정 없이 LC 환산표에 넣은 참고값입니다(이전 94문항 기록은 100문항 기준으로 환산했던 값). Part 2 유형별 정답률은 `PART2` 항목의 `type`(`PART2_TYPE_LABELS`의 키)으로 셉니다.
+- **LC 풀세트**: 실제 토익 LC와 같은 100문항 / 45분. Part 1 사진 6장(1~6번, `PART1` 34장 중 사람 사진 4~5장 + 사물 사진 1~2장) → Part 2 25문항(7~31번, `PART2` 45개 중) → Part 3 대화 13개(32~70번, `PART3` 중, 39문항) → Part 4 담화 10개(71~100번, `PART4` 중, 30문항). 음성은 문항(대화·담화)마다 한 번만 재생되고 지나간 문항으로 돌아갈 수 없으며, Part 1·2 선택지 문장과 스크립트는 채점 후 오답 복습에서만 보입니다(Part 1 오답은 사진 + 네 문장 + 해설). 저장 `englishLabLcFullSetSave`(형식 version 2, 이전 94문항 저장값은 지움), 기록 `englishLabLcFullSetHistory`(RC 풀세트와 별도 키). 예상 점수는 맞은 개수를 보정 없이 LC 환산표에 넣은 참고값입니다(이전 94문항 기록은 100문항 기준으로 환산했던 값). Part 2 유형별 정답률은 `PART2` 항목의 `type`(`PART2_TYPE_LABELS`의 키)으로 셉니다.
 - **파트별 연습**: 파트 하나만 시간 제한 없이 풀고 문항마다 즉시 채점합니다.
 - **기록**: `englishLabProgress.practiceStats.attempts`에 `{ date, correct, total, elapsedSec, timedOut, partScores:{p5,p6,p7}, partTotals:{p5,p6,p7} }`로 저장합니다 (최근 100회). `ruleId`가 있는 문항의 응답은 `grammarStats`에도 반영됩니다.
 - 결과 화면의 RC 예상 점수대는 맞은 개수 구간으로 정한 **참고용 추정치**입니다.

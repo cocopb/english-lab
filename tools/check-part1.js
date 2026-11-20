@@ -2,8 +2,9 @@
 
 // Part 1 사진 묘사(data/part1.js) 검사 + 가짜 DOM으로 리스닝 탭 Part 1 화면 검사
 // 실행: node tools/check-part1.js  (외부 패키지 불필요)
-//  1. 데이터: 24문항 · choices 4개 · answer 범위 · explanation · kind · id/img 형식
-//  2. 이미지 파일이 실제로 있는지 (24개 모두, JPEG 시그니처까지)
+//  1. 데이터: 34문항 · choices 4개 · answer 범위 · explanation · kind · id/img 형식
+//     + 문장 중복: 서로 다른 사진의 정답끼리, 한 사진 안의 선택지끼리 (기준은 아래 sentenceOverlap 주석)
+//  2. 이미지 파일이 실제로 있는지 (34개 모두, JPEG 시그니처까지) + 표시 크기가 원본 픽셀 크기와 무관한지
 //  3. 정답 위치: A~D 고르게 분포 · 바로 앞 문항과 같은 위치 연속 금지
 //  4. 사진 alt: "Part 1 사진 N" 형식이고, 선택지 문장의 내용어가 들어가지 않음
 //  5. 리스닝 탭: 사진 표시 · 네 선택지 음성 · 채점 전 문장 글자 없음 · 채점 후 네 문장과 해설 · 로딩 실패 대체 문구 · part1 기록
@@ -26,7 +27,7 @@ if (!Array.isArray(PART1)) {
 }
 
 // ---------- 1. 데이터 ----------
-var EXPECTED_COUNT = 24;
+var EXPECTED_COUNT = 34;
 var ALLOWED_KEYS = ["id", "img", "kind", "choices", "answer", "explanation"];
 check(PART1.length === EXPECTED_COUNT, "문항 수 " + PART1.length + " (기대 " + EXPECTED_COUNT + ")");
 var seen = {};
@@ -51,15 +52,82 @@ var kinds = { people: 0, objects: 0 };
 PART1.forEach(function (item) { if (item && kinds[item.kind] !== undefined) kinds[item.kind] += 1; });
 // LC 풀세트가 사람 사진 최대 5장, 사물 사진 최대 2장을 뽑는다.
 check(kinds.people >= 5 && kinds.objects >= 2, "LC 풀세트에 쓸 사진이 모자람 (사람 " + kinds.people + " / 사물 " + kinds.objects + ")");
-var choiceOwner = {};
-PART1.forEach(function (item) {
-  ((item && item.choices) || []).forEach(function (choice, index) {
-    if (index !== item.answer) return;
-    if (choiceOwner[choice]) problems.push(item.id + " 정답 문장이 " + choiceOwner[choice] + "의 정답과 같음");
-    choiceOwner[choice] = item.id;
+console.log("데이터: " + PART1.length + "문항 (사람 사진 " + kinds.people + " · 사물 사진 " + kinds.objects + ")");
+
+// ---------- 1-2. 문장 중복 ----------
+// LC 풀세트는 사진 6장을 한 세트로 내므로, 다른 사진의 정답이 비슷하면 "같은 문장을 또 들었다"고 느껴진다.
+// 문법 노트 예문 중복 검사(check-grammar.js)의 방식을 Part 1의 짧은 문장에 맞게 고쳤다.
+// 비교 전 정리: 소문자, 축약 풀기(they're → they are, he's/she's/it's → … is), be동사·have동사 통일(is/are → be, has/have → have).
+// 아래 넷 중 하나라도 해당하면 겹친 것으로 본다.
+//  1) 같은 문장: 정리한 단어열이 완전히 같다
+//  2) 내용어: 기능어와 흔한 주어(man, woman, people, someone, they 등)를 빼고 어미(-s/-es/-ed/-ing)를 뗀 단어가
+//     2개 이상 같고, 짧은 쪽 내용어의 75% 이상이다 (3개 중 2개는 통과: 묘사 대상이 같아도 동작·장소가 다르면 다른 문장)
+//  3) 문장 틀: 연속 3단어 묶음이 2개 이상, 짧은 쪽의 50% 이상 같다
+//  4) 같은 표현: 내용어가 든 연속 4단어 묶음이 하나라도 같다 ("have been draped over"처럼 귀에 남는 표현)
+// 한 사진 안의 선택지 네 개는 서로 더 달라야 하므로 2)의 비율을 50%로 낮춰 같은 규칙을 쓴다.
+var OVERLAP_STOP_WORDS = ("a an the be have been being to of in on at for with by from and or but into onto over under up out off " +
+  "around along against between inside next near some all both each one their his her its this that these those there " +
+  "they he she it someone man men woman women people person").split(" ");
+function overlapTokens(text) {
+  return String(text).toLowerCase()
+    .replace(/\b(they|we|you)'re\b/g, "$1 are").replace(/\b(he|she|it|there)'s\b/g, "$1 is")
+    .replace(/[^a-z ]/g, " ").split(/\s+/).filter(Boolean)
+    .map(function (word) { return /^(is|are|am|was|were)$/.test(word) ? "be" : /^(has|have|had)$/.test(word) ? "have" : word; });
+}
+function overlapStem(word) { return word.length <= 4 ? word : word.replace(/(ing|ed|es|s)$/, "").replace(/e$/, ""); }
+function isOverlapContent(word) { return OVERLAP_STOP_WORDS.indexOf(word) === -1 && word.length > 1; }
+function overlapContent(text) { return new Set(overlapTokens(text).filter(isOverlapContent).map(overlapStem)); }
+function overlapGrams(text, size) {
+  var list = overlapTokens(text), grams = new Set();
+  for (var start = 0; start + size <= list.length; start += 1) grams.add(list.slice(start, start + size).join(" "));
+  return grams;
+}
+function sharedOf(left, right) { return Array.from(left).filter(function (item) { return right.has(item); }); }
+function shorterShare(count, left, right) { return count / Math.max(1, Math.min(left.size, right.size)); }
+function sentenceOverlap(left, right, contentRatio) {
+  var reasons = [];
+  if (overlapTokens(left).join(" ") === overlapTokens(right).join(" ")) reasons.push("같은 문장");
+  var leftWords = overlapContent(left), rightWords = overlapContent(right), words = sharedOf(leftWords, rightWords);
+  if (words.length >= 2 && shorterShare(words.length, leftWords, rightWords) >= contentRatio) reasons.push("내용어 " + words.join(", "));
+  var leftGrams = overlapGrams(left, 3), rightGrams = overlapGrams(right, 3), grams = sharedOf(leftGrams, rightGrams);
+  if (grams.length >= 2 && shorterShare(grams.length, leftGrams, rightGrams) >= 0.5) reasons.push("문장 틀 " + grams.join(" | "));
+  var phrases = sharedOf(overlapGrams(left, 4), overlapGrams(right, 4)).filter(function (gram) { return gram.split(" ").some(isOverlapContent); });
+  if (phrases.length) reasons.push("같은 표현 \"" + phrases.join("\", \"") + "\"");
+  return reasons;
+}
+var duplicateAnswers = [], duplicateChoices = [], answerVsDistractor = [];
+PART1.forEach(function (item, i) {
+  if (!item || !Array.isArray(item.choices)) return;
+  var answer = item.choices[item.answer];
+  // 서로 다른 사진의 정답끼리
+  PART1.slice(i + 1).forEach(function (other) {
+    if (!other || !Array.isArray(other.choices)) return;
+    var reasons = sentenceOverlap(answer, other.choices[other.answer], 0.75);
+    if (reasons.length) duplicateAnswers.push(item.id + " ↔ " + other.id + " (" + reasons.join(" / ") + "): \"" + answer + "\" | \"" + other.choices[other.answer] + "\"");
+  });
+  // 한 사진 안의 선택지끼리
+  for (var a = 0; a < item.choices.length; a += 1) {
+    for (var b = a + 1; b < item.choices.length; b += 1) {
+      var inner = sentenceOverlap(item.choices[a], item.choices[b], 0.5);
+      if (inner.length) duplicateChoices.push(item.id + " (" + "ABCD"[a] + "↔" + "ABCD"[b] + ": " + inner.join(" / ") + ")");
+    }
+  }
+  // 참고(실패 아님): 이 사진의 정답이 다른 사진의 오답과 비슷한 경우. 사진이 다르면 문제는 아니지만 알고 있도록 알린다.
+  PART1.forEach(function (other) {
+    if (!other || other === item || !Array.isArray(other.choices)) return;
+    other.choices.forEach(function (choice, index) {
+      if (index === other.answer) return;
+      var similar = sentenceOverlap(answer, choice, 0.75);
+      if (similar.length) answerVsDistractor.push(item.id + " 정답 \"" + answer + "\" ≈ " + other.id + " 오답 \"" + choice + "\"");
+    });
   });
 });
-console.log("데이터: " + PART1.length + "문항 (사람 사진 " + kinds.people + " · 사물 사진 " + kinds.objects + ")");
+check(!duplicateAnswers.length, "[정답 문장 중복] " + duplicateAnswers.join(" ; "));
+check(!duplicateChoices.length, "[한 사진 안 선택지 중복] " + duplicateChoices.join(" ; "));
+var answerPairs = PART1.length * (PART1.length - 1) / 2;
+console.log("문장 중복: 정답끼리 " + answerPairs + "쌍 · 사진 안 선택지 " + PART1.length * 6 + "쌍 검사" +
+  (duplicateAnswers.length || duplicateChoices.length ? "" : " — 이상 없음"));
+if (answerVsDistractor.length) console.log("  참고(실패 아님) 다른 사진 오답과 비슷한 정답:\n    " + answerVsDistractor.join("\n    "));
 
 // ---------- 2. 이미지 파일 ----------
 var MAX_BYTES = 300 * 1024;
@@ -78,6 +146,56 @@ var dirFiles = fs.existsSync(path.join(root, "assets/img/part1")) ? fs.readdirSy
 var unused = dirFiles.filter(function (name) { return !PART1.some(function (item) { return item && item.img === "assets/img/part1/" + name; }); });
 check(!unused.length, "데이터에서 쓰지 않는 이미지 파일: " + unused.join(", "));
 console.log("이미지: " + filesOk + " / " + PART1.length + "개 존재 · 합계 " + Math.round(totalBytes / 1024) + "KB");
+
+// ---------- 2-2. 표시 크기 ----------
+// 원본이 작은 사진(ph16 571×597, ph17 425×507)이 화면에서 작게 보이지 않는지 본다.
+// 가짜 DOM에는 레이아웃 계산이 없으므로 (1) 사진 CSS가 "틀 폭 100% + 최대 높이 + object-fit: contain"인지 확인하고
+// (2) 그 규칙으로 각 사진의 표시 크기를 계산한다. 이 규칙이면 표시 크기는 비율로만 정해지고 원본 픽셀 크기와 무관하다.
+// (3) 화면 코드가 사진에 width·height·style을 붙이지 않는지는 아래 가짜 DOM 검사에서 본다.
+// 2026-11-20 헤드리스 Chrome 실측(1280×900): 가로 3:2 718×479, 세로 2:3 375×563, ph16 538×563, ph17 472×563 — 계산과 같다.
+function jpegSize(buffer) {
+  for (var offset = 2; offset + 9 < buffer.length;) {
+    if (buffer[offset] !== 0xFF) return null;
+    var marker = buffer[offset + 1], length = buffer.readUInt16BE(offset + 2);
+    if (marker >= 0xC0 && marker <= 0xCF && [0xC4, 0xC8, 0xCC].indexOf(marker) === -1) {
+      return { height: buffer.readUInt16BE(offset + 5), width: buffer.readUInt16BE(offset + 7) };
+    }
+    offset += 2 + length;
+  }
+  return null;
+}
+var css = fs.readFileSync(path.join(root, "assets", "css", "style.css"), "utf8");
+var photoRule = (/\.listening-part1-photo, \.practice-lc-photo \{([^}]*)\}/.exec(css) || [])[1] || "";
+function cssValue(name) { var m = new RegExp("(?:^|;)\\s*" + name + ":\\s*([^;]+)").exec(photoRule); return m ? m[1].trim() : null; }
+check(cssValue("width") === "100%", "사진 CSS width가 100%가 아님 (" + cssValue("width") + ") — 원본이 작은 사진이 작게 보일 수 있음");
+check(cssValue("object-fit") === "contain", "사진 CSS object-fit이 contain이 아님 (" + cssValue("object-fit") + ")");
+var maxWidth = parseFloat(cssValue("max-width")), maxHeightVh = parseFloat(cssValue("max-height"));
+check(/px$/.test(cssValue("max-width") || "") && /vh$/.test(cssValue("max-height") || ""), "사진 CSS max-width(px)·max-height(vh) 형식이 바뀜");
+check(!/(?:^|;)\s*(?:min-)?height:/.test(photoRule.replace(/max-height:[^;]*/, "")), "사진 CSS에 고정 height가 있음");
+// 화면 폭별 사진 틀: 데스크톱 1280×900 (리스닝 패널 안쪽 718px), 휴대폰 390×844 (좌우 여백 16px + 패널 안쪽 여백 20px)
+var VIEWPORTS = [{ name: "데스크톱 1280×900", box: Math.min(maxWidth, 718), vh: 900 }, { name: "휴대폰 390×844", box: Math.min(maxWidth, 390 - 32 - 42), vh: 844 }];
+var sizeReport = [];
+VIEWPORTS.forEach(function (viewport) {
+  var shown = PART1.map(function (item) {
+    var size = item && fs.existsSync(path.join(root, item.img)) ? jpegSize(fs.readFileSync(path.join(root, item.img))) : null;
+    if (!size) return null;
+    var boxHeight = Math.min(viewport.box * size.height / size.width, viewport.vh * maxHeightVh / 100);
+    var scale = Math.min(viewport.box / size.width, boxHeight / size.height); // object-fit: contain
+    return { id: item.id, natural: size, w: Math.round(size.width * scale), h: Math.round(size.height * scale) };
+  }).filter(Boolean);
+  check(shown.length === PART1.length, viewport.name + " JPEG 크기를 읽지 못한 사진이 있음");
+  var areas = shown.map(function (s) { return s.w * s.h; }).sort(function (x, y) { return x - y; });
+  var median = areas[Math.floor(areas.length / 2)];
+  shown.forEach(function (s) {
+    // 같은 틀 안에서 중간값의 절반보다 작게 보이면 실패 (세로 사진은 중간값의 약 61%)
+    check(s.w * s.h >= median * 0.5, viewport.name + " " + s.id + "이(가) 다른 사진보다 눈에 띄게 작음 (" + s.w + "×" + s.h + ")");
+  });
+  var small = shown.filter(function (s) { return Math.max(s.natural.width, s.natural.height) < 1200; });
+  sizeReport.push(viewport.name + ": 중간값 " + Math.round(Math.sqrt(median)) + "²px · " + small.map(function (s) {
+    return s.id + "(원본 " + s.natural.width + "×" + s.natural.height + ") " + s.w + "×" + s.h + " = 중간값의 " + Math.round(s.w * s.h / median * 100) + "%";
+  }).join(", "));
+});
+console.log("표시 크기(CSS 규칙으로 계산): " + sizeReport.join("\n  "));
 
 // ---------- 3. 정답 위치 ----------
 var spread = [0, 0, 0, 0];
@@ -285,6 +403,8 @@ function altProblem(alt, item, position) {
     var panel = page.body; // 가짜 DOM은 평면 구조라 화면 전체 글자로 본다
     if ($("part1-counter").textContent !== "사진 " + (index + 1) + " / " + P1.length) screenProblems.push(label + " 카운터 " + $("part1-counter").textContent);
     if (photo.tagName !== "IMG" || photo.hidden || photo.getAttribute("src") !== "../" + item.img) screenProblems.push(label + " 사진 표시 — src " + photo.getAttribute("src"));
+    // 크기를 고정하는 속성이 붙으면 CSS 규칙(틀 폭 100%)이 무시되어 원본이 작은 사진이 작게 보인다.
+    if (["width", "height", "style"].some(function (key) { return photo.getAttribute(key) !== null; }) || photo.style) screenProblems.push(label + " 사진에 width/height/style이 붙음");
     var altIssue = altProblem(photo.getAttribute("alt"), item, index + 1);
     if (altIssue) altResults.push(label + " " + altIssue);
     if (!$("part1-photo-fallback").hidden) screenProblems.push(label + " 대체 문구가 처음부터 보임");
