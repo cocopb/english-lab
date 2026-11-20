@@ -9,6 +9,7 @@
     var accentNote = document.getElementById("listening-accent-note");
     var supportNote = document.getElementById("listening-support-note");
     var dictationIndex = 0;
+    var part1Index = 0;
     var part2Index = 0;
     var currentUtteranceToken = 0;
     var currentPlaybackButton = null;
@@ -16,7 +17,7 @@
     var localeLabels = { "en-US": "미국식", "en-GB": "영국식", "en-AU": "호주식" };
 
     function showTab(name) {
-      ["dictation", "part2", "part3", "part4"].forEach(function (tabName) {
+      ["dictation", "part1", "part2", "part3", "part4"].forEach(function (tabName) {
         var selected = name === tabName;
         var tab = document.getElementById("listening-tab-" + tabName);
         tab.setAttribute("aria-selected", String(selected));
@@ -150,7 +151,10 @@
 
     function stopPlayback() {
       currentUtteranceToken += 1;
-      showNowSpeaking("");
+      document.querySelectorAll(".listening-now-speaking").forEach(function (node) {
+        node.textContent = "";
+        node.hidden = true;
+      });
       if (currentPlaybackButton) currentPlaybackButton.disabled = false;
       currentPlaybackButton = null;
       window.Speech.stop();
@@ -252,6 +256,104 @@
       document.getElementById("dictation-check").disabled = true;
       document.getElementById("dictation-next").hidden = false;
       window.Progress.recordDictation(accuracy);
+    }
+
+    // ---------- Part 1 사진 묘사 ----------
+    // 실제 시험처럼 네 문장은 음성으로만 들려주고 (A)~(D) 글자만 보인다. 채점 뒤에 문장과 해설을 보여 준다.
+    // 사진 alt는 "Part 1 사진 N"으로만 쓴다. 장면을 설명하면 정답이 새어 나간다.
+    function part1Items() { return window.PART1 || []; }
+    function currentPart1() { return part1Items()[part1Index % part1Items().length]; }
+    function part1Letter(index) { return String.fromCharCode(65 + index); }
+
+    function renderPart1() {
+      var list = part1Items();
+      var counter = document.getElementById("part1-counter");
+      if (!list.length) {
+        counter.textContent = "사진 문제가 없어요.";
+        return;
+      }
+      var item = currentPart1();
+      var position = part1Index % list.length + 1;
+      var supported = window.Speech.isSupported();
+      counter.textContent = "사진 " + position + " / " + list.length;
+      var photo = document.getElementById("part1-photo");
+      document.getElementById("part1-photo-fallback").hidden = true;
+      photo.hidden = false;
+      photo.setAttribute("alt", "Part 1 사진 " + position);
+      photo.setAttribute("src", "../" + item.img);
+      document.getElementById("part1-feedback").replaceChildren();
+      document.getElementById("part1-next").hidden = true;
+      var choices = document.getElementById("part1-choices");
+      choices.replaceChildren();
+      item.choices.forEach(function (choice, index) {
+        var row = document.createElement("div");
+        row.className = "listening-choice-row";
+        var answerButton = document.createElement("button");
+        answerButton.type = "button";
+        answerButton.className = "listening-choice-answer";
+        // 음성을 못 쓰는 브라우저에서만 처음부터 문장을 보여 준다(그래야 풀 수 있다).
+        answerButton.textContent = "(" + part1Letter(index) + ")" + (supported ? "" : " " + choice);
+        answerButton.addEventListener("click", function () {
+          gradeListeningChoice("part1", item, index, choices, function () {
+            Array.from(choices.children).forEach(function (choiceRow, choiceIndex) {
+              choiceRow.querySelector(".listening-choice-answer").textContent =
+                "(" + part1Letter(choiceIndex) + ") " + item.choices[choiceIndex];
+            });
+            document.getElementById("part1-next").hidden = false;
+          });
+        });
+        var playButton = document.createElement("button");
+        playButton.type = "button";
+        playButton.className = "listening-choice-play listening-playback-control";
+        playButton.textContent = "▶";
+        playButton.disabled = !supported;
+        playButton.setAttribute("aria-label", "(" + part1Letter(index) + ") 문장 듣기");
+        playButton.addEventListener("click", function () {
+          document.getElementById("listening-fallback-note").hidden = true;
+          speakText(choice, playButton, "part1-message");
+        });
+        row.append(answerButton, playButton);
+        choices.appendChild(row);
+      });
+    }
+
+    // "A. 문장" 네 줄을 차례로 읽는다. 첫 줄은 클릭 핸들러 안에서 바로 speak()해야 iOS에서 막히지 않는다.
+    function playPart1All(button) {
+      if (!window.Speech.isSupported()) {
+        messageAt("part1-message", window.Speech.UNSUPPORTED_MESSAGE);
+        return Promise.resolve();
+      }
+      if (!part1Items().length) return Promise.resolve();
+      var item = currentPart1();
+      var token = ++currentUtteranceToken;
+      if (currentPlaybackButton && currentPlaybackButton !== button) currentPlaybackButton.disabled = false;
+      currentPlaybackButton = button;
+      button.disabled = true;
+      messageAt("part1-message", "");
+      function speakOne(text) {
+        if (token !== currentUtteranceToken) return undefined;
+        return window.Speech.speak(text, {
+          rate: voiceSettings.rate,
+          voice: voiceSettings.voiceSelected ? voiceSettings.locale : null,
+          lang: voiceSettings.voiceSelected ? voiceSettings.locale : "en-US",
+          fallbackLang: "en-US",
+          onVoiceUnavailable: handleVoiceUnavailable,
+          onFallback: handleVoiceFallback
+        });
+      }
+      var texts = item.choices.map(function (choice, index) { return part1Letter(index) + ". " + choice; });
+      var sequence = Promise.resolve(speakOne(texts[0]));
+      texts.slice(1).forEach(function (text) {
+        sequence = sequence.then(function () { return speakOne(text); });
+      });
+      return sequence.catch(function (error) {
+        if (token === currentUtteranceToken) messageAt("part1-message", error.message);
+      }).then(function () {
+        if (token === currentUtteranceToken) {
+          button.disabled = false;
+          currentPlaybackButton = null;
+        }
+      });
     }
 
     function renderPart2() {
@@ -564,6 +666,16 @@
     window.addEventListener("beforeunload", stopPlayback);
 
     renderDictation();
+    var part1Photo = document.getElementById("part1-photo");
+    part1Photo.addEventListener("error", function () {
+      part1Photo.hidden = true;
+      document.getElementById("part1-photo-fallback").hidden = false;
+    });
+    part1Photo.addEventListener("load", function () {
+      part1Photo.hidden = false;
+      document.getElementById("part1-photo-fallback").hidden = true;
+    });
+    renderPart1();
     renderPart2();
     talkSections.forEach(function (section) { section.render(); });
     if (!window.Speech.isSupported()) {
@@ -596,6 +708,16 @@
       dictationIndex += 1;
       renderDictation();
       messageAt("dictation-message", "");
+    });
+
+    document.getElementById("part1-play-all").addEventListener("click", function () {
+      document.getElementById("listening-fallback-note").hidden = true;
+      playPart1All(this);
+    });
+    document.getElementById("part1-next").addEventListener("click", function () {
+      part1Index += 1;
+      renderPart1();
+      messageAt("part1-message", "");
     });
 
     document.getElementById("part2-play-question").addEventListener("click", function () {

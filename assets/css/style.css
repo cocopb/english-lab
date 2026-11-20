@@ -337,6 +337,13 @@ h1, h2, h3, p { overflow-wrap: anywhere; }
 .listening-transcript-line { margin: 6px 0; font-size: 12px; overflow-wrap: anywhere; }
 .listening-speaker { color: var(--blue); font-weight: 700; }
 .listening-now-speaking { margin: 8px 0 0; color: var(--blue); font-size: 13px; font-weight: 700; }
+/* Part 1 사진 묘사 (리스닝 탭 · LC 풀세트 공용) */
+.listening-part1-figure, .practice-lc-figure { margin: 12px 0; padding: 0; text-align: center; }
+.listening-part1-photo, .practice-lc-photo { display: block; width: 100%; max-width: 720px; max-height: 70vh; margin: 0 auto; border-radius: 9px; background: var(--surface-2); object-fit: contain; }
+.listening-part1-photo[hidden], .practice-lc-photo[hidden] { display: none; }
+.listening-part1-fallback, .practice-lc-photo-fallback { margin: 0; padding: 40px 16px; border: 1px dashed var(--line); border-radius: 9px; background: var(--surface-2); color: var(--ink-soft); font-size: 13px; }
+.listening-part1-guide { margin: 0 0 8px; color: var(--ink-soft); font-size: 12px; }
+.practice-review-group .practice-lc-figure { max-width: 480px; }
 .reading-strategy-list { display: grid; gap: 10px; }
 .reading-strategy-trigger { align-items: flex-start; }
 .reading-strategy-summary { display: grid; min-width: 0; gap: 3px; }
@@ -511,7 +518,7 @@ h1, h2, h3, p { overflow-wrap: anywhere; }
 .practice-mode-card .practice-mode-saved { color: var(--red); font-weight: 600; }
 .practice-mode-card .button { margin-top: 8px; }
 /* LC 풀세트: 음성 한 번 재생, 진행 표시용 OMR */
-.practice-lc-excluded { margin: 0 0 10px; color: var(--blue); font-size: 12px; font-weight: 700; }
+.practice-lc-format { margin: 0 0 10px; color: var(--blue); font-size: 12px; font-weight: 700; }
 .practice-lc-directions { margin: 0 0 8px; color: var(--ink-soft); font-size: 13px; }
 .practice-lc-audio { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 10px 0 14px; }
 .practice-lc-once { color: var(--ink-faint); font-size: 11px; }

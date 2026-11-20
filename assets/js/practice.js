@@ -66,11 +66,13 @@
   }
   window.PracticeFullSet = { scoreFor: fullSetScore, scoreTable: FULL_SCORE_TABLE.slice() };
 
-  // LC 풀세트 구성 (Part 1 사진 제외, 고정). 대화·담화는 자르지 않고 3문항을 모두 낸다.
-  var LC_SET = { p2: 25, p3Talks: 13, p4Talks: 10, questionsPerTalk: 3, total: 94 };
+  // LC 풀세트 구성 (실제 토익 LC와 같은 100문항, 고정). 대화·담화는 자르지 않고 3문항을 모두 낸다.
+  // Part 1 6장은 사람 사진(people) 4~5장 + 사물 사진(objects) 1~2장 (실제 시험 비율).
+  var LC_SET = { p1: 6, p1People: [4, 5], p2: 25, p3Talks: 13, p4Talks: 10, questionsPerTalk: 3, total: 100 };
   var LC_SAVE_KEY = "englishLabLcFullSetSave"; // RC 풀세트 저장(englishLabFullSetSave)과 별도 키
+  var LC_SAVE_VERSION = 2; // 1 = Part 1 없는 94문항 (이어 풀 수 없어 지운다)
   var LC_HISTORY_KEY = "englishLabLcFullSetHistory"; // RC 풀세트 기록과 별도 키
-  var LC_EXCLUDED_NOTE = "Part 1 사진 문제는 제외된 94문항입니다";
+  var LC_FORMAT_NOTE = "실제 토익 LC와 같은 구성입니다 · Part 1~4 100문항 · 45분";
   // LC 환산표: 100문항 기준 맞은 개수(0~100) → LC 495점 기준 예상 점수. 16개 이하는 5점.
   var LC_SCORE_TABLE = (function () {
     var fromTop = [ // 100개부터 17개까지
@@ -88,20 +90,17 @@
     for (var correct = 0; correct <= 100; correct += 1) table[correct] = correct >= 17 ? fromTop[100 - correct] : 5;
     return table;
   }());
-  // 94문항 맞은 개수를 100문항 기준으로 보정한다(× 100 / 94, 반올림). 범위 밖이나 숫자가 아닌 값도 0~94로 맞춘다.
-  function lcScaledCorrect(correct) {
+  // 100문항이라 맞은 개수를 보정 없이 표에 바로 넣는다. 범위 밖이나 숫자가 아닌 값도 0~100으로 맞춘다.
+  function lcFullSetScore(correct) {
     var count = Math.round(Number(correct));
     if (!isFinite(count)) count = 0;
-    count = Math.min(LC_SET.total, Math.max(0, count));
-    return Math.round(count * 100 / LC_SET.total);
+    return LC_SCORE_TABLE[Math.min(100, Math.max(0, count))];
   }
-  function lcFullSetScore(correct) {
-    return LC_SCORE_TABLE[lcScaledCorrect(correct)];
-  }
-  window.PracticeLcFullSet = { scoreFor: lcFullSetScore, scaledFor: lcScaledCorrect, scoreTable: LC_SCORE_TABLE.slice(), total: LC_SET.total };
+  window.PracticeLcFullSet = { scoreFor: lcFullSetScore, scoreTable: LC_SCORE_TABLE.slice(), total: LC_SET.total };
   var PART6_TYPE_LABELS = { grammar: "문법", vocab: "어휘", sentence: "문장 삽입" };
   var SECTION_LABELS = { p5: "Part 5", p6: "Part 6", p7: "Part 7", p7s: "Part 7 단일", p7d: "Part 7 이중", p7t: "Part 7 삼중",
-    p2: "Part 2", p3: "Part 3", p4: "Part 4" };
+    p1: "Part 1", p2: "Part 2", p3: "Part 3", p4: "Part 4" };
+  var PART1_KIND_LABELS = { people: "사람 사진", objects: "사물 사진" };
 
   document.addEventListener("DOMContentLoaded", function () {
     var grammarQuiz = window.GRAMMAR_QUIZ || [];
@@ -667,8 +666,9 @@
       lc.dataset.mode = "lc";
       lc.append(
         element("h3", "", "LC 풀세트"),
-        element("p", "practice-mode-meta", LC_SET.total + "문항 · " + Math.round(MODES.lc.seconds / 60) + "분 (Part 1 사진 제외)"),
-        element("p", "", "Part 2 " + LC_SET.p2 + "문항 · Part 3 " + LC_SET.p3Talks * LC_SET.questionsPerTalk + "문항(대화 " + LC_SET.p3Talks +
+        element("p", "practice-mode-meta", LC_SET.total + "문항 · " + Math.round(MODES.lc.seconds / 60) + "분"),
+        element("p", "", "실제 토익 LC와 같은 구성(Part 1·2·3·4)"),
+        element("p", "", "Part 1 " + LC_SET.p1 + "문항 · Part 2 " + LC_SET.p2 + "문항 · Part 3 " + LC_SET.p3Talks * LC_SET.questionsPerTalk + "문항(대화 " + LC_SET.p3Talks +
           "개) · Part 4 " + LC_SET.p4Talks * LC_SET.questionsPerTalk + "문항(담화 " + LC_SET.p4Talks + "개)"),
         element("p", "", "음성은 한 번만 나오고, 지나간 문항으로 돌아갈 수 없어요. 실제 LC처럼요.")
       );
@@ -1069,9 +1069,8 @@
         });
         recordFullHistory(result);
       } else if (exam.config.mode === "lc") {
-        // LC 풀세트: 별도 기록 키. 답한 문항은 리스닝 정답률(listeningStats part2·3·4)에도 반영한다.
+        // LC 풀세트: 별도 기록 키. 답한 문항은 리스닝 정답률(listeningStats part1·2·3·4)에도 반영한다.
         result.score = lcFullSetScore(correct);
-        result.scaled = lcScaledCorrect(correct);
         result.analysis = analyzeLc(exam.items, exam.answers);
         exam.items.forEach(function (item, index) {
           if (exam.answers[index] === null) return;
@@ -1315,8 +1314,8 @@
       entry.dataset.number = String(item.number);
       entry.append(
         element("p", "practice-miss-meta", item.number + "번 · " + SECTION_LABELS[item.section || item.part]),
-        element("p", "practice-miss-question" + (item.part === "p6" ? "" : " en"),
-          item.part === "p6" ? "빈칸 (" + item.number + ")" : item.prompt),
+        element("p", "practice-miss-question" + (item.part === "p6" || item.part === "p1" ? "" : " en"),
+          item.part === "p6" ? "빈칸 (" + item.number + ")" : item.part === "p1" ? "사진을 가장 잘 묘사한 문장" : item.prompt),
         element("p", "practice-miss-answer", "내 답: " + (miss.answer === null ? "미응답" : "(" + letter(miss.answer) + ") " + item.choices[miss.answer])),
         element("p", "practice-miss-answer is-correct", "정답: (" + letter(item.answer) + ") " + item.choices[item.answer]),
         element("p", "practice-review-explanation", item.explanation)
@@ -1393,15 +1392,17 @@
       if (view.scrollIntoView) view.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
-    // =================== LC 풀세트 (Part 1 사진 제외 94문항 / 45분) ===================
-    // 실전 조건: 문항(Part 2)·대화·담화(Part 3·4)의 음성은 한 번만 재생, 지나간 문항으로 돌아갈 수 없음,
-    // 시험 중에는 스크립트를 보여 주지 않음(채점 후 오답 복습에서만). 타이머·이탈·중간 저장 규칙은 RC 풀세트와 같다.
+    // =================== LC 풀세트 (Part 1~4 100문항 / 45분) ===================
+    // 실전 조건: 문항(Part 1·2)·대화·담화(Part 3·4)의 음성은 한 번만 재생, 지나간 문항으로 돌아갈 수 없음,
+    // 시험 중에는 스크립트·선택지 문장을 보여 주지 않음(채점 후 오답 복습에서만). 타이머·이탈·중간 저장 규칙은 RC 풀세트와 같다.
 
+    var listeningPart1 = window.PART1 || [];
     var listeningPart2 = window.PART2 || [];
     var listeningPart3 = window.PART3 || [];
     var listeningPart4 = window.PART4 || [];
     var part2TypeLabels = window.PART2_TYPE_LABELS || {};
-    var LC_PROGRESS_TYPES = { p2: "part2", p3: "part3", p4: "part4" };
+    var LC_PROGRESS_TYPES = { p1: "part1", p2: "part2", p3: "part3", p4: "part4" };
+    var LC_PARTS = ["p1", "p2", "p3", "p4"];
     var LC_TALK_UNITS = { p3: "대화", p4: "담화" };
 
     function speechSupported() {
@@ -1423,17 +1424,28 @@
     }
 
     // 무작위 구성표(id 목록). 저장·이어 풀기도 이 구성표로 같은 세트를 다시 만든다.
+    function usablePhotos(kind) {
+      return listeningPart1.filter(function (item) {
+        return item && item.kind === kind && typeof item.img === "string" && item.img &&
+          Array.isArray(item.choices) && item.choices.length === 4;
+      });
+    }
+
     function planLcSet() {
       function ids(list) { return list.map(function (entry) { return entry.id; }); }
+      // 사람 사진 4장 또는 5장을 무작위로 정하고 나머지를 사물 사진으로 채운 뒤, 6장의 순서를 섞는다.
+      var peopleCount = LC_SET.p1People[Math.floor(Math.random() * LC_SET.p1People.length)];
+      var p1 = shuffle(lcRequire(shuffle(usablePhotos("people")), peopleCount, "Part 1 사람 사진")
+        .concat(lcRequire(shuffle(usablePhotos("objects")), LC_SET.p1 - peopleCount, "Part 1 사물 사진")));
       var p2 = lcRequire(shuffle(listeningPart2.filter(function (item) {
         return item && Array.isArray(item.choices) && item.choices.length === 3;
       })), LC_SET.p2, "Part 2 문항");
       var p3 = lcRequire(shuffle(usableTalks(listeningPart3)), LC_SET.p3Talks, "Part 3 대화");
       var p4 = lcRequire(shuffle(usableTalks(listeningPart4)), LC_SET.p4Talks, "Part 4 담화");
-      return { p2: ids(p2), p3: ids(p3), p4: ids(p4) };
+      return { p1: ids(p1), p2: ids(p2), p3: ids(p3), p4: ids(p4) };
     }
 
-    // 구성표 → 시험 순서의 94문항 (Part 2 1~25 → Part 3 26~64 → Part 4 65~94). 대화·담화는 3문항을 모두 낸다.
+    // 구성표 → 시험 순서의 100문항 (Part 1 1~6 → Part 2 7~31 → Part 3 32~70 → Part 4 71~100). 대화·담화는 3문항을 모두 낸다.
     function assembleLcSet(plan) {
       function find(list, id, what) {
         var found = list.find(function (entry) { return entry && entry.id === id; });
@@ -1441,6 +1453,18 @@
         return found;
       }
       var items = [];
+      var people = 0;
+      plan.p1.forEach(function (id) {
+        var q = find(listeningPart1, id, "Part 1 사진");
+        if (q.kind === "people") people += 1;
+        items.push({
+          part: "p1", section: "p1", prompt: "", choices: q.choices, answer: q.answer, explanation: q.explanation,
+          img: q.img, kind: q.kind, source: q, key: "p1:" + q.id, audioKey: "p1:" + q.id, group: null, ruleId: null
+        });
+      });
+      if (plan.p1.length !== LC_SET.p1 || LC_SET.p1People.indexOf(people) === -1) {
+        throw fullSetError("Part 1 구성이 맞지 않아요 (사진 " + plan.p1.length + "장, 사람 사진 " + people + "장).");
+      }
       plan.p2.forEach(function (id) {
         var q = find(listeningPart2, id, "Part 2 문항");
         items.push({
@@ -1492,8 +1516,8 @@
       try {
         var saved = JSON.parse(raw);
         var plan = saved && saved.plan;
-        var valid = saved && saved.version === 1 && plan &&
-          ["p2", "p3", "p4"].every(function (key) { return Array.isArray(plan[key]); }) &&
+        var valid = saved && saved.version === LC_SAVE_VERSION && plan &&
+          LC_PARTS.every(function (key) { return Array.isArray(plan[key]); }) &&
           Array.isArray(saved.answers) && saved.answers.length === LC_SET.total &&
           saved.answers.every(function (answer) { return answer === null || (Number.isInteger(answer) && answer >= 0 && answer < 4); }) &&
           typeof saved.remainingSec === "number" && isFinite(saved.remainingSec) &&
@@ -1519,7 +1543,7 @@
       if (!exam || exam.submitted || exam.config.mode !== "lc") return;
       try {
         localStorage.setItem(LC_SAVE_KEY, JSON.stringify({
-          version: 1,
+          version: LC_SAVE_VERSION,
           plan: exam.plan,
           answers: exam.answers,
           remainingSec: Math.max(1, Math.round(exam.remainingSec)),
@@ -1545,8 +1569,15 @@
 
     var lcAudioToken = 0;
 
+    // Part 1은 한 사람이 네 문장을 읽는다(번호마다 남녀를 번갈아, 화자가 한 명이라 음성 보정 없음).
     // Part 2는 질문과 세 응답을 서로 다른 화자가 읽는다(번호마다 남녀를 번갈아). Part 3·4는 리스닝 탭과 같은 대사.
     function lcAudioLines(item) {
+      if (item.part === "p1") {
+        var narrator = item.number % 2 ? "M" : "W";
+        return item.choices.map(function (choice, index) {
+          return { speaker: narrator, text: letter(index) + ". " + choice };
+        });
+      }
       if (item.part === "p2") {
         var asker = item.number % 2 ? "W" : "M";
         var responder = asker === "W" ? "M" : "W";
@@ -1614,8 +1645,8 @@
 
     function lcScriptBox(item) {
       var box = element("div", "listening-transcript practice-lc-script");
-      if (item.part === "p2") {
-        box.appendChild(element("p", "listening-transcript-line en", item.prompt));
+      if (item.part === "p1" || item.part === "p2") {
+        if (item.part === "p2") box.appendChild(element("p", "listening-transcript-line en", item.prompt));
         item.choices.forEach(function (choice, index) {
           box.appendChild(element("p", "listening-transcript-line en", "(" + letter(index) + ") " + choice));
         });
@@ -1631,6 +1662,24 @@
       return box;
     }
 
+    // Part 1 사진. alt는 "Part 1 사진 N"으로만 쓴다(장면을 설명하면 정답이 새어 나간다). 못 불러오면 대체 문구를 보여 준다.
+    function lcPhoto(item) {
+      var figure = element("figure", "practice-lc-figure");
+      var photo = element("img", "practice-lc-photo");
+      var fallback = element("p", "practice-lc-photo-fallback", "사진을 불러오지 못했어요. 새로고침해 보세요. 사진 없이 풀면 답을 고르기 어려워요.");
+      fallback.hidden = true;
+      fallback.setAttribute("role", "status");
+      photo.addEventListener("error", function () {
+        photo.hidden = true;
+        fallback.hidden = false;
+      });
+      photo.setAttribute("alt", "Part 1 사진 " + item.number);
+      photo.setAttribute("decoding", "async");
+      photo.setAttribute("src", "../" + item.img);
+      figure.append(photo, fallback);
+      return figure;
+    }
+
     function renderLcQuestion() {
       var item = exam.items[exam.index];
       var area = exam.questionArea;
@@ -1641,13 +1690,17 @@
       area.dataset.item = item.key;
       area.appendChild(element("p", "practice-question-meta", SECTION_LABELS[item.section] + " · " + item.number + " / " + exam.items.length));
       var unit = LC_TALK_UNITS[item.part];
-      area.appendChild(element("p", "practice-lc-directions", item.part === "p2"
-        ? "질문과 세 응답을 듣고 가장 알맞은 응답을 고르세요. 질문과 응답은 화면에 나오지 않아요."
-        : item.group.numbers[0] + "~" + item.group.numbers[item.group.numbers.length - 1] + "번은 다음 " + unit + "를 듣고 답하세요."));
+      var single = item.part === "p1" || item.part === "p2"; // 문항 하나에 음성 하나
+      area.appendChild(element("p", "practice-lc-directions", item.part === "p1"
+        ? "사진을 보고 네 문장을 들은 뒤 사진을 가장 잘 묘사한 문장을 고르세요. 문장은 화면에 나오지 않아요."
+        : item.part === "p2"
+          ? "질문과 세 응답을 듣고 가장 알맞은 응답을 고르세요. 질문과 응답은 화면에 나오지 않아요."
+          : item.group.numbers[0] + "~" + item.group.numbers[item.group.numbers.length - 1] + "번은 다음 " + unit + "를 듣고 답하세요."));
+      if (item.part === "p1") area.appendChild(lcPhoto(item));
 
       var audio = element("div", "practice-lc-audio");
       if (supported) {
-        var label = item.part === "p2" ? "▶ 문제 듣기" : "▶ " + unit + " 듣기";
+        var label = single ? "▶ 문제 듣기" : "▶ " + unit + " 듣기";
         var play = button("button button-primary practice-lc-play", playing ? "재생 중…" : played ? "재생 완료 · 다시 들을 수 없어요" : label, function () {
           playLcItem(item);
         });
@@ -1662,17 +1715,17 @@
       if (!supported) area.appendChild(lcScriptBox(item)); // 음성이 없으면 스크립트로라도 풀게 한다
 
       // Part 3·4는 대화·담화를 다 들은 뒤에 문제가 보인다 (리스닝 탭과 같은 흐름, 다시 듣기 없음).
-      var questionVisible = item.part === "p2" || !supported || (played && !playing);
+      var questionVisible = single || !supported || (played && !playing);
       if (questionVisible) {
-        var heading = element("h3", "practice-question-prompt" + (item.part === "p2" ? "" : " en"),
-          item.number + ". " + (item.part === "p2" ? "알맞은 응답을 고르세요." : item.prompt));
+        var heading = element("h3", "practice-question-prompt" + (single ? "" : " en"),
+          item.number + ". " + (item.part === "p1" ? "사진을 가장 잘 묘사한 문장을 고르세요." : item.part === "p2" ? "알맞은 응답을 고르세요." : item.prompt));
         heading.tabIndex = -1;
         exam.heading = heading;
         area.appendChild(heading);
         var choices = element("div", "quiz-options practice-choices");
         item.choices.forEach(function (choice, choiceIndex) {
-          // Part 2 선택지는 실제 시험처럼 글자 없이 (A)(B)(C)만 보인다. 음성을 못 쓰면 위 스크립트에서 읽는다.
-          var text = item.part === "p2" ? "(" + letter(choiceIndex) + ")" : "(" + letter(choiceIndex) + ") " + choice;
+          // Part 1·2 선택지는 실제 시험처럼 글자 없이 (A)(B)(C)(D)만 보인다. 음성을 못 쓰면 위 스크립트에서 읽는다.
+          var text = single ? "(" + letter(choiceIndex) + ")" : "(" + letter(choiceIndex) + ") " + choice;
           var option = button("quiz-option en", text, function () {
             exam.answers[exam.index] = choiceIndex;
             renderExamQuestion();
@@ -1711,7 +1764,7 @@
         element("p", "practice-omr-note", "진행 표시용이에요. 눌러서 이동할 수 없어요.")
       );
       var current = exam.items[exam.index];
-      ["p2", "p3", "p4"].forEach(function (part) {
+      LC_PARTS.forEach(function (part) {
         var entries = exam.items.filter(function (item) { return item.section === part; });
         if (!entries.length) return;
         var section = element("div", "practice-omr-section");
@@ -1753,7 +1806,7 @@
       lcAudioToken += 1;
       var saved = readLcSave();
       var intro = element("div", "panel practice-intro practice-full-intro practice-lc-intro");
-      intro.appendChild(element("p", "practice-lc-excluded", LC_EXCLUDED_NOTE));
+      intro.appendChild(element("p", "practice-lc-format", LC_FORMAT_NOTE));
       if (saved) {
         var answered = saved.answers.filter(function (answer) { return answer !== null; }).length;
         var message = typeof notice === "string" ? notice
@@ -1796,9 +1849,9 @@
       }
       intro.append(
         element("h3", "", "LC 풀세트 · " + LC_SET.total + "문항 · " + Math.round(MODES.lc.seconds / 60) + "분"),
-        element("p", "", "Part 2 1~25번 → Part 3 26~64번(대화 13개) → Part 4 65~94번(담화 10개), 실제 시험 순서대로 풀어요."),
+        element("p", "", "Part 1 1~6번(사진 6장) → Part 2 7~31번 → Part 3 32~70번(대화 13개) → Part 4 71~100번(담화 10개), 실제 시험 순서대로 풀어요."),
         element("p", "", "실전처럼 음성은 문항마다 한 번만 나오고 다시 듣기가 없어요. 지나간 문항으로는 돌아갈 수 없어요. 지금 문항의 답은 바꿀 수 있어요."),
-        element("p", "", "Part 2는 질문과 응답이 화면에 나오지 않아요. Part 3·4는 대화·담화를 다 들은 뒤 문제가 보여요. 스크립트는 채점 후 오답 복습에서 볼 수 있어요."),
+        element("p", "", "Part 1은 사진만 보이고 네 문장은 음성으로만 나와요. Part 2는 질문과 응답이 화면에 나오지 않아요. Part 3·4는 대화·담화를 다 들은 뒤 문제가 보여요. 스크립트는 채점 후 오답 복습에서 볼 수 있어요."),
         element("p", "", "10분, 5분 남았을 때 알려 드리고, 시간이 끝나면 자동으로 제출돼요. 중간에 끊겨도 실전 탭에서 이어서 풀 수 있어요.")
       );
       if (!speechSupported()) {
@@ -1827,7 +1880,7 @@
         if (item.part === "p2") bump(types, item.qtype, isCorrect);
       });
       return {
-        sections: ["p2", "p3", "p4"].map(function (id) {
+        sections: LC_PARTS.map(function (id) {
           return Object.assign({ id: id }, rate(sections[id] ? sections[id].correct : 0, sections[id] ? sections[id].total : 0));
         }),
         p2Types: Object.keys(types).map(function (id) {
@@ -1852,11 +1905,11 @@
     function renderLcResult(card, result, misses, config) {
       lastLcResult = { result: result, misses: misses, config: config };
       var analysis = result.analysis;
-      card.appendChild(element("p", "practice-lc-excluded", LC_EXCLUDED_NOTE));
+      card.appendChild(element("p", "practice-lc-format", LC_FORMAT_NOTE));
       var score = element("div", "practice-band practice-full-score practice-lc-score");
       score.append(
         element("strong", "practice-band-value", "예상 LC 점수 약 " + result.score + "점"),
-        element("p", "practice-band-note", "Part 1이 빠진 94문항을 100문항 기준으로 환산한 참고값입니다")
+        element("p", "practice-band-note", "맞은 개수를 LC 환산표에 그대로 넣은 참고값입니다")
       );
       card.appendChild(score);
       card.appendChild(element("p", "practice-result-time" + (result.timedOut ? " is-timeout" : ""),
@@ -1911,7 +1964,7 @@
       var byKey = {};
       misses.forEach(function (miss) {
         var item = miss.item;
-        var key = item.part === "p2" ? item.key : item.group.key;
+        var key = item.group ? item.group.key : item.key;
         if (!byKey[key]) {
           byKey[key] = { key: key, item: item, misses: [] };
           groups.push(byKey[key]);
@@ -1922,7 +1975,7 @@
       view.append(
         element("p", "eyebrow", "WRONG ANSWER REVIEW"),
         element("h3", "", "오답 복습 · " + misses.length + "문항"),
-        element("p", "practice-analysis-note", "대화·담화는 한 번씩만 싣고, 그 안에서 틀린 문항을 모아 보여 줘요. 이제 스크립트를 보며 몇 번이든 다시 들을 수 있어요.")
+        element("p", "practice-analysis-note", "Part 1은 사진과 네 문장, 대화·담화는 한 번씩만 싣고 그 안에서 틀린 문항을 모아 보여 줘요. 이제 스크립트를 보며 몇 번이든 다시 들을 수 있어요.")
       );
       var back = button("button button-quiet", "← 채점 결과로", function () {
         if (window.Speech && window.Speech.isSupported()) window.Speech.stop();
@@ -1934,7 +1987,10 @@
         var item = group.item;
         var article = element("article", "practice-review-group");
         article.dataset.group = group.key;
-        if (item.part === "p2") {
+        if (item.part === "p1") {
+          article.appendChild(element("p", "practice-review-title", "Part 1 · " + item.number + "번 · " + (PART1_KIND_LABELS[item.kind] || item.kind)));
+          article.appendChild(lcPhoto(item));
+        } else if (item.part === "p2") {
           article.appendChild(element("p", "practice-review-title", "Part 2 · " + item.number + "번 · " + (part2TypeLabels[item.qtype] || item.qtype)));
         } else {
           article.appendChild(element("p", "practice-review-title", SECTION_LABELS[item.section] + " · " + item.group.talk.title + " · 틀린 문항 " +
@@ -2062,7 +2118,7 @@
       full: { key: FULL_HISTORY_KEY, className: "practice-full-history", tableClass: "practice-full-history-table",
         title: "RC 풀세트 기록", scoreLabel: "예상 RC 점수", note: "오래된 순 → 최신 순 (495점 만점)", total: FULL_SET.total },
       lc: { key: LC_HISTORY_KEY, className: "practice-lc-history", tableClass: "practice-lc-history-table",
-        title: "LC 풀세트 기록", scoreLabel: "예상 LC 점수", note: "오래된 순 → 최신 순 (495점 만점, Part 1 제외 94문항을 100문항 기준으로 환산)", total: LC_SET.total }
+        title: "LC 풀세트 기록", scoreLabel: "예상 LC 점수", note: "오래된 순 → 최신 순 (495점 만점 · 100문항. 이전의 94문항 기록은 100문항 기준으로 환산한 값)", total: LC_SET.total }
     };
 
     // 풀세트 기록: 점수 추이 막대 + 표 (최근 20회). 미니 모의고사 기록 아래에 RC·LC를 따로 그린다.

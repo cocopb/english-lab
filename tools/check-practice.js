@@ -92,7 +92,7 @@ const localStorage = {
   getItem: k => store.has(k) ? store.get(k) : null, setItem: (k, v) => store.set(k, String(v)), removeItem: k => store.delete(k)
 };
 const PAGE_FILES = ['assets/js/common.js', 'assets/js/speech.js', 'assets/js/listening-voices.js',
-  'data/grammar.js', 'data/reading.js', 'data/listening.js', 'assets/js/practice.js'];
+  'data/grammar.js', 'data/reading.js', 'data/listening.js', 'data/part1.js', 'assets/js/practice.js'];
 const ctx = vm.createContext({ window, document, localStorage, console, Date: FakeDate });
 for (const f of PAGE_FILES) {
   vm.runInContext(fs.readFileSync(path.join(root, f), 'utf8'), ctx, { filename: f });
@@ -130,8 +130,9 @@ const modeCards = mockStage.querySelectorAll('.practice-mode-card');
 check('모드 카드 3개 (미니 모의고사 · RC 풀세트 · LC 풀세트)', modeCards.length === 3 &&
   modeCards[0].textContent.includes('미니 모의고사') && modeCards[1].textContent.includes('RC 풀세트') && modeCards[2].textContent.includes('LC 풀세트'),
   modeCards.map(c => c.dataset.mode).join(', '));
-check('LC 카드에 구성·시간·Part 1 제외', modeCards[2] && modeCards[2].textContent.includes('94문항 · 45분 (Part 1 사진 제외)') &&
-  modeCards[2].textContent.includes('Part 2 25문항 · Part 3 39문항(대화 13개) · Part 4 30문항(담화 10개)'), modeCards[2] && modeCards[2].textContent);
+check('LC 카드에 구성·시간 (실제 LC 구성 100문항 · Part 1 포함)', modeCards[2] && modeCards[2].textContent.includes('100문항 · 45분') &&
+  modeCards[2].textContent.includes('실제 토익 LC와 같은 구성') && !modeCards[2].textContent.includes('제외') &&
+  modeCards[2].textContent.includes('Part 1 6문항 · Part 2 25문항 · Part 3 39문항(대화 13개) · Part 4 30문항(담화 10개)'), modeCards[2] && modeCards[2].textContent);
 check('미니 카드에 구성·시간', modeCards[0] && modeCards[0].textContent.includes('30~31문항 · 25분') && modeCards[0].textContent.includes('Part 5 15문항 + Part 6 8문항'));
 check('풀세트 카드에 구성·시간', modeCards[1] && modeCards[1].textContent.includes('100문항 · 75분') &&
   modeCards[1].textContent.includes('실제 토익 RC와 같은 구성(Part 5·6·7)'));
@@ -392,7 +393,7 @@ function loadPracticePage(opts = {}) {
   const c = vm.createContext({ window: pwin, document: pdoc, localStorage, console: pconsole, Date: FakeDate });
   for (const f of PAGE_FILES) {
     vm.runInContext(fs.readFileSync(path.join(root, f), 'utf8'), c, { filename: f });
-    if (f === 'data/listening.js' && opts.mutate) opts.mutate(pwin); // 모든 데이터를 불러온 뒤 바꾼다
+    if (f === 'data/part1.js' && opts.mutate) opts.mutate(pwin); // 모든 데이터를 불러온 뒤 바꾼다
   }
   pready.forEach(f => f());
   env.window = pwin;
@@ -788,7 +789,8 @@ check('Part 5 유형이 4개뿐이면(6×4=24<30) 오류 표시', !!p5Error && p
 // 실제 speech.js + 가짜 speechSynthesis로 재생을 흉내 낸다. 재생 버튼 → 큐에 쌓인 utterance를 하나씩 끝낸다.
 const LC_KEY = 'englishLabLcFullSetSave';
 const LC_HISTORY_KEY = 'englishLabLcFullSetHistory';
-const LC_NOTE = 'Part 1 사진 문제는 제외된 94문항입니다';
+const LC_NOTE = '실제 토익 LC와 같은 구성입니다 · Part 1~4 100문항 · 45분';
+const LC_TOTAL = 100;
 // 사용자가 준 표를 그대로 옮긴 검사용 환산표 (practice.js의 표와 독립적으로 비교한다)
 const LC_TABLE_TEXT = `100:495 99:495 98:495 97:490 96:485 95:480 94:475 93:470 92:460 91:455
  90:450 89:445 88:435 87:430 86:425 85:415 84:410 83:400 82:395 81:390
@@ -801,7 +803,8 @@ const LC_TABLE_TEXT = `100:495 99:495 98:495 97:490 96:485 95:480 94:475 93:470 
  20: 15 19: 10 18: 10 17:  5`;
 const LC_EXPECTED = Array(101).fill(5);
 for (const m of LC_TABLE_TEXT.matchAll(/(\d+):\s*(\d+)/g)) LC_EXPECTED[Number(m[1])] = Number(m[2]);
-const lcExpectedScore = correct => LC_EXPECTED[Math.round(correct * 100 / 94)];
+// 100문항이므로 보정 없이 맞은 개수를 그대로 표에 넣는다.
+const lcExpectedScore = correct => LC_EXPECTED[correct];
 
 function makeSynth() {
   const synth = {
@@ -827,7 +830,7 @@ function startLc(env) {
   return !!start;
 }
 const lcArea = env => env.stage.querySelector('.practice-question-area');
-// 화면에 붙은 문항 키(p2:p201 / p3:p305:1)로 원본을 찾는다. 키에는 정답 정보가 없다.
+// 화면에 붙은 문항 키(p1:ph01 / p2:p201 / p3:p305:1)로 원본을 찾는다. 키에는 정답 정보가 없다.
 function lcInfo(env) {
   const a = lcArea(env);
   const key = a.dataset.item;
@@ -835,6 +838,10 @@ function lcInfo(env) {
   const [label, rest] = meta.split(' · ');
   const [part, id, qi] = key.split(':');
   const Wd = env.window;
+  if (part === 'p1') {
+    const q = Wd.PART1.find(x => x.id === id);
+    return { key, part, label, number: parseInt(rest, 10), q, answer: q.answer, kind: q.kind, audioKey: key };
+  }
   if (part === 'p2') {
     const q = Wd.PART2.find(x => x.id === id);
     return { key, part, label, number: parseInt(rest, 10), q, answer: q.answer, type: q.type, audioKey: key };
@@ -861,6 +868,17 @@ async function playLc(env) {
 }
 const lcLeak = env => env.stage.querySelectorAll('.practice-lc-script').length + env.stage.querySelectorAll('.listening-transcript').length;
 const lcNext = env => byText(lcArea(env), '다음 →');
+// Part 1 사진: alt는 "Part 1 사진 N"만, src는 저장소의 이미지 파일
+function photoProblem(container, item, number) {
+  const imgs = container.querySelectorAll('.practice-lc-photo');
+  if (imgs.length !== 1) return '사진 ' + imgs.length + '장';
+  const img = imgs[0];
+  if (img.tagName !== 'IMG') return 'img 태그 아님';
+  if (img.getAttribute('src') !== '../' + item.img) return 'src ' + img.getAttribute('src');
+  if (img.getAttribute('alt') !== 'Part 1 사진 ' + number) return 'alt ' + img.getAttribute('alt');
+  if (img.hidden) return '사진이 숨겨짐';
+  return null;
+}
 
 async function runLcTests() {
   // --- 진입 화면 ---
@@ -870,21 +888,24 @@ async function runLcTests() {
   const cards = g.stage.querySelectorAll('.practice-mode-card');
   check('실전 진입 화면에 세 모드 (미니 · RC · LC)', cards.length === 3 && cards.map(c => c.dataset.mode).join(',') === 'mini,full,lc', cards.map(c => c.dataset.mode).join(','));
   byText(g.stage, 'LC 풀세트 선택').click();
-  check('시작 화면에 Part 1 제외 안내', g.stage.textContent.includes(LC_NOTE) && g.stage.textContent.includes('LC 풀세트 · 94문항 · 45분'));
+  check('시작 화면: 실제 시험과 같은 구성 안내 · 100문항 · 45분 · Part 1 제외 문구 없음', g.stage.textContent.includes(LC_NOTE) && g.stage.textContent.includes('LC 풀세트 · 100문항 · 45분') &&
+    g.stage.textContent.includes('Part 1 1~6번(사진 6장) → Part 2 7~31번 → Part 3 32~70번(대화 13개) → Part 4 71~100번(담화 10개)') &&
+    !g.stage.textContent.includes('제외') && !g.stage.textContent.includes('94'), g.stage.textContent.slice(0, 200));
   byText(g.stage, '← 모드 선택').click();
 
-  // --- 1. 20회 생성: 94문항 · 25/39/30 · 대화·담화 안 잘림 · 중복 없음 · 번호 1~94 · 스크립트 노출 없음 ---
+  // --- 1. 20회 생성: 100문항 · 6/25/39/30 · 사람 4~5·사물 1~2 · 대화·담화 안 잘림 · 중복 없음 · 번호 1~100 · 스크립트 노출 없음 ---
   console.log('\n[LC 풀세트 — 20회 생성]');
   const genProblems = [];
-  let leaks = 0, omrLabels = null, p2TextLeaks = 0, p3PromptLeaks = 0;
-  const talkUse = new Map();
+  let leaks = 0, omrLabels = null, p1TextLeaks = 0, p2TextLeaks = 0, p3PromptLeaks = 0;
+  const photoProblems = [];
+  const talkUse = new Map(), photoUse = new Map(), peopleCounts = new Map();
   for (let run = 0; run < 20; run++) {
     if (!startLc(g)) { genProblems.push(run + '회: 시작 버튼 없음'); break; }
     const cells = g.stage.querySelector('.practice-omr').querySelectorAll('.practice-omr-cell');
-    if (cells.length !== 94) genProblems.push(run + '회 OMR ' + cells.length + '칸');
+    if (cells.length !== LC_TOTAL) genProblems.push(run + '회 OMR ' + cells.length + '칸');
     if (run === 0) omrLabels = g.stage.querySelector('.practice-omr').querySelectorAll('.practice-omr-part').map(e => e.textContent);
-    const counts = {}, keys = new Set(), talks = new Map();
-    for (let i = 0; i < 94; i++) {
+    const counts = {}, keys = new Set(), talks = new Map(), kinds = { people: 0, objects: 0 };
+    for (let i = 0; i < LC_TOTAL; i++) {
       const info = lcInfo(g);
       if (info.number !== i + 1) genProblems.push(run + '회 번호 ' + info.number + '≠' + (i + 1));
       if (keys.has(info.key)) genProblems.push(run + '회 중복 ' + info.key);
@@ -897,13 +918,24 @@ async function runLcTests() {
       }
       leaks += lcLeak(g);
       const text = lcArea(g).textContent;
-      if (info.part === 'p2') {
-        const options = lcArea(g).querySelectorAll('.quiz-option').map(o => o.textContent);
+      const options = lcArea(g).querySelectorAll('.quiz-option').map(o => o.textContent);
+      if (info.part === 'p1') {
+        kinds[info.kind]++;
+        photoUse.set(info.q.id, (photoUse.get(info.q.id) || 0) + 1);
+        if (info.number > 6) genProblems.push(run + '회 Part 1이 ' + info.number + '번');
+        // 선택지 문장이 글자로 보이면 안 된다 ((A)~(D)만)
+        if (options.join(',') !== '(A),(B),(C),(D)' || info.q.choices.some(c => text.includes(c))) p1TextLeaks++;
+        const problem = photoProblem(lcArea(g), info.q, info.number);
+        if (problem) photoProblems.push(run + '회 ' + info.number + '번 ' + problem);
+      } else if (info.part === 'p2') {
         if (options.join(',') !== '(A),(B),(C)' || text.includes(info.q.question) || info.q.choices.some(c => text.includes(c))) p2TextLeaks++;
       } else if (text.includes(info.q.q)) p3PromptLeaks++; // 듣기 전에는 문제가 보이지 않아야 한다
-      if (i < 93) lcNext(g).click();
+      if (info.part !== 'p1' && lcArea(g).querySelector('.practice-lc-photo')) photoProblems.push(run + '회 ' + info.number + '번(' + info.part + ')에 사진');
+      if (i < LC_TOTAL - 1) lcNext(g).click();
     }
-    if (counts['Part 2'] !== 25 || counts['Part 3'] !== 39 || counts['Part 4'] !== 30) genProblems.push(run + '회 구성 ' + JSON.stringify(counts));
+    if (counts['Part 1'] !== 6 || counts['Part 2'] !== 25 || counts['Part 3'] !== 39 || counts['Part 4'] !== 30) genProblems.push(run + '회 구성 ' + JSON.stringify(counts));
+    if (kinds.people < 4 || kinds.people > 5 || kinds.objects < 1 || kinds.objects > 2) genProblems.push(run + '회 Part 1 사람 ' + kinds.people + ' / 사물 ' + kinds.objects);
+    peopleCounts.set(kinds.people, (peopleCounts.get(kinds.people) || 0) + 1);
     const p3Talks = [...talks.values()].filter(t => t.part === 'p3').length, p4Talks = [...talks.values()].filter(t => t.part === 'p4').length;
     if (p3Talks !== 13 || p4Talks !== 10) genProblems.push(run + '회 대화 ' + p3Talks + '개 / 담화 ' + p4Talks + '개');
     talks.forEach((entry, key) => {
@@ -915,21 +947,62 @@ async function runLcTests() {
     if (store.has(LC_KEY)) genProblems.push(run + '회 제출 후 저장값이 남음');
     byText(g.stage, '모드 선택').click();
   }
-  check('20회 모두 94문항 · 25/39/30 · 대화 13·담화 10 · 3문항씩 연속 · 번호 1~94 · 중복 없음', genProblems.length === 0, genProblems.slice(0, 5).join(' ; ') || '이상 없음');
-  check('OMR 파트 경계 (Part 2 1~25 · Part 3 26~64 · Part 4 65~94)', JSON.stringify(omrLabels) === JSON.stringify(['Part 2 · 1~25번 (지금)', 'Part 3 · 26~64번', 'Part 4 · 65~94번']), (omrLabels || []).join(' | '));
-  check('시험 중 스크립트 없음 (20회 × 94문항 화면)', leaks === 0, leaks + '건');
+  check('20회 모두 100문항 · 6/25/39/30 · 대화 13·담화 10 · 3문항씩 연속 · 번호 1~100 · 중복 없음', genProblems.length === 0, genProblems.slice(0, 5).join(' ; ') || '이상 없음');
+  check('20회 모두 Part 1 = 사람 사진 4~5장 + 사물 사진 1~2장 (4·5장 둘 다 나옴)', !genProblems.some(p => p.includes('Part 1 사람')) && peopleCounts.has(4) && peopleCounts.has(5),
+    [...peopleCounts.entries()].map(([k, v]) => '사람 ' + k + '장 ' + v + '회').join(' · '));
+  check('OMR 파트 경계 (Part 1 1~6 · Part 2 7~31 · Part 3 32~70 · Part 4 71~100)', JSON.stringify(omrLabels) ===
+    JSON.stringify(['Part 1 · 1~6번 (지금)', 'Part 2 · 7~31번', 'Part 3 · 32~70번', 'Part 4 · 71~100번']), (omrLabels || []).join(' | '));
+  check('Part 1 사진 표시 (src = 저장소 파일 · alt = "Part 1 사진 N") · 다른 파트에는 사진 없음', photoProblems.length === 0, photoProblems.slice(0, 4).join(' ; ') || '이상 없음');
+  check('시험 중 스크립트 없음 (20회 × 100문항 화면)', leaks === 0, leaks + '건');
+  check('Part 1 선택지 문장이 화면에 없음 ((A)(B)(C)(D)만)', p1TextLeaks === 0, p1TextLeaks + '건');
   check('Part 2 질문·응답 글자가 화면에 없음 ((A)(B)(C)만)', p2TextLeaks === 0, p2TextLeaks + '건');
   check('Part 3·4는 듣기 전에 문제가 안 보임', p3PromptLeaks === 0, p3PromptLeaks + '건');
   check('20회 동안 대화·담화가 섞여 나옴 (14개 중 13개, 12개 중 10개)', [...talkUse.keys()].filter(k => k.startsWith('p3:')).length === 14 && [...talkUse.keys()].filter(k => k.startsWith('p4:')).length === 12,
     '대화 ' + [...talkUse.keys()].filter(k => k.startsWith('p3:')).length + '종 · 담화 ' + [...talkUse.keys()].filter(k => k.startsWith('p4:')).length + '종');
+  check('20회 동안 사진이 섞여 나옴 (24장 중 18장 이상)', photoUse.size >= 18, photoUse.size + '장');
 
   // --- 2. 실전 조건: 한 번만 재생 · 되돌아가기 없음 · 스크립트 없음 ---
   console.log('\n[LC 풀세트 — 실전 조건]');
   store.delete(LC_KEY);
   const c = loadLc();
   startLc(c);
-  const first = lcInfo(c);
   const playBtn = () => c.stage.querySelector('.practice-lc-play');
+  const options = () => lcArea(c).querySelectorAll('.quiz-option');
+  // Part 1 (1번)
+  const photoInfo = lcInfo(c);
+  check('1번은 Part 1 · 사진 · (A)~(D) · 문장 글자 없음', photoInfo.part === 'p1' && photoInfo.number === 1 && !photoProblem(lcArea(c), photoInfo.q, 1) &&
+    options().map(o => o.textContent).join('') === '(A)(B)(C)(D)' && !photoInfo.q.choices.some(ch => lcArea(c).textContent.includes(ch)), photoInfo.key);
+  check('Part 1 재생 버튼 (▶ 문제 듣기)', playBtn() && playBtn().textContent === '▶ 문제 듣기' && !playBtn().disabled);
+  c.synth.queue = [];
+  playBtn().click();
+  check('Part 1: 누르면 같은 클릭 안에서 바로 재생 (첫 줄 = A 문장)', c.synth.queue.length === 1 && c.synth.queue[0].text === 'A. ' + photoInfo.q.choices[0], c.synth.queue.map(u => u.text).join(' | '));
+  const photoSpoken = [], photoVoices = [];
+  for (let k = 0; k < 10 && c.synth.queue.length; k++) {
+    const u = c.synth.queue.shift(); photoSpoken.push(u.text);
+    photoVoices.push((u.voice ? u.voice.name : '기본') + '/' + (u.pitch === undefined ? 1 : u.pitch));
+    u.onend(); await flush(); await flush();
+  }
+  await flush();
+  check('Part 1 음성 = A → B → C → D 네 문장', photoSpoken.join(' | ') === photoInfo.q.choices.map((ch, i) => 'ABCD'[i] + '. ' + ch).join(' | '), photoSpoken.join(' | '));
+  check('Part 1 음성은 한 사람 (같은 목소리 · 보정 없음)', new Set(photoVoices).size === 1 && /\/1$/.test(photoVoices[0]), photoVoices.join(', '));
+  check('Part 1 다 듣고 나도 재생 버튼은 막힘 · 문장 글자는 여전히 없음', playBtn().disabled === true && playBtn().textContent === '재생 완료 · 다시 들을 수 없어요' &&
+    !photoInfo.q.choices.some(ch => lcArea(c).textContent.includes(ch)) && lcLeak(c) === 0, playBtn().textContent);
+  c.synth.queue = [];
+  playBtn().click();
+  check('Part 1 막힌 버튼을 눌러도 재생되지 않음', c.synth.queue.length === 0);
+  options()[3].click();
+  check('Part 1 답 고르기 → 저장', options()[3].classList.contains('is-selected') && JSON.parse(store.get(LC_KEY)).answers[0] === 3);
+  // 사진을 못 불러오면 대체 문구
+  const img = lcArea(c).querySelector('.practice-lc-photo');
+  img.dispatch('error');
+  const fallback = lcArea(c).querySelector('.practice-lc-photo-fallback');
+  check('사진 로딩 실패 → 사진 숨기고 대체 문구 표시 (문구에 정답 단서 없음)', img.hidden === true && fallback && fallback.hidden === false && fallback.textContent.includes('사진을 불러오지 못했어요') &&
+    !photoInfo.q.choices.some(ch => fallback.textContent.includes(ch)), fallback && fallback.textContent);
+  while (lcInfo(c).part === 'p1') lcNext(c).click();
+
+  // Part 2 (7번)
+  const first = lcInfo(c);
+  check('Part 2 첫 문항 7번 · 사진 없음', first.part === 'p2' && first.number === 7 && !lcArea(c).querySelector('.practice-lc-photo'), first.number);
   check('Part 2 재생 버튼 (▶ 문제 듣기)', playBtn() && playBtn().textContent === '▶ 문제 듣기' && !playBtn().disabled);
   c.synth.queue = [];
   playBtn().click();
@@ -944,24 +1017,24 @@ async function runLcTests() {
   playBtn().click();
   check('막힌 버튼을 눌러도 재생되지 않음', c.synth.queue.length === 0);
   check('"다시 듣기" 버튼 없음', !c.stage.querySelectorAll('.button').some(b => b.textContent.includes('다시 듣기')));
-  const options = () => lcArea(c).querySelectorAll('.quiz-option');
   options()[0].click(); options()[2].click();
   check('지금 문항의 답은 바꿀 수 있음', options()[2].classList.contains('is-selected') && !options()[0].classList.contains('is-selected') &&
-    JSON.parse(store.get(LC_KEY)).answers[0] === 2);
+    JSON.parse(store.get(LC_KEY)).answers[6] === 2);
   check('"이전" 버튼 없음', !c.stage.querySelectorAll('.button').some(b => b.textContent.includes('이전')));
   lcNext(c).click();
-  check('다음 → 2번', lcInfo(c).number === 2);
+  check('다음 → 8번', lcInfo(c).number === 8);
   const omrNow = c.stage.querySelector('.practice-omr');
   check('OMR은 진행 표시용 (버튼 아님 · 안내 문구)', omrNow.querySelectorAll('.practice-omr-cell').every(cell => cell.tagName === 'SPAN' && cell.classList.contains('is-static')) &&
     omrNow.textContent.includes('진행 표시용이에요. 눌러서 이동할 수 없어요.'));
   omrNow.querySelectorAll('.practice-omr-cell')[0].click();
   omrNow.querySelectorAll('.practice-omr-cell')[50].click();
-  check('OMR 칸을 눌러도 이동하지 않음 (1번·51번 눌러도 2번 그대로)', lcInfo(c).number === 2 && JSON.parse(store.get(LC_KEY)).index === 1);
-  check('OMR: 1번 답 C 표시 · 2번 현재', c.stage.querySelector('.practice-omr').querySelectorAll('.practice-omr-cell')[0].querySelector('.practice-omr-mark').textContent === 'C' &&
-    c.stage.querySelector('.practice-omr').querySelectorAll('.practice-omr-cell')[1].classList.contains('is-current'));
+  check('OMR 칸을 눌러도 이동하지 않음 (1번·51번 눌러도 8번 그대로)', lcInfo(c).number === 8 && JSON.parse(store.get(LC_KEY)).index === 7);
+  const omrCellsNow = c.stage.querySelector('.practice-omr').querySelectorAll('.practice-omr-cell');
+  check('OMR: 1번 답 D · 7번 답 C 표시 · 8번 현재', omrCellsNow[0].querySelector('.practice-omr-mark').textContent === 'D' &&
+    omrCellsNow[6].querySelector('.practice-omr-mark').textContent === 'C' && omrCellsNow[7].classList.contains('is-current'));
   while (lcInfo(c).part === 'p2') lcNext(c).click();
   const talkInfo = lcInfo(c);
-  check('Part 3 첫 문항 26번 · 듣기 전 문제·선택지 숨김', talkInfo.number === 26 && !lcArea(c).querySelector('.practice-question-prompt') &&
+  check('Part 3 첫 문항 32번 · 듣기 전 문제·선택지 숨김', talkInfo.number === 32 && !lcArea(c).querySelector('.practice-question-prompt') &&
     lcArea(c).querySelectorAll('.quiz-option').length === 0 && !!lcArea(c).querySelector('.practice-lc-wait'));
   check('대화 재생 버튼 (▶ 대화 듣기)', playBtn() && playBtn().textContent === '▶ 대화 듣기');
   c.synth.queue = [];
@@ -973,7 +1046,7 @@ async function runLcTests() {
   check('대화 모든 줄을 순서대로 한 번 읽음', talkSpoken.join('|') === talkInfo.talk.script.map(l => l.text).join('|'), talkSpoken.length + '/' + talkInfo.talk.script.length + '줄');
   check('다 들으면 문제 표시 · 재생 버튼 막힘', !!lcArea(c).querySelector('.practice-question-prompt') && lcArea(c).querySelectorAll('.quiz-option').length === 4 && playBtn().disabled);
   lcNext(c).click();
-  check('같은 대화의 다음 문항(27번): 다시 못 들음 · 문제 바로 보임', lcInfo(c).number === 27 && playBtn().disabled && !!lcArea(c).querySelector('.practice-question-prompt'));
+  check('같은 대화의 다음 문항(33번): 다시 못 들음 · 문제 바로 보임', lcInfo(c).number === 33 && playBtn().disabled && !!lcArea(c).querySelector('.practice-question-prompt'));
   check('실전 조건 화면 어디에도 스크립트 없음', lcLeak(c) === 0);
 
   // --- 3. 중간 저장: 40문항 → 저장 → 3시간 뒤 다시 열기 → 이어서 → 제출 ---
@@ -989,12 +1062,12 @@ async function runLcTests() {
       const info = lcInfo(env);
       if (info.number > upTo) break;
       await playLc(env); // 들어야 Part 3·4 문제가 보인다. 이미 들은 대화면 null
-      // 3·5의 배수 번호를 틀리게 고른다 (한 대화에서 두 문항 이상 틀리는 묶음이 생기게).
+      // 3·5의 배수 번호를 틀리게 고른다 (한 대화에서 두 문항 이상 틀리는 묶음이 생기게, Part 1에서도 3·5·6번이 틀림).
       const choice = info.number % 3 === 0 || info.number % 5 === 0 ? (info.answer + 1) % info.q.choices.length : info.answer;
       lcArea(env).querySelectorAll('.quiz-option')[choice].click();
       answeredLc[info.number - 1] = { part: info.part, type: info.type, correct: choice === info.answer, choice };
       if (choice === info.answer) expectedLc++;
-      if (info.number === upTo || info.number === 94) break;
+      if (info.number === upTo || info.number === LC_TOTAL) break;
       lcNext(env).click();
     }
   }
@@ -1002,17 +1075,19 @@ async function runLcTests() {
   for (let k = 0; k < 120; k++) { now += 1000; s1.tick(); } // 2분 경과
   const lcSaved = JSON.parse(store.get(LC_KEY) || 'null');
   const playedBefore = lcSaved ? lcSaved.played.slice() : [];
-  check('저장: 답 40개', lcSaved && lcSaved.answers.filter(a => a !== null).length === 40 && answeredLc.every((a, i) => lcSaved.answers[i] === a.choice));
+  check('저장: 형식 버전 2 · 구성표에 Part 1 사진 6장', lcSaved && lcSaved.version === 2 && Array.isArray(lcSaved.plan.p1) && lcSaved.plan.p1.length === 6);
+  check('저장: 답 40개', lcSaved && lcSaved.answers.length === LC_TOTAL && lcSaved.answers.filter(a => a !== null).length === 40 && answeredLc.every((a, i) => lcSaved.answers[i] === a.choice));
   check('저장: 남은 시간 43:00 (2580초)', lcSaved && lcSaved.remainingSec === 2580, lcSaved && lcSaved.remainingSec);
   check('저장: 현재 문항 40번', lcSaved && lcSaved.index === 39, lcSaved && lcSaved.index);
-  check('저장: 이미 재생한 음성 목록 (Part 2 25개 + 대화 5개)', playedBefore.length === 30 && playedBefore.filter(k => k.startsWith('p2:')).length === 25, playedBefore.length + '개');
+  check('저장: 이미 재생한 음성 목록 (Part 1 6개 + Part 2 25개 + 대화 3개)', playedBefore.length === 34 && playedBefore.filter(k => k.startsWith('p1:')).length === 6 &&
+    playedBefore.filter(k => k.startsWith('p2:')).length === 25, playedBefore.length + '개');
   check('저장: RC 풀세트 저장·기록 키와 별도', store.get(FULL_KEY) === rcSaveBefore && store.get('englishLabFullSetHistory') === rcHistoryBefore && LC_KEY !== FULL_KEY);
   const lcSnapshot = store.get(LC_KEY);
 
   now += 3 * 3600 * 1000;
   const s2 = loadLc();
   const lcNote = s2.stage.querySelectorAll('.practice-mode-card').find(card => card.dataset.mode === 'lc').querySelector('.practice-mode-saved');
-  check('다시 열면 진행 중 LC 세트 안내', lcNote && lcNote.textContent.includes('푼 문제 40 / 94') && lcNote.textContent.includes('남은 시간 43:00'), lcNote && lcNote.textContent);
+  check('다시 열면 진행 중 LC 세트 안내', lcNote && lcNote.textContent.includes('푼 문제 40 / 100') && lcNote.textContent.includes('남은 시간 43:00'), lcNote && lcNote.textContent);
   check('RC 카드에는 진행 중 안내가 없음 (섞이지 않음)', !s2.stage.querySelectorAll('.practice-mode-card').find(card => card.dataset.mode === 'full').querySelector('.practice-mode-saved'));
   byText(s2.stage, 'LC 풀세트 선택').click();
   check('이어서 풀기 / 새로 시작', !!byText(s2.stage, '이어서 풀기') && !!byText(s2.stage, '새로 시작') && s2.stage.textContent.includes('이미 들은 문항의 음성은 다시 들을 수 없어요'));
@@ -1029,38 +1104,42 @@ async function runLcTests() {
     !!lcArea(s2).querySelector('.practice-question-prompt'), resumedPlay && resumedPlay.textContent);
   lcNext(s2).click();
   check('이어서: 새 대화(41번)는 들을 수 있음', !s2.stage.querySelector('.practice-lc-play').disabled);
-  await answerLc(s2, 94);
-  check('이어서 푼 뒤 재생 목록에 앞의 30개가 그대로 남음', playedBefore.every(k => JSON.parse(store.get(LC_KEY)).played.includes(k)));
+  await answerLc(s2, LC_TOTAL);
+  check('이어서 푼 뒤 재생 목록에 앞의 34개가 그대로 남음', playedBefore.every(k => JSON.parse(store.get(LC_KEY)).played.includes(k)));
   const miniBefore = s2.window.Progress.getPracticeHistory().length;
   const rcHistoryLen = JSON.parse(store.get('englishLabFullSetHistory') || '[]').length;
   const listeningBefore = JSON.parse(store.get('englishLabProgress')).listeningStats;
   byText(s2.stage, '제출').click();
   const lcScore = s2.stage.querySelector('.practice-result-score');
-  check('94문항 채점', lcScore && lcScore.textContent === '총점 ' + expectedLc + ' / 94', (lcScore && lcScore.textContent) + ' (예상 ' + expectedLc + ')');
+  check('100문항 채점', lcScore && lcScore.textContent === '총점 ' + expectedLc + ' / 100', (lcScore && lcScore.textContent) + ' (예상 ' + expectedLc + ')');
   check('제출 후 LC 저장값 삭제', !store.has(LC_KEY));
   const lcHistory = JSON.parse(store.get(LC_HISTORY_KEY) || '[]');
   const lastLc = lcHistory.slice(-1)[0];
-  check('LC 기록 (별도 키): 맞은 개수 · 환산 점수 · 소요 시간 · 파트별', lastLc && lastLc.total === 94 && lastLc.correct === expectedLc && lastLc.score === lcExpectedScore(expectedLc) &&
-    lastLc.elapsedSec === 120 && ['p2', 'p3', 'p4'].every(id => lastLc.sections[id]), lastLc && JSON.stringify(lastLc));
+  check('LC 기록 (별도 키): 맞은 개수 · 환산 점수(보정 없음) · 소요 시간 · 파트별 4개', lastLc && lastLc.total === LC_TOTAL && lastLc.correct === expectedLc && lastLc.score === LC_EXPECTED[expectedLc] &&
+    lastLc.elapsedSec === 120 && ['p1', 'p2', 'p3', 'p4'].every(id => lastLc.sections[id]) && lastLc.sections.p1.total === 6 && !('scaled' in lastLc), lastLc && JSON.stringify(lastLc));
   check('RC 풀세트 기록·미니 모의고사 기록과 섞이지 않음', JSON.parse(store.get('englishLabFullSetHistory') || '[]').length === rcHistoryLen &&
     s2.window.Progress.getPracticeHistory().length === miniBefore);
   const listeningAfter = JSON.parse(store.get('englishLabProgress')).listeningStats;
-  const delta = p => listeningAfter[p].solved - listeningBefore[p].solved;
-  check('답한 문항이 리스닝 정답률(part2·3·4)에 반영', delta('part2') === 25 && delta('part3') === 39 && delta('part4') === 30, ['part2', 'part3', 'part4'].map(delta).join('/'));
+  const delta = p => listeningAfter[p].solved - ((listeningBefore[p] || {}).solved || 0);
+  const p1Correct = answeredLc.slice(0, 6).filter(a => a.correct).length;
+  check('답한 문항이 리스닝 정답률(part1·2·3·4)에 반영', delta('part1') === 6 && delta('part2') === 25 && delta('part3') === 39 && delta('part4') === 30 &&
+    listeningAfter.part1.correct - ((listeningBefore.part1 || {}).correct || 0) === p1Correct, ['part1', 'part2', 'part3', 'part4'].map(delta).join('/'));
 
   // --- 4. 채점 화면 ---
   console.log('\n[LC 풀세트 — 채점 화면]');
   const card = s2.stage.querySelector('.practice-result');
   const scoreBox = card.querySelector('.practice-lc-score');
-  check('Part 1 제외 안내', card.querySelector('.practice-lc-excluded') && card.querySelector('.practice-lc-excluded').textContent === LC_NOTE);
-  check('예상 LC 점수 (94 → 100 보정 후 표)', scoreBox && scoreBox.querySelector('.practice-band-value').textContent === '예상 LC 점수 약 ' + lcExpectedScore(expectedLc) + '점' &&
-    scoreBox.querySelector('.practice-band-note').textContent === 'Part 1이 빠진 94문항을 100문항 기준으로 환산한 참고값입니다', scoreBox && scoreBox.textContent);
+  check('실제 시험과 같은 구성 안내 · Part 1 제외 문구 없음', card.querySelector('.practice-lc-format') && card.querySelector('.practice-lc-format').textContent === LC_NOTE &&
+    !card.textContent.includes('제외') && !card.textContent.includes('94'));
+  check('예상 LC 점수 (보정 없이 표 그대로)', scoreBox && scoreBox.querySelector('.practice-band-value').textContent === '예상 LC 점수 약 ' + LC_EXPECTED[expectedLc] + '점' &&
+    scoreBox.querySelector('.practice-band-note').textContent === '맞은 개수를 LC 환산표에 그대로 넣은 참고값입니다', scoreBox && scoreBox.textContent);
   const rows = cls => { const sec = card.querySelector('.' + cls); return sec ? sec.querySelectorAll('.practice-stat-row') : []; };
   const sectionRows = rows('practice-analysis-sections');
-  const bySection = { p2: [0, 0], p3: [0, 0], p4: [0, 0] };
+  const bySection = { p1: [0, 0], p2: [0, 0], p3: [0, 0], p4: [0, 0] };
   answeredLc.forEach(a => { bySection[a.part][1]++; if (a.correct) bySection[a.part][0]++; });
-  check('파트별 정답률 3줄 · 25/39/30 · 맞은 개수 일치 · 막대', sectionRows.map(r => r.dataset.id + '=' + r.dataset.correct + '/' + r.dataset.total).join(',') ===
-    ['p2', 'p3', 'p4'].map(p => p + '=' + bySection[p][0] + '/' + bySection[p][1]).join(',') && sectionRows.every(r => /width: \d+%/.test(r.querySelector('.practice-stat-fill').getAttribute('style'))),
+  check('파트별 정답률 4줄 (Part 1 포함) · 6/25/39/30 · 맞은 개수 일치 · 막대', sectionRows.map(r => r.dataset.id + '=' + r.dataset.correct + '/' + r.dataset.total).join(',') ===
+    ['p1', 'p2', 'p3', 'p4'].map(p => p + '=' + bySection[p][0] + '/' + bySection[p][1]).join(',') && sectionRows.every(r => /width: \d+%/.test(r.querySelector('.practice-stat-fill').getAttribute('style'))) &&
+    sectionRows[0].querySelector('.practice-stat-label').textContent === 'Part 1',
     sectionRows.map(r => r.querySelector('.practice-stat-label').textContent + ' ' + r.querySelector('.practice-stat-value').textContent).join(' | '));
   const typeRows = rows('practice-analysis-p2types');
   const byType = {};
@@ -1083,15 +1162,26 @@ async function runLcTests() {
   const groupKeys = groups.map(gr => gr.dataset.group);
   check('오답 문항 수 = 틀린 개수 · 번호 일치', review && review.querySelectorAll('.practice-review-miss').map(m => Number(m.dataset.number)).join(',') ===
     answeredLc.map((a, i) => a.correct ? null : i + 1).filter(Boolean).join(','));
-  check('같은 대화·담화를 두 번 싣지 않음', new Set(groupKeys).size === groupKeys.length && groups.filter(gr => !gr.dataset.group.startsWith('p2:')).some(gr => gr.querySelectorAll('.practice-review-miss').length > 1),
+  const isSingle = gr => gr.dataset.group.startsWith('p1:') || gr.dataset.group.startsWith('p2:');
+  check('같은 대화·담화를 두 번 싣지 않음', new Set(groupKeys).size === groupKeys.length && groups.filter(gr => !isSingle(gr)).some(gr => gr.querySelectorAll('.practice-review-miss').length > 1),
     groupKeys.length + '묶음');
+  const p1Groups = groups.filter(gr => gr.dataset.group.startsWith('p1:'));
+  const p1Expected = answeredLc.slice(0, 6).filter(a => !a.correct).length;
+  check('Part 1 복습: 틀린 사진마다 사진 + 네 문장 전문 + 내 답·정답 + 해설', p1Groups.length === p1Expected && p1Groups.length > 0 && p1Groups.every(gr => {
+    const q = s2.window.PART1.find(x => 'p1:' + x.id === gr.dataset.group);
+    const number = Number(gr.querySelector('.practice-review-miss').dataset.number);
+    const text = gr.textContent;
+    return !photoProblem(gr, q, number) && q.choices.every((ch, i) => text.includes('(' + 'ABCD'[i] + ') ' + ch)) && text.includes(q.explanation) &&
+      text.includes('정답: (' + 'ABCD'[q.answer] + ') ' + q.choices[q.answer]) && text.includes(q.kind === 'people' ? '사람 사진' : '사물 사진');
+  }), p1Groups.length + '묶음 / 틀린 Part 1 ' + p1Expected + '개');
   const p2Groups = groups.filter(gr => gr.dataset.group.startsWith('p2:'));
   check('Part 2 복습: 질문·선택지 전문 + 해설 + 해석', p2Groups.length > 0 && p2Groups.every(gr => {
     const q = s2.window.PART2.find(x => 'p2:' + x.id === gr.dataset.group);
     const text = gr.textContent;
-    return text.includes(q.question) && q.choices.every((ch, i) => text.includes('(' + 'ABC'[i] + ') ' + ch)) && text.includes(q.explanation) && text.includes(q.ko);
+    return text.includes(q.question) && q.choices.every((ch, i) => text.includes('(' + 'ABC'[i] + ') ' + ch)) && text.includes(q.explanation) && text.includes(q.ko) &&
+      !gr.querySelector('.practice-lc-photo');
   }));
-  const talkGroups = groups.filter(gr => !gr.dataset.group.startsWith('p2:'));
+  const talkGroups = groups.filter(gr => !isSingle(gr));
   check('Part 3·4 복습: 스크립트 전문 + 해설', talkGroups.length > 0 && talkGroups.every(gr => {
     const [part, id] = gr.dataset.group.split(':');
     const talk = (part === 'p3' ? s2.window.PART3 : s2.window.PART4).find(x => x.id === id);
@@ -1100,7 +1190,7 @@ async function runLcTests() {
     return lines.join('|') === texts.join('|') && gr.querySelectorAll('.practice-review-explanation').length === gr.querySelectorAll('.practice-review-miss').length;
   }));
   let replayOk = true;
-  for (const gr of [p2Groups[0], talkGroups[0]]) {
+  for (const gr of [p1Groups[0], p2Groups[0], talkGroups[0]]) {
     for (let k = 0; k < 2; k++) { // 복습에서는 몇 번이든 다시 들을 수 있다
       s2.synth.queue = [];
       const replay = gr.querySelector('.practice-lc-replay');
@@ -1109,7 +1199,7 @@ async function runLcTests() {
       s2.window.Speech.stop(); await flush();
     }
   }
-  check('복습: 음성 다시 듣기 (여러 번 가능)', replayOk);
+  check('복습: 음성 다시 듣기 (Part 1·2·3·4, 여러 번 가능)', replayOk);
   byText(review, '← 채점 결과로').click();
   check('복습에서 채점 화면으로 돌아감', !!s2.stage.querySelector('.practice-lc-score'));
 
@@ -1118,7 +1208,12 @@ async function runLcTests() {
   const badPlayed = JSON.parse(lcSnapshot); badPlayed.played = 'p2:p201';
   const badTalk = JSON.parse(lcSnapshot); badTalk.plan.p3[0] = 'p399';
   const shortLc = JSON.parse(lcSnapshot); shortLc.answers = [0];
-  const corrupt = [['JSON 깨짐', '{oops'], ['재생 목록 형식', JSON.stringify(badPlayed)], ['없는 대화 id', JSON.stringify(badTalk)], ['답 개수 틀림', JSON.stringify(shortLc)]];
+  const badPhoto = JSON.parse(lcSnapshot); badPhoto.plan.p1[0] = 'ph99';
+  const objectsOnly = JSON.parse(lcSnapshot); objectsOnly.plan.p1 = ['ph13', 'ph14', 'ph15', 'ph16', 'ph17', 'ph18'];
+  // 이전 형식: Part 1 없는 94문항 저장값 (version 1)
+  const oldFormat = JSON.parse(lcSnapshot); oldFormat.version = 1; delete oldFormat.plan.p1; oldFormat.answers = oldFormat.answers.slice(6);
+  const corrupt = [['JSON 깨짐', '{oops'], ['재생 목록 형식', JSON.stringify(badPlayed)], ['없는 대화 id', JSON.stringify(badTalk)], ['답 개수 틀림', JSON.stringify(shortLc)],
+    ['없는 사진 id', JSON.stringify(badPhoto)], ['사물 사진만 6장', JSON.stringify(objectsOnly)], ['이전 94문항 저장(version 1)', JSON.stringify(oldFormat)]];
   const corruptProblems = [];
   corrupt.forEach(([name, value]) => {
     const progress = store.get('englishLabProgress');
@@ -1131,7 +1226,7 @@ async function runLcTests() {
     if (!startLc(e)) corruptProblems.push(name + ': 새로 시작 안 됨');
     store.delete(LC_KEY);
   });
-  check('깨진 저장값 4종 — 지우고 새로 시작', corruptProblems.length === 0, corruptProblems.join(' ; ') || corrupt.map(x => x[0]).join(', '));
+  check('깨진 저장값 ' + corrupt.length + '종 — 지우고 새로 시작', corruptProblems.length === 0, corruptProblems.join(' ; ') || corrupt.map(x => x[0]).join(', '));
 
   // --- 6. 타이머 ---
   console.log('\n[LC 풀세트 — 타이머]');
@@ -1139,7 +1234,7 @@ async function runLcTests() {
   startLc(t);
   const time = () => t.stage.querySelector('.practice-time') && t.stage.querySelector('.practice-time').textContent;
   const alertBox = () => t.stage.querySelector('.practice-time-alert');
-  check('시작 45:00', time() === '45:00');
+  check('시작 45:00 (100문항이어도 45분 그대로)', time() === '45:00');
   for (let k = 0; k < 2700 - 601; k++) { now += 1000; t.tick(); }
   check('10:01에는 알림 없음', alertBox().hidden === true, time());
   now += 1000; t.tick();
@@ -1157,16 +1252,16 @@ async function runLcTests() {
   check('5분 알림', !alertBox().hidden && alertBox().textContent.includes('남은 시간 5분'));
   for (let k = 0; k < 400 && t.tick; k++) { now += 1000; t.tick(); }
   const timeout = t.stage.querySelector('.practice-result');
-  check('0이 되면 자동 제출 · 저장값 삭제', !!timeout && timeout.textContent.includes('시간 초과로 자동 제출') && timeout.textContent.includes('/ 94') && !store.has(LC_KEY) && t.tick === null);
+  check('0이 되면 자동 제출 · 저장값 삭제', !!timeout && timeout.textContent.includes('시간 초과로 자동 제출') && timeout.textContent.includes('/ 100') && !store.has(LC_KEY) && t.tick === null);
 
   // --- 7. 환산표 ---
   console.log('\n[LC 풀세트 — 환산표]');
   const api = s2.window.PracticeLcFullSet;
-  const scores = Array.from({ length: 95 }, (_, n) => api.scoreFor(n));
-  check('0~94 전 구간: 표와 같음 (× 100 / 94 반올림)', scores.every((v, n) => v === lcExpectedScore(n)), scores.filter((v, n) => v !== lcExpectedScore(n)).length + '건 다름');
-  check('0~94 단조 증가 (맞은 개수가 늘면 점수가 줄지 않음)', scores.every((v, n) => n === 0 || v >= scores[n - 1]));
-  check('표 값 (94→495, 47→185, 0→5) · 100문항 표 전체가 입력과 같음', api.scoreFor(94) === 495 && api.scoreFor(47) === 185 && api.scoreFor(0) === 5 &&
-    api.scoreTable.length === 101 && api.scoreTable.every((v, n) => v === LC_EXPECTED[n]), 'scoreFor(47)=' + api.scoreFor(47));
+  const scores = Array.from({ length: 101 }, (_, n) => api.scoreFor(n));
+  check('0~100 전 구간: 맞은 개수를 보정 없이 표에 그대로 (n개 → 표[n])', scores.every((v, n) => v === LC_EXPECTED[n]), scores.filter((v, n) => v !== LC_EXPECTED[n]).length + '건 다름');
+  check('0~100 단조 증가 (맞은 개수가 늘면 점수가 줄지 않음)', scores.every((v, n) => n === 0 || v >= scores[n - 1]));
+  check('표 값 (100→495, 94→475, 47→165, 0→5) · 94→100 보정 없음 · 표 전체가 입력과 같음', api.scoreFor(100) === 495 && api.scoreFor(94) === 475 && api.scoreFor(47) === 165 && api.scoreFor(0) === 5 &&
+    !('scaledFor' in api) && api.total === 100 && api.scoreTable.length === 101 && api.scoreTable.every((v, n) => v === LC_EXPECTED[n]), 'scoreFor(94)=' + api.scoreFor(94) + ', scoreFor(47)=' + api.scoreFor(47));
   let outOk = true;
   [-5, 150, NaN, 'abc', null, undefined, 50.4, Infinity, -Infinity, {}].forEach(v => { try { if (!Number.isInteger(api.scoreFor(v))) outOk = false; } catch (e) { outOk = false; } });
   check('범위 밖 입력에서 터지지 않음 (-5→5, 150→495)', outOk && api.scoreFor(-5) === 5 && api.scoreFor(150) === 495 && api.scoreFor(NaN) === 5);
@@ -1177,20 +1272,25 @@ async function runLcTests() {
   const historyEl = s2.byId('practice-history');
   const lcSection = historyEl.querySelector('.practice-lc-history');
   const rcSection = historyEl.querySelector('.practice-full-history');
-  const lcRows = lcSection ? lcSection.all().filter(e => e.tagName === 'TBODY')[0].all().filter(e => e.tagName === 'TR') : [];
+  const tableRows = section => section ? section.all().filter(e => e.tagName === 'TBODY')[0].all().filter(e => e.tagName === 'TR') : [];
+  const lcRows = tableRows(lcSection);
   const lcHistoryNow = JSON.parse(store.get(LC_HISTORY_KEY) || '[]');
-  check('기록 화면에 LC 풀세트 기록이 따로 표시 (최근 20회 · 최신이 맨 위)', !!lcSection && lcSection.textContent.includes('LC 풀세트 기록') &&
-    lcRows.length === lcHistoryNow.length && lcHistoryNow.length === 20 && lcRows[0].textContent.includes(lcHistoryNow[19].correct + ' / 94') &&
-    lcSection.textContent.includes(expectedLc + ' / 94') && lcSection !== rcSection, lcRows.length + '줄');
-  check('RC 기록 영역에는 94문항 응시가 없음', !rcSection || !rcSection.textContent.includes('/ 94'));
+  check('기록 화면에 LC 풀세트 기록이 따로 표시 (최근 20회 · 최신이 맨 위 · 100문항)', !!lcSection && lcSection.textContent.includes('LC 풀세트 기록') &&
+    lcRows.length === lcHistoryNow.length && lcHistoryNow.length === 20 && lcRows[0].textContent.includes(lcHistoryNow[19].correct + ' / 100') &&
+    lcSection.textContent.includes(expectedLc + ' / 100') && lcSection !== rcSection, lcRows.length + '줄');
+  check('RC 기록 영역에 LC 응시가 섞이지 않음', !rcSection || tableRows(rcSection).length === JSON.parse(store.get('englishLabFullSetHistory') || '[]').length);
 
   // --- 9. 음성 미지원 브라우저: 스크립트로 풀 수 있게 ---
   console.log('\n[LC 풀세트 — 음성 미지원]');
   store.delete(LC_KEY);
   const n = loadPracticePage();
   startLc(n);
-  check('미지원 안내 + 스크립트 + 선택지 표시', n.stage.textContent.includes('음성 재생을 지원하지 않아') && n.stage.querySelectorAll('.practice-lc-script').length === 1 &&
-    !n.stage.querySelector('.practice-lc-play') && lcArea(n).querySelectorAll('.quiz-option').length === 3);
+  const nInfo = lcInfo(n);
+  check('미지원: Part 1 사진 + 안내 + 네 문장 스크립트 + 선택지 4개', n.stage.textContent.includes('음성 재생을 지원하지 않아') && n.stage.querySelectorAll('.practice-lc-script').length === 1 &&
+    !n.stage.querySelector('.practice-lc-play') && lcArea(n).querySelectorAll('.quiz-option').length === 4 && !photoProblem(lcArea(n), nInfo.q, 1) &&
+    nInfo.q.choices.every(ch => n.stage.querySelector('.practice-lc-script').textContent.includes(ch)));
+  while (lcInfo(n).part === 'p1') lcNext(n).click();
+  check('미지원: Part 2 스크립트 + 선택지 3개', n.stage.querySelectorAll('.practice-lc-script').length === 1 && lcArea(n).querySelectorAll('.quiz-option').length === 3);
   byText(n.stage, '제출').click();
 
   // --- 10. 데이터 부족 ---
@@ -1200,6 +1300,14 @@ async function runLcTests() {
   const err = shortTalks.stage.querySelector('.practice-full-error');
   check('Part 4 담화가 9개면 오류 표시', !!err && err.textContent.includes('Part 4 담화 수가 모자라') && err.textContent.includes('필요 10개, 현재 9개') &&
     shortTalks.errors.some(m => m.includes('LC 풀세트를 만들 수 없습니다')), err && err.textContent);
+  const noObjects = loadLc({ mutate: w => { w.PART1 = w.PART1.filter(p => p.kind === 'people'); } });
+  byText(noObjects.stage, 'LC 풀세트 선택').click();
+  const err2 = noObjects.stage.querySelector('.practice-full-error');
+  check('사물 사진이 없으면 오류 표시', !!err2 && err2.textContent.includes('Part 1 사물 사진 수가 모자라'), err2 && err2.textContent);
+  const fewPeople = loadLc({ mutate: w => { w.PART1 = w.PART1.filter(p => p.kind === 'objects').concat(w.PART1.filter(p => p.kind === 'people').slice(0, 3)); } });
+  byText(fewPeople.stage, 'LC 풀세트 선택').click();
+  const err3 = fewPeople.stage.querySelector('.practice-full-error');
+  check('사람 사진이 3장이면 오류 표시', !!err3 && err3.textContent.includes('Part 1 사람 사진 수가 모자라') && err3.textContent.includes('현재 3개'), err3 && err3.textContent);
 }
 
 (async () => {

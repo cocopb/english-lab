@@ -282,7 +282,7 @@ function runListeningPage() {
   }
 
   var ready = null;
-  var recorded = { dictation: 0, part2: 0, part3: 0, part4: 0 };
+  var recorded = { dictation: 0, part1: 0, part2: 0, part3: 0, part4: 0 };
   var document = {
     createElement: function (tag) { return new FakeElement(tag); },
     createTextNode: function (text) { var node = new FakeElement("#text"); node._text = String(text); return node; },
@@ -317,7 +317,7 @@ function runListeningPage() {
   };
   var sandbox = { window: window, document: document, console: console, Promise: Promise };
   vm.createContext(sandbox);
-  ["data/listening.js", "assets/js/listening-voices.js", "assets/js/listening.js"].forEach(function (file) {
+  ["data/listening.js", "data/part1.js", "assets/js/listening-voices.js", "assets/js/listening.js"].forEach(function (file) {
     vm.runInContext(fs.readFileSync(path.join(root, file), "utf8"), sandbox, { filename: file });
   });
   check(typeof ready === "function", "DOMContentLoaded 핸들러가 등록되지 않음");
@@ -511,7 +511,7 @@ function loadListeningWithRealSpeech(mode, customVoices) {
   };
   var sandbox = { window: window, document: document, localStorage: localStorage, console: { info: function () {}, warn: function () {}, log: console.log, error: console.error }, Promise: Promise };
   vm.createContext(sandbox);
-  ["assets/js/speech.js", "data/listening.js", "assets/js/listening-voices.js", "assets/js/listening.js"].forEach(function (file) {
+  ["assets/js/speech.js", "data/listening.js", "data/part1.js", "assets/js/listening-voices.js", "assets/js/listening.js"].forEach(function (file) {
     vm.runInContext(fs.readFileSync(path.join(root, file), "utf8"), sandbox, { filename: file });
   });
   ready();
