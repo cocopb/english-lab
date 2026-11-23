@@ -1218,3 +1218,406 @@ README '검사가 실제로 잡는지 확인할 때'에 적었다. 요약하면 
 | g14 예문 | You may pay by credit card or in cash. | Part 2 p226 "Can I pay by credit card?" | You may pay by check or in cash. |
 | g05 예문 | I want to go. | Part 4 pt407 "I want to go over the results" | I want to rest. |
 | g04 예문 | The garden will be watered tonight. | Part 7 rp15 "The garden will be free to enter" | The plants will be watered tonight. |
+
+# 4차 감사 — 오답 위반 교체(Day 13\~18), 사람 명사 오답 맥락 정합성, 관사 단서 (2026-11-23)
+
+## 기준
+
+3차 감사의 기준 1번부터 5번까지 그대로 쓴다. 이번에 하나를 더했다.
+
+- **규칙 5 보완:** 사람 빈칸의 오답은 **같은 업종·같은 상황의 사람 명사**로 둔다. `floor staff` 세트의 `pilot`처럼 맥락 밖 사람은 "매장 얘기가 아니니까"로 범주만 보고 지워져서 규칙 5를 만든 이유가 사라진다.
+
+## 분량과 멈춘 곳
+
+115세트 중 **Day 13부터 18까지 55세트**를 교체하고 멈췄다. Day 19부터 24까지 60세트는 다음 작업이다.
+
+| 시점 | 모르는 오답이 있는 세트 | 위반 | 허용 |
+|---|---|---|---|
+| 시작 | 382 | 115 | 267 |
+| 이번 작업 뒤 | 363 | **60** (모두 Day 19 이후) | 303 |
+
+| 작업 | 세트 수 | 그중 예문도 고침 |
+|---|---|---|
+| Day 13\~18 위반 교체 | 55 | 48 |
+| 3차 감사 사람 빈칸 36세트 재점검 | 30 (6세트는 그대로) | 7 |
+| 관사 단서 (위 둘과 겹치지 않는 것) | 5 | 5 |
+| **합계** | **90** | **60** |
+
+- 새 오답은 하나씩 빈칸에 넣어 통하는지 다시 봤다. 통하는 후보는 쓰지 않고 이유 칸에 "통해서 제외"로 적었다.
+- "아는 단어"인지는 `list-unknown-distractors.js`와 같은 규칙으로 후보마다 미리 돌려 봤다. 모르는 단어로 나온 후보(optional·reject·growth·secretary 등)는 이유 칸에 "모르는 단어라 제외"로 적었다.
+
+## 1. Day 13\~18 위반 교체 (55)
+
+| id | Day | 단어 | 전 | 후 | 이유 |
+|---|---|---|---|---|---|
+| v367 | 13 | binding | bidding, building, blending | bidding, unclear, weak | blending·building → unclear·weak. 예문에 'so both companies must follow every term'을 넣었다 (valid는 통해서 제외, optional·flexible은 모르는 단어라 제외) |
+| v370 | 13 | disclosure | enclosure, closure, explosion | enclosure, discount, refund | closure·explosion → discount·refund. 예문에 '서명 전에 모든 요금을 본다'를 넣었다 (payment는 'Full payment of fees is required'로 통해서 제외) |
+| v372 | 13 | void | avoid, vivid, vowel | valid, active, vivid | avoid(동사라 문법으로 지워짐)·vowel → valid·active. 'null and valid'는 모순으로 지워진다. 예문에 '서명 위조'를 넣었다 |
+| v376 | 13 | lawsuit | lawmaker, landlord, layout | launch, landlord, layout | lawmaker → launch. 예문에 'out of court … before a judge'를 넣었다 (bill·dispute·loan·lease는 통해서 제외) |
+| v379 | 13 | arbitration | administration, alteration, aspiration | administration, accounting, advertising | alteration·aspiration → accounting·advertising. 예문에 '판사 대신 중립적인 제3자'를 넣었다 (court·mediation은 통해서 제외, audit은 제3자 검토로 읽혀 제외, auction은 모르는 단어라 제외) |
+| v384 | 13 | provision | precision, provider, profession | provider, promotion, precision | profession → promotion. 예문에 'in Section 4 of the contract'를 넣었다 (policy·rule·procedure는 통해서 제외) |
+| v387 | 13 | notarize | normalize, nominate, nod | normalize, notify, revise | nominate·nod → notify·revise. 예문에 '서명이 진짜임을 증명하는 도장'을 넣었다 (signed·stamped는 통해서 제외, translate는 모르는 단어라 제외) |
+| v392 | 14 | inquiry | injury, industry, integrity | injury, invoice, industry | integrity → invoice. 'an ___'이라 모음으로 시작하는 단어만 골랐다. 예문에 '언제 나오는지 묻는'을 넣었다 (order·email은 통해서 제외) |
+| v393 | 14 | resolve | revolve, reserve, reverse | reserve, repeat, revolve | reverse → repeat (remove·report는 '문제를 없앴다/알렸다'로 통해서 제외, reject는 모르는 단어라 제외) |
+| v400 | 14 | guarantee | guideline, gratitude, graduate | guess, delay, graduate | guideline·gratitude → guess·delay. 예문에 'or your shipping is free'를 넣었다 (promise·offer는 통해서 제외) |
+| v406 | 14 | hotline | headline, deadline, guideline | headline, deadline, hotel | guideline → hotel. 예문에 전화번호와 'any time of day'를 넣었다 (office·helpline은 통해서 제외) |
+| v410 | 14 | responsive | responsible, respective, repetitive | responsible, reluctant, respective | repetitive → reluctant. 'reply within an hour'와 모순된다 (respective는 철자 비슷이라 남겼다) |
+| v414 | 14 | goodwill | grade, guideline, grid | grade, goal, guidance | guideline·grid → goal·guidance. 예문에 '배송이 늦어서'를 넣었다 (gratitude·apology는 통해서 제외, growth는 모르는 단어라 제외) |
+| v416 | 14 | clarification | classification, certification, calculation | classification, certification, compensation | calculation → compensation. 예문에 '무엇에 대한 요금인지 모르겠어서'를 넣었다 (calculation은 '계산 내역'으로 통해서 뺐다, explanation·confirmation은 통해서 제외) |
+| v422 | 15 | hazard | harbor, handout, heritage | handout, habit, harbor | heritage → habit. 예문에 '미끄러져 넘어질 수 있어서'를 넣었다 (risk·issue는 통해서 제외) |
+| v426 | 15 | injury | jury, industry, integrity | jury, invoice, inquiry | industry·integrity → invoice·inquiry (incident·casualty는 통해서 제외) |
+| v429 | 15 | drill | drain, drift, draft | draft, alarm, drain | drift → alarm. 예문에 '빨리 대피하는 연습'을 넣었다 (sale은 'fire sale'로 통해서 제외) |
+| v430 | 15 | hygiene | highlight, heritage, history | highlight, history, hiring | heritage → hiring. 예문에 '손을 자주 씻고 조리대를 깨끗이'를 넣었다 (safety는 통해서 제외) |
+| v433 | 15 | exposure | expense, expansion, expertise | expense, extension, expansion | expertise → extension. 예문에 'your skin's … to avoid burns'를 넣었다 (access는 통해서 제외) |
+| v440 | 15 | coverage | courage, carriage, leverage | courage, college, carriage | leverage → college. 예문에 '아니면 검진비를 직접 내는지'를 넣었다 (care·checkup·insurance는 통해서 제외) |
+| v441 | 15 | premium | preference, president, presence | president, presentation, preference | presence → presentation (payment·price·fee는 통해서 제외) |
+| v442 | 15 | checkup | checklist, checkpoint, checkout | check-out, chat, checklist | checkpoint·checkout → check-out·chat. 예문에 '의사가 혈압과 심장을 검사'를 넣었다 (bonus·pass는 통해서 제외) |
+| v444 | 15 | ergonomic | economic, energetic, ethnic | uncomfortable, noisy, dangerous | economic·energetic·ethnic → uncomfortable·noisy·dangerous. 예문에 '몸에 맞게 설계된'을 넣었다 (economic은 economical로 오해해 통할 수 있어 뺐다, expensive·elegant는 통해서 제외) |
+| v445 | 15 | fatigue | feature, freight, fortune | freight, fortune, fitness | feature → fitness. 예문에 '지치고 실수를 더 한다'를 넣었다 (stress·failure는 통해서 제외) |
+| v448 | 15 | extinguisher | exhibitor, examiner, executive | exhibitor, drill, alarm | examiner·executive → drill·alarm. 예문에 '안전핀을 뽑고 불길에 뿌리라'를 넣었다 (escape는 통해서 제외) |
+| v451 | 16 | sustainable | suspicious, suspended, toxic | toxic, wasteful, suspended | suspicious → wasteful. 'do not harm the environment'와 모순된다 (rapid·realistic은 통해서 제외, harmful은 모르는 단어라 제외) |
+| v455 | 16 | pollution | population, solution, politician | solution, population, position | politician → position. 예문에 '하늘이 맑아지고 공기가 깨끗해졌다'를 넣었다 (travel·traffic은 통해서 제외) |
+| v457 | 16 | carbon footprint | carbon copy, carbon paper, carbon fiber | foot traffic, floor plan, exchange rate | carbon copy·paper·fiber → foot traffic·floor plan·exchange rate. 예문에 '배출한 온실가스 총량'을 넣었다 (foot traffic은 원래 예문으로는 통했다) |
+| v459 | 16 | insulation | inflation, isolation, inspiration | inflation, insurance, isolation | inspiration → insurance. 예문에 '벽과 지붕의 … 열이 빠져나가지 않아'를 넣었다 (installation은 '설비'로 통해서 제외) |
+| v461 | 16 | conserve | converse, concern, consent | concern, contact, converse | consent → contact. 예문에 '샤워를 짧게 해서'를 넣었다 (save·use는 통해서 제외, consume은 모르는 단어라 제외) |
+| v463 | 16 | utility | unity, utensil, university | university, uniform, utensil | unity → uniform. 예문에 '전기·수도 같은'을 넣었다 (parking·maintenance는 통해서 제외) |
+| v464 | 16 | eco-friendly | ecology, eco-tourism, economic | plastic, metal, toxic | ecology·eco-tourism·economic → plastic·metal·toxic. 예문에 '재활용 종이로 만든, 자연 분해되는'을 넣었다 (cheap·expensive는 통해서 제외) |
+| v465 | 16 | biodegradable | binding, bilingual, big | binding, durable, plastic | bilingual·big → durable·plastic. 예문에 '몇 달 안에 흙 속에서 분해'를 넣었다 (reusable·recyclable은 통해서 제외, breakable은 헷갈려 제외) |
+| v469 | 16 | greenhouse gas | greenhouse plant, green space, greenfield site | green space, wind power, greenhouse plant | greenfield site → wind power. 예문의 'The plant'를 'The factory'로 바꾸고 '지구 온난화를 늦춘다'를 넣었다 (carbon은 모르는 단어라 제외) |
+| v470 | 16 | wind power | wind tunnel, waiver, windshield | waiver, window, wind tunnel | windshield → window. 예문에 '언덕 위 터빈'을 넣었다 (solar power는 통해서 제외) |
+| v471 | 16 | grid | grill, grind, grade | grade, garage, grill | grind → garage. 예문에 '지역 곳곳의 가정으로 보낸다'를 넣었다 (city·network는 통해서 제외) |
+| v476 | 16 | incentive | intensive, incident, instinct | incident, inspection, intensive | instinct → inspection. 예문에 '세금 감면, 무료 주차'를 넣었다 (insurance·discount는 통해서 제외) |
+| v477 | 16 | subsidy | society, subject, sufficiency | society, subject, survey | sufficiency → survey. 예문에 '2만 달러, 장비 구입을 돕는'을 넣었다 (grant·loan은 통해서 제외) |
+| v493 | 17 | move-in date | serial number, seating plan, name tag | expiration date, birth date, seating plan | serial number·name tag → expiration date·birth date. 'expiration date'는 '계약이 시작되는 날'과 모순된다 (start date·move-out date·deadline은 통해서 제외) |
+| v496 | 17 | leak | lack, lid, lane | lack, lamp, lock | lid·lane → lamp·lock. 예문에 '물이 책상에 떨어져'를 넣었다 (crack·hole은 통해서 제외) |
+| v498 | 17 | elevator | operator, indicator, generator | subway, shuttle, generator | operator·indicator → subway·shuttle. 'Take the ___'는 사람·물건을 '데려가다'로 통해서 'Ride the ___ … stairs if it is out of service'로 바꿨다 (escalator는 통해서 제외) |
+| v500 | 17 | parking space | parking fine, dress code, time zone | parking fine, time zone, parking lot | dress code → parking lot (철자 비슷, 모르는 단어). 예문에 '차고 안, 호수 표시'를 넣었다 (parking permit·mailbox는 통해서 제외) |
+| v505 | 17 | rooftop | roadmap, backdrop, topic | roadmap, basement, lobby | backdrop·topic → basement·lobby. 예문에 '건물의 평평한 꼭대기'를 넣었다 (roof·wall은 통해서 제외) |
+| v509 | 17 | soundproof | waterproof, foolproof, fireproof | waterproof, crowded, noisy | foolproof·fireproof → crowded·noisy (private·closed는 통해서 제외) |
+| v510 | 17 | walk-through | walk-in, walkway, walkout | walk-in, workshop, warm-up | walkway·walkout → workshop·warm-up. 예문에 '방마다 파손 확인'을 넣었다 (walking tour·inspection은 통해서 제외) |
+| v512 | 18 | exhibit | exist, exhaust, excuse | excuse, expense, exhaust | exist → expense. 예문에 'in the museum … label describing it'을 넣었다 (exhibitor·item은 통해서 제외) |
+| v515 | 18 | keynote speech | key card, keyboard, keyword | key card, keyboard, coffee break | keyword → coffee break. 예문에 '창립자가 전체 참석자 앞에서'를 넣었다 |
+| v516 | 18 | panel discussion | solar panel, control panel, instrument panel | keynote speech, survey, coffee break | solar·control·instrument panel → keynote speech·survey·coffee break. 관사 단서도 있었다('A panel'의 A가 instrument panel을 거름). 예문에 '전문가 네 명이 의견을 나누고'를 넣었다 (group discussion은 통해서 제외, press release는 모르는 단어라 제외) |
+| v518 | 18 | registration desk | registration fee, registration number, desk lamp | registration fee, desk lamp, early-bird rate | registration number → early-bird rate. 예문에 '학회장에 도착하면'을 넣었다 (front desk·information desk는 통해서 제외) |
+| v519 | 18 | name badge | nickname, user name, budget | nickname, budget, notebook | user name → notebook. 예문에 '누구이고 어느 회사 소속인지'를 넣었다 (name tag·uniform·seat belt는 통해서 제외) |
+| v520 | 18 | RSVP | ASAP, FYI, VIP | ASAP, arrive, remind | FYI·VIP → arrive·remind. 예문에 '참석 여부를 알 수 있도록'을 넣었다 (reply·respond·register·pay는 통해서 제외) |
+| v527 | 18 | ceremony | ceramics, cemetery, certainty | hours, date, ceramics | cemetery·certainty → hours·date. 예문에 '연설과 테이프 커팅'을 넣었다 (speech·event는 통해서 제외) |
+| v534 | 18 | early-bird rate | birth rate, exchange rate, bird's-eye view | exchange rate, interest rate, birth rate | bird's-eye view → interest rate. 예문에 '그 전에 등록해서 50달러 절약'을 넣었다 (discount는 통해서 제외, hourly rate는 모르는 단어라 제외) |
+| v535 | 18 | on-site registration | registration number, on-time arrival, on sale | early-bird rate, group discount, on-time arrival | registration number·on sale → early-bird rate·group discount. '10달러 더 든다'와 모순된다 (late registration은 통해서 제외, online registration은 모르는 단어라 제외) |
+| v539 | 18 | sold out | sold off, worn out, burned out | sold off, burned out, on sale | worn out → on sale. 예문에 '더 이상 표가 없다'를 넣었다 (canceled·postponed는 통해서 제외) |
+
+## 2. 사람 빈칸 36세트 재점검 (30세트 교체)
+
+| id | Day | 단어 | 전 | 후 | 이유 |
+|---|---|---|---|---|---|
+| v009 | 1 | customer | supplier, competitor, cashier | supplier, competitor, manufacturer | cashier(소매 계산원)가 B2B 수건 납품 맥락과 동떨어짐 → manufacturer. 'a hotel chain started buying'이 사는 쪽만 맞게 한다 (client는 통해서 제외) |
+| v047 | 2 | supervisor | supplier, subscriber, customer | employee, trainee, intern | supplier·subscriber·customer는 회사 밖 사람 → employee·trainee·intern. 'who will approve it'이 상사만 맞게 한다 (colleague·manager는 통해서 제외) |
+| v063 | 3 | candidate | employee, supplier, customer | employer, employee, interviewer | supplier·customer는 채용 맥락 밖 → employer·interviewer. '그중 한 명을 채용'이 지원자만 맞게 한다 (applicant·recruiter·supervisor는 지원자일 수 있어 통해서 제외) |
+| v094 | 4 | applicant | attendee, attorney, employee | employer, interviewer, employee | attorney는 채용 맥락 밖 → employer·interviewer. 'to be considered for the job'이 지원자만 맞게 한다 (recruiter는 채용 담당 직무 지원으로 읽혀 통해서 제외) |
+| v147 | 5 | vendor | visitor, volunteer, tenant | customer, buyer, competitor | visitor·volunteer·tenant는 구매 맥락 밖 → customer·buyer·competitor. 'to supply our office paper'가 공급업체만 맞게 한다 (supplier·distributor는 통해서 제외) |
+| v167 | 6 | staff | stranger, supplier, shareholder | customer, visitor, supplier | stranger·shareholder는 근무표 맥락 밖 → customer·visitor. '새 근무표'가 직원만 맞게 한다 (trainee는 통해서 제외) |
+| v182 | 7 | attendee | attendant, attorney, applicant | attendant, organizer, instructor | attorney·applicant는 워크숍 맥락 밖 → organizer·instructor. 예문을 '참가비를 내고 참가'로 바꿔 주최자·강사를 뜻으로 거른다 (participant·member는 통해서 제외) |
+| v183 | 7 | chairperson | cashier, chef, customer | attendee, shareholder, guest | cashier·chef·customer는 회의 맥락 밖 → attendee·shareholder·guest (host는 '진행자'로 통해서 제외, secretary는 모르는 단어라 제외) |
+| v278 | 10 | concierge | cashier, chef, competitor | cashier, chef, guest | competitor는 호텔 맥락 밖 → guest. 손님은 부탁하는 쪽이라 뜻으로 지워진다 (receptionist는 통해서 제외) |
+| v296 | 10 | traveler | landlord, supplier, trainer | local, driver, host | landlord·supplier·trainer는 여행 맥락 밖 → local·driver·host. 'in each city'가 여행자만 맞게 한다 (tourist는 통해서 제외, resident·commuter는 모르는 단어라 제외) |
+| v330 | 11 | subcontractor | subscriber, shareholder, supervisor | supervisor, designer, cleaner | subscriber·shareholder는 공사 맥락 밖 → designer·cleaner. 'a ___'라 자음으로 시작하는 단어만 골랐다 (supplier는 통해서 제외, architect·electrician은 관사 단서·모르는 단어라 제외) |
+| v369 | 13 | witness | waiter, winner, walk-in | buyer, seller, tenant | waiter·winner·walk-in은 계약 맥락 밖 → buyer·seller·tenant. 예문에 '직접 서명했음을 증명하려고'를 넣었다 (lawyer는 증인이 될 수 있어 통해서 제외) |
+| v375 | 13 | attorney | attendee, author, applicant | auditor, banker, investor | attendee·author·applicant는 계약 검토 맥락 밖 → auditor·banker·investor. 예문에 'as our legal expert'를 넣었다 (client·consultant는 통해서 제외, accountant·architect는 모르는 단어라 제외) |
+| v388 | 13 | counterpart | colleague, courier, customer | colleague, supplier, customer | courier는 가격 협상 맥락 밖 → supplier. 'who has the same job as me there'가 상대방만 맞게 한다 |
+| v405 | 14 | representative | recipient, reporter, rival | subscriber, supplier, recipient | recipient·reporter·rival 중 맥락 밖 둘 → subscriber·supplier. 예문의 'customer service'에서 오답 후보 customer가 보여 'customer support team'으로 두고 customer는 쓰지 않았다 (manager·agent는 통해서 제외) |
+| v418 | 14 | walk-in | waiter, worker, witness | waiter, chef, cashier | worker·witness는 식당 맥락 밖 → chef·cashier (guest는 통해서 제외) |
+| v482 | 17 | tenant | landlord, tourist, visitor | landlord, visitor, guest | tourist → guest. '월세를 낸다'가 세입자만 맞게 한다 (plumber·neighbor 같은 직업·일반 사람 명사는 세입자일 수 있어 통해서 제외) |
+| v483 | 17 | landlord | tenant, visitor, trainee | tenant, visitor, guest | trainee → guest. 'who owns the building'은 건물주가 아닌 tenant·visitor·guest만 뜻으로 지운다 (painter·trainee는 건물을 가질 수 있어 통해서 제외) |
+| v536 | 18 | exhibitor | attendee, explorer, spectator | attendee, visitor, spectator | 예문에 오답 visitor와 같은 'visitors'가 있었다 → 'the doors open to the public'으로 바꿨다. explorer는 박람회 맥락 밖 → visitor (organizer는 부스 설치를 도울 수 있어 통해서 제외) |
+| v543 | 19 | courier | customer, cashier, coach | customer, recipient, sender | cashier·coach는 배송 맥락 밖 → recipient·sender |
+| v560 | 19 | recipient | receptionist, driver, rival | receptionist, driver, courier | rival은 배송 맥락 밖 → courier (sender는 라벨에 이름이 있어 통해서 제외) |
+| v571 | 20 | physician | physicist, patient, pilot | physicist, patient, receptionist | pilot은 진료 맥락 밖 → receptionist (nurse·pharmacist는 목을 볼 수 있어 통해서 제외) |
+| v575 | 20 | inpatient | outpatient, inspector, instructor | outpatient, nurse, physician | inspector·instructor는 병원 맥락 밖 → nurse·physician. 손목 밴드에 생년월일이 있는 건 환자뿐이다 (visitor는 통해서 제외) |
+| v588 | 20 | receptionist | recipient, reporter, patient | recipient, patient, pharmacist | reporter는 병원 맥락 밖 → pharmacist (nurse는 'The nurse at the front desk'로 통해서 제외, surgeon은 모르는 단어라 제외) |
+| v589 | 20 | specialist | spectator, speaker, supplier | nurse, pharmacist, receptionist | spectator·speaker·supplier는 진료 맥락 밖 → nurse·pharmacist·receptionist. 예문을 'Dr. Kim, a heart ___ ... to treat patients'로 바꿨다 (patient는 'heart patient'로 통해서 제외) |
+| v636 | 22 | instructor | inspector, investor, inventor | receptionist, beginner, cleaner | inspector·investor·inventor는 운동 맥락 밖 → receptionist·beginner·cleaner (coach·trainer는 통해서 제외, classmate는 시범을 보일 수 있어 제외) |
+| v641 | 22 | tutor | tailor, tenant, trader | driver, cleaner, chef | tailor·tenant·trader는 가정 학습 맥락 밖 → driver·cleaner·chef. 부모가 고용하는 사람 중 숙제를 돕지 않는 쪽 (classmate·babysitter는 통해서 제외) |
+| v648 | 22 | faculty | family, fan, farmer | class, audience, student body | family·fan·farmer는 대학 맥락 밖 → class·audience·student body. 'made up of all the professors'가 교수진만 맞게 한다 (staff·board·committee는 통해서 제외) |
+| v694 | 24 | cashier | banker, captain, cleaner | supplier, cleaner, shopper | banker·captain은 매장 맥락 밖 → supplier·shopper. 'asked if I had a coupon'이 계산원만 맞게 한다 (customer·manager는 통해서 제외, security guard는 모르는 단어라 제외) |
+| v708 | 24 | floor staff | shareholder, landlord, pilot | cashier, supplier, customer | shareholder·landlord·pilot → cashier·supplier·customer. 예문에 '통로를 돌며 … 계산대 줄이 막히지 않게'를 넣어 계산원을 뜻으로 거른다 (manager·shopper는 통해서 제외, shopper는 예문에도 있다) |
+
+그대로 둔 6세트
+
+| 세트 | 오답 | 이유 |
+|---|---|---|
+| v008 employee | employer, applicant, customer | 모두 회사·채용 맥락이다 |
+| v055 client | clerk, colleague, competitor | 모두 법률 사무소·업계 맥락이다 |
+| v219 competitor | supplier, consumer, colleague | 모두 시장·회사 맥락이다 |
+| v255 shareholder | employee, customer, supplier | 회사 이해관계자라 같은 맥락이다 |
+| v523 organizer | attendee, audience, visitor | 모두 학회 맥락이다 |
+| v574 outpatient | inpatient, physician, receptionist | 모두 병원 맥락이다 |
+
+## 3. 관사 단서와 예문 속 오답 단어
+
+단어장 전체(720세트)를 스크립트로 훑었다. 빈칸 바로 앞의 a/an이 소리로 보기를 거르는지, 예문에 오답 단어(복수형 포함)가 그대로 있는지를 본다.
+
+| id | Day | 예문 앞 | 걸러지던 오답 | 고친 방법 |
+|---|---|---|---|---|
+| v088 | 3 | an urgent | usual, utility | 'This matter is ___' |
+| v152 | 6 | a cover letter | envelope | 'a one-page ___' |
+| v516 | 18 | A panel discussion | instrument panel | 오답 교체로 풀림 (새 오답은 모두 자음) |
+| v528 | 18 | an award | ward | "this year's ___" |
+| v644 | 22 | a degree | agree | 'a university ___' |
+| v653 | 22 | a refresher course | air freshener | 'a short ___' |
+
+- 새로 고른 오답 중 빈칸 앞이 a/an인 세트(v330·v369·v392·v405·v496·v510·v516·v543·v589·v641)는 정답과 같은 소리로 시작하는 단어만 골랐다.
+- **예문 속 오답 단어:** 스크립트로는 교체 전후 모두 0건이었다. 사람이 보고 찾은 것은 v536 exhibitor 예문의 'visitors'(이번에 visitor를 오답으로 넣으면서 예문에서 뺐다)와 v405 예문의 'customer service'(customer를 오답으로 쓰지 않았다)다.
+- 고친 뒤 다시 돌린 결과 관사 단서 0건, 예문 속 오답 단어 0건이다.
+
+## 4. 예문을 고친 세트 (60)
+
+| id | 단어 | 전 | 후 | 해석(후) |
+|---|---|---|---|---|
+| v182 | attendee | All attendees of the workshop received a handout when they came in. | All attendees paid a $50 fee to join the workshop and received a handout. | 참석자는 모두 50달러를 내고 워크숍에 참가해 유인물을 받았습니다. |
+| v369 | witness | A witness must watch you sign the contract and then sign it too. | A witness must watch you sign the contract and then sign it too, to prove that you really signed it. | 증인은 당신이 계약서에 서명하는 것을 지켜본 뒤, 당신이 직접 서명했다는 것을 증명하기 위해 자신도 서명해야 합니다. |
+| v375 | attorney | Our attorney reviewed the contract and told us which clauses could cause legal problems. | Our attorney reviewed the contract and, as our legal expert, told us which clauses could cause problems. | 우리 변호사가 계약서를 검토하고, 법률 전문가로서 어떤 조항이 문제를 일으킬 수 있는지 알려 주었습니다. |
+| v405 | representative | A customer service representative will call you shortly to answer your question about the bill. | A representative from our customer support team will call you shortly to answer your question about the bill. | 고객 지원팀 담당자가 곧 전화를 드려 청구서에 관한 질문에 답해 드릴 것입니다. |
+| v536 | exhibitor | Exhibitors may set up their booths from 7 A.M., and visitors are allowed in at nine. | Exhibitors may set up their booths from 7 A.M., two hours before the doors open to the public. | 출품업체는 일반 관람객 입장 두 시간 전인 오전 7시부터 부스를 설치할 수 있습니다. |
+| v589 | specialist | A heart specialist visits this clinic twice a month. | Dr. Kim, a heart specialist, visits this clinic twice a month to treat patients from nearby towns. | 심장 전문의인 김 박사는 한 달에 두 번 이 병원에 와서 인근 지역 환자들을 진료합니다. |
+| v708 | floor staff | Two floor staff answer questions and arrange shelves during busy times. | Two floor staff walk the aisles during busy times, answering shoppers' questions and tidying shelves so the checkout lines keep moving. | 바쁜 시간에는 매장 직원 두 명이 통로를 돌며 손님의 질문에 답하고 진열대를 정리해서 계산대 줄이 막히지 않게 합니다. |
+| v367 | binding | This agreement is legally binding. | This agreement is legally binding, so both companies must follow every term in it. | 이 합의는 법적 구속력이 있어서 두 회사 모두 모든 조항을 지켜야 합니다. |
+| v370 | disclosure | Full disclosure of fees is required. | Full disclosure of fees is required, so customers can see every charge before they sign. | 수수료를 모두 공개해야 하므로, 고객은 서명하기 전에 모든 요금을 확인할 수 있습니다. |
+| v372 | void | The contract is now null and void. | The contract is now null and void because one of the signatures was fake. | 서명 하나가 위조된 것이어서 그 계약은 이제 무효입니다. |
+| v376 | lawsuit | The company settled the lawsuit. | The company settled the lawsuit out of court, so the case never went before a judge. | 회사가 소송을 법정 밖에서 합의로 마무리해서 그 사건은 판사 앞에 가지 않았습니다. |
+| v379 | arbitration | The case went to arbitration. | The case went to arbitration, where a neutral third party decided it instead of a judge. | 그 건은 중재로 넘어가, 판사 대신 중립적인 제3자가 결정했습니다. |
+| v384 | provision | This provision applies to all employees. | This provision in Section 4 of the contract applies to all employees. | 계약서 4조의 이 조항은 전 직원에게 적용됩니다. |
+| v387 | notarize | The document must be notarized. | The document must be notarized by a lawyer, who stamps it to prove the signatures are real. | 그 문서는 변호사의 공증을 받아야 하며, 변호사는 서명이 진짜임을 증명하는 도장을 찍습니다. |
+| v392 | inquiry | We received an inquiry about the new model. | We received an inquiry from a customer asking when the new model will be available. | 신제품이 언제 나오는지 묻는 고객 문의가 접수됐습니다. |
+| v400 | guarantee | We guarantee delivery within three days. | We guarantee delivery within three days, or your shipping is free. | 3일 이내 배송을 보장하며, 그렇지 않으면 배송비를 받지 않습니다. |
+| v406 | hotline | Call our hotline for technical help. | Call our hotline at 1-800-555-0199 any time of day for technical help. | 기술 지원이 필요하면 언제든지 1-800-555-0199번 상담 전화로 연락해 주세요. |
+| v414 | goodwill | We offered a discount as a gesture of goodwill. | We offered a discount as a gesture of goodwill after the delivery arrived late. | 배송이 늦어진 데 대해 선의의 표시로 할인을 제공했습니다. |
+| v416 | clarification | I need clarification on this charge. | I need clarification on this charge because I don't understand what it is for. | 이 요금이 무엇에 대한 것인지 모르겠어서 설명이 필요합니다. |
+| v422 | hazard | Wet floors are a safety hazard. | Wet floors are a safety hazard because people can slip and fall. | 젖은 바닥은 사람이 미끄러져 넘어질 수 있어서 안전상 위험 요소입니다. |
+| v429 | drill | We hold a fire drill twice a year. | We hold a fire drill twice a year so that everyone practices leaving the building quickly. | 모두가 건물에서 빨리 대피하는 연습을 하도록 연 2회 소방 훈련을 실시합니다. |
+| v430 | hygiene | Food hygiene standards are strict. | Food hygiene standards are strict, so kitchen staff must wash their hands often and keep surfaces clean. | 식품 위생 기준이 엄격해서 주방 직원은 손을 자주 씻고 조리대를 깨끗이 유지해야 합니다. |
+| v433 | exposure | Limit exposure to direct sunlight. | Limit your skin's exposure to direct sunlight to avoid burns. | 화상을 입지 않도록 피부가 직사광선에 노출되는 것을 줄이세요. |
+| v440 | coverage | Does the plan include dental coverage? | Does your insurance plan include dental coverage, or do you pay for checkups yourself? | 보험 플랜에 치과 보장이 포함되나요, 아니면 검진비를 직접 내시나요? |
+| v442 | checkup | Employees get a free annual checkup. | Employees get a free annual checkup, where a doctor tests their blood pressure and heart. | 직원들은 의사가 혈압과 심장을 검사하는 무료 연례 건강검진을 받습니다. |
+| v444 | ergonomic | We ordered ergonomic chairs that support your back and reduce neck pain. | We ordered ergonomic chairs, designed to fit the human body, that support your back and reduce neck pain. | 인체에 맞게 설계되어 허리를 받쳐 주고 목 통증을 줄이는 인체공학적인 의자를 주문했습니다. |
+| v445 | fatigue | Long shifts can cause fatigue. | Long shifts can cause fatigue, so workers feel tired and make more mistakes. | 장시간 근무는 피로를 유발해서 근로자가 지치고 실수를 더 많이 하게 됩니다. |
+| v448 | extinguisher | A fire extinguisher is near the exit. | A fire extinguisher is near the exit; pull the pin and spray it at the base of the flames. | 소화기는 출구 근처에 있습니다. 안전핀을 뽑고 불길 아래쪽을 향해 뿌리세요. |
+| v455 | pollution | Air pollution has decreased since 2020. | Air pollution has decreased since 2020, so the sky is clearer and people breathe cleaner air. | 2020년 이후 대기 오염이 줄어서 하늘이 더 맑아지고 사람들이 더 깨끗한 공기를 마십니다. |
+| v457 | carbon footprint | We measured our carbon footprint last year. | We measured our carbon footprint last year: the total greenhouse gas our offices and trucks produced. | 작년에 저희 탄소 발자국, 즉 사무실과 트럭이 배출한 온실가스 총량을 측정했습니다. |
+| v459 | insulation | Better insulation lowers heating costs. | Better insulation in the walls and roof keeps heat inside and lowers heating costs. | 벽과 지붕의 단열을 개선하면 열이 빠져나가지 않아 난방비가 줄어듭니다. |
+| v461 | conserve | Please conserve water during the summer. | Please conserve water during the summer by taking shorter showers. | 여름철에는 샤워 시간을 줄여서 물을 아껴 써 주세요. |
+| v463 | utility | Utility costs are included in the rent. | Utility costs, such as electricity and water, are included in the rent. | 전기·수도 같은 공공요금은 임대료에 포함되어 있습니다. |
+| v464 | eco-friendly | We switched to eco-friendly packaging. | We switched to eco-friendly packaging made from recycled paper that breaks down naturally. | 자연적으로 분해되는 재활용 종이로 만든 친환경 포장재로 바꿨습니다. |
+| v465 | biodegradable | These cups are fully biodegradable. | These cups are fully biodegradable, so they break down naturally in soil within a few months. | 이 컵들은 완전히 생분해되어 몇 달 안에 흙 속에서 자연 분해됩니다. |
+| v469 | greenhouse gas | The plant cut greenhouse gas output in half. | The factory cut its greenhouse gas output in half, which helps slow global warming. | 그 공장은 온실가스 배출량을 절반으로 줄였고, 이는 지구 온난화를 늦추는 데 도움이 됩니다. |
+| v470 | wind power | Wind power supplies a third of our electricity. | Wind power supplies a third of our electricity, thanks to the turbines on the hill. | 언덕 위 터빈 덕분에 풍력이 저희 전력의 3분의 1을 공급합니다. |
+| v471 | grid | The solar farm feeds electricity into the grid. | The solar farm feeds electricity into the grid, which carries it to homes across the region. | 태양광 발전소가 전력망에 전기를 공급하고, 전력망은 그 전기를 지역 곳곳의 가정으로 보냅니다. |
+| v476 | incentive | The city offers incentives for electric cars. | The city offers incentives for electric cars, such as tax cuts and free parking. | 시가 세금 감면, 무료 주차 같은 전기차 장려책을 제공합니다. |
+| v477 | subsidy | The farm received a government subsidy. | The farm received a government subsidy of $20,000 to help pay for new equipment. | 그 농장은 새 장비 구입을 돕는 2만 달러의 정부 보조금을 받았습니다. |
+| v496 | leak | A leak in the ceiling damaged two desks. | A leak in the ceiling let water drip onto two desks and damaged them. | 천장 누수로 물이 책상 두 개에 떨어져 책상이 손상되었습니다. |
+| v498 | elevator | Take the elevator to the fifth floor. | Ride the elevator to the fifth floor, or use the stairs if it is out of service. | 엘리베이터를 타고 5층으로 올라오시고, 운행이 중단되었으면 계단을 이용하세요. |
+| v500 | parking space | Each tenant is assigned one parking space. | Each tenant is assigned one parking space in the garage, marked with their unit number. | 각 세입자에게 차고 안에 호수가 표시된 주차 공간 한 면이 배정됩니다. |
+| v505 | rooftop | The new solar panels were installed on the rooftop. | The new solar panels were installed on the rooftop, the flat top of the building, where they get full sun. | 새 태양광 패널은 건물의 평평한 꼭대기인 옥상에 설치되어 햇빛을 가득 받습니다. |
+| v510 | walk-through | We did a walk-through before signing the lease. | We did a walk-through of the apartment before signing the lease, checking every room for damage. | 임대 계약 전에 아파트 현장 점검을 하며 방마다 파손된 곳이 있는지 확인했습니다. |
+| v512 | exhibit | Each exhibit has a short description in two languages. | Each exhibit in the museum has a short label describing it in two languages. | 박물관의 각 전시품에는 두 언어로 된 짧은 설명 라벨이 붙어 있습니다. |
+| v515 | keynote speech | The keynote speech begins at nine sharp. | The keynote speech begins at nine sharp, when the company's founder will address the whole conference. | 기조 연설은 9시 정각에 시작하며, 회사 창립자가 전체 참석자 앞에서 연설합니다. |
+| v516 | panel discussion | A panel discussion on energy policy follows lunch. | A panel discussion on energy policy follows lunch, with four experts sharing their views and answering questions. | 점심 후에는 전문가 네 명이 의견을 나누고 질문에 답하는 에너지 정책 패널 토론이 이어집니다. |
+| v518 | registration desk | Please pick up your materials at the registration desk. | Please pick up your materials at the registration desk when you arrive at the conference. | 학회장에 도착하면 등록 데스크에서 자료를 받아 가세요. |
+| v519 | name badge | Wear your name badge at all times. | Wear your name badge at all times so other attendees can see who you are and which company you are from. | 다른 참석자들이 당신이 누구이고 어느 회사 소속인지 알 수 있도록 명찰을 항상 착용하세요. |
+| v520 | RSVP | Please RSVP by October 5. | Please RSVP by October 5 to let us know whether you will attend the dinner. | 만찬 참석 여부를 알 수 있도록 10월 5일까지 회신해 주세요. |
+| v527 | ceremony | The opening ceremony lasted about twenty minutes. | The opening ceremony, with speeches and a ribbon cutting, lasted about twenty minutes. | 연설과 테이프 커팅이 있었던 개막식은 20분쯤 걸렸습니다. |
+| v534 | early-bird rate | The early-bird rate ends on March 1. | The early-bird rate ends on March 1, so register before then to save $50. | 조기 신청 할인가는 3월 1일에 끝나니, 그 전에 등록해서 50달러를 아끼세요. |
+| v535 | on-site registration | On-site registration costs ten dollars more. | On-site registration costs ten dollars more than signing up online in advance. | 현장 등록은 온라인 사전 등록보다 10달러가 더 듭니다. |
+| v539 | sold out | Friday's concert is sold out. | Friday's concert is sold out, so no more tickets are available. | 금요일 공연은 매진되어 더 이상 표가 없습니다. |
+| v088 | urgent | This is an urgent matter. | This matter is urgent, so please reply by noon today. | 이 사안은 긴급하니 오늘 정오까지 답해 주세요. |
+| v152 | cover letter | With your application, send a cover letter explaining why you want this job. | Along with your résumé, please send a one-page cover letter explaining why you want this job. | 이력서와 함께 이 일을 원하는 이유를 적은 한 쪽짜리 자기소개서를 보내 주세요. |
+| v528 | award | She received an award for customer service. | She received this year's award for customer service. | 그녀는 올해 고객 서비스 부문 상을 받았습니다. |
+| v644 | degree | The job requires a degree in engineering. | The job requires a university degree in engineering. | 그 일자리는 공학 분야 대학 학위를 요구한다. |
+| v653 | refresher course | Staff take a refresher course every two years. | Staff take a short refresher course every two years. | 직원은 2년마다 짧은 재교육 과정을 받는다. |
+
+## 5. 새 오답 단어의 뜻 (117)
+
+이번에 오답으로 처음 들어간 단어다. 그중 35개는 뜻이 없어서 `day13To18Audit4Meanings` 블록에 넣었다 (뜻 누락 0). 나머지는 단어장 표제어이거나 이전 블록에 뜻이 있다.
+
+| 단어 | 뜻 |
+|---|---|
+| accounting | 회계 |
+| active | 활동적인, 적극적인 |
+| advertising | 광고 |
+| alarm | 경보(기) |
+| arrive | 도착하다 |
+| attendee | 참석자 |
+| audience | 청중, 관객 |
+| auditor | 감사관 |
+| banker | 은행원 |
+| basement | 지하층 |
+| beginner | 초보자 |
+| birth date | 생년월일 |
+| buyer | 구매자 |
+| cashier | 계산원 |
+| chat | 잡담하다 / 대화 |
+| check-out | 퇴실, 체크아웃 |
+| chef | 요리사 |
+| class | 반, 학급, 수업 |
+| cleaner | 청소부, 세제 |
+| coffee break | 커피 휴식 시간 |
+| college | 대학 |
+| compensation | 보상금 |
+| competitor | 경쟁사, 경쟁자 |
+| contact | 연락하다 / 연락 |
+| courier | 택배 기사 |
+| crowded | 붐비는 |
+| customer | 고객 |
+| dangerous | 위험한 |
+| date | 날짜, 약속 |
+| delay | 지연 / 지연시키다 |
+| designer | 디자이너, 설계자 |
+| discount | 할인 |
+| drill | 훈련, 연습 |
+| driver | 운전자 |
+| durable | 내구성 있는 |
+| early-bird rate | 조기 신청 할인가 |
+| employee | 직원 |
+| employer | 고용주 |
+| exchange rate | 환율 |
+| expense | 비용, 경비 |
+| expiration date | 유효기간 |
+| extension | 내선번호 / 연장 |
+| fitness | 신체 단련, 건강 |
+| floor plan | 평면도 |
+| foot traffic | 유동 인구 |
+| garage | 차고 |
+| goal | 목표 |
+| group discount | 단체 할인 |
+| guess | 추측하다 / 추측 |
+| guest | 손님 |
+| guidance | 안내, 지도 |
+| habit | 습관 |
+| hiring | 채용 |
+| host | 주최하다 |
+| hotel | 호텔 |
+| hours | (영업·근무) 시간 |
+| inquiry | 문의 |
+| inspection | 검사, 점검 |
+| instructor | 강사 |
+| insurance | 보험 |
+| interest rate | 금리, 이자율 |
+| intern | 인턴 |
+| interviewer | 면접관 |
+| investor | 투자자 |
+| invoice | 청구서, 송장 |
+| keynote speech | 기조 연설 |
+| lamp | 램프, 전등 |
+| launch | 출시하다 / 출시 |
+| lobby | 로비 |
+| local | 현지인 / 지역의 |
+| lock | 자물쇠 / 잠그다 |
+| manufacturer | 제조업체 |
+| metal | 금속 |
+| noisy | 시끄러운 |
+| notebook | 공책, 노트북 |
+| notify | 통지하다, 알리다 |
+| nurse | 간호사 |
+| on sale | 할인 중인 |
+| organizer | 주최자, 기획자 |
+| parking lot | 주차장 |
+| pharmacist | 약사 |
+| physician | 의사 |
+| plastic | 플라스틱(의) |
+| position | 위치, 직책 |
+| presentation | 발표 |
+| promotion | 승진 / 판촉 |
+| receptionist | 접수 담당자 |
+| recipient | 수령인 |
+| refund | 환불하다 |
+| reluctant | 꺼리는, 주저하는 |
+| remind | 상기시키다 |
+| repeat | 반복하다 |
+| revise | 수정하다 |
+| seller | 판매자 |
+| sender | 보내는 사람, 발송인 |
+| shareholder | 주주 |
+| shopper | 쇼핑객 |
+| shuttle | 셔틀버스 |
+| student body | (한 학교의) 학생 전체 |
+| subscriber | 구독자 |
+| subway | 지하철 |
+| supplier | 공급업체 |
+| survey | 설문조사 / 조사하다 |
+| tenant | 세입자, 임차인 |
+| toxic | 유독한 |
+| trainee | 교육생 |
+| unclear | 불분명한 |
+| uncomfortable | 불편한 |
+| uniform | 제복, 유니폼 / 균일한 |
+| valid | 유효한 |
+| visitor | 방문객 |
+| warm-up | 준비 운동 |
+| wasteful | 낭비하는 |
+| weak | 약한 |
+| wind power | 풍력 |
+| window | 창문 |
+| workshop | 워크숍, 연수 |
+
+## 6. 남은 위반 60세트 (Day 19\~24)
+
+`node tools/list-unknown-distractors.js`의 ✗ 목록 그대로다. 다음 작업에서 같은 기준으로 교체한다.
+- v545 packing slip → pay slip, parking slot
+- v548 loading dock → dock worker
+- v549 customs clearance → clarity
+- v552 distribution center → contribution
+- v562 fragile → fragrant, frank
+- v563 bulk order → bulletin, bulldozer
+- v568 proof of delivery → proof of age, proof of concept
+- v576 admit → omit, adopt
+- v579 prescription → inscription, prediction
+- v580 pharmacy → pharmaceutical
+- v582 symptom → symphony, sympathy
+- v583 diagnosis → diagnose, diagonal
+- v590 vaccination → vacuum
+- v592 physical therapy → physical appearance, physical evidence, therapy dog
+- v593 medical certificate → gift certificate, certificate of deposit
+- v594 co-payment → copyright, co-worker, co-pilot
+- v599 chronic → chronicle, chronological
+- v601 accompany → accomplish, accumulate, acclaim
+- v602 adapt → adopt, adept, adore
+- v606 commence → commend, commute
+- v609 comprise → compromise, compress
+- v610 convene → convince, convert
+- v611 cope with → coincide with, concur with
+- v616 exempt → excerpt, attempt
+- v625 modify → modest, moderate
+- v637 transcript → transit, translate
+- v643 diploma → diplomat, dilemma
+- v646 graduate → gradual, gratitude, aggravate
+- v650 textbook → context, texture
+- v653 refresher course → air freshener
+- v655 proficiency → proficient, deficiency
+- v658 e-learning → e-commerce, e-waste, learning curve
+- v663 subsequent → sequence
+- v664 preliminary → disciplinary, legendary
+- v665 substantial → substandard, substitute
+- v666 adjacent → adjective, adolescent
+- v668 beneficial → beneficiary, artificial, beneath
+- v669 diverse → adverse, division
+- v675 redundant → resident, relevant
+- v677 versatile → volatile, vertical
+- v678 imminent → prominent, permanent, immigrant
+- v681 nevertheless → furthermore, whereas
+- v682 otherwise → likewise, moreover, clockwise
+- v684 eventually → previously
+- v688 primarily → exclusively
+- v693 checkout counter → checkout time, countertop, checkbook
+- v695 shelf → self, shelve
+- v697 clearance sale → security clearance
+- v699 price tag → price range, name tag
+- v700 barcode → dress code, barricade, bar chart
+- v703 store credit → credit limit, storeroom
+- v706 shoplifting → weightlifting, uplifting
+- v707 security tag → security deposit, security guard, social security
+- v709 storefront → storyline, seafront
+- v710 flagship store → flagpole, flash drive
+- v713 sample → ample, staple
+- v714 foot traffic → footnote
+- v715 peak hours → peak season, peak performance
+- v717 markup → makeup, mock-up
+- v719 price match → price hike, match point
