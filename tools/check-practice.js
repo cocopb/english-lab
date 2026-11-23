@@ -91,7 +91,7 @@ const window = {
 const localStorage = {
   getItem: k => store.has(k) ? store.get(k) : null, setItem: (k, v) => store.set(k, String(v)), removeItem: k => store.delete(k)
 };
-const PAGE_FILES = ['assets/js/common.js', 'assets/js/speech.js', 'assets/js/listening-voices.js',
+const PAGE_FILES = ['assets/js/common.js', 'assets/js/speech.js', 'assets/js/listening-voices.js', 'assets/js/listening-graphic.js',
   'data/grammar.js', 'data/reading.js', 'data/listening.js', 'data/part1.js', 'assets/js/practice.js'];
 const ctx = vm.createContext({ window, document, localStorage, console, Date: FakeDate });
 for (const f of PAGE_FILES) {
@@ -899,7 +899,8 @@ async function runLcTests() {
   console.log('\n[LC 풀세트 — 20회 생성]');
   const genProblems = [];
   let leaks = 0, omrLabels = null, p1TextLeaks = 0, p2TextLeaks = 0, p3PromptLeaks = 0;
-  const photoProblems = [];
+  const photoProblems = [], graphicProblems = [];
+  let graphicShown = 0;
   const talkUse = new Map(), photoUse = new Map(), peopleCounts = new Map();
   for (let run = 0; run < 20; run++) {
     if (!startLc(g)) { genProblems.push(run + '회: 시작 버튼 없음'); break; }
@@ -933,6 +934,16 @@ async function runLcTests() {
         if (options.join(',') !== '(A),(B),(C)' || text.includes(info.q.question) || info.q.choices.some(c => text.includes(c))) p2TextLeaks++;
       } else if (text.includes(info.q.q)) p3PromptLeaks++; // 듣기 전에는 문제가 보이지 않아야 한다
       if (info.part !== 'p1' && lcArea(g).querySelector('.practice-lc-photo')) photoProblems.push(run + '회 ' + info.number + '번(' + info.part + ')에 사진');
+      // 시각 정보 도표: 도표가 있는 대화·담화의 문항이면 듣기 전부터 도표가 보이고 칸이 모두 있어야 한다. 다른 문항에는 없다.
+      const graphicBox = lcArea(g).querySelector('.listening-graphic');
+      const graphicData = info.talk && info.talk.graphic;
+      if (!!graphicBox !== !!graphicData) graphicProblems.push(run + '회 ' + info.number + '번 도표 ' + (graphicData ? '없음' : '엉뚱하게 있음'));
+      else if (graphicData) {
+        graphicShown++;
+        const boxText = graphicBox.textContent;
+        if (!boxText.includes(graphicData.title) || graphicData.rows.some(row => row.some(cell => !boxText.includes(cell))) ||
+          !graphicBox.querySelector('.listening-graphic-scroll')) graphicProblems.push(run + '회 ' + info.number + '번 도표 칸·제목·스크롤 영역 누락');
+      }
       if (i < LC_TOTAL - 1) lcNext(g).click();
     }
     if (counts['Part 1'] !== 6 || counts['Part 2'] !== 25 || counts['Part 3'] !== 39 || counts['Part 4'] !== 30) genProblems.push(run + '회 구성 ' + JSON.stringify(counts));
@@ -959,6 +970,8 @@ async function runLcTests() {
   check('Part 1 선택지 문장이 화면에 없음 ((A)(B)(C)(D)만)', p1TextLeaks === 0, p1TextLeaks + '건');
   check('Part 2 질문·응답 글자가 화면에 없음 ((A)(B)(C)만)', p2TextLeaks === 0, p2TextLeaks + '건');
   check('Part 3·4는 듣기 전에 문제가 안 보임', p3PromptLeaks === 0, p3PromptLeaks + '건');
+  check('시각 정보 도표: 도표가 있는 대화·담화 문항에는 듣기 전부터 도표(제목·모든 칸·스크롤 영역)가 보이고, 다른 문항에는 없음', graphicProblems.length === 0 && graphicShown > 0,
+    graphicProblems.slice(0, 4).join(' ; ') || '도표 표시 ' + graphicShown + '문항');
   check('20회 동안 대화·담화가 섞여 나옴 (14개 중 13개, 12개 중 10개)', [...talkUse.keys()].filter(k => k.startsWith('p3:')).length === 14 && [...talkUse.keys()].filter(k => k.startsWith('p4:')).length === 12,
     '대화 ' + [...talkUse.keys()].filter(k => k.startsWith('p3:')).length + '종 · 담화 ' + [...talkUse.keys()].filter(k => k.startsWith('p4:')).length + '종');
   // 20회 × 6장 = 120장을 뽑는다. 사람 23장·사물 11장이면 기대값은 약 33종이라 28종 미만이면 뽑기가 치우친 것으로 본다.

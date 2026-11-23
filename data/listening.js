@@ -119,7 +119,7 @@ window.PART3 = [
     ],
     questions: [
       { q: "Why is the woman at the store?", choices: ["To return an item", "To apply for a job", "To pick up an order", "To make a complaint"], answer: 0, explanation: "근거: 1번째 대사(여자) I'd like to return this jacket. 오답: 일자리 지원(B)·주문품 수령(C)은 나오지 않고, 너무 작다고 했을 뿐 항의(D)하지 않았다." },
-      { q: "What does the man ask for?", choices: ["A credit card", "A receipt", "An email address", "A phone number"], answer: 1, explanation: "근거: 2번째 대사(남자) Do you have the receipt with you? 오답: 신용카드(A)·이메일 주소(C)·전화번호(D)는 묻지 않았다." },
+      { q: "Who most likely is the man?", choices: ["A delivery driver", "A fashion designer", "A security guard", "A store clerk"], answer: 3, explanation: "추론 문제다. 근거: 2번째 대사(남자) Do you have the receipt with you?, 4번째 대사 Would you like a refund or an exchange?, 6번째 대사 Let me check our inventory. 영수증을 받고 환불·교환을 처리하며 재고를 확인하므로 매장 직원이다. 오답: 배달 기사(A)는 영수증·재고를 다루지 않고, 재킷(jacket)에서 떠올린 디자이너(B)와 매장에서 떠올린 경비원(C)은 근거가 없다." },
       { q: "What does the woman want?", choices: ["A refund", "A discount", "An exchange", "A delivery"], answer: 2, explanation: "근거: 5번째 대사(여자) I'd prefer an exchange, if you have a larger size. 오답: 남자가 환불(A)과 교환 중 고르라고 했고 여자는 교환을 골랐다. 할인(B)·배송(D)은 나오지 않는다." }
     ]
   },
@@ -177,17 +177,27 @@ window.PART3 = [
   {
     id: "p305",
     title: "출장 일정 조율",
+    graphic: {
+      title: "Sunday Flights to Boston",
+      columns: ["Flight", "Departs", "Arrives"],
+      rows: [
+        ["NW 210", "7:15 A.M.", "9:40 A.M."],
+        ["NW 342", "1:30 P.M.", "3:55 P.M."],
+        ["NW 518", "6:45 P.M.", "9:10 P.M."],
+        ["NW 604", "10:20 P.M.", "12:45 A.M."]
+      ]
+    },
     script: [
       { speaker: "W", text: "Have you booked your flight for the Boston trip?" },
       { speaker: "M", text: "Not yet. Should I leave Sunday or Monday morning?" },
       { speaker: "W", text: "The first meeting is at nine on Monday, so Sunday would be safer." },
-      { speaker: "M", text: "Then I'll book a Sunday evening flight. What about the hotel?" },
+      { speaker: "M", text: "Then I'll book the Sunday flight that leaves in the early evening, so I don't land after midnight. What about the hotel?" },
       { speaker: "W", text: "The company has an account with the Harbor Inn. Just mention the company name." },
       { speaker: "M", text: "Got it. I'll forward the hotel confirmation to you." }
     ],
     questions: [
       { q: "What are the speakers mainly discussing?", choices: ["A client meeting", "Travel arrangements", "A budget report", "An office relocation"], answer: 1, explanation: "근거: 1번째 대사(여자) Have you booked your flight와 4번째 대사(남자) What about the hotel? 항공편과 호텔을 정한다. 오답: 고객 회의(A)는 출장 이유로만 나오고, 예산 보고서(C)·사무실 이전(D)은 없다." },
-      { q: "Why does the woman suggest leaving on Sunday?", choices: ["Flights are cheaper", "The hotel is fully booked", "The first meeting is early Monday", "The weather is better"], answer: 2, explanation: "근거: 3번째 대사(여자) The first meeting is at nine on Monday, so Sunday would be safer. 오답: 항공료(A)·호텔 만실(B)·날씨(D)는 말하지 않았다." },
+      { q: "Look at the graphic. Which flight will the man most likely book?", choices: ["NW 210", "NW 342", "NW 518", "NW 604"], answer: 2, graphic: true, link: "leaves in the early evening", explanation: "시각 정보 연계 문제다. 근거: 4번째 대사(남자) I'll book the Sunday flight that leaves in the early evening, so I don't land after midnight. 도표에서 이른 저녁(6:45 P.M.)에 출발하는 편은 NW 518이다. 대화에는 편명이 나오지 않는다. 오답: NW 210(A)은 아침, NW 342(B)는 낮에 출발하고, NW 604(D)는 저녁에 떠나지만 자정이 지난 12:45 A.M.에 도착한다." },
       { q: "What will the man send the woman?", choices: ["A hotel confirmation", "A meeting agenda", "An expense report", "A flight schedule"], answer: 0, explanation: "근거: 6번째 대사(남자) I'll forward the hotel confirmation to you. 오답: 회의 안건(B)·경비 보고서(C)는 나오지 않고, 항공편은 예약하겠다고만 했을 뿐 일정을 보낸다(D)는 말은 없다." }
     ]
   },
@@ -197,14 +207,14 @@ window.PART3 = [
     script: [
       { speaker: "W", text: "Daniel, the lease on our copier runs out at the end of this month. Do you want to renew it or look at other options?" },
       { speaker: "M", text: "Honestly, I've been frustrated with it. It breaks down almost every week, and the repair visits take days." },
-      { speaker: "W", text: "I noticed that too. I found a company that includes same-day service in the monthly fee." },
+      { speaker: "W", text: "Tell me about it. I found a company that includes same-day service in the monthly fee." },
       { speaker: "M", text: "That sounds much better. How does the price compare?" },
       { speaker: "W", text: "It's about thirty dollars more per month, but we'd save on repair charges." },
       { speaker: "M", text: "Let's go with it. Could you send me the contract so I can look it over before Friday?" }
     ],
     questions: [
       { q: "What are the speakers mainly discussing?", choices: ["How to repair a broken machine", "Where to store office supplies", "Whether to change office equipment providers", "When to move to a new office"], answer: 2, explanation: "근거: 1번째 대사(여자) Do you want to renew it or look at other options?와 6번째 대사(남자) Let's go with it. 복사기 임대 업체를 바꿀지 정한다. 오답: 고치는 방법(A)이 아니라 업체를 정하는 이야기이고, 비품 보관(B)·사무실 이전(D)은 없다." },
-      { q: "What problem does the man mention?", choices: ["The monthly fee has increased", "The machine breaks down frequently", "The contract was never signed", "The repair company closed"], answer: 1, explanation: "근거: 2번째 대사(남자) It breaks down almost every week. almost every week를 frequently로 바꿔 표현했다. 오답: 월 요금은 새 업체가 30달러 더 비싸다는 것이지 오른 것(A)이 아니고, 계약 미서명(C)·수리 업체 폐업(D)은 없다." },
+      { q: "What does the woman mean when she says, \"Tell me about it\"?", choices: ["She wants to hear more details", "She has had the same experience", "She is asking for a written report", "She disagrees with the man"], answer: 1, quote: "Tell me about it", explanation: "의도 파악 문제다. 근거: 2번째 대사(남자)가 복사기가 거의 매주 고장 나고 수리가 며칠씩 걸린다고 불평하자, 3번째 대사(여자)가 Tell me about it이라고 받고 곧바로 다른 업체를 찾아 두었다고 한다. Tell me about it은 '자세히 말해 달라'가 아니라 '내 말이 그 말이다'라는 맞장구다. 오답: 글자 그대로의 뜻(A)이 함정이고, 보고서 요청(C)은 없으며, 바로 대안을 내놓으므로 반대(D)가 아니다." },
       { q: "What does the man ask the woman to do?", choices: ["Call a technician", "Compare three suppliers", "Postpone a meeting", "Send him a contract"], answer: 3, explanation: "근거: 6번째 대사(남자) Could you send me the contract so I can look it over before Friday? 오답: 기사 호출(A)·세 업체 비교(B)·회의 연기(C)는 부탁하지 않았다." }
     ]
   },
@@ -221,7 +231,7 @@ window.PART3 = [
     ],
     questions: [
       { q: "Why is the man at the store?", choices: ["To return a damaged item", "To exchange an item for a different size", "To ask about a sale", "To pick up an online order"], answer: 1, explanation: "근거: 1번째 대사(남자) they're a half size too small과 4번째 대사(여자) That's fine for an exchange. 오답: 손상된 물건(A)이 아니고(not damaged), 세일 문의(C)·온라인 주문 수령(D)도 아니다." },
-      { q: "What does the man mention about the boots?", choices: ["He bought them online", "They are the wrong color", "He has already worn them outdoors", "They were on sale"], answer: 2, explanation: "근거: 3번째 대사(남자) I've already worn them outside once, on a short trail. outside를 outdoors로 바꿔 표현했다. 오답: 이 매장에서 샀으므로 온라인(A)이 아니고, 색(B)·세일(D)은 언급이 없다." },
+      { q: "Where most likely does the woman work?", choices: ["At a shoe repair shop", "At a shipping company", "At a sports stadium", "At an outdoor equipment store"], answer: 3, explanation: "추론 문제다. 근거: 1번째 대사(남자) I bought these hiking boots here, 4번째 대사(여자) Let me check whether we have your size in stock, 6번째 대사 shipping to the store is free. 등산화를 팔고 재고를 확인하는 매장이다. 오답: 수선집(A)은 사이즈 교환을 하지 않고, shipping에서 떠올린 배송 회사(B)와 등산에서 떠올린 경기장(C)은 근거가 없다." },
       { q: "What does the woman say about ordering a pair?", choices: ["There is no shipping charge", "It requires a deposit", "It takes about two weeks", "It must be done online"], answer: 0, explanation: "근거: 6번째 대사(여자) shipping to the store is free. 오답: 보증금(B)·온라인 주문만 가능(D)은 없고, 걸리는 기간은 영업일 4일이라 2주(C)가 아니다." }
     ]
   },
@@ -229,19 +239,29 @@ window.PART3 = [
     id: "p308",
     title: "회의 일정 조정",
     speakers: { W1: "Claudia", M1: "Ravi", W2: "Hana" },
+    graphic: {
+      title: "Meeting Rooms Available on Friday",
+      columns: ["Time", "Room"],
+      rows: [
+        ["9:00 A.M.", "Room 101"],
+        ["11:00 A.M.", "Room 204"],
+        ["2:00 P.M.", "Room 310"],
+        ["4:00 P.M.", "Room 101"]
+      ]
+    },
     script: [
       { speaker: "W1", text: "We need to move Thursday's budget meeting. The finance director is flying back from Singapore that day." },
       { speaker: "M1", text: "Could we do it Friday morning instead? Hana, are you free then?" },
       { speaker: "W2", text: "Friday morning I'm leading the new-hire orientation until eleven." },
       { speaker: "W1", text: "What about Friday at two, then?" },
-      { speaker: "M1", text: "That works for me. Hana, does the conference room have a projector now? Last time we had to borrow one." },
+      { speaker: "M1", text: "That works for me. Hana, does that room have a projector? Last time we had to borrow one." },
       { speaker: "W2", text: "It does. They installed one last week." },
       { speaker: "W1", text: "Good. I'll send out a new invitation this afternoon." }
     ],
     questions: [
       { q: "Why does the meeting need to be rescheduled?", choices: ["The budget has not been approved", "The conference room is unavailable", "A client canceled", "A colleague will be traveling"], answer: 3, explanation: "근거: 1번째 대사(Claudia) The finance director is flying back from Singapore that day. 오답: 예산 미승인(A)·회의실 문제(B)·고객 취소(C)는 나오지 않는다. 회의실은 6번째 대사에서 프로젝터가 생겼다고만 한다." },
       { q: "What will Hana do on Friday morning?", choices: ["Lead an orientation session", "Attend a budget meeting", "Travel to Singapore", "Install equipment"], answer: 0, explanation: "근거: 2번째 대사(Ravi) Hana, are you free then?에 3번째 대사(Hana)가 Friday morning I'm leading the new-hire orientation until eleven이라고 답한다. 오답: 예산 회의(B)는 금요일 오후 2시로 옮겨지고, 싱가포르(C)는 재무 이사 이야기이며, 장비 설치(D)는 지난주에 끝났다." },
-      { q: "What does Hana say about the conference room?", choices: ["It is too small for the group", "It now has a projector", "It must be reserved in advance", "It will be painted next week"], answer: 1, explanation: "근거: 5번째 대사(Ravi) Hana, does the conference room have a projector now?에 6번째 대사(Hana)가 It does. They installed one last week라고 답한다. 오답: 크기(A)·사전 예약(C)·도색(D)은 나오지 않는다. last week는 설치한 때다." }
+      { q: "Look at the graphic. Where will the budget meeting most likely be held?", choices: ["Room 101", "Room 204", "Room 310", "Room 402"], answer: 2, graphic: true, link: "Friday at two", explanation: "시각 정보 연계 문제다. 근거: 4번째 대사(Claudia) What about Friday at two, then?에 5번째 대사(Ravi)가 That works for me라고 답한다. 도표에서 금요일 2:00 P.M.에 쓸 수 있는 방은 Room 310이다. 대화에는 방 번호가 나오지 않는다. 오답: Room 101(A)은 오전 9시와 오후 4시, Room 204(B)는 오전 11시에 비어 있고, Room 402(D)는 도표에 없다." }
     ]
   },
   {
@@ -259,7 +279,7 @@ window.PART3 = [
     ],
     questions: [
       { q: "What are the speakers mainly discussing?", choices: ["A change to the conference program", "A flight cancellation", "A hotel's renovation", "Travel arrangements for a conference"], answer: 3, explanation: "근거: 1번째 대사(Lena) Our flights to Lisbon are booked, but the hotel next to the conference center is full. 이후 어느 호텔에 묵을지 정한다. 오답: 행사 일정 변경(A)은 없고, 항공편은 이미 예약됐으며(B), 호텔 공사(C)는 나오지 않는다. 취소분을 기다리자는 것은 호텔 방 이야기다." },
-      { q: "What does Priya say about the second hotel?", choices: ["It is too expensive", "It is fully booked", "She has stayed there before", "It is closer than the first"], answer: 2, explanation: "근거: 2번째 대사(Tomas)가 Priya, how far is the next closest one?이라고 묻고, 3번째 대사(Priya)가 I stayed there last year라고 답한다. 오답: 비싸다(A)는 말은 없고, 만실(B)인 곳은 컨퍼런스 센터 옆 호텔이며, 트램으로 20분 거리라 더 가깝다(D)는 것도 아니다." },
+      { q: "What does Lena mean when she says, \"That adds up\"?", choices: ["She has calculated the hotel bill", "The travel time would become significant", "She thinks the tram is faster than a taxi", "She has stayed at the hotel before"], answer: 1, quote: "That adds up", explanation: "의도 파악 문제다. 근거: 3번째 대사(Priya)가 두 번째 호텔이 트램으로 20분이라고 하자, 4번째 대사(Lena)가 Twenty minutes each way, three days in a row. That adds up이라고 한다. 하루 왕복 40분이 사흘이면 시간이 꽤 쌓인다는 걱정이다. 오답: 숙박비 계산(A)이 아니라 이동 시간 이야기이고, 택시(C)는 나오지 않으며, 작년에 묵은 사람(D)은 Priya다." },
       { q: "What will Lena do this afternoon?", choices: ["Book the rooms", "Call the conference center", "Change the flights", "Ask for a discount"], answer: 0, explanation: "근거: 6번째 대사(Priya) Lena, could you book the rooms ...?에 7번째 대사(Lena)가 I will book all three rooms there this afternoon이라고 답한다. 오답: 컨퍼런스 센터 연락(B)·항공편 변경(C)·할인 요청(D)은 말하지 않았다." }
     ]
   },
@@ -336,6 +356,16 @@ window.PART3 = [
   {
     id: "p314",
     title: "공항 셔틀",
+    graphic: {
+      title: "Airport Shuttle — Morning Departures",
+      columns: ["Leaves Hotel", "South Terminal", "North Terminal"],
+      rows: [
+        ["5:00 A.M.", "5:25 A.M.", "5:40 A.M."],
+        ["5:30 A.M.", "5:55 A.M.", "6:10 A.M."],
+        ["6:00 A.M.", "6:25 A.M.", "6:40 A.M."],
+        ["6:30 A.M.", "6:55 A.M.", "7:10 A.M."]
+      ]
+    },
     script: [
       { speaker: "W", text: "My flight leaves from the north terminal. Does the hotel shuttle go there, or only to the south?" },
       { speaker: "M", text: "Both, but it stops at the south terminal first, so allow an extra fifteen minutes." },
@@ -346,7 +376,7 @@ window.PART3 = [
     ],
     questions: [
       { q: "What does the woman want to know?", choices: ["How much the shuttle costs", "Where to check in", "When her flight lands", "Which shuttle to take"], answer: 3, explanation: "근거: 3번째 대사(여자) Which shuttle should I take? 오답: 요금(A)·체크인 장소(B)는 묻지 않았고, 7시 40분은 탑승 시각이지 도착 시각(C)이 아니다." },
-      { q: "What does the man say about the six o'clock shuttle?", choices: ["It may not leave enough time", "It is already full", "It goes only to the north terminal", "It does not run on weekends"], answer: 0, explanation: "근거: 4번째 대사(남자) The six o'clock cuts it close if traffic is bad. cut it close는 '시간이 빠듯하다'다. 오답: 만석(B)·주말 미운행(D)은 말하지 않았고, 셔틀은 두 터미널 모두 가므로 북쪽 터미널만(C)도 아니다." },
+      { q: "Look at the graphic. What time will the woman most likely arrive at her terminal?", choices: ["5:55 A.M.", "6:10 A.M.", "6:40 A.M.", "7:10 A.M."], answer: 1, graphic: true, link: "five thirty", explanation: "시각 정보 연계 문제다. 근거 1: 1번째 대사(여자) My flight leaves from the north terminal. 근거 2: 4번째 대사(남자) The five thirty would be safest. 도표에서 5:30 A.M.에 호텔을 떠나는 셔틀은 North Terminal에 6:10 A.M.에 도착한다. 대화에는 도착 시각이 나오지 않는다. 오답: 5:55 A.M.(A)은 같은 셔틀의 남쪽 터미널 도착이고, 6:40 A.M.(C)은 빠듯하다고 한 6시 셔틀, 7:10 A.M.(D)은 6시 30분 셔틀이다." },
       { q: "What should the woman do tonight?", choices: ["Print her boarding pass", "Pay the driver", "Call the airline", "Tell the front desk"], answer: 3, explanation: "근거: 6번째 대사(남자) Just tell the front desk tonight. 오답: 탑승권 인쇄(A)·기사에게 요금 지불(B)·항공사 전화(C)는 나오지 않는다. 신청서는 따로 없다." }
     ]
   }
@@ -398,18 +428,29 @@ window.PART4 = [
     type: "광고",
     title: "헬스장 개업 광고",
     voice: "M",
+    graphic: {
+      title: "Eastgate Fitness — Membership Plans",
+      columns: ["Plan", "Includes", "Monthly Fee"],
+      rows: [
+        ["Basic", "Gym floor", "$30"],
+        ["Flex", "Gym floor and group classes", "$45"],
+        ["Premium", "Gym floor, group classes, and pool", "$60"],
+        ["Student", "Gym floor (with student ID)", "$20"]
+      ]
+    },
     script: [
       "Looking for a gym that fits your schedule?",
       "Eastgate Fitness opens on Bell Street this Saturday, and we are open twenty-four hours a day.",
       "Our opening offer gives you three months for the price of two, but only if you sign up during the first week.",
       "Every membership includes two sessions with a personal trainer and free parking in the garage next door.",
+      "This month, the plan with group classes but no pool access is also fifteen percent off.",
       "Come by on Saturday between ten and four to tour the building and meet our staff.",
       "Eastgate Fitness, on Bell Street, across from the public library."
     ],
     questions: [
       { q: "What is being advertised?", choices: ["A parking garage", "A public library", "A fitness center", "A sports equipment store"], answer: 2, explanation: "근거: 1번째 문장 Looking for a gym ...?과 2번째 문장 Eastgate Fitness opens. 오답: 주차장(A)은 옆 건물로, 도서관(B)은 건너편 위치로만 나오고, 운동용품 매장(D)은 없다." },
-      { q: "What must customers do to receive the special offer?", choices: ["Bring a friend", "Sign up within the first week", "Pay for a full year", "Attend a free class"], answer: 1, explanation: "근거: 3번째 문장 only if you sign up during the first week. 오답: 친구 동반(A)·1년 결제(C)·무료 수업(D)은 조건이 아니다." },
-      { q: "What is included with every membership?", choices: ["Free meals", "A locker", "A discount at the library", "Sessions with a trainer"], answer: 3, explanation: "근거: 4번째 문장 Every membership includes two sessions with a personal trainer and free parking. 오답: 식사(A)·사물함(B)·도서관 할인(C)은 없다. 무료 주차도 포함되지만 보기에 없다." }
+      { q: "What must customers do to receive the opening offer?", choices: ["Bring a friend", "Sign up within the first week", "Pay for a full year", "Attend a free class"], answer: 1, explanation: "근거: 3번째 문장 only if you sign up during the first week. 오답: 친구 동반(A)·1년 결제(C)·무료 수업(D)은 조건이 아니다." },
+      { q: "Look at the graphic. Which plan is discounted this month?", choices: ["Basic", "Premium", "Student", "Flex"], answer: 3, graphic: true, link: "group classes but no pool", explanation: "시각 정보 연계 문제다. 근거: 5번째 문장 This month, the plan with group classes but no pool access is also fifteen percent off. 도표에서 그룹 수업은 있고 수영장은 없는 요금제는 Flex다. 광고에는 요금제 이름이 나오지 않는다. 오답: Basic(A)과 Student(C)는 그룹 수업이 없고, Premium(B)은 수영장까지 포함한다." }
     ]
   },
   {
@@ -420,15 +461,15 @@ window.PART4 = [
     script: [
       "Good morning, everyone, and welcome to the Rowan Paper Mill.",
       "I'm Teresa, and I will be leading today's tour.",
-      "Before we go in, please put on the safety glasses and earplugs from the bin by the door, since the machine floor is loud.",
+      "Before we go in, please put on the safety glasses and earplugs from the bin by the door. Trust me, once we're on the machine floor, you'll need them.",
       "The tour lasts about an hour, and we will end in the gift shop.",
       "Photography is allowed everywhere except the drying room, where the equipment is still under patent.",
       "If we get separated, the exits are marked in green.",
       "Let's start upstairs with the raw materials."
     ],
     questions: [
-      { q: "Where does the talk most likely take place?", choices: ["At a factory", "At a museum", "At a construction site", "At a printing shop"], answer: 0, explanation: "근거: 1번째 문장 welcome to the Rowan Paper Mill, 3번째 문장 the machine floor is loud, 7번째 문장 raw materials. 종이를 만드는 공장이다. 오답: 박물관(B)·건설 현장(C)이 아니고, 종이를 만드는 곳이지 인쇄소(D)가 아니다." },
-      { q: "What are the listeners asked to do before entering?", choices: ["Leave their bags", "Sign a form", "Put on protective gear", "Buy a ticket"], answer: 2, explanation: "근거: 3번째 문장 put on the safety glasses and earplugs. 보안경과 귀마개를 protective gear로 바꿔 표현했다. 오답: 가방 맡기기(A)·서류 서명(B)·표 구입(D)은 요청하지 않았다." },
+      { q: "Where does the talk most likely take place?", choices: ["At a factory", "At a museum", "At a construction site", "At a printing shop"], answer: 0, explanation: "근거: 1번째 문장 welcome to the Rowan Paper Mill, 3번째 문장 the machine floor, 7번째 문장 raw materials. 종이를 만드는 공장이다. 오답: 박물관(B)·건설 현장(C)이 아니고, 종이를 만드는 곳이지 인쇄소(D)가 아니다." },
+      { q: "What does the speaker imply when she says, \"you'll need them\"?", choices: ["The listeners must buy their own gear", "The gear will be collected after the tour", "The machine floor will be very noisy", "Some visitors forgot their glasses"], answer: 2, quote: "you'll need them", explanation: "의도 파악 문제다. 근거: 3번째 문장 please put on the safety glasses and earplugs ... Trust me, once we're on the machine floor, you'll need them. 귀마개까지 꼭 필요하다는 말이라 기계실이 매우 시끄럽다는 뜻이다. 오답: 장비는 문 옆 통에서 꺼내 쓰므로 직접 산다(A)가 아니고, 회수(B)·안경을 두고 온 방문객(D)은 나오지 않는다." },
       { q: "What is not allowed in the drying room?", choices: ["Eating", "Taking photographs", "Speaking", "Touching the machines"], answer: 1, explanation: "근거: 5번째 문장 Photography is allowed everywhere except the drying room. 오답: 음식(A)·대화(C)·기계 만지기(D)는 금지 사항으로 나오지 않는다." }
     ]
   },
@@ -461,6 +502,7 @@ window.PART4 = [
     script: [
       "And now your afternoon traffic update.",
       "Construction on the Weston Bridge has closed two of the four lanes, and drivers heading downtown are backed up for nearly three kilometers.",
+      "So if you were planning to cross the bridge this afternoon, think again.",
       "Crews expect to reopen both lanes by eight tonight.",
       "If you can, take the Route 9 tunnel instead; it is moving normally.",
       "The city bus company has also added extra buses on the number 14 line this week while the bridge work continues.",
@@ -468,8 +510,8 @@ window.PART4 = [
     ],
     questions: [
       { q: "What is causing the delay?", choices: ["A traffic accident", "Bad weather", "A public event", "Road construction"], answer: 3, explanation: "근거: 2번째 문장 Construction on the Weston Bridge has closed two of the four lanes. 오답: 사고(A)·날씨(B)·행사(C)는 나오지 않는다." },
-      { q: "What does the speaker recommend?", choices: ["Leaving work early", "Avoiding the bus", "Taking a different route", "Waiting until eight"], answer: 2, explanation: "근거: 4번째 문장 take the Route 9 tunnel instead. 오답: 조기 퇴근(A)은 없고, 버스는 오히려 늘렸으며(B), 8시는 차로가 다시 열리는 예상 시각일 뿐 기다리라고(D) 하지 않았다." },
-      { q: "What will happen at four thirty?", choices: ["The bridge will reopen", "Another traffic report will air", "Extra buses will start running", "Construction will begin"], answer: 1, explanation: "근거: 6번째 문장 We will have another update at four thirty. 오답: 다리는 8시에 열릴 예정이고(A), 추가 버스는 이번 주에 이미 운행 중이며(C), 공사는 이미 진행 중이다(D)." }
+      { q: "What does the speaker mean when he says, \"think again\"?", choices: ["Listeners should change their travel plans", "Listeners should call the station back", "The speaker gave the wrong information earlier", "The bridge will reopen soon"], answer: 0, quote: "think again", explanation: "의도 파악 문제다. 근거: 2번째 문장에서 다리 차로 절반이 막혀 3킬로미터 가까이 밀렸다고 한 뒤, 3번째 문장 So if you were planning to cross the bridge this afternoon, think again이라고 한다. 이어서 5번째 문장에서 터널로 가라고 권한다. 다리로 가려던 계획을 바꾸라는 뜻이다. 오답: 방송국 전화(B)·정정(C)은 없고, 차로는 밤 8시에야 다시 열리므로 곧 열린다(D)는 말과 반대다." },
+      { q: "What will happen at four thirty?", choices: ["The bridge will reopen", "Another traffic report will air", "Extra buses will start running", "Construction will begin"], answer: 1, explanation: "근거: 7번째 문장 We will have another update at four thirty. 오답: 다리는 8시에 열릴 예정이고(A), 추가 버스는 이번 주에 이미 운행 중이며(C), 공사는 이미 진행 중이다(D)." }
     ]
   },
   {
@@ -479,7 +521,7 @@ window.PART4 = [
     voice: "M",
     script: [
       "Before we end, I want to go over the results from last quarter.",
-      "Online sales rose eleven percent, which is better than we projected.",
+      "Online sales rose eleven percent, which is better than we projected. I'll take that.",
       "Store sales, though, were flat, and three of our smaller locations lost money for the second quarter in a row.",
       "The management team will decide by the end of the month whether to close them.",
       "I know that is difficult news, so I will send a written summary this afternoon, and then everyone will have the same numbers.",
@@ -487,7 +529,7 @@ window.PART4 = [
     ],
     questions: [
       { q: "What is the speaker mainly discussing?", choices: ["A new product line", "A hiring plan", "A store renovation", "Quarterly sales results"], answer: 3, explanation: "근거: 1번째 문장 I want to go over the results from last quarter와 2번째·3번째 문장의 온라인·매장 매출. 오답: 신제품(A)·채용(B)·매장 보수(C)는 나오지 않는다." },
-      { q: "What does the speaker say about three of the locations?", choices: ["They have lost money twice in a row", "They have opened recently", "They will move to larger spaces", "They had the highest online sales"], answer: 0, explanation: "근거: 3번째 문장 three of our smaller locations lost money for the second quarter in a row. 오답: 최근 개점(B)·이전(C)은 없고, 오른 것은 온라인 매출이라 그 매장들의 온라인 매출(D)과 관계가 없다." },
+      { q: "What does the speaker mean when he says, \"I'll take that\"?", choices: ["He will accept a new assignment", "He is satisfied with the result", "He will collect the sales reports", "He plans to take over online sales"], answer: 1, quote: "I'll take that", explanation: "의도 파악 문제다. 근거: 2번째 문장 Online sales rose eleven percent, which is better than we projected. I'll take that. 예상보다 좋은 결과에 만족한다는 말이다. 오답: take를 '맡다'(A)·'가져가다'(C)·'인수하다'(D)라는 글자 그대로의 뜻으로 읽은 함정이다." },
       { q: "What will the speaker do this afternoon?", choices: ["Visit the smaller stores", "Meet the management team", "Send a written summary", "Announce a closing date"], answer: 2, explanation: "근거: 5번째 문장 I will send a written summary this afternoon. 오답: 매장 방문(A)은 없고, 경영진(B)은 이달 말까지 결정할 쪽이며, 폐점 날짜(D)는 아직 정하지 않았다." }
     ]
   },
@@ -534,6 +576,16 @@ window.PART4 = [
     type: "오리엔테이션",
     title: "신입 사원 오리엔테이션",
     voice: "W",
+    graphic: {
+      title: "Orientation Day Schedule",
+      columns: ["Time", "Session", "Room"],
+      rows: [
+        ["9:00 A.M.", "Payroll and Benefits", "Room A"],
+        ["10:30 A.M.", "Building Security", "Room B"],
+        ["12:00 P.M.", "Lunch", "Cafeteria"],
+        ["1:00 P.M.", "Meet Your Team Leader", "Room D"]
+      ]
+    },
     script: [
       "Welcome to your first day at Varden Group.",
       "This morning we will cover payroll, benefits, and the building's security system.",
@@ -544,7 +596,7 @@ window.PART4 = [
     ],
     questions: [
       { q: "Who most likely are the listeners?", choices: ["Visiting clients", "New employees", "Building inspectors", "Job applicants"], answer: 1, explanation: "근거: 1번째 문장 Welcome to your first day at Varden Group. 오답: 고객(A)·건물 점검원(C)은 급여·복리후생 안내를 받지 않고, 이미 입사했으므로 지원자(D)도 아니다." },
-      { q: "What will the listeners receive after lunch?", choices: ["A photo badge", "A parking pass", "A printed handbook", "A laptop"], answer: 3, explanation: "근거: 4번째 문장 After lunch you will meet your team leaders, and each of you will be given a laptop. 오답: 사진 사원증(A)은 점심 전에 나오고, 주차권(B)·책자(C)는 나오지 않는다." },
+      { q: "Look at the graphic. Where will the listeners go after lunch?", choices: ["Room A", "Room B", "Room C", "Room D"], answer: 3, graphic: true, link: "meet your team leaders", explanation: "시각 정보 연계 문제다. 근거: 4번째 문장 After lunch you will meet your team leaders. 도표에서 점심 다음 일정 Meet Your Team Leader는 Room D다. 담화에는 방 이름이 나오지 않는다. 오답: Room A(A)는 급여·복리후생, Room B(B)는 건물 보안 시간이고, Room C(C)는 도표에 없다." },
       { q: "What must be completed within two weeks?", choices: ["A safety course", "A performance review", "A team project", "A security check"], answer: 0, explanation: "근거: 5번째 문장 the online safety course must be completed within your first two weeks. 오답: 성과 평가(B)·팀 과제(C)는 없고, 보안 시스템(D)은 오늘 오전에 설명하는 내용이다." }
     ]
   },

@@ -349,7 +349,7 @@ function loadListeningPage(withSpeech) {
   var sandbox = { window: window, document: document, localStorage: localStorage, Promise: Promise,
     console: { info: function () {}, warn: function () {}, log: console.log, error: console.error } };
   vm.createContext(sandbox);
-  ["assets/js/speech.js", "data/listening.js", "data/part1.js", "assets/js/listening-voices.js", "assets/js/listening.js"].forEach(function (file) {
+  ["assets/js/speech.js", "data/listening.js", "data/part1.js", "assets/js/listening-voices.js", "assets/js/listening-graphic.js", "assets/js/listening.js"].forEach(function (file) {
     vm.runInContext(fs.readFileSync(path.join(root, file), "utf8"), sandbox, { filename: file });
   });
   ready();

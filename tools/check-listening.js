@@ -160,7 +160,93 @@ part3.concat(part4).forEach(function (item) {
   });
 });
 
+// ---------- 시각 정보 연계(graphic)·의도 파악(quote) 문항 ----------
+// graphic 모양: title, columns(2개 이상, 이름 중복 없음), rows(3개 이상, 칸 수 = 열 수), 빈 칸 없음.
+// graphic 문항(question.graphic === true):
+//   1) 질문이 "Look at the graphic."으로 시작하고 대화·담화에 graphic이 있어야 한다.
+//   2) 정답 보기가 도표의 어떤 칸과 똑같아야 한다 (도표에서 읽는 답).
+//   3) 정답이 대본에 직접 나오면 안 된다. 칸 그대로, A.M./P.M.을 뗀 꼴, 시각이면 소리 나는 꼴(6:10 → six ten)까지 본다.
+//   4) link(대본에서 도표의 다른 축을 가리키는 말)가 대본에 그대로 있어야 한다. 대본 → link → 도표의 한 행 → 정답 칸.
+//   5) 정답 행에서 정답이 아닌 칸이 하나 이상 있어야 한다 (두 축이 있어야 연계가 된다).
+// graphic이 있는 대화·담화에는 graphic 문항이 하나 이상, graphic 문항이 있으면 graphic이 있어야 한다.
+// 의도 파악 문항(question.quote): quote가 대본에 글자 그대로 있고, 질문에 "quote"가 큰따옴표로 들어 있어야 한다.
+var ONES_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve",
+  "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+var TENS_WORDS = ["", "", "twenty", "thirty", "forty", "fifty"];
+function minuteWords(m) {
+  if (m === 0) return "";
+  if (m < 10) return "oh " + ONES_WORDS[m];
+  if (m < 20) return ONES_WORDS[m];
+  return TENS_WORDS[Math.floor(m / 10)] + (m % 10 ? "-" + ONES_WORDS[m % 10] : "");
+}
+function answerForms(answer) {
+  var lower = String(answer).toLowerCase().trim();
+  var forms = [lower, lower.replace(/\s*[ap]\.m\.$/, "")];
+  var time = lower.match(/^(\d{1,2}):(\d{2})/);
+  if (time) {
+    var spoken = (ONES_WORDS[+time[1]] + " " + minuteWords(+time[2])).trim();
+    forms.push(spoken, spoken.replace(/-/g, " "));
+  }
+  return forms.filter(function (form, i) { return form && forms.indexOf(form) === i; });
+}
+function scriptText(item) {
+  return ((item && item.script) || []).map(function (line) { return typeof line === "string" ? line : (line && line.text) || ""; }).join(" ");
+}
+failures.graphicShape = [];
+failures.graphicLink = [];
+failures.graphicAnswerInScript = [];
+failures.intentQuote = [];
+part3.concat(part4).forEach(function (item) {
+  if (!item) return;
+  var script = scriptText(item);
+  var scriptLower = script.toLowerCase().replace(/-/g, " ");
+  var graphic = item.graphic;
+  var graphicQuestions = (item.questions || []).filter(function (q) { return q && q.graphic; });
+  if (graphic !== undefined) {
+    var shapeProblems = [];
+    if (!graphic || !nonEmpty(graphic.title)) shapeProblems.push("title 없음");
+    var columns = graphic && graphic.columns;
+    if (!Array.isArray(columns) || columns.length < 2 || !columns.every(nonEmpty)) shapeProblems.push("columns는 비어 있지 않은 문자열 2개 이상");
+    else if (new Set(columns).size !== columns.length) shapeProblems.push("columns 이름 중복");
+    var rows = graphic && graphic.rows;
+    if (!Array.isArray(rows) || rows.length < 3) shapeProblems.push("rows는 3개 이상");
+    (Array.isArray(rows) ? rows : []).forEach(function (row, rIndex) {
+      if (!Array.isArray(row) || !Array.isArray(columns) || row.length !== columns.length) shapeProblems.push((rIndex + 1) + "행 칸 수가 열 수와 다름");
+      else if (!row.every(nonEmpty)) shapeProblems.push((rIndex + 1) + "행에 빈 칸");
+    });
+    if (!graphicQuestions.length) shapeProblems.push("graphic이 있는데 graphic 문항이 없음");
+    if (shapeProblems.length) failures.graphicShape.push({ id: item.id, problems: shapeProblems });
+  }
+  (item.questions || []).forEach(function (question, qIndex) {
+    if (!question) return;
+    var qLabel = item.id + " Q" + (qIndex + 1);
+    if (question.graphic) {
+      if (!graphic) { failures.graphicShape.push({ id: qLabel, problems: ["graphic 문항인데 대화·담화에 graphic 없음"] }); return; }
+      if (!/^Look at the graphic\. /.test(question.q || "")) failures.graphicLink.push({ id: qLabel, reason: "질문이 'Look at the graphic.'으로 시작하지 않음" });
+      var answer = (question.choices || [])[question.answer];
+      var row = (graphic.rows || []).find(function (r) { return Array.isArray(r) && r.indexOf(answer) !== -1; });
+      if (!row) failures.graphicLink.push({ id: qLabel, reason: "정답이 도표의 칸에 없음", answer: answer });
+      else if (!row.some(function (value) { return value !== answer; })) failures.graphicLink.push({ id: qLabel, reason: "정답 행에 다른 축 칸이 없음" });
+      if (!nonEmpty(question.link) || script.toLowerCase().indexOf(String(question.link).toLowerCase()) === -1) {
+        failures.graphicLink.push({ id: qLabel, reason: "link가 대본에 없음", link: question.link });
+      }
+      answerForms(answer).forEach(function (form) {
+        var pattern = new RegExp("\\b" + form.replace(/-/g, " ").replace(/[.*+?^${}()|[\]\\$]/g, "\\$&") + "\\b");
+        if (pattern.test(scriptLower)) failures.graphicAnswerInScript.push({ id: qLabel, answer: answer, foundAs: form });
+      });
+    }
+    if (question.quote !== undefined) {
+      if (!nonEmpty(question.quote) || script.indexOf(question.quote) === -1) failures.intentQuote.push({ id: qLabel, reason: "인용 대사가 대본에 그대로 없음", quote: question.quote });
+      if ((question.q || "").indexOf("\"" + question.quote + "\"") === -1) failures.intentQuote.push({ id: qLabel, reason: "질문에 인용 대사가 큰따옴표로 없음" });
+    }
+  });
+});
+
 var labels = {
+  graphicShape: "시각 정보 도표(graphic) 모양 오류",
+  graphicLink: "시각 정보 문항 연결 오류 (Look at the graphic. / 정답이 도표 칸 / link가 대본에 있음)",
+  graphicAnswerInScript: "시각 정보 문항의 정답이 대본에 직접 나옴 (도표 없이 풀림)",
+  intentQuote: "의도 파악 문항의 인용 대사가 대본에 없음",
   dictationFields: "받아쓰기 필수 필드(text, ko, level) 누락",
   part2Choices: "Part 2 선택지가 3개가 아님",
   part2Answer: "Part 2 정답 인덱스 오류",
@@ -317,7 +403,7 @@ function runListeningPage() {
   };
   var sandbox = { window: window, document: document, console: console, Promise: Promise };
   vm.createContext(sandbox);
-  ["data/listening.js", "data/part1.js", "assets/js/listening-voices.js", "assets/js/listening.js"].forEach(function (file) {
+  ["data/listening.js", "data/part1.js", "assets/js/listening-voices.js", "assets/js/listening-graphic.js", "assets/js/listening.js"].forEach(function (file) {
     vm.runInContext(fs.readFileSync(path.join(root, file), "utf8"), sandbox, { filename: file });
   });
   check(typeof ready === "function", "DOMContentLoaded 핸들러가 등록되지 않음");
@@ -375,9 +461,24 @@ function runListeningPage() {
 
   // Part 3: 모든 대화의 스크립트와 문항을 끝까지 푼다
   var seenPart3 = 0;
+  // 시각 정보 도표: 재생하기 전(대화를 연 순간)부터 보이고, 칸이 데이터와 같아야 한다. 도표가 없는 대화에서는 숨긴다.
+  function checkGraphicSlot(slotId, item) {
+    var slot = $(slotId);
+    var cells = slot.descendants().filter(function (node) { return node.tagName === "TD"; }).map(function (node) { return node.textContent; });
+    var expected = item.graphic ? [].concat.apply([], item.graphic.rows) : [];
+    check(slot.hidden === !item.graphic, item.id + " 도표 표시 여부 — hidden=" + slot.hidden);
+    check(JSON.stringify(cells) === JSON.stringify(expected), item.id + " 도표 칸이 데이터와 다름 — " + cells.length + "칸");
+    if (item.graphic) {
+      check(slot.descendants().some(function (node) { return node.classList.contains("listening-graphic-scroll"); }), item.id + " 도표 가로 스크롤 영역 없음");
+      check(slot.textContent.indexOf(item.graphic.title) !== -1, item.id + " 도표 제목 없음");
+    }
+  }
+  var graphicSeen = 0;
   P3.forEach(function (dialogue, index) {
     check($("part3-counter").textContent === "대화 " + (index + 1) + " / " + P3.length + " · " + dialogue.title,
       "Part 3 카운터 — " + $("part3-counter").textContent);
+    checkGraphicSlot("part3-graphic", dialogue);
+    if (dialogue.graphic) graphicSeen += 1;
     check($("part3-script").querySelectorAll(".listening-transcript-line").length === dialogue.script.length,
       dialogue.id + " 스크립트 줄 수 불일치");
     $("part3-start-questions").click();
@@ -401,6 +502,8 @@ function runListeningPage() {
   P4.forEach(function (talk, index) {
     check($("part4-counter").textContent === "담화 " + (index + 1) + " / " + P4.length + " · " + talk.title,
       "Part 4 카운터 — " + $("part4-counter").textContent);
+    checkGraphicSlot("part4-graphic", talk);
+    if (talk.graphic) graphicSeen += 1;
     var lines = $("part4-script").querySelectorAll(".listening-transcript-line");
     check(lines.length === talk.script.length, talk.id + " 스크립트 줄 수 불일치");
     check(lines.map(function (l) { return l.textContent; }).join("|") === talk.script.join("|"), talk.id + " 스크립트 내용 불일치");
@@ -428,9 +531,11 @@ function runListeningPage() {
   // 마지막 다음 버튼 뒤에는 첫 항목으로 돌아와야 한다
   check($("dictation-counter").textContent === "문장 1 / " + D.length, "받아쓰기가 처음으로 돌아오지 않음");
   check($("part3-counter").textContent.indexOf("대화 1 / ") === 0, "Part 3가 처음으로 돌아오지 않음");
+  var graphicExpected = P3.concat(P4).filter(function (item) { return item.graphic; }).length;
+  check(graphicSeen === graphicExpected, "도표가 있는 대화·담화 수 " + graphicSeen + " / " + graphicExpected);
 
   console.log("화면: 받아쓰기 " + seenDictation.length + "문장, Part 2 " + seenPart2 + "문제, 대화 " + seenPart3 +
-    "개, 담화 " + seenPart4 + "개 로드·채점 확인" + (errors.length ? "" : " — 이상 없음"));
+    "개, 담화 " + seenPart4 + "개 로드·채점 확인, 재생 전 도표 " + graphicSeen + "개 표시" + (errors.length ? "" : " — 이상 없음"));
   return errors;
 }
 
@@ -522,7 +627,7 @@ function loadListeningWithRealSpeech(mode, customVoices) {
   };
   var sandbox = { window: window, document: document, localStorage: localStorage, console: { info: function () {}, warn: function () {}, log: console.log, error: console.error }, Promise: Promise };
   vm.createContext(sandbox);
-  ["assets/js/speech.js", "data/listening.js", "data/part1.js", "assets/js/listening-voices.js", "assets/js/listening.js"].forEach(function (file) {
+  ["assets/js/speech.js", "data/listening.js", "data/part1.js", "assets/js/listening-voices.js", "assets/js/listening-graphic.js", "assets/js/listening.js"].forEach(function (file) {
     vm.runInContext(fs.readFileSync(path.join(root, file), "utf8"), sandbox, { filename: file });
   });
   ready();

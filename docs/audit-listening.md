@@ -398,3 +398,129 @@ Part 3·4 스크립트 전체에서 숫자·약어·하이픈·악센트 문자�
 | 의도 파악 | 0 (0%) | 0 (0%) |
 
 - 분류: 'most likely where/who'는 추론, 'What will ... do / What will happen'은 다음 할 일, 'Why is ... calling / mainly discussing / What is the problem'은 주제·목적에 넣었다.
+
+# Part 3·4 문항 유형 보강 — 의도 파악·시각 정보 연계·추론 (2026-11-23)
+
+문항 수는 그대로다 (Part 3 42, Part 4 36). 세부사항 문항 12개를 바꿨다.
+
+## 데이터 구조
+
+```js
+// 대화·담화에 붙는 도표
+graphic: { title: "제목", columns: ["열", ...], rows: [["칸", ...], ...] }
+// 시각 정보 문항
+{ q: "Look at the graphic. ...", choices: [...], answer: n, graphic: true, link: "대본에서 도표의 다른 축을 가리키는 말", explanation: "..." }
+// 의도 파악 문항
+{ q: "What does the man mean when he says, \"...\"?", choices: [...], answer: n, quote: "대본에 그대로 있는 말", explanation: "..." }
+```
+
+- 화면: `assets/js/listening-graphic.js`의 `ListeningGraphic.render(graphic)`를 리스닝 탭과 LC 풀세트가 함께 쓴다.
+- 리스닝 탭은 대화·담화를 여는 순간(재생 전) 도표를 보여 준다. LC 풀세트는 그 대화·담화의 세 문항 모두에서 듣기 전부터 보여 주고, 오답 복습 화면에도 보여 준다.
+- 표가 넓으면 `.listening-graphic-scroll` 안쪽만 가로로 스크롤된다. 색은 기존 색 토큰을 써서 다크 모드에서도 바뀐다.
+
+## 시각 정보 연계 5문항
+
+| 대화·담화 | 도표 | 대본이 말하는 축 | 문항이 묻는 축 | 정답 |
+|---|---|---|---|---|
+| p305 | Sunday Flights to Boston (Flight / Departs / Arrives, 4행) | 출발 시간대 'leaves in the early evening, so I don't land after midnight' | 편명 | NW 518 |
+| p308 | Meeting Rooms Available on Friday (Time / Room, 4행) | 시각 'Friday at two' | 방 | Room 310 |
+| p314 | Airport Shuttle — Morning Departures (Leaves Hotel / South Terminal / North Terminal, 4행) | 터미널 'north terminal' + 출발 시각 'The five thirty' | 도착 시각 | 6:10 A.M. |
+| pt403 | Eastgate Fitness — Membership Plans (Plan / Includes / Monthly Fee, 4행) | 포함 내용 'group classes but no pool access' | 요금제 이름 | Flex |
+| pt410 | Orientation Day Schedule (Time / Session / Room, 4행) | 일정 'After lunch you will meet your team leaders' | 방 | Room D |
+
+## 바꾼 문항 (12)
+
+| 대화·담화 | 번호 | 유형 | 전 | 후 | 정답 |
+|---|---|---|---|---|---|
+| p301 | Q2 | 추론 | What does the man ask for? | Who most likely is the man? | A store clerk |
+| p305 | Q2 | 시각 정보 | Why does the woman suggest leaving on Sunday? | Look at the graphic. Which flight will the man most likely book? | NW 518 |
+| p306 | Q2 | 의도 파악 | What problem does the man mention? | What does the woman mean when she says, "Tell me about it"? | She has had the same experience |
+| p307 | Q2 | 추론 | What does the man mention about the boots? | Where most likely does the woman work? | At an outdoor equipment store |
+| p308 | Q3 | 시각 정보 | What does Hana say about the conference room? | Look at the graphic. Where will the budget meeting most likely be held? | Room 310 |
+| p309 | Q2 | 의도 파악 | What does Priya say about the second hotel? | What does Lena mean when she says, "That adds up"? | The travel time would become significant |
+| p314 | Q2 | 시각 정보 | What does the man say about the six o'clock shuttle? | Look at the graphic. What time will the woman most likely arrive at her terminal? | 6:10 A.M. |
+| pt403 | Q3 | 시각 정보 | What is included with every membership? | Look at the graphic. Which plan is discounted this month? | Flex |
+| pt404 | Q2 | 의도 파악 | What are the listeners asked to do before entering? | What does the speaker imply when she says, "you'll need them"? | The machine floor will be very noisy |
+| pt406 | Q2 | 의도 파악 | What does the speaker recommend? | What does the speaker mean when he says, "think again"? | Listeners should change their travel plans |
+| pt407 | Q2 | 의도 파악 | What does the speaker say about three of the locations? | What does the speaker mean when he says, "I'll take that"? | He is satisfied with the result |
+| pt410 | Q2 | 시각 정보 | What will the listeners receive after lunch? | Look at the graphic. Where will the listeners go after lunch? | Room D |
+
+## 의도 파악 5문항
+
+| 대화·담화 | 인용 대사 | 정답 뜻 | 글자 그대로 읽은 함정 보기 |
+|---|---|---|---|
+| p306 | "Tell me about it" | She has had the same experience | She wants to hear more details |
+| p309 | "That adds up" | The travel time would become significant | She has calculated the hotel bill |
+| pt404 | "you'll need them" | The machine floor will be very noisy | The listeners must buy their own gear |
+| pt406 | "think again" | Listeners should change their travel plans | Listeners should call the station back |
+| pt407 | "I'll take that" | He is satisfied with the result | He will accept a new assignment |
+
+## 바꾼 대사
+
+| 대화·담화 | 전 | 후 | 이유 |
+|---|---|---|---|
+| p305 | Then I'll book a Sunday evening flight. What about the hotel? | Then I'll book the Sunday flight that leaves in the early evening, so I don't land after midnight. What about the hotel? | 시각 정보: 출발 시간대만 말하고 편명은 말하지 않는다 |
+| p308 | That works for me. Hana, does the conference room have a projector now? Last time we had to borrow one. | That works for me. Hana, does that room have a projector? Last time we had to borrow one. | 시각 정보: 방은 도표로만 알 수 있게 '그 시간의 방'으로 바꿨다 |
+| p306 | I noticed that too. I found a company that includes same-day service in the monthly fee. | Tell me about it. I found a company that includes same-day service in the monthly fee. | 의도 파악: 'Tell me about it'은 '자세히 말해 달라'가 아니라 '나도 그렇다'는 맞장구 |
+| pt404 | Before we go in, please put on the safety glasses and earplugs from the bin by the door, since the machine floor is loud. | Before we go in, please put on the safety glasses and earplugs from the bin by the door. Trust me, once we're on the machine floor, you'll need them. | 의도 파악: 시끄럽다는 말을 빼고 'you'll need them'으로 돌려 말하게 했다 |
+| pt407 | Online sales rose eleven percent, which is better than we projected. | Online sales rose eleven percent, which is better than we projected. I'll take that. | 의도 파악: 'I'll take that'은 '가져가겠다'가 아니라 '만족한다' |
+| pt403 | (새 대사) | This month, the plan with group classes but no pool access is also fifteen percent off. | 시각 정보: 포함 내용만 말하고 요금제 이름은 말하지 않는다 |
+| pt406 | (새 대사) | So if you were planning to cross the bridge this afternoon, think again. | 의도 파악: 'think again'은 '다른 길을 생각하라' |
+| undefined Q2 | What must customers do to receive the special offer? | What must customers do to receive the opening offer? | 15퍼센트 할인 문장이 생겨 special offer가 둘을 가리킬 수 있었다 |
+| undefined Q1 | Where does the talk most likely take place? | (해설만 수정) | 3번째 문장이 바뀌어 인용을 맞췄다 |
+| undefined Q3 | What will happen at four thirty? | (해설만 수정) | 문장이 하나 늘어 번호를 맞췄다 |
+
+## 자체 검토 (감사 기준)
+
+| 항목 | 결과 |
+|---|---|
+| 복수정답 | 새 문항 12개의 오답 36개를 대본·도표에 비춰 봤다. p305 NW 604는 저녁에 떠나지만 자정 뒤 도착이라 'don't land after midnight'로 지워진다. p314 5:55는 같은 셔틀의 남쪽 터미널 도착이라 '북쪽 터미널'로 지워진다. pt403 Basic·Student는 그룹 수업이 없고 Premium은 수영장이 있다. p309 'That adds up'은 '말이 된다'로도 쓰여서 그 뜻의 보기는 넣지 않았다 |
+| 담화 모순 | p314 15분 차이(남쪽 5:55 → 북쪽 6:10)가 대본의 'allow an extra fifteen minutes'와 맞다. 5:30 셔틀이 탑승 7:40보다 1시간 30분 앞서 '가장 안전'하다. pt410 오전 급여·보안, 점심 전 사원증, 점심 뒤 팀장 만남이 도표 순서와 맞다. pt403 개업 첫 주 3개월 혜택과 이달 15% 할인이 서로 겹치지 않는다. 그래서 Q2 질문을 'opening offer'로 좁혔다 |
+| TTS | 새 대사에는 숫자·약어가 없다 (fifteen percent, early evening). 도표 칸의 숫자(NW 518, 6:10 A.M.)는 화면에만 보이고 읽지 않는다 |
+| 해설 | 새 문항 12개 모두 근거 대사·문장 번호, 도표에서 이어지는 칸, 오답마다 안 되는 이유를 적었다. 바뀐 대사 때문에 번호가 밀린 해설 2개(pt404 Q1, pt406 Q3)도 고쳤다 |
+| 정답 위치 | 기존 검사(바로 앞 문항과 정답 위치가 같으면 실패)가 처음에 4건을 잡았다. 보기 순서를 바꾸고 해설의 (A)부터 (D)까지 표기를 맞췄다 |
+
+## 유형 분포 (교체 후)
+
+| 유형 | Part 3 전 | Part 3 후 | Part 4 전 | Part 4 후 |
+|---|---|---|---|---|
+| 주제·목적 | 10 | 10 | 4 | 4 |
+| 세부사항 | 24 (57%) | 17 (40%) | 27 (75%) | 22 (61%) |
+| 추론 | 0 | 2 | 3 | 3 |
+| 다음 할 일 | 8 | 8 | 2 | 2 |
+| 의도 파악 | 0 | 2 | 0 | 3 |
+| 시각 정보 연계 | 0 | 3 | 0 | 2 |
+| 합계 | 42 | 42 | 36 | 36 |
+
+## 검사 (tools/check-listening.js)
+
+| 검사 | 기준 |
+|---|---|
+| graphicShape | title이 있다. columns가 2개 이상이고 이름이 겹치지 않는다. rows가 3개 이상이고 행마다 칸 수가 열 수와 같다. 빈 칸이 없다. graphic이 있으면 graphic 문항이 하나 이상 있다 |
+| graphicLink | 질문이 'Look at the graphic.'으로 시작한다. 정답 보기가 도표의 한 칸과 똑같다. 정답 행에 정답이 아닌 칸(다른 축)이 있다. link가 대본에 그대로 있다 |
+| graphicAnswerInScript | 정답이 대본에 직접 나오면 실패. 칸 그대로(대소문자 무시), A.M./P.M.을 뗀 꼴, 시각이면 소리 나는 꼴(6:10 → six ten)까지 단어 경계로 찾는다 |
+| intentQuote | quote가 대본에 글자 그대로 있고, 질문에 큰따옴표로 들어 있다 |
+| 화면 | 리스닝 탭에서 대화·담화를 연 순간(재생 전) 도표가 보이고 칸이 데이터와 같다. 도표가 없는 대화에서는 숨긴다. check-practice는 LC 풀세트 20회 동안 도표 대화의 모든 문항에서 듣기 전부터 도표(제목·모든 칸·스크롤 영역)가 보이고, 다른 문항에는 없는지 본다 |
+
+버그 심기 (저장소 복사본)
+
+| 심은 버그 | 잡은 검사 |
+|---|---|
+| p314 대본에 'reaches the north terminal at six ten'을 넣음 | graphicAnswerInScript |
+| pt407 'I'll take that'을 'I am pleased'로 바꿈 | intentQuote |
+| p314 도표 한 행에서 칸 하나를 지움 | graphicShape |
+| p314 link를 'five fifteen'으로 바꿈 | graphicLink |
+| 리스닝 탭에서 도표를 그리지 않게 함 | 화면 검사 (p305 도표 칸 0칸, 스크롤 영역·제목 없음) |
+| LC 풀세트에서 도표를 그리지 않게 함 | check-practice 시각 정보 도표 검사 |
+
+## 헤드리스 Chrome 확인
+
+실제 리스닝 페이지를 폭 375px iframe에 넣고, 도표가 있는 대화·담화 5개를 각각 열어 재생 전 상태를 쟀다. 라이트·다크 둘 다 봤다.
+
+| 대화·담화 | 페이지 가로 폭 / 화면 | 표 스크롤 폭 / 보이는 폭 | 재생 전 표시 | 다크 배경 |
+|---|---|---|---|---|
+| p305 | 360 / 375 (넘침 없음) | 284/284 | 예 | rgb(32, 35, 41), 글자 rgb(243, 240, 236) |
+| p308 | 360 / 375 (넘침 없음) | 284/284 | 예 | rgb(32, 35, 41), 글자 rgb(243, 240, 236) |
+| p314 | 360 / 375 (넘침 없음) | 384/284 (안쪽 스크롤) | 예 | rgb(32, 35, 41), 글자 rgb(243, 240, 236) |
+| pt403 | 360 / 375 (넘침 없음) | 478/284 (안쪽 스크롤) | 예 | rgb(32, 35, 41), 글자 rgb(243, 240, 236) |
+| pt410 | 360 / 375 (넘침 없음) | 384/284 (안쪽 스크롤) | 예 | rgb(32, 35, 41), 글자 rgb(243, 240, 236) |

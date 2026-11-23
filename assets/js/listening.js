@@ -528,6 +528,13 @@
         $(config.nextSuffix).hidden = true;
         $("script-toggle").hidden = true;
         hideScript();
+        // 시각 정보 도표는 실제 시험지처럼 듣기 전부터 보인다.
+        var graphicSlot = $("graphic");
+        if (graphicSlot) {
+          graphicSlot.replaceChildren();
+          if (item.graphic && window.ListeningGraphic) graphicSlot.appendChild(window.ListeningGraphic.render(item.graphic));
+          graphicSlot.hidden = !item.graphic;
+        }
         var transcript = $("script");
         transcript.replaceChildren();
         talkLines(item).forEach(function (line) {

@@ -1708,6 +1708,9 @@
           ? "질문과 세 응답을 듣고 가장 알맞은 응답을 고르세요. 질문과 응답은 화면에 나오지 않아요."
           : item.group.numbers[0] + "~" + item.group.numbers[item.group.numbers.length - 1] + "번은 다음 " + unit + "를 듣고 답하세요."));
       if (item.part === "p1") area.appendChild(lcPhoto(item));
+      // 시각 정보 도표는 시험지처럼 듣기 전부터 그 대화·담화의 모든 문항에 보인다.
+      var graphic = item.group && item.group.talk.graphic;
+      if (graphic && window.ListeningGraphic) area.appendChild(window.ListeningGraphic.render(graphic));
 
       var audio = element("div", "practice-lc-audio");
       if (supported) {
@@ -2006,6 +2009,7 @@
         } else {
           article.appendChild(element("p", "practice-review-title", SECTION_LABELS[item.section] + " · " + item.group.talk.title + " · 틀린 문항 " +
             group.misses.map(function (miss) { return miss.item.number + "번"; }).join(", ")));
+          if (item.group.talk.graphic && window.ListeningGraphic) article.appendChild(window.ListeningGraphic.render(item.group.talk.graphic));
         }
         article.append(lcReplayButton(item), lcScriptBox(item));
         group.misses.forEach(function (miss) { article.appendChild(lcMissDetail(miss)); });
