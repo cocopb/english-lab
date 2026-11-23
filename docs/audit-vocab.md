@@ -2037,3 +2037,36 @@ README '검사가 실제로 잡는지 확인할 때'에 적었다. 요약하면 
 | welcome | 환영하다 / 환영의 |
 | withdraw | 인출하다 / 철회하다 |
 | young | 젊은 |
+
+# 4차 감사 3부 — 뜻 가드 복원과 뜻 겹침 쌍 정리 (2026-11-23)
+
+- candidate·applicant 뜻을 다시 겹치게 했다. `meaningsTooSimilar` 가드가 둘을 같은 보기로 내지 않는다. 예문 구분(승진·선발 / 서류 접수)은 그대로다.
+- 가드가 막던 13쌍 중 개념이 실제로 다른 4쌍만 나눴다. 나눈 쌍은 이제 같은 보기로 나올 수 있다.
+
+| id | 단어 | 전 | 후 |
+|---|---|---|---|
+| v063 | candidate | (선발·선거의) 후보자 | 후보자, 지원자 |
+| v094 | applicant | (지원서를 낸) 신청자, 지원자 | 지원자, 신청자 |
+| v237 | revenue | 수익, 매출 | 매출(들어온 돈 전체) |
+| v236 | profit | 이익, 수익 | 이익(매출에서 비용을 뺀 것) |
+| v461 | conserve | 아끼다, 보존하다 | (자원을) 아끼다, 절약하다 |
+| v480 | preserve | 보존하다 | (원래 상태로) 보존하다 |
+| v602 | adapt | (상황에 맞게) 고치다, 적응하다 | (상황에 맞게) 맞추다, 적응하다 |
+| v653 | refresher course | 재교육 과정, 보수 교육 | 재교육 과정 |
+| v659 | continuing education | 평생 교육, 보수 교육 | (자격 유지를 위한) 보수 교육, 평생 교육 |
+
+| 쌍 | 판단 | 이유 |
+|---|---|---|
+| profit · revenue | 나눔 | 이익과 매출은 다른 개념 (지시) |
+| conserve · preserve | 나눔 | 아껴 쓰기와 원래 상태로 지키기. 단어장 팁도 이미 구분한다 |
+| adapt · modify | 나눔 | 상황에 맞추기·적응과 수정은 다른 개념 |
+| refresher course · continuing education | 나눔 | 배운 것을 다시 익히는 짧은 과정과 자격 유지용 보수 교육. 보수 교육은 continuing education 쪽으로 옮겼다 |
+| assess · evaluate | 그대로 | 동의어 (지시) |
+| monitor · oversee | 그대로 | 동의어 (지시) |
+| summary · recap | 그대로 | 둘 다 요약 |
+| liability · debt | 그대로 | 재무에서 둘 다 부채 |
+| clause · provision · regulation | 그대로 | 조항·규정의 말바꿈 |
+| property · real estate | 그대로 | 둘 다 부동산 |
+| courier · carrier | 그대로 | 둘 다 택배·운송 회사 |
+| diminish · minimize | 그대로 | 둘 다 줄이다. 최소화와 감소는 말바꿈 수준 |
+| accordingly · consequently | 그대로 | 둘 다 따라서 |
