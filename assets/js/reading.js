@@ -25,6 +25,13 @@
       return node;
     }
 
+    // 문장 삽입 문항의 위치 표시. 문장 뒤에 작게 붙인다 (문장 데이터의 mark: 1~4).
+    function insertMark(number) {
+      var mark = element("span", "reading-insert-mark", " [" + number + "]");
+      mark.setAttribute("aria-label", "삽입 위치 " + number);
+      return mark;
+    }
+
     function showTab(name) {
       ["strategy", "passages", "review"].forEach(function (tabName) {
         var selected = name === tabName;
@@ -238,8 +245,10 @@
           sentence.setAttribute("role", "group");
           sentence.setAttribute("aria-label", (part.label ? part.label + " " : "지문 ") + "문장 " + sentenceNumber);
           sentence.dataset.selected = "false";
+          var english = element("p", "reading-sentence-en", line.en);
+          if (line.mark) english.appendChild(insertMark(line.mark));
           sentence.append(
-            element("p", "reading-sentence-en", line.en),
+            english,
             element("p", "reading-sentence-ko", line.ko)
           );
           sentence.querySelector(".reading-sentence-ko").hidden = true;

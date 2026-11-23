@@ -422,3 +422,131 @@ NOT 문제 2개(rp12 Q1, rp23 Q1)는 정답 보기가 실제로 언급되지 않
 | rp30 | wholesale | 도매의 | (형용사) 도매의 | n./adj. 도매 (뜻은 명사) |
 
 rp32 Q4 교체와 rp30 Q2 머리글 날짜는 그대로 둔다.
+
+# Part 7 문항 유형 보강 — 어휘·문장 삽입·추론 (2026-11-23)
+
+문항 수는 그대로다 (지문 34, 125문항). 세부사항 문항 17개를 바꿨다.
+
+## 데이터 구조
+
+```js
+// 어휘 문항: word = 질문의 단어, part = 몇 번째 지문(이중·삼중일 때). 그 문서에 단어가 정확히 한 번 나온다.
+{ q: 'In the email, the word "covers" is closest in meaning to', choices: [...], answer: n, word: "covers", part: 1, explanation }
+// 문장 삽입 문항: insert = 넣을 문장. 보기는 [1]~[4].
+{ q: 'In which of the positions marked [1], [2], [3], and [4] does the following sentence best belong? "..."', choices: ["[1]", "[2]", "[3]", "[4]"], answer: n, insert: "...", explanation }
+// 위치 표시: 그 문장 뒤에 [n]이 붙는다
+{ en: "...", ko: "...", mark: 1 }
+```
+
+- 지문이 문장 단위로 한 줄씩 보여서 문단 번호가 없다. 그래서 어휘 문항은 'In paragraph 2' 대신 'In the email'처럼 문서를 지정한다. 단어가 그 문서에 한 번만 나와서 자리가 하나로 정해진다.
+- 화면: [n]은 문장 끝에 작은 굵은 글씨(파란색 토큰 --blue)로 붙는다. 줄바꿈 없이 붙어서 본문 흐름을 끊지 않는다. 독해 탭, RC 풀세트, 오답 복습 화면 모두 같은 모양이다.
+- 독해 탭은 '핵심 어휘'를 본문과 함께 보여 준다. rp06의 cover(다루다), rp17의 hold(담다)가 어휘 문항의 답을 미리 알려 줘서 다른 단어로 바꿨다 (ticketing system, first stop).
+
+## 어휘 5문항
+
+| 지문 | 단어 | 문장 | 지문에서의 뜻 (정답) | 오답 (그 단어의 다른 뜻) |
+|---|---|---|---|---|
+| rp06 | covers | since it covers the new ticketing system | includes | protects, pays for, hides |
+| rp11 | run | The route ... will run every fifteen minutes | operate | race, manage, extend |
+| rp14 | matter | your prompt attention to this matter | issue | substance, importance, mail |
+| rp17 | holds | It only holds half the boxes | contains | grips, delays, hosts |
+| rp30 | figure | the thirty-hour figure will help us sell them | number | shape, person, drawing |
+
+## 문장 삽입 2문항
+
+| 지문 | 삽입 문장 | 연결 단서 | 정답 | 나머지 셋이 안 되는 이유 |
+|---|---|---|---|---|
+| rp05 | These new employees will train at the original store first. | 지시어 These new employees | [4] (hire about fifteen additional staff members 뒤) | [1] 앞은 수요 증가, [2] 앞은 손님이 기다렸다는 인용, [3] 앞은 새 매장 크기라 가리킬 '새 직원'이 없다 |
+| rp15 | However, food and drinks from the café will not be free. | 접속부사 However + 정관사 the café | [4] (free to enter 뒤) | [1]은 카페가 아직 안 나왔고, [2]는 카페는 나왔지만 '무료'가 없어 However가 대비할 것이 없으며, [3] 앞은 공사 진행률이다 |
+
+rp15는 문장 삽입 문항을 마지막(Q3)에 두려고 기존 Q3(What is indicated about the garden?)를 Q2로 올렸다.
+
+## 추론 10문항
+
+| 지문 | 문항 | 근거 1 | 근거 2 | 정답 |
+|---|---|---|---|---|
+| rp02 | What will visitors most likely do when they arrive during the renovation? | 2번째 문장: 오크 가 측면 출입구를 쓴다 | 3번째·4번째 문장: 안내 데스크가 2층으로 옮겨 거기서 접수한다 | 오크 가로 들어와 2층으로 간다 |
+| rp13 | How much will Ms. Suzuki most likely pay for her workshops? | 지문 1: 회당 40달러, 3회 이상이면 20% 할인 | 지문 3: 세 과정 신청 | $96 |
+| rp16 | What is suggested about Ms. Oduya's visit? | 광고: 토요일은 예약 권장 | 이메일: 토요일에 예약 없이 왔다 | 예약 권장일에 왔다 |
+| rp19 | If the clinic pays the invoice on June 20, how much will it most likely pay? | 2번째 줄: 납기 6월 17일 | 7번째·8번째 줄: 합계 366달러, 납기 뒤 2% 연체료 | $373.32 |
+| rp25 | How much will Dr. Osei most likely pay for his room, not including parking? | 확인서: 10월 8일 입실, 1박 180달러 | 이메일: 10월 12일까지 | $720 (4박) |
+| rp26 | Who most likely showed the examples that Ms. Marchetti used in her shop? | 설문: 두 번째 강의의 강사가 보여 준 사례 | 안내: 2강은 박재원 | Jae-won Park |
+| rp27 | What is suggested about Mr. Vasilev's meals on April 7? | 규정: 식비 하루 45달러 | 회계 메일: 하루가 한도 초과, 4월 7일 영수증 요청 | 4월 7일 식비가 45달러 초과 |
+| rp29 | What is suggested about the office for Ms. Han's company? | 광고: 7월 1일부터 입주 가능 | 이메일: 8월부터 공간을 찾는다 | 원하는 시기에 맞출 수 있다 |
+| rp31 | What will Mr. Oyelaran most likely do on August 14? | 공지 1번째 문장: 8월 14일(금) 이사 | 공지 5번째 문장: 그날 사무실 휴무, 재택근무 | 재택근무 |
+| rp34 | What is suggested about Mr. Lindqvist's visit? | 후기: 화요일 저녁 방문 | 답글: 이제 평일에도 예약을 받는다 | 그날은 예약할 수 없었다 |
+
+## 바꾼 문항 (17)
+
+| 지문 | 번호 | 유형 | 전 (세부사항) | 후 |
+|---|---|---|---|---|
+| rp06 | Q3 | 어휘 | Where will the data security session be held? | In the email, the word "covers" is closest in meaning to |
+| rp11 | Q2 | 어휘 | When will construction begin? | In the article, the word "run" is closest in meaning to |
+| rp14 | Q4 | 어휘 | What else does Mr. Nunes ask about? | In the email, the word "matter" is closest in meaning to |
+| rp17 | Q3 | 어휘 | What problem does Ms. Whitfield mention about the smaller truck? | In the text message chain, the word "holds" is closest in meaning to |
+| rp30 | Q4 | 어휘 | What does Mr. Ivanov say his customers ask about? | In the email, the word "figure" is closest in meaning to |
+| rp05 | Q3 | 문장 삽입 | What does Ms. Marsh plan to do before the opening? | In which of the positions marked [1], [2], [3], and [4] does the following sentence best belong? "These new employees will train at the original store first." |
+| rp15 | Q2 → Q3 | 문장 삽입 | According to Mr. Reyes, what is the goal of the project? | In which of the positions marked [1], [2], [3], and [4] does the following sentence best belong? "However, food and drinks from the café will not be free." |
+| rp02 | Q2 | 추론 | Where should visitors check in? | What will visitors most likely do when they arrive during the renovation? |
+| rp13 | Q5 | 추론 | What does Ms. Suzuki ask the training team to do? | How much will Ms. Suzuki most likely pay for her workshops? |
+| rp16 | Q3 | 추론 | What does Ms. Oduya mention about her visit? | What is suggested about Ms. Oduya's visit? |
+| rp19 | Q3 | 추론 | What happens if the invoice is paid late? | If the clinic pays the invoice on June 20, how much will it most likely pay? |
+| rp25 | Q4 | 추론 | How many nights will Dr. Osei now stay at the hotel? | How much will Dr. Osei most likely pay for his room, not including parking? |
+| rp26 | Q4 | 추론 | What does Ms. Marchetti suggest? | Who most likely showed the examples that Ms. Marchetti used in her shop? |
+| rp27 | Q4 | 추론 | What does Ms. Keller ask Mr. Vasilev to do? | What is suggested about Mr. Vasilev's meals on April 7? |
+| rp29 | Q3 | 추론 | What does Ms. Han ask about the rooms? | What is suggested about the office for Ms. Han's company? |
+| rp31 | Q2 | 추론 | What are employees responsible for? | What will Mr. Oyelaran most likely do on August 14? |
+| rp34 | Q2 | 추론 | What problem does the review describe? | What is suggested about Mr. Lindqvist's visit? |
+
+## 유형 분포 (check-reading이 질문 표현으로 분류)
+
+| 유형 | 전 | 후 | 실제 토익 (대략) |
+|---|---|---|---|
+| 주제·목적 | 10 (8%) | 10 (8%) |  |
+| 세부사항 | 100 (80%) | 83 (66%) | 약 45% |
+| 추론 | 8 (6%) | 18 (14%) | 약 20% |
+| NOT | 4 (3%) | 4 (3%) |  |
+| 의도 파악 | 3 (2%) | 3 (2%) | 2문항 |
+| 어휘(동의어) | 0 (0%) | 5 (4%) | 4개 또는 5개 |
+| 문장 삽입 | 0 (0%) | 2 (2%) | 2문항 |
+
+- 분류 규칙: 'closest in meaning to'는 어휘, 'positions marked [1]'은 문장 삽입, 'NOT'은 NOT, 'mean when'은 의도 파악, 'most likely·suggested·implied·imply·infer'는 추론, 'purpose·Why ... written·mainly about'은 주제·목적, 나머지는 세부사항. 1부(109단계)는 25개 지문을 손으로 분류했고, 여기서는 34개 지문 전체를 이 규칙으로 센다.
+- 세부사항은 아직 66%다. 실제 시험의 약 45%까지 내리려면 세부사항 26문항 정도를 더 바꿔야 한다.
+
+## 자체 검토
+
+| 항목 | 결과 |
+|---|---|
+| 복수정답 | 새 문항 17개의 오답 51개를 지문에 비춰 봤다. 어휘 오답은 모두 그 단어의 다른 뜻이라 문장에 넣으면 뜻이 통하지 않는다 (run의 manage는 '노선을 경영한다'가 되어 '15분마다'와 이어지지 않는다). 추론 문항의 금액(rp13·rp19·rp25)은 계산이 하나로 떨어진다 |
+| 근거 | 추론 10개 모두 해설에 근거 두 곳(지문 번호와 문장)을 적었다. 한 문장만으로 풀리는 것은 넣지 않았다 |
+| 정답 위치 | 새 문항이 바로 앞뒤 문항과 정답 위치가 같은 곳 7군데를 보기 순서로 바꿨다. 기존 문항끼리 연속인 곳 22군데는 이번 범위가 아니라 그대로다 |
+
+## 검사 (tools/check-reading.js)
+
+| 검사 | 기준 |
+|---|---|
+| vocabWord | 질문의 "단어"와 word가 같다. 그 문서(part가 있으면 그 지문)에 단어 단위로 정확히 한 번 나온다. 핵심 어휘 목록에 같은 단어가 없다 |
+| insertPositions | 보기가 [1]~[4]다. insert가 질문에 큰따옴표로 있고 본문에는 없다. 그 지문의 mark가 1·2·3·4로 하나씩 있다. mark가 있는 지문에는 문장 삽입 문항이 하나 있다 |
+| 화면 | 독해 탭에서 지문을 열면 [1]~[4]가 데이터 순서대로 그려진다. check-practice는 RC 풀세트 20회 동안 mark가 있는 지문이면 [1]~[4]가 보이고, 다른 지문에는 없는지 본다 |
+| 분포 출력 | 위 분류 규칙으로 유형별 문항 수와 비율을 매번 출력한다 (실패 아님) |
+
+버그 심기 (저장소 복사본)
+
+| 심은 버그 | 잡은 검사 |
+|---|---|
+| rp11 word를 runs로 (지문에 없음) | vocabWord |
+| rp11 다른 문장에 run을 넣음 (두 번) | vocabWord |
+| rp17 핵심 어휘에 hold를 되살림 | vocabWord (답이 보임) |
+| 표시 [3]을 지움 | insertPositions (rp05·rp15) |
+| 보기 [4]를 [5]로 | insertPositions |
+| 독해 탭에서 표시를 그리지 않음 | 화면 검사 (rp05·rp15 삽입 표시 불일치) |
+| RC 풀세트에서 표시를 그리지 않음 | check-practice 문장 삽입 검사 |
+
+## 헤드리스 Chrome 확인
+
+독해 페이지를 폭 375px iframe에 넣고 rp05·rp15를 열었다.
+
+| 지문 | 페이지 가로 폭 / 화면 | 표시 | 표시 색 (라이트 / 다크) | 문장 삽입 문항 표시 |
+|---|---|---|---|---|
+| rp05 | 360 / 375 (넘침 없음) | [1] [2] [3] [4] | rgb(30, 79, 143) / rgb(145, 185, 239) | 예 |
+| rp15 | 360 / 375 (넘침 없음) | [1] [2] [3] [4] | rgb(30, 79, 143) / rgb(145, 185, 239) | 예 |

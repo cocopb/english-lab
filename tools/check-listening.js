@@ -473,6 +473,15 @@ function runListeningPage() {
       check(slot.textContent.indexOf(item.graphic.title) !== -1, item.id + " 도표 제목 없음");
     }
   }
+  // 시각 정보 문항은 "Look at the graphic."만 굵게(strong.listening-graphic-cue), 다른 문항에는 굵은 부분이 없다.
+  function checkGraphicCue(nodeId, question, label) {
+    var cues = $(nodeId).descendants().filter(function (node) { return node.classList.contains("listening-graphic-cue"); });
+    if (question.graphic) {
+      check(cues.length === 1 && cues[0].tagName === "STRONG" && cues[0].textContent === "Look at the graphic.", label + " 'Look at the graphic.' 굵게 표시 없음");
+    } else {
+      check(cues.length === 0, label + " 시각 정보 문항이 아닌데 굵은 표시가 있음");
+    }
+  }
   var graphicSeen = 0;
   P3.forEach(function (dialogue, index) {
     check($("part3-counter").textContent === "대화 " + (index + 1) + " / " + P3.length + " · " + dialogue.title,
@@ -484,6 +493,7 @@ function runListeningPage() {
     $("part3-start-questions").click();
     dialogue.questions.forEach(function (question, qIndex) {
       check($("part3-question").textContent === question.q, dialogue.id + " Q" + (qIndex + 1) + " 질문 불일치");
+      checkGraphicCue("part3-question", question, dialogue.id + " Q" + (qIndex + 1));
       var buttons = $("part3-choices").querySelectorAll(".listening-choice-answer");
       check(buttons.length === 4, dialogue.id + " Q" + (qIndex + 1) + " 선택지 수 " + buttons.length);
       buttons[question.answer].click();
@@ -513,6 +523,7 @@ function runListeningPage() {
     talk.questions.forEach(function (question, qIndex) {
       check($("part4-question-counter").textContent === "문제 " + (qIndex + 1) + " / " + talk.questions.length, talk.id + " Q" + (qIndex + 1) + " 문항 카운터");
       check($("part4-question").textContent === question.q, talk.id + " Q" + (qIndex + 1) + " 질문 불일치");
+      checkGraphicCue("part4-question", question, talk.id + " Q" + (qIndex + 1));
       var buttons = $("part4-choices").querySelectorAll(".listening-choice-answer");
       check(buttons.length === 4, talk.id + " Q" + (qIndex + 1) + " 선택지 수 " + buttons.length);
       buttons[question.answer].click();

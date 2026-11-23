@@ -618,7 +618,8 @@
         var choices = $("choices");
         state.answered = false;
         $("question-counter").textContent = "문제 " + (state.questionIndex + 1) + " / " + item.questions.length;
-        $("question").textContent = question.q;
+        if (window.ListeningGraphic) window.ListeningGraphic.fillPrompt($("question"), question.q); // "Look at the graphic."만 굵게
+        else $("question").textContent = question.q;
         $("feedback").replaceChildren();
         $("next").hidden = true;
         $("script-toggle").hidden = true;

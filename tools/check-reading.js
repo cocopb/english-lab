@@ -189,6 +189,79 @@ part6.forEach(function (set, index) {
   });
 });
 
+// ---------- Part 7 어휘(동의어)·문장 삽입 문항 ----------
+// 어휘 문항(질문에 'the word "X" is closest in meaning to'): question.word = X이고,
+//   X가 그 문서(question.part가 있으면 그 지문 번호, 없으면 지문 전체)의 문장에 단어 단위로 정확히 한 번 나와야 한다.
+//   한 번이어야 질문이 가리키는 자리가 하나로 정해진다.
+// 문장 삽입 문항(질문에 'positions marked [1], [2], [3], and [4]'): 보기가 [1]~[4]이고, question.insert(삽입할 문장)가
+//   질문에 큰따옴표로 들어 있으며 본문에는 없어야 한다. 그 지문의 문장 mark가 1·2·3·4로 하나씩 있어야 한다.
+// mark가 있는 지문에는 문장 삽입 문항이 하나 있어야 한다 (표시만 있고 문항이 없으면 실패).
+failures.vocabWord = [];
+failures.insertPositions = [];
+function documentSentences(passage, partNumber) {
+  if (Array.isArray(passage.parts) && passage.parts.length) {
+    var parts = partNumber ? [passage.parts[partNumber - 1]].filter(Boolean) : passage.parts;
+    return [].concat.apply([], parts.map(function (part) { return part.sentences || []; }));
+  }
+  return passage.sentences || [];
+}
+function escapeRegExp(text) { return String(text).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+passages.forEach(function (passage) {
+  var allSentences = documentSentences(passage);
+  var marks = allSentences.filter(function (s) { return s && s.mark !== undefined; }).map(function (s) { return s.mark; });
+  var insertQuestions = 0;
+  (passage.questions || []).forEach(function (question, qIndex) {
+    var qLabel = passage.id + " Q" + (qIndex + 1);
+    var vocabMatch = /the word "([^"]+)" is closest in meaning to/.exec(question.q || "");
+    if (vocabMatch || question.word !== undefined) {
+      var problems = [];
+      if (!vocabMatch || vocabMatch[1] !== question.word) problems.push("질문의 단어와 word가 다름");
+      var pattern = new RegExp("\\b" + escapeRegExp(question.word) + "\\b", "gi");
+      var count = documentSentences(passage, question.part).reduce(function (sum, s) { return sum + ((s.en || "").match(pattern) || []).length; }, 0);
+      if (count !== 1) problems.push("문서에 " + count + "번 나옴 (정확히 1번이어야 함)");
+      // 독해 탭은 핵심 어휘를 본문과 함께 보여 주므로, 같은 단어가 있으면 답(그 문맥의 뜻)이 미리 보인다.
+      var stem = String(question.word).toLowerCase().replace(/(es|s)$/, "");
+      (passage.vocab || []).forEach(function (entry) {
+        if (String(entry.w).toLowerCase().replace(/(es|s)$/, "") === stem) problems.push("핵심 어휘에 같은 단어가 있어 답이 보임: " + entry.w + " = " + entry.m);
+      });
+      if (problems.length) failures.vocabWord.push({ id: qLabel, word: question.word, part: question.part || "전체", problems: problems });
+    }
+    if (/positions marked \[1\], \[2\], \[3\], and \[4\]/.test(question.q || "") || question.insert !== undefined) {
+      insertQuestions += 1;
+      var issues = [];
+      if (JSON.stringify(question.choices) !== JSON.stringify(["[1]", "[2]", "[3]", "[4]"])) issues.push("보기가 [1]~[4]가 아님");
+      if (typeof question.insert !== "string" || !question.insert.trim()) issues.push("insert(삽입할 문장) 없음");
+      else {
+        if ((question.q || "").indexOf("\"" + question.insert + "\"") === -1) issues.push("질문에 삽입 문장이 큰따옴표로 없음");
+        if (allSentences.some(function (s) { return (s.en || "").indexOf(question.insert) !== -1; })) issues.push("삽입 문장이 이미 본문에 있음");
+      }
+      if (JSON.stringify(marks.slice().sort()) !== JSON.stringify([1, 2, 3, 4])) issues.push("본문 표시가 [1]~[4] 하나씩이 아님: " + JSON.stringify(marks));
+      if (issues.length) failures.insertPositions.push({ id: qLabel, problems: issues });
+    }
+  });
+  if (marks.length && insertQuestions !== 1) failures.insertPositions.push({ id: passage.id, problems: ["표시 [1]~[4]가 있는데 문장 삽입 문항이 " + insertQuestions + "개"] });
+});
+
+// 문항 유형 분포 (실패 아님). 질문 문장의 표현으로 나눈다. 같은 규칙을 계속 써서 분포 변화를 지켜본다.
+function part7QuestionType(question) {
+  var q = question.q || "";
+  if (/closest in meaning to/.test(q)) return "어휘(동의어)";
+  if (/positions marked \[1\]/.test(q)) return "문장 삽입";
+  if (/\bNOT\b/.test(q)) return "NOT";
+  if (/mean when|mean by/.test(q)) return "의도 파악";
+  if (/most likely|suggested|implied|imply|infer/.test(q)) return "추론";
+  if (/purpose|Why (was|did|is) .*\b(written|write|sent|send)\b|mainly (about|discuss)|main topic/i.test(q)) return "주제·목적";
+  return "세부사항";
+}
+var typeCounts = {}, typeTotal = 0;
+passages.forEach(function (passage) {
+  (passage.questions || []).forEach(function (question) {
+    var type = part7QuestionType(question);
+    typeCounts[type] = (typeCounts[type] || 0) + 1;
+    typeTotal += 1;
+  });
+});
+
 var failureCount = 0;
 Object.keys(failures).forEach(function (key) { if (failures[key].length) failureCount += 1; });
 console.log("요약: 전략 " + strategies.length + "개, 지문 " + passages.length + "개, Part 6 " + part6.length +
@@ -197,6 +270,12 @@ Object.keys(failures).forEach(function (key) {
   console.log("\n" + key + " (" + failures[key].length + ")");
   if (!failures[key].length) console.log("  없음");
   failures[key].forEach(function (failure) { console.log("  " + JSON.stringify(failure)); });
+});
+
+console.log("\n[참고] Part 7 문항 유형 분포 (" + typeTotal + "문항, 질문 표현으로 분류) — 실패 아님");
+["주제·목적", "세부사항", "추론", "NOT", "의도 파악", "어휘(동의어)", "문장 삽입"].forEach(function (type) {
+  var count = typeCounts[type] || 0;
+  console.log("  " + type + " " + count + " (" + Math.round(count / typeTotal * 100) + "%)");
 });
 
 Object.keys(notes).forEach(function (key) {
@@ -338,9 +417,15 @@ function runReadingPage(hash) {
     var layoutOk = passage.parts
       ? parts.length === passage.parts.length && dividers === passage.parts.length - 1
       : parts.length === 0 && headers === 1;
-    var ok = translations.length === expected && allShown && toggleVisible && layoutOk;
+    // 문장 삽입 표시: 데이터의 mark 순서대로 " [n]"이 문장 끝에 그려져야 한다 (없는 지문에는 없음).
+    var expectedMarks = (passage.parts ? [].concat.apply([], passage.parts.map(function (part) { return part.sentences; })) : passage.sentences)
+      .filter(function (s) { return s.mark; }).map(function (s) { return " [" + s.mark + "]"; });
+    var shownMarks = exercise.querySelectorAll(".reading-insert-mark").map(function (node) { return node.textContent; });
+    var marksOk = JSON.stringify(shownMarks) === JSON.stringify(expectedMarks);
+    var ok = translations.length === expected && allShown && toggleVisible && layoutOk && marksOk;
     console.log("  " + passage.id + ": 문장 " + translations.length + "/" + expected + ", 지문 구획 " + parts.length +
-      ", 구분선 " + dividers + ", 해석 전부 표시 " + allShown + " → " + (ok ? "OK" : "실패"));
+      ", 구분선 " + dividers + ", 해석 전부 표시 " + allShown + (expectedMarks.length ? ", 삽입 표시 " + shownMarks.join("").trim() : "") +
+      (marksOk ? "" : ", 삽입 표시 불일치 " + JSON.stringify(shownMarks)) + " → " + (ok ? "OK" : "실패"));
     if (!ok) renderFailures.push({ id: passage.id });
   });
   return renderFailures;

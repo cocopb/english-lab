@@ -124,6 +124,17 @@
       return node;
     }
 
+    // Part 7 문장 삽입 위치 표시 (독해 탭과 같은 모양). 문장 데이터의 mark: 1~4.
+    function sentenceNode(className, line) {
+      var node = element("p", className, line.en);
+      if (line.mark) {
+        var mark = element("span", "reading-insert-mark", " [" + line.mark + "]");
+        mark.setAttribute("aria-label", "삽입 위치 " + line.mark);
+        node.appendChild(mark);
+      }
+      return node;
+    }
+
     function button(className, text, onClick) {
       var node = element("button", className, text);
       node.type = "button";
@@ -595,7 +606,7 @@
           container.appendChild(header);
         }
         var body = element("div", "reading-sentences en");
-        (part.sentences || []).forEach(function (line) { body.appendChild(element("p", "practice-sentence", line.en)); });
+        (part.sentences || []).forEach(function (line) { body.appendChild(sentenceNode("practice-sentence", line)); });
         container.appendChild(body);
       });
       return box;
@@ -1295,7 +1306,7 @@
         }
         var body = element("div", "reading-sentences");
         (part.sentences || []).forEach(function (line) {
-          body.appendChild(element("p", "practice-sentence en", line.en));
+          body.appendChild(sentenceNode("practice-sentence en", line));
           if (line.ko) {
             var ko = element("p", "practice-review-ko", line.ko);
             ko.hidden = true;
@@ -1733,6 +1744,14 @@
       if (questionVisible) {
         var heading = element("h3", "practice-question-prompt" + (single ? "" : " en"),
           item.number + ". " + (item.part === "p1" ? "사진을 가장 잘 묘사한 문장을 고르세요." : item.part === "p2" ? "알맞은 응답을 고르세요." : item.prompt));
+        if (!single && window.ListeningGraphic) {
+          // 시각 정보 문항은 "Look at the graphic."만 굵게. 번호는 앞에 그대로 둔다.
+          var number = element("span", "", item.number + ". ");
+          var promptText = element("span", "");
+          window.ListeningGraphic.fillPrompt(promptText, item.prompt);
+          heading.textContent = "";
+          heading.append(number, promptText);
+        }
         heading.tabIndex = -1;
         exam.heading = heading;
         area.appendChild(heading);

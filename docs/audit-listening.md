@@ -524,3 +524,14 @@ graphic: { title: "제목", columns: ["열", ...], rows: [["칸", ...], ...] }
 | p314 | 360 / 375 (넘침 없음) | 384/284 (안쪽 스크롤) | 예 | rgb(32, 35, 41), 글자 rgb(243, 240, 236) |
 | pt403 | 360 / 375 (넘침 없음) | 478/284 (안쪽 스크롤) | 예 | rgb(32, 35, 41), 글자 rgb(243, 240, 236) |
 | pt410 | 360 / 375 (넘침 없음) | 384/284 (안쪽 스크롤) | 예 | rgb(32, 35, 41), 글자 rgb(243, 240, 236) |
+
+# Part 3·4 보강 후속 — p309 의도 파악 대사, 'Look at the graphic.' 굵게 (2026-11-23)
+
+| 항목 | 전 | 후 |
+|---|---|---|
+| p309 4번째 대사 (Lena) | Twenty minutes each way, three days in a row. That adds up. | Don't remind me. I was on that trip too, and twenty minutes each way felt longer every day. |
+| p309 Q2 | What does Lena mean when she says, "That adds up"? | What does Lena mean when she says, "Don't remind me"? 정답 She also had an unpleasant stay there. 글자 그대로의 뜻(She asks Priya not to repeat the information)이 함정 보기 |
+| 시각 정보 문항 질문 | 전부 같은 굵기 | 'Look at the graphic.'만 strong(.listening-graphic-cue)으로 굵게. 리스닝 탭과 LC 풀세트 모두. 도표의 고정폭 글꼴은 그대로 |
+
+- 'That adds up'은 '말이 된다'로도 읽혀 뜻이 둘이었다. Priya가 그 호텔에 작년에 묵었다고 하므로 Lena도 그 출장에 있었던 것으로 해서, 'Don't remind me'가 '나도 그때 힘들었다'는 뜻 하나로만 읽히게 했다.
+- check-listening: 시각 정보 문항은 질문에 굵은 'Look at the graphic.'이 정확히 하나 있고, 다른 문항에는 굵은 부분이 없는지 본다. 굵게 표시를 끄는 버그를 심으면 p305 Q2·p308 Q3 등이 실패한다.

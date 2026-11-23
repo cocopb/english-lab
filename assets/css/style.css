@@ -345,6 +345,9 @@ h1, h2, h3, p { overflow-wrap: anywhere; }
 .listening-graphic-table th, .listening-graphic-table td { padding: 7px 12px; text-align: left; white-space: nowrap; border-bottom: 1px solid var(--line); }
 .listening-graphic-table th { color: var(--ink-soft); font-weight: 600; }
 .listening-graphic-table tbody tr:last-child td { border-bottom: 0; }
+.listening-graphic-cue { font-weight: 700; }
+/* Part 7 문장 삽입 위치 [1]~[4]: 본문 흐름을 끊지 않게 작고 옅게, 줄바꿈 없이 문장 끝에 붙인다 */
+.reading-insert-mark { margin-left: 2px; font-size: 0.82em; font-weight: 700; color: var(--blue); white-space: nowrap; }
 .listening-speaker { color: var(--blue); font-weight: 700; }
 .listening-now-speaking { margin: 8px 0 0; color: var(--blue); font-size: 13px; font-weight: 700; }
 /* Part 1 사진 묘사 (리스닝 탭 · LC 풀세트 공용) */

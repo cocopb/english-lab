@@ -41,5 +41,24 @@
     return figure;
   }
 
-  window.ListeningGraphic = { render: render };
+  // 질문 글자를 노드에 채운다. "Look at the graphic." 부분만 굵게 하고 나머지는 그대로 둔다.
+  var CUE = "Look at the graphic.";
+  function fillPrompt(node, text) {
+    text = String(text);
+    node.textContent = "";
+    if (text.indexOf(CUE) !== 0) {
+      node.textContent = text;
+      return node;
+    }
+    var cue = document.createElement("strong");
+    cue.className = "listening-graphic-cue";
+    cue.textContent = CUE;
+    var rest = document.createElement("span");
+    rest.textContent = text.slice(CUE.length);
+    node.appendChild(cue);
+    node.appendChild(rest);
+    return node;
+  }
+
+  window.ListeningGraphic = { render: render, fillPrompt: fillPrompt };
 }());

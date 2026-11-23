@@ -272,14 +272,14 @@ window.PART3 = [
       { speaker: "W1", text: "Our flights to Lisbon are booked, but the hotel next to the conference center is full." },
       { speaker: "M1", text: "Priya, how far is the next closest one?" },
       { speaker: "W2", text: "About twenty minutes by tram. I stayed there last year. It was clean, but the breakfast was poor." },
-      { speaker: "W1", text: "Twenty minutes each way, three days in a row. That adds up." },
+      { speaker: "W1", text: "Don't remind me. I was on that trip too, and twenty minutes each way felt longer every day." },
       { speaker: "M1", text: "What if one of us waits for a cancellation at the conference hotel, and the other two take the tram?" },
       { speaker: "W2", text: "I would rather keep the team together than lose time coordinating. Lena, could you book the rooms, since you handled the flights?" },
       { speaker: "W1", text: "Sure. I will book all three rooms there this afternoon." }
     ],
     questions: [
       { q: "What are the speakers mainly discussing?", choices: ["A change to the conference program", "A flight cancellation", "A hotel's renovation", "Travel arrangements for a conference"], answer: 3, explanation: "근거: 1번째 대사(Lena) Our flights to Lisbon are booked, but the hotel next to the conference center is full. 이후 어느 호텔에 묵을지 정한다. 오답: 행사 일정 변경(A)은 없고, 항공편은 이미 예약됐으며(B), 호텔 공사(C)는 나오지 않는다. 취소분을 기다리자는 것은 호텔 방 이야기다." },
-      { q: "What does Lena mean when she says, \"That adds up\"?", choices: ["She has calculated the hotel bill", "The travel time would become significant", "She thinks the tram is faster than a taxi", "She has stayed at the hotel before"], answer: 1, quote: "That adds up", explanation: "의도 파악 문제다. 근거: 3번째 대사(Priya)가 두 번째 호텔이 트램으로 20분이라고 하자, 4번째 대사(Lena)가 Twenty minutes each way, three days in a row. That adds up이라고 한다. 하루 왕복 40분이 사흘이면 시간이 꽤 쌓인다는 걱정이다. 오답: 숙박비 계산(A)이 아니라 이동 시간 이야기이고, 택시(C)는 나오지 않으며, 작년에 묵은 사람(D)은 Priya다." },
+      { q: "What does Lena mean when she says, \"Don't remind me\"?", choices: ["She asks Priya not to repeat the information", "She also had an unpleasant stay there", "She has never stayed at that hotel", "She wants to change the travel dates"], answer: 1, quote: "Don't remind me", explanation: "의도 파악 문제다. 근거: 3번째 대사(Priya)가 두 번째 호텔에 작년에 묵었는데 아침이 별로였다고 하자, 4번째 대사(Lena)가 Don't remind me라고 받고 I was on that trip too, and twenty minutes each way felt longer every day라고 덧붙인다. '상기시키지 마라'가 아니라 '나도 그때 힘들었다'는 뜻이다. 오답: 정보를 반복하지 말라는 부탁(A)은 글자 그대로의 뜻이라 함정이고, Lena도 그 출장에 갔으므로 묵은 적 없다(C)가 아니며, 일정 변경(D)은 나오지 않는다." },
       { q: "What will Lena do this afternoon?", choices: ["Book the rooms", "Call the conference center", "Change the flights", "Ask for a discount"], answer: 0, explanation: "근거: 6번째 대사(Priya) Lena, could you book the rooms ...?에 7번째 대사(Lena)가 I will book all three rooms there this afternoon이라고 답한다. 오답: 컨퍼런스 센터 연락(B)·항공편 변경(C)·할인 요청(D)은 말하지 않았다." }
     ]
   },

@@ -440,6 +440,7 @@ const gen = loadPracticePage();
 check('풀세트 진입 화면에 세 모드', gen.stage.querySelectorAll('.practice-mode-card').length === 3);
 const genProblems = [];
 let maxRuleSeen = 0, leakCount = 0, omrLabels = null;
+const insertProblems = []; let insertShown = 0;
 const EXPECTED_SECTIONS = { 'Part 5': 30, 'Part 6': 16, 'Part 7 단일': 29, 'Part 7 이중': 10, 'Part 7 삼중': 15 };
 for (let run = 0; run < 20; run++) {
   if (!startFull(gen)) { genProblems.push(run + '회: 시작 버튼 없음'); break; }
@@ -464,6 +465,13 @@ for (let run = 0; run < 20; run++) {
       passageNumbers.set(info.passage.id, entry);
     }
     leakSelectors.forEach(sel => { if (gen.stage.querySelectorAll(sel).length) leakCount++; });
+    // 문장 삽입: mark가 있는 지문이면 [1]~[4]가 데이터 순서대로 본문에 보여야 한다. 없는 지문에는 표시가 없어야 한다.
+    if (info.passage) {
+      const want = [].concat(...(info.passage.parts || [info.passage]).map(p => p.sentences)).filter(s => s.mark).map(s => ' [' + s.mark + ']');
+      const shown = gen.stage.querySelectorAll('.reading-insert-mark').map(e => e.textContent);
+      if (JSON.stringify(shown) !== JSON.stringify(want)) insertProblems.push(run + '회 ' + info.number + '번 ' + info.passage.id + ' 표시 ' + JSON.stringify(shown));
+      if (info.q && info.q.insert) insertShown++;
+    }
   }
   Object.keys(EXPECTED_SECTIONS).forEach(label => {
     if (sectionCounts[label] !== EXPECTED_SECTIONS[label]) genProblems.push(run + '회 ' + label + ' ' + sectionCounts[label] + '문항');
@@ -490,6 +498,8 @@ check('20회 모두 100문항 · 30/16/29/10/15 · 번호 1~100 · 지문 안 �
 check('Part 5 한 유형 6문항 이하', maxRuleSeen <= 6, '20회 중 한 유형 최대 ' + maxRuleSeen + '문항');
 check('OMR 파트 경계 표시', JSON.stringify(omrLabels) === JSON.stringify(['Part 5 · 1~30번 (지금)', 'Part 6 · 31~46번', 'Part 7 단일 · 47~75번', 'Part 7 이중 · 76~85번', 'Part 7 삼중 · 86~100번']), (omrLabels || []).join(' | '));
 check('푸는 중 어휘·해석 없음 (20회 × 100문항 화면)', leakCount === 0, leakCount + '건');
+check('문장 삽입: 표시가 있는 지문은 [1]~[4]가 본문에 함께 보이고, 다른 지문에는 없음 (20회 동안 문장 삽입 문항이 나옴)', insertProblems.length === 0 && insertShown > 0,
+  insertProblems.slice(0, 3).join(' ; ') || '문장 삽입 문항 ' + insertShown + '회 표시');
 
 // --- 2. 중간 저장 → 앱을 닫고 3시간 뒤 다시 열기 → 이어서 풀기 → 제출 ---
 console.log('\n[RC 풀세트 — 중간 저장과 이어서 풀기]');
