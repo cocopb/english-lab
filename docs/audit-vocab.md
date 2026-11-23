@@ -1621,3 +1621,419 @@ README '검사가 실제로 잡는지 확인할 때'에 적었다. 요약하면 
 - v715 peak hours → peak season, peak performance
 - v717 markup → makeup, mock-up
 - v719 price match → price hike, match point
+
+# 4차 감사 2부 — Day 19\~24 위반 교체, 규칙 1 다듬기와 재점검, 뜻 겹침 쌍 (2026-11-23)
+
+## 기준 다듬기 — 규칙 1
+
+- **오답 3개 중 최소 2개는 뜻이 안 맞아서 지워져야 한다.** 나머지 1개는 범주(사람/사물, 품사, 주제 불일치)로 지워져도 된다.
+- 판정: 정답과 같은 품사·같은 종류(사람이면 사람, 장소면 장소)이고 같은 주제인데 문장 뜻과 맞지 않으면 "뜻"으로 본다. 품사가 다르거나, 사람 빈칸에 사물이 오거나, 주제가 전혀 다르면 "범주"로 본다.
+
+## 결과
+
+| 시점 | 모르는 오답이 있는 세트 | 위반 | 허용 |
+|---|---|---|---|
+| 2부 시작 | 363 | 60 | 303 |
+| 2부 끝 | 323 | **0** | 323 |
+
+| 작업 | 세트 수 | 그중 예문도 고침 |
+|---|---|---|
+| Day 19\~24 위반 교체 | 60 | 44 |
+| 규칙 1 재점검 (3차·4차에서 교체한 210세트 중) | 37 | 19 |
+| 지난 판단 반영 | 7 | 6 |
+| **합계** | **104** | **69** |
+
+- 그대로 두기로 한 세트: v376 lawsuit, v448 extinguisher, v515 keynote speech, v648 faculty, v444 ergonomic.
+- 새 오답은 하나씩 빈칸에 넣어 통하는지 봤다. 통하는 후보는 이유 칸에 "통해서 제외"로 적었다.
+- 관사 단서는 단어장 전체(720세트)를 다시 훑었다. 이번 교체 뒤 0건이다. Day 19부터 24까지에서 남아 있던 것은 1부에서 고친 v644·v653뿐이었다.
+- 예문 속 오답 단어는 1건 나왔다. v664 preliminary의 예문에 'the final count'가 있는데 final을 오답으로 넣으려 했다. 그래서 final 대신 complete를 넣었다.
+
+## 1. Day 19\~24 위반 교체 (60)
+
+| id | Day | 단어 | 전 | 후 | 이유 |
+|---|---|---|---|---|---|
+| v545 | 19 | packing slip | pay slip, parking slot, payroll | pay slip, shipping fee, price tag | pay slip은 철자 함정으로 남겼다. payroll·parking slot → shipping fee·price tag. 예문에 '물품이 모두 적혀 있는'을 넣었다 (invoice·packing list는 통해서 제외) |
+| v548 | 19 | loading dock | loading time, download, dock worker | loading time, front desk, lobby | download·dock worker → front desk·lobby. 예문에 '창고 뒤편·상자를 바로 내릴 수 있도록'을 넣었다 (parking lot·storeroom은 통해서 제외) |
+| v549 | 19 | customs clearance | customer base, clarity, costume | customer base, customer service, refund | clarity·costume → customer service·refund. 예문에 '국내로 들어오는 소포 확인'을 넣었다 (delivery·shipping·inspection은 통해서 제외) |
+| v552 | 19 | distribution center | distribution list, contribution, center stage | distribution list, call center, head office | contribution·center stage → call center·head office. 예문에 '시 외곽의 대형 창고'를 넣었다 (warehouse·plant는 통해서 제외, showroom은 모르는 단어라 제외) |
+| v562 | 19 | fragile | fragrant, frank, fiscal | fragrant, empty, free | frank·fiscal → empty·free. 예문에 '유리잔이 깨질 수 있어서'를 넣었다 (heavy·urgent는 통해서 제외) |
+| v563 | 19 | bulk order | bulletin, bulb, bulldozer | bulb, back order, sample | bulletin·bulldozer → back order·sample (large order·wholesale order는 통해서 제외, rush order는 모르는 단어라 제외) |
+| v568 | 19 | proof of delivery | proof of age, proof of concept, delivery room | delivery room, packing slip, return policy | proof of age·proof of concept → packing slip·return policy. 예문에 '수령인이 서명한'을 넣었다 (receipt·signature는 통해서 제외) |
+| v576 | 20 | admit | admire, omit, adopt | admire, adapt, adopt | omit → adapt. adopt는 철자 함정으로 남겼다. 예문에 '병실에 사흘'을 넣었다 (taken·sent·rushed는 통해서 제외, attract는 모르는 단어라 제외) |
+| v579 | 20 | prescription | subscription, inscription, prediction | subscription, medical certificate, description | inscription·prediction → medical certificate·description. 예문에 '약을 받으려고'를 넣었다 (note·order는 통해서 제외) |
+| v580 | 20 | pharmacy | pharmaceutical, policy, warranty | cafeteria, gift shop, policy | pharmaceutical·warranty → cafeteria·gift shop. 예문에 '약을 받을 수 있는'을 넣었다 (drugstore·clinic은 통해서 제외) |
+| v582 | 20 | symptom | system, symphony, sympathy | system, schedule, symphony | sympathy → schedule. symphony는 철자 함정으로 남겼다. 예문에 '열이나 기침 같은'을 넣었다 (problem·pain은 통해서 제외) |
+| v583 | 20 | diagnosis | diagnose, diagonal, diamond | diamond, dosage, diet | diagnose·diagonal → dosage·diet. 예문에 '검사에서 심장 문제로 밝혀졌다'를 넣었다 (decision·result는 통해서 제외) |
+| v590 | 20 | vaccination | vacancy, vacuum, village | vacancy, vacation, village | vacuum → vacation. 예문에 'against measles'를 넣었다 (shots·checkups는 통해서 제외) |
+| v592 | 20 | physical therapy | physical appearance, physical evidence, therapy dog | physical appearance, first aid, checkup | physical evidence·therapy dog → first aid·checkup. 예문에 '다친 무릎을 움직이게 돕는 운동'을 넣었다 (the gym·rehab은 통해서 제외) |
+| v593 | 20 | medical certificate | gift certificate, certificate of deposit, medical student | medical student, prescription, reference letter | gift certificate·certificate of deposit → prescription·reference letter. 예문에 '실제로 아팠다는 것을 보여 주는'을 넣었다 (doctor's note·sick note는 통해서 제외) |
+| v594 | 20 | co-payment | copyright, co-worker, co-pilot | premium, refund, copyright | co-worker·co-pilot → premium·refund. 예문에 '진료비 중 본인이 내는 부분'을 넣었다 (fee·charge는 통해서 제외) |
+| v599 | 20 | chronic | chronicle, chronological, toxic | sudden, temporary, chronicle | chronological·toxic → sudden·temporary. 예문에 '3개월 넘게 이어진'을 넣었다 (severe·lower는 통해서 제외) |
+| v601 | 21 | accompany | accomplish, accumulate, acclaim | avoid, announce, accomplish | accumulate·acclaim → avoid·announce. 예문에 '내내 곁에 있어야'를 넣었다 (escort·guide·take는 통해서 제외) |
+| v602 | 21 | adapt | adopt, adept, adore | adopt, attend, admit | adept·adore → attend·admit. 예문에 '번역하고 예시를 바꿔서'를 넣었다 (adjust·changed·tailored는 통해서 제외) |
+| v606 | 21 | commence | commend, comment, commute | complete, stop, commute | commend·comment → complete·stop. 예문에 '5월에 끝낼 것으로'를 넣었다 (begin·start는 통해서 제외, continue는 '멈췄던 공사'로 읽혀 제외) |
+| v609 | 21 | comprise | compromise, compress, comprehensive | compromise, complete, compare | compress·comprehensive → complete·compare. 예문에 'in total, three from each department'를 넣었다 (includes·has·contains는 통해서 제외) |
+| v610 | 21 | convene | convince, convert, convenient | convince, complain, cancel | convert·convenient → complain·cancel. 예문에 '대회의실에서'를 넣었다 (meet·gather는 통해서 제외, conclude는 모르는 단어라 제외) |
+| v611 | 21 | cope with | hope for, coincide with, concur with | hope for, agree with, come up with | coincide with·concur with → agree with·come up with (deal with·keep up with·handle은 통해서 제외) |
+| v616 | 21 | exempt | excerpt, attempt, exam | excerpt, remind, require | attempt·exam → remind·require. 예문에 '더 이상 내지 않아도'를 넣었다 (frees·excuses는 통해서 제외) |
+| v625 | 21 | modify | modest, notify, moderate | notify, measure, memorize | modest·moderate → measure·memorize. 예문에 '벽을 더 두껍게 해서'를 넣었다 (changed·updated·revised는 통해서 제외) |
+| v637 | 22 | transcript | transit, translate, transport | transport, receipt, transfer | transit·translate → receipt·transfer. 예문에 '수강 과목과 성적이 모두 적힌'을 넣었다 (record·report는 통해서 제외) |
+| v643 | 22 | diploma | diplomat, dilemma, disposal | disposal, discount, deposit | diplomat·dilemma → discount·deposit. 예문에 '모든 과정을 마치면 졸업식에서'를 넣었다 (degree·certificate는 통해서 제외) |
+| v646 | 22 | graduate | gradual, gratitude, aggravate | withdraw, drop out, gradual | gratitude·aggravate → withdraw·drop out. '수료증을 받았다'와 모순이다. gradual은 철자 함정으로 남겼다 (finished·completed는 통해서 제외) |
+| v650 | 22 | textbook | context, texture, text message | text message, tuition, lecture | context·texture → tuition·lecture. 예문에 '중고는 절반 값'을 넣었다 (book·workbook·guide는 통해서 제외) |
+| v653 | 22 | refresher course | main course, golf course, air freshener | main course, coffee break, business trip | golf course·air freshener → coffee break·business trip. 예문에 '입사 때 배운 기술을 새로 익히려고'를 넣었다 (training·workshop은 통해서 제외) |
+| v655 | 22 | proficiency | proficient, deficiency, profit | promotion, profit, deficiency | proficient → promotion. deficiency는 철자 함정으로 남겼다. 예문에 '말하기와 쓰기를 잘해야'를 넣었다 (fluency·skill은 통해서 제외) |
+| v658 | 22 | e-learning | e-commerce, e-waste, learning curve | e-commerce, weekend, conference room | e-waste·learning curve → weekend·conference room. 예문에 '컴퓨터로 언제든'을 넣었다 (online·the web은 통해서 제외) |
+| v663 | 23 | subsequent | sufficient, sequence, sustainable | earlier, sufficient, sustainable | sequence → earlier ('첫 시험'과 모순). sufficient는 철자 비슷한 아는 단어로 남겼다 (later·remaining·following은 통해서 제외, previous는 모르는 단어라 제외) |
+| v664 | 23 | preliminary | disciplinary, legendary, library | complete, official, library | disciplinary·legendary → complete·official. 'the final count comes Friday'와 모순이다. 예문에 final이 있어 final은 오답으로 쓰지 않았다 (early·initial·rough는 통해서 제외) |
+| v665 | 23 | substantial | substandard, substitute, subway | small, tiny, subway | substandard·substitute → small·tiny ('nearly 40 percent'와 모순. large·major는 통해서 제외, minor는 모르는 단어라 제외) |
+| v666 | 23 | adjacent | adjective, adolescent, absent | absent, similar, adjective | adolescent → similar. adjective는 철자 함정으로 남겼다. 예문에 '정문 바로 옆'을 넣었다 (next·close·attached는 통해서 제외) |
+| v668 | 23 | beneficial | beneficiary, artificial, beneath | dangerous, painful, beneficiary | artificial·beneath → dangerous·painful ('허리 통증을 줄인다'와 모순. helpful·good은 통해서 제외) |
+| v669 | 23 | diverse | adverse, durable, division | similar, young, adverse | durable·division → similar·young ('학생부터 은퇴자까지'와 모순. varied·different는 통해서 제외) |
+| v675 | 23 | redundant | resident, relevant, rented | popular, important, relevant | resident·rented → popular·important ('두 사람이 같은 일을 해서'와 맞지 않는다. unnecessary·extra는 통해서 제외, necessary는 모르는 단어라 제외) |
+| v677 | 23 | versatile | volatile, vertical, version | useless, temporary, vertical | volatile·version → useless·temporary. 예문에 '공구 세 개를 따로 살 필요가 없다'를 넣었다 (useful·handy·flexible은 통해서 제외) |
+| v678 | 23 | imminent | prominent, permanent, immigrant | finished, far, permanent | prominent·immigrant → finished·far ('몇 분 거리'와 모순. close·near·coming는 통해서 제외, distant는 모르는 단어라 제외) |
+| v681 | 23 | nevertheless | therefore, furthermore, whereas | therefore, otherwise, for example | furthermore·whereas → otherwise·for example (however·still은 통해서 제외) |
+| v682 | 23 | otherwise | likewise, moreover, clockwise | therefore, nevertheless, likewise | moreover·clockwise → therefore·nevertheless. likewise는 철자 함정으로 남겼다 (or else·if not은 통해서 제외) |
+| v684 | 23 | eventually | eventful, evenly, previously | evenly, never, first | eventful·previously → never·first. 예문에 '마침내 물이 멈췄다'를 넣었다 (finally·successfully는 통해서 제외, immediately는 모르는 단어라 제외) |
+| v688 | 23 | primarily | exclusively, primary, privately | entirely, never, primary | exclusively·privately → entirely·never ('일부는 교육비로'와 모순. mainly·mostly는 통해서 제외, rarely는 모르는 단어라 제외) |
+| v693 | 24 | checkout counter | checkout time, countertop, checkbook | fitting room, parking space, checkout time | countertop·checkbook → fitting room·parking space. checkout time은 철자 함정으로 남겼다. 예문에 '계산하려고 오래 기다렸다'를 넣었다 (registers·lanes는 통해서 제외) |
+| v695 | 24 | shelf | shell, self, shelve | shell, floor, drawer | self·shelve → floor·drawer ('발판을 쓰라'와 상자 크기와 맞지 않는다. rack·level은 통해서 제외) |
+| v697 | 24 | clearance sale | security clearance, sale price, sales tax | sale price, new arrival, loyalty program | security clearance·sales tax → new arrival·loyalty program. 예문에 '오래된 재고를 없애려고'를 넣었다 (sale section·outlet은 통해서 제외) |
+| v699 | 24 | price tag | price war, price range, name tag | price war, barcode, receipt | price range·name tag → barcode·receipt. 예문에 'on the shirt'를 넣었다 (label·sticker는 통해서 제외, name tag는 모르는 단어라 제외) |
+| v700 | 24 | barcode | dress code, barricade, bar chart | signature, password, barricade | dress code·bar chart → signature·password. barricade는 철자 함정으로 남겼다 (card·coupon·QR code는 통해서 제외) |
+| v703 | 24 | store credit | credit score, credit limit, storeroom | credit score, credit card, refund | credit limit·storeroom → credit card·refund ('not cash'와 맞지 않는다. gift card·voucher는 통해서 제외) |
+| v706 | 24 | shoplifting | weightlifting, uplifting, shop floor | shop floor, store credit, markdown | weightlifting·uplifting → store credit·markdown. 예문에 '도둑을 감시하는'을 넣었다 (theft·crime은 통해서 제외) |
+| v707 | 24 | security tag | security deposit, security guard, social security | price tag, hanger, receipt | security deposit·guard·social security → price tag·hanger·receipt. 예문에 'clipped to the jacket'을 넣었다 (sensor·alarm tag는 통해서 제외) |
+| v709 | 24 | storefront | storyline, seafront, statement | statement, basement, kitchen | storyline·seafront → basement·kitchen. 예문에 '거리에 면한'을 넣었다 (front·sign·window는 통해서 제외, showroom은 모르는 단어라 제외) |
+| v710 | 24 | flagship store | flagpole, store brand, flash drive | store brand, headquarters, warehouse | flagpole·flash drive → headquarters·warehouse. 예문에 '가장 크고 중요한 매장'을 넣었다 (main store·outlet은 통해서 제외) |
+| v713 | 24 | sample | simple, ample, staple | simple, coupon, receipt | ample·staple → coupon·receipt. 예문에 '사기 전에 맛볼 수 있도록'을 넣었다 (cups·tastings는 통해서 제외) |
+| v714 | 24 | foot traffic | footnote, foot soldier, traffic light | traffic light, markup, store credit | footnote·foot soldier → markup·store credit. 예문에 '구경하러 들어오는 사람이 많아졌다'를 넣었다 (rent·sales·business는 통해서 제외) |
+| v715 | 24 | peak hours | peak season, after hours, peak performance | after hours, closing time, peak season | peak performance → closing time. peak season은 철자 함정으로 남겼다 (lunchtime·rush hour는 통해서 제외) |
+| v717 | 24 | markup | makeup, backup, mock-up | backup, demand, sales tax | makeup·mock-up → demand·sales tax ('거의 안 팔린다'와 모순. price·margin은 통해서 제외, markdown은 '팔리지 않아 할인 폭이 크다'로 통해서 제외) |
+| v719 | 24 | price match | price hike, price list, match point | price list, price tag, price hike | match point → price tag. price hike는 철자 함정으로 남겼다. 예문에 '그 가격으로 낮춰 드린다'를 넣었다 (price guarantee는 통해서 제외) |
+
+## 2. 규칙 1 재점검 (37)
+
+3차 감사와 4차 감사 1부에서 교체한 210세트를 다시 봤다. 뜻으로 지워지는 오답이 1개 이하인 세트만 고쳤다. 대부분 Day 1부터 12까지에서 철자만 맞춰 고른 오답(section·segment·shelter 같은 것)이었다.
+
+| id | Day | 단어 | 전 | 후 | 이유 |
+|---|---|---|---|---|---|
+| v006 | 1 | schedule | section, segment, shelter | shelter, ship, share | section·segment는 범주로만 지워졌다 → ship·share. 예문에 시간·장소를 넣었다 (canceled·postponed는 통해서 제외, solve는 모르는 단어라 제외) |
+| v016 | 1 | arrange | arrive, assign, arise | assign, avoid, arrive | arrive·arise는 문법으로 지워졌다 → avoid. 예문에 '계약을 함께 논의할 수 있도록'을 넣었다 (attend·set up은 통해서 제외) |
+| v034 | 2 | budget | bulletin, button, bridge | profit, deadline, button | bulletin·bridge는 주제가 달라 지워졌다 → profit·deadline. 예문에 '계획보다 2,000달러 더 써서'를 넣었다 (schedule은 통해서 제외) |
+| v099 | 4 | beverage | average, coverage, beach | average, dessert, snack | average·coverage·beach가 모두 범주로 지워졌다 → dessert·snack. 예문에 '커피, 차, 주스 같은'을 넣었다 (drink·dish는 통해서 제외) |
+| v111 | 4 | itinerary | inventory, injury, library | inventory, invoice, injury | injury·library는 범주로 지워졌다 → invoice. 예문에 '항공편 시간과 날짜별 호텔이 적힌'을 넣었다 (schedule·agenda는 통해서 제외) |
+| v120 | 4 | verify | void, vote, version | visit, vote, version | void·version은 품사가 달랐다 → visit (confirm·check는 통해서 제외) |
+| v128 | 5 | duplicate | durable, deficit, delegate | durable, deficit, deposit | durable(형용사)·delegate(사람) → deposit. 예문에 '서명한 양식의'를 넣었다 (copy·draft는 통해서 제외) |
+| v138 | 5 | prompt | proud, profit, promise | proud, late, profit | profit·promise는 범주로 지워졌다 → late. 예문에 '한 시간 안에 받았다'를 넣었다 (quick·kind는 통해서 제외) |
+| v144 | 5 | thorough | through, thirsty, thought | through, quick, brief | through·thought는 품사가 달랐다 → quick·brief. '방을 모두 확인'과 모순이다 (careful·full은 통해서 제외) |
+| v146 | 5 | valid | valley, versatile, vacation | valley, void, expired | valley·vacation은 범주로 지워졌다 → void·expired. 예문에 '그 전에는 언제든 쓸 수 있다'를 넣었다 (available·good은 통해서 제외) |
+| v158 | 6 | position | pollution, provision, physician | pollution, passport, permit | pollution·physician은 범주로 지워졌다 → passport·permit. 예문에 'of sales manager'를 넣었다 (job·role·opening은 통해서 제외) |
+| v168 | 6 | personnel | personal, passenger, perishable | personal, marketing, shipping | personal·passenger·perishable이 모두 범주로 지워졌다 → marketing·shipping (accounting·HR은 통해서 제외) |
+| v174 | 6 | raise | race, ride, rating | ride, rest, refund | race·ride는 범주로 지워졌다 → rest·refund. '월급이 오르지 않아서'와 맞지 않는다 (bonus·promotion은 통해서 제외) |
+| v176 | 6 | turnover | tutor, traveler, tower | tutor, tax, interest | tutor·traveler·tower가 모두 사람·사물 범주였다 → tax·interest. 예문에 '1년 안에 그만둔다'를 넣었다 (quit·dropout은 통해서 제외) |
+| v180 | 6 | headquarters | hardware, headphone, heading | headphone, warehouse, factory | hardware·heading은 범주로 지워졌다 → warehouse·factory (head office·main office는 통해서 제외) |
+| v185 | 7 | handout | handling, hazard, habit | hazard, receipt, notebook | handling·habit은 범주로 지워졌다 → receipt·notebook. 예문에 '오늘 발표자가 적혀 있다'를 넣었다 (flyer·program·schedule은 통해서 제외) |
+| v194 | 7 | follow-up | follower, fellow, full-time | full-time, welcome, birthday | follower·fellow는 범주로 지워졌다 → welcome·birthday. 예문에 '계약서를 받았는지 확인하려고'를 넣었다 (reminder는 통해서 제외, farewell은 모르는 단어라 제외) |
+| v232 | 8 | billboard | binding, blackboard, billion | billion, blackboard, bookstore | binding·billion은 범주로 지워졌다 → bookstore (booth·building·billboard space는 통해서 제외) |
+| v233 | 8 | commercial | complaint, competitor, courier | complaint, contract, comment | competitor·courier는 사람이라 범주로 지워졌다 → contract·comment. 예문에 '수백만 명의 시청자가 본다'를 넣었다 (concert·show는 통해서 제외) |
+| v237 | 8 | revenue | revision, rescue, resume | revision, rent, tax | rescue·resume은 범주로 지워졌다 → rent·tax. 예문에 '매출 500만 달러'를 넣었다 (income·sales는 통해서 제외, risk·rate는 모르는 단어라 제외) |
+| v241 | 9 | accounting | accountant, access, accent | accountant, marketing, shipping | access·accent는 범주로 지워졌다 → marketing·shipping. accountant는 철자 함정으로 남겼다 (finance·tax는 통해서 제외) |
+| v244 | 9 | audit | asset, admit, adapt | asset, award, admit | admit·adapt는 품사가 달랐다 → award (inspection·review는 통해서 제외) |
+| v284 | 10 | terminal | tenant, testimonial, team | team, room, exit | tenant·testimonial·team이 모두 범주였다 → room·exit. 예문에 '공항 열차'를 넣었다 (Gate·Hall은 통해서 제외, platform은 모르는 단어라 제외) |
+| v298 | 10 | landmark | landlord, lawsuit, lawyer | landlord, lawsuit, logo | landlord·lawyer는 사람이라 범주로 지워졌다 → logo. 예문에 '관광객이 매일 사진을 찍는'을 넣었다 (building·attraction은 통해서 제외) |
+| v301 | 11 | manufacture | manufacturer, malfunction, management | manufacturer, measure, memorize | manufacturer·malfunction·management가 모두 명사였다 → measure·memorize. 예문에 '울산 공장에서'를 넣었다 (make·produce·assemble·sell은 통해서 제외) |
+| v303 | 11 | defective | detective, departure, delegate | detective, durable, reliable | departure·delegate는 범주로 지워졌다 → durable·reliable ('하루 만에 작동을 멈췄다'와 모순. broken·faulty는 통해서 제외) |
+| v340 | 12 | attachment | attendee, attorney, attention | attention, apartment, attorney | attendee·attorney 중 attendee를 apartment로 바꿨다. attorney는 범주 오답 1개로 남겼다 (agenda·file·document는 통해서 제외) |
+| v341 | 12 | crash | cash, cross, crowd | cash, charge, cheer | cash·crowd는 범주로 지워졌다 → charge·cheer. 예문에 '한 시간 작업을 날렸다'를 넣었다 (closed·froze는 통해서 제외) |
+| v429 | 15 | drill | draft, alarm, drain | draft, alarm, sale | draft·drain은 범주로 지워졌다 → sale. 'fire sale'은 원래 예문으로는 통했지만 '빨리 대피하는 연습'으로 지워진다 |
+| v440 | 15 | coverage | courage, college, carriage | courage, college, clinic | carriage는 범주로 지워졌다 → clinic (care·checkup·treatment는 통해서 제외) |
+| v470 | 16 | wind power | waiver, window, wind tunnel | oil, gas, wind tunnel | waiver·window는 범주로 지워졌다 → oil·gas. '언덕 위 터빈'과 모순이다 (solar power는 통해서 제외, coal은 모르는 단어라 제외) |
+| v471 | 16 | grid | grade, garage, grill | grade, garage, gate | grill은 범주로 지워졌다 → gate (network·system은 통해서 제외, gallery는 모르는 단어라 제외) |
+| v512 | 18 | exhibit | excuse, expense, exhaust | excuse, expense, exit | exhaust는 범주로 지워졌다 → exit (item·piece는 통해서 제외) |
+| v518 | 18 | registration desk | registration fee, desk lamp, early-bird rate | registration fee, cafeteria, gift shop | desk lamp·early-bird rate는 범주로 지워졌다 → cafeteria·gift shop. 예문에 '명찰과 프로그램을 받는'을 넣었다 (front desk·information desk는 통해서 제외) |
+| v519 | 18 | name badge | nickname, budget, notebook | nickname, jacket, hat | budget은 범주로 지워졌다 → jacket·hat (name tag·ID card는 통해서 제외, uniform은 소속을 보여 줘서 제외) |
+| v528 | 18 | award | aware, ward, awkward | aware, warning, complaint | ward·awkward 중 ward는 범주로 지워졌다 → warning·complaint (prize·reward는 통해서 제외) |
+| v644 | 22 | degree | agree, green, deficit | agree, discount, lecture | agree·green·deficit이 모두 범주였다 → discount·lecture (diploma·qualification은 통해서 제외, dormitory는 모르는 단어라 제외) |
+
+## 3. 지난 판단 반영 (7)
+
+| id | Day | 단어 | 전 | 후 | 이유 |
+|---|---|---|---|---|---|
+| v482 | 17 | tenant | landlord, visitor, guest | landlord, owner, agent | 역할 반대로 가름: 세를 받는 쪽·소유자·중개인. 예문의 'building owner'는 오답 owner와 겹쳐 '월세 900달러를 낸다'로 바꿨다 (neighbor·plumber는 세입자일 수 있어 통해서 제외) |
+| v483 | 17 | landlord | tenant, visitor, guest | tenant, renter, guest | 세를 내는 쪽·머무는 쪽. 예문의 'renter'는 오답 renter와 겹쳐 'the next family'로 바꿨다 (painter·trainee는 건물을 가질 수 있어 통해서 제외) |
+| v493 | 17 | move-in date | expiration date, birth date, seating plan | move-out date, lease term, expiration date | move-out date는 '가구를 들여온다'와 맞지 않아 뜻으로 지워진다. lease term은 기간이라, expiration date는 '계약이 시작되는 날'과 모순이라 지워진다 (security deposit은 모르는 단어라 제외, start date는 통해서 제외) |
+| v410 | 14 | responsive | responsible, reluctant, respective | responsible, reluctant, respective | 예문을 'responsive to customer questions'로 바꿨다. responsible은 to가 아니라 for를 써서 걸러진다. reluctant는 '한 시간 안에 답장'과 모순이다 |
+| v063 | 3 | candidate | employer, employee, interviewer | interviewer, shareholder, customer | 뜻을 '(선발·선거의) 후보자'로, 예문을 사내 승진 후보로 바꿨다 (supervisor·trainer는 승진 후보일 수 있어 통해서 제외, applicant는 뜻이 겹쳐 제외) |
+| v094 | 4 | applicant | employer, interviewer, employee | employer, employee, attendee | 뜻을 '(지원서를 낸) 신청자, 지원자'로, 예문을 공고·서류 접수로 바꿨다. candidate와 오답이 겹치지 않게 했다 (recruiter·receptionist는 그 직무 지원자로 읽혀 통해서 제외) |
+| v457 | 16 | carbon footprint | foot traffic, floor plan, exchange rate | foot traffic, energy bill, waste output | exchange rate → energy bill·waste output (온실가스 총량이 아니라 요금·폐기물이라 뜻으로 지워진다. water usage는 모르는 단어라 제외) |
+
+| id | 바꾼 칸 | 전 | 후 |
+|---|---|---|---|
+| v063 | 뜻 | 지원자, 후보 | (선발·선거의) 후보자 |
+| v063 | 팁 | applicant와 거의 같은 뜻. 채용 지문의 양대 단어. | 뽑히기를 기다리는 후보. 승진·선거 문맥에 자주 나온다. 지원서를 낸 사람은 applicant. |
+| v094 | 뜻 | 지원자 | (지원서를 낸) 신청자, 지원자 |
+| v094 | 팁 | apply(지원하다)의 사람 명사. application은 지원서. | apply(지원하다)의 사람 명사. application은 지원서. 선발·승진 후보는 candidate. |
+
+## 4. 뜻이 겹치는 표제어 쌍
+
+- **뜻 시험:** 보기는 같은 Day의 다른 표제어 뜻에서 뽑는다. 이때 `meaningsTooSimilar` 가드가 뜻 조각이 하나라도 겹치는 단어를 보기에서 뺀다 (`assets/js/vocab.js`). 그래서 뜻 조각을 공유하는 쌍은 같은 문제의 보기로 나오지 않는다.
+- candidate(지원자, 후보)와 applicant(지원자)도 '지원자'가 겹쳐 같은 문제에 나온 적이 없다. 둘은 Day 3과 Day 4로 Day도 다르다. 뜻을 '후보자'와 '신청자, 지원자'로 가른 지금은 가드가 둘을 같은 보기로 허용한다. 뜻이 달라졌으므로 의도대로다.
+- **빈칸 시험:** 표제어의 오답에 같은 뜻의 다른 표제어가 들어 있는 경우는 0건이다 (receipt의 오답 recipient는 품사가 달라 해당 없음).
+- **가드를 빠져나가는 동의어 쌍:** 같은 Day에서 뜻 조각은 다른데 한국어 글자가 겹치는 104쌍을 사람이 봤다. 모두 주제만 같다(운송·교육·매장 등). 같은 뜻으로 볼 쌍은 없었다.
+
+뜻 조각이 겹쳐 가드가 막고 있는 같은 Day 쌍 (지금은 문제 없음, 참고용)
+
+| Day | 쌍 | 겹치는 뜻 |
+|---|---|---|
+| 5 | assess · evaluate | 평가하다 |
+| 7 | summary · recap | 요약 |
+| 8 | profit · revenue | 수익 |
+| 9 | liability · debt | 부채 |
+| 13 | clause · provision · regulation | 조항, 규정 |
+| 16 | conserve · preserve · conservation | 보존 |
+| 17 | property · real estate | 부동산 |
+| 19 | courier · carrier | 택배 회사 |
+| 21 | adapt · modify | 고치다 |
+| 21 | diminish · minimize | 줄이다 |
+| 21 | monitor · oversee | 감시하다 |
+| 22 | refresher course · continuing education | 보수 교육 |
+| 23 | accordingly · consequently | 따라서 |
+
+## 5. 예문을 고친 세트 (69)
+
+| id | 단어 | 전 | 후 | 해석(후) |
+|---|---|---|---|---|
+| v482 | tenant | The new tenant will move in on June 1 and pay rent to the building owner every month. | The new tenant will move in on June 1 and pay $900 in rent every month for the apartment. | 새 세입자는 6월 1일에 입주해 매달 아파트 월세 900달러를 냅니다. |
+| v483 | landlord | The landlord, who owns the building, agreed to repaint the walls before the new renter moves in. | The landlord, who owns the building, agreed to repaint the walls before the next family moves in. | 건물을 소유한 임대인은 다음 가족이 입주하기 전에 벽을 다시 칠해 주기로 했습니다. |
+| v493 | move-in date | Our move-in date is June 1, when the new lease begins. | Our move-in date is June 1, when the new lease begins and we bring in our furniture. | 우리 입주 날짜는 새 임대 계약이 시작되고 가구를 들여오는 6월 1일입니다. |
+| v410 | responsive | Their support team is very responsive; they reply within an hour. | Their support team is very responsive to customer questions, replying within an hour. | 그곳 지원팀은 고객 문의에 매우 빠르게 대응해서 한 시간 안에 답장을 보냅니다. |
+| v063 | candidate | We interviewed five candidates for the open position and will hire one of them next week. | The board chose three candidates for the open manager position from our own staff and will promote one of them in May. | 이사회는 공석인 관리자 자리의 후보 세 명을 사내 직원 중에서 골랐고, 5월에 그중 한 명을 승진시킬 예정입니다. |
+| v094 | applicant | All applicants must submit a résumé by May 1 to be considered for the job. | All applicants for the job we advertised must send a résumé and an application form by May 1. | 공고한 일자리에 지원하는 사람은 모두 5월 1일까지 이력서와 지원서를 보내야 합니다. |
+| v006 | schedule | The meeting is scheduled for Monday. | The meeting is scheduled for Monday at ten in Room B. | 회의는 월요일 10시에 B실로 잡혀 있습니다. |
+| v016 | arrange | Let's arrange a meeting next week. | Let's arrange a meeting with the client next week so we can discuss the contract together. | 계약을 함께 논의할 수 있도록 다음 주에 고객과의 회의를 잡읍시다. |
+| v034 | budget | We went over budget this month. | We went over budget this month, spending $2,000 more than we planned. | 이번 달에 계획보다 2,000달러를 더 써서 예산을 초과했습니다. |
+| v099 | beverage | Hot and cold beverages are included in the price of the lunch buffet. | Hot and cold beverages, such as coffee, tea, and juice, are included in the price of the lunch buffet. | 커피, 차, 주스 같은 따뜻한 음료와 차가운 음료가 점심 뷔페 가격에 포함되어 있습니다. |
+| v111 | itinerary | I will send you the itinerary with your flight and hotel details. | I will send you the itinerary, which lists your flight times and the hotel for each night of the trip. | 출장 기간의 항공편 시간과 날짜별 호텔이 적힌 여행 일정표를 보내드리겠습니다. |
+| v128 | duplicate | Please keep a duplicate for your records. | Please keep a duplicate of the signed form for your records. | 서명한 양식의 사본을 기록용으로 보관해 주세요. |
+| v138 | prompt | Thank you for your prompt reply. | Thank you for your prompt reply; we got it within an hour. | 신속한 답변 감사합니다. 한 시간 안에 받았어요. |
+| v146 | valid | The coupon is valid until June. | The coupon is valid until June, so you can use it any time before then. | 쿠폰은 6월까지 유효하니 그 전에는 언제든지 쓸 수 있습니다. |
+| v158 | position | I'd like to apply for the position. | I'd like to apply for the position of sales manager. | 영업 관리자 자리에 지원하고 싶습니다. |
+| v176 | turnover | The company has a high turnover rate. | The company has a high turnover rate, so many workers quit within their first year. | 그 회사는 이직률이 높아서 많은 직원이 1년 안에 그만둡니다. |
+| v185 | handout | Please take a handout from the table. | Please take a handout from the table; it lists today's speakers. | 탁자에서 유인물을 가져가세요. 오늘 발표자가 적혀 있습니다. |
+| v194 | follow-up | I'll send a follow-up email. | I'll send a follow-up email next week to check whether you received the contract. | 계약서를 받으셨는지 확인하려고 다음 주에 후속 메일을 보내드리겠습니다. |
+| v233 | commercial | The commercial airs during prime time. | The commercial airs during prime time, so millions of TV viewers will see our new product. | 그 광고는 황금 시간대에 방영되어 수백만 명의 시청자가 우리 신제품을 보게 됩니다. |
+| v237 | revenue | Annual revenue rose by 12 percent. | Annual revenue rose by 12 percent, reaching $5 million in sales. | 연간 매출이 12퍼센트 늘어 500만 달러에 이르렀습니다. |
+| v284 | terminal | Your flight leaves from Terminal 2. | Your flight leaves from Terminal 2, so take the airport train there after check-in. | 항공편은 2터미널에서 출발하니 체크인 후 공항 열차를 타고 그쪽으로 가세요. |
+| v298 | landmark | The tower is a famous landmark. | The tower is a famous landmark that tourists photograph every day. | 그 탑은 관광객들이 매일 사진을 찍는 유명한 명소입니다. |
+| v301 | manufacture | We manufacture parts for electric vehicles. | We manufacture parts for electric vehicles in our factory in Ulsan. | 저희는 울산 공장에서 전기차 부품을 제조합니다. |
+| v341 | crash | The program crashed without warning. | The program crashed without warning, and I lost an hour of work. | 프로그램이 예고 없이 다운돼서 한 시간 동안 한 작업을 날렸습니다. |
+| v518 | registration desk | Please pick up your materials at the registration desk when you arrive at the conference. | Please pick up your name badge and program at the registration desk when you check in at the conference. | 학회장에서 체크인할 때 등록 데스크에서 명찰과 프로그램을 받아 가세요. |
+| v545 | packing slip | Check the packing slip to make sure every item arrived. | Check the packing slip inside the box, which lists every item packed, to make sure nothing is missing. | 상자 안에 든 포장 명세서에 포장된 물품이 모두 적혀 있으니, 빠진 것이 없는지 확인하세요. |
+| v548 | loading dock | Trucks must park at the loading dock behind the building. | Trucks must back up to the loading dock behind the warehouse so workers can unload boxes straight into storage. | 작업자들이 상자를 바로 창고에 내릴 수 있도록 트럭은 창고 뒤편 하역장에 후진해서 대야 합니다. |
+| v549 | customs clearance | Customs clearance usually takes two days. | Customs clearance usually takes two days, because officials must check every package that comes into the country. | 공무원이 국내로 들어오는 모든 소포를 확인해야 해서 통관에는 보통 이틀이 걸립니다. |
+| v552 | distribution center | All online orders are packed at our distribution center. | All online orders are packed and shipped from our distribution center, a large warehouse outside the city. | 모든 온라인 주문은 시 외곽의 대형 창고인 물류 센터에서 포장되어 발송됩니다. |
+| v562 | fragile | Mark the box fragile so it is handled with care. | Mark the box fragile because the glasses inside could break, so it is handled with care. | 안에 든 유리잔이 깨질 수 있으니 상자에 '깨지기 쉬움'이라고 표시해서 조심히 다루게 하세요. |
+| v568 | proof of delivery | Keep the proof of delivery in case the client complains. | Keep the proof of delivery, signed by the person who received the package, in case the client says it never arrived. | 고객이 물건을 받지 못했다고 할 경우에 대비해, 수령인이 서명한 배송 확인서를 보관하세요. |
+| v576 | admit | She was admitted to the hospital on Sunday night. | She was admitted to the hospital on Sunday night and stayed in a ward for three days. | 그녀는 일요일 밤에 입원해서 사흘 동안 병실에 있었습니다. |
+| v579 | prescription | Take this prescription to any pharmacy. | Take this prescription from the doctor to any pharmacy to get your medicine. | 의사가 써 준 이 처방전을 아무 약국에나 가져가서 약을 받으세요. |
+| v580 | pharmacy | The pharmacy inside the hospital closes at six. | The pharmacy inside the hospital, where you can pick up your medicine, closes at six. | 약을 받을 수 있는 병원 안 약국은 6시에 문을 닫습니다. |
+| v582 | symptom | Report any new symptom to the nurse. | Report any new symptom, such as a fever or a cough, to the nurse. | 열이나 기침 같은 새로운 증상이 있으면 간호사에게 알리세요. |
+| v583 | diagnosis | The diagnosis took three weeks to confirm. | The doctor's diagnosis took three weeks to confirm, but the tests finally showed it was a heart problem. | 의사의 진단을 확정하는 데 3주가 걸렸지만, 마침내 검사에서 심장 문제로 밝혀졌습니다. |
+| v590 | vaccination | Children need two vaccinations before starting school. | Children need two vaccinations against measles before starting school. | 아이들은 입학 전에 홍역 예방 접종을 두 번 받아야 합니다. |
+| v592 | physical therapy | He goes to physical therapy three times a week after the accident. | He goes to physical therapy three times a week, doing exercises that help his injured knee move again. | 그는 다친 무릎이 다시 움직이도록 돕는 운동을 하며 일주일에 세 번 물리 치료를 받으러 갑니다. |
+| v593 | medical certificate | The company asks for a medical certificate after three sick days. | The company asks for a medical certificate from your doctor after three sick days, to show that you were really ill. | 회사는 병가가 사흘을 넘으면 실제로 아팠다는 것을 보여 주는 의사의 진단서를 요구합니다. |
+| v594 | co-payment | The co-payment for each visit is fifteen dollars. | The co-payment, the part of the doctor's bill you pay yourself, is fifteen dollars for each visit. | 진료비 중 본인이 내는 부분인 본인 부담금은 방문할 때마다 15달러입니다. |
+| v599 | chronic | Chronic back pain is treated with exercise rather than surgery. | Chronic back pain, which has lasted for more than three months, is treated with exercise rather than surgery. | 3개월 넘게 이어진 만성 허리 통증은 수술보다 운동으로 치료합니다. |
+| v601 | accompany | A manager must accompany visitors to the production floor. | A manager must accompany visitors to the production floor and stay with them the whole time. | 관리자는 방문객과 함께 생산 현장에 가서 내내 곁에 있어야 합니다. |
+| v602 | adapt | We adapted the training course to the needs of overseas staff. | We adapted the training course to the needs of overseas staff, translating it and changing the examples. | 교육 과정을 번역하고 예시를 바꿔서 해외 직원의 필요에 맞게 고쳤습니다. |
+| v606 | commence | Construction will commence as soon as the permit arrives. | Construction will commence as soon as the permit arrives, and workers expect to finish in May. | 허가가 나오는 대로 공사가 시작되며, 작업자들은 5월에 끝낼 것으로 예상합니다. |
+| v609 | comprise | The committee comprises nine members from five departments. | The committee comprises nine members in total, three from each department. | 위원회는 각 부서에서 세 명씩 모두 아홉 명으로 구성됩니다. |
+| v610 | convene | The board will convene at nine to vote on the budget. | The board will convene at nine in the main conference room to vote on the budget. | 이사회는 예산안을 표결하기 위해 9시에 대회의실에서 모입니다. |
+| v616 | exempt | The new rule exempts small firms from the annual fee. | The new rule exempts small firms from the annual fee, so they no longer have to pay it. | 새 규정은 소규모 업체의 연회비를 면제해서 더 이상 내지 않아도 됩니다. |
+| v625 | modify | Engineers modified the design after the safety test. | Engineers modified the design after the safety test, making the walls thicker. | 엔지니어들은 안전 시험 후 벽을 더 두껍게 해서 설계를 수정했습니다. |
+| v637 | transcript | Send an official transcript with your application. | Send an official transcript from your university, listing all your courses and grades, with your application. | 지원서와 함께 수강 과목과 성적이 모두 적힌 대학의 공식 성적 증명서를 보내세요. |
+| v643 | diploma | You will receive your diploma at the ceremony in June. | You will receive your diploma at the graduation ceremony in June, after finishing all your courses. | 모든 과정을 마치면 6월 졸업식에서 졸업장을 받게 됩니다. |
+| v646 | graduate | She graduated from the program last spring. | She graduated from the program last spring and received her certificate. | 그녀는 지난봄 그 과정을 졸업하고 수료증을 받았습니다. |
+| v650 | textbook | The textbook costs sixty dollars new. | The textbook for this course costs sixty dollars new, but you can buy a used copy for half that. | 이 과목 교과서는 새것이 60달러지만, 중고는 그 절반 값에 살 수 있습니다. |
+| v653 | refresher course | Staff take a short refresher course every two years. | Staff take a short refresher course every two years to update the skills they learned when they were hired. | 직원은 입사 때 배운 기술을 새로 익히려고 2년마다 짧은 재교육 과정을 받는다. |
+| v655 | proficiency | The job posting asks for proficiency in two languages. | The job posting asks for proficiency in two languages, so you must speak and write both well. | 채용 공고는 두 언어에 능숙할 것을 요구하므로 두 언어 모두 말하기와 쓰기를 잘해야 합니다. |
+| v658 | e-learning | The company moved its safety classes to e-learning. | The company moved its safety classes to e-learning, so staff now take them on their computers at any time. | 회사가 안전 교육을 온라인 교육으로 옮겨서 직원들은 이제 언제든 컴퓨터로 수강합니다. |
+| v666 | adjacent | The parking lot adjacent to the building is for staff only. | The parking lot adjacent to the building, right beside the main entrance, is for staff only. | 정문 바로 옆, 건물에 붙어 있는 주차장은 직원 전용입니다. |
+| v677 | versatile | The tool is versatile; it cuts, drills, and sands. | The tool is versatile; it can cut, drill, and sand, so you don't need three separate tools. | 그 공구는 다용도라 자르기, 구멍 뚫기, 연마를 모두 할 수 있어서 공구 세 개를 따로 살 필요가 없습니다. |
+| v684 | eventually | After three attempts, the technician eventually fixed the leak. | After three attempts, the technician eventually fixed the leak, and the water finally stopped. | 세 번의 시도 끝에 기술자가 결국 누수를 고쳤고, 마침내 물이 멈췄습니다. |
+| v693 | checkout counter | Only two checkout counters were open, so the line reached the door. | Only two checkout counters were open, so shoppers waited a long time to pay for their items. | 계산대가 두 곳만 열려 있어서 손님들이 계산하려고 오래 기다렸습니다. |
+| v697 | clearance sale | Everything in the clearance sale is final; no returns are accepted. | Everything in the clearance sale is marked down to clear out old stock, and no returns are accepted. | 재고 정리 세일 품목은 모두 오래된 재고를 없애려고 가격을 내렸으며 반품은 받지 않습니다. |
+| v699 | price tag | The price tag still showed the old price, so we corrected it at the counter. | The price tag on the shirt still showed the old price, so we corrected it at the counter. | 셔츠에 달린 가격표에 아직 예전 가격이 적혀 있어서 계산대에서 바로잡았습니다. |
+| v706 | shoplifting | Shoplifting fell by half after the new cameras were installed. | Shoplifting fell by half after new security cameras were installed to watch for thieves. | 도둑을 감시하는 보안 카메라를 새로 단 뒤 좀도둑질이 절반으로 줄었습니다. |
+| v707 | security tag | The security tag must be removed at the counter or the alarm will sound. | The security tag clipped to the jacket must be removed at the counter, or the alarm will sound. | 재킷에 달린 보안 택은 계산대에서 떼어야 하며, 그렇지 않으면 경보가 울립니다. |
+| v709 | storefront | The storefront was repainted, but the inside has not changed. | The storefront facing the street was repainted, but the inside of the shop has not changed. | 거리에 면한 매장 외관은 새로 칠했지만 가게 안은 그대로입니다. |
+| v710 | flagship store | The flagship store is three times larger than the others and carries every line. | The company's flagship store in the city center is its biggest and most important shop, carrying every product line. | 도심에 있는 그 회사의 대표 매장은 가장 크고 중요한 매장으로, 모든 제품군을 갖추고 있습니다. |
+| v713 | sample | Free samples of the new coffee are given out on Saturdays. | Free samples of the new coffee are given out on Saturdays so shoppers can taste it before buying. | 손님들이 사기 전에 맛볼 수 있도록 토요일마다 새 커피 견본을 무료로 나눠 줍니다. |
+| v714 | foot traffic | Foot traffic doubled after the subway exit opened next door. | Foot traffic doubled after the subway exit opened next door, so more people now walk in to browse. | 옆에 지하철 출구가 생긴 뒤 유동 인구가 두 배로 늘어 구경하러 들어오는 사람이 많아졌습니다. |
+| v715 | peak hours | During peak hours, from noon to two, every register is staffed. | During peak hours, from noon to two, every register is staffed because the store is at its busiest. | 가장 붐비는 정오부터 2시까지의 혼잡 시간에는 계산대마다 직원이 배치됩니다. |
+| v719 | price match | We offer a price match if you find the same item cheaper nearby. | We offer a price match: if you find the same item cheaper at another store, we will lower our price to that amount. | 최저가 보장을 해 드립니다. 다른 매장에서 같은 물건을 더 싸게 찾으시면 그 가격으로 낮춰 드립니다. |
+
+## 6. 새 오답 단어의 뜻 (156)
+
+이번에 오답으로 처음 들어간 단어다. 뜻이 없던 54개는 `day19To24Audit4Meanings` 블록에 넣었다 (뜻 누락 0).
+
+| 단어 | 뜻 |
+|---|---|
+| adapt | 적응하다 |
+| admit | 인정하다, 입장을 허가하다 |
+| agent | 대리인, 중개인 |
+| agree with | ~에 동의하다 |
+| announce | 발표하다, 알리다 |
+| apartment | 아파트 |
+| attend | 참석하다 |
+| attendee | 참석자 |
+| avoid | 피하다 |
+| award | 상 |
+| back order | 이월 주문 |
+| barcode | 바코드 |
+| basement | 지하층 |
+| birthday | 생일 |
+| bookstore | 서점 |
+| brief | 간단한 / 브리핑하다 |
+| business trip | 출장 |
+| cafeteria | 구내식당 |
+| call center | 콜센터 |
+| cancel | 취소하다 |
+| charge | 청구하다 / 요금 |
+| checkup | 건강 검진 |
+| cheer | 응원하다 / 환호 |
+| clinic | 진료소, 의원 |
+| closing time | 마감 시간, 폐점 시간 |
+| coffee break | 커피 휴식 시간 |
+| come up with | (생각을) 떠올리다, 내놓다 |
+| comment | 논평하다, 의견을 말하다 |
+| compare | 비교하다 |
+| complain | 불평하다 |
+| complaint | 불만, 항의 |
+| complete | 완료하다 / 완전한 |
+| conference room | 회의실 |
+| contract | 계약, 계약하다 |
+| coupon | 쿠폰, 할인권 |
+| credit card | 신용카드 |
+| customer | 고객 |
+| customer service | 고객 서비스 |
+| dangerous | 위험한 |
+| deadline | 마감일 |
+| demand | 수요 |
+| deposit | 보증금, 예금하다 |
+| description | 설명, 묘사 |
+| dessert | 디저트 |
+| diet | 식단, 다이어트 |
+| discount | 할인 |
+| dosage | 복용량 |
+| drawer | 서랍 |
+| drop out | 중도에 그만두다 |
+| durable | 내구성 있는 |
+| earlier | 이전의, 더 일찍 |
+| empty | 비어 있는 |
+| energy bill | 에너지 요금 고지서 |
+| entirely | 완전히, 전적으로 |
+| exit | 출구 |
+| expired | 만료된 |
+| factory | 공장 |
+| far | 먼 / 멀리 |
+| finished | 끝난, 완성된 |
+| first | 처음에, 첫째로 |
+| first aid | 응급처치 |
+| fitting room | 피팅룸, 탈의실 |
+| floor | 바닥, 층 |
+| for example | 예를 들어 |
+| free | 무료의, 자유로운 |
+| front desk | (호텔) 프런트 |
+| gas | 가스, 기체 |
+| gate | 문, 탑승구 |
+| gift shop | 기념품 가게 |
+| hanger | 옷걸이 |
+| hat | 모자 |
+| head office | 본사 |
+| headquarters | 본사 |
+| important | 중요한 |
+| interest | 관심, 이자 |
+| invoice | 청구서, 송장 |
+| jacket | 재킷 |
+| kitchen | 부엌, 주방 |
+| late | 늦은 |
+| lease term | 임대 기간 |
+| lecture | 강의 |
+| lobby | 로비 |
+| logo | 로고 |
+| loyalty program | 고객 보상 프로그램, 멤버십 |
+| markdown | 가격 인하 |
+| marketing | 마케팅 |
+| markup | 이윤 폭 |
+| measure | 측정하다 / 조치 |
+| medical certificate | 진단서 |
+| memorize | 암기하다 |
+| move-out date | 퇴거 날짜 |
+| never | 결코 ~ 않다 |
+| nevertheless | 그럼에도 |
+| new arrival | 신상품 |
+| notebook | 공책, 노트북 |
+| official | 공식적인 |
+| oil | 기름, 석유 |
+| otherwise | 그렇지 않으면 |
+| owner | 소유자 |
+| packing slip | 포장 명세서 |
+| painful | 아픈, 고통스러운 |
+| parking space | 주차 공간 |
+| passport | 여권 |
+| password | 비밀번호 |
+| permit | 허가하다 / 허가증 |
+| popular | 인기 있는 |
+| premium | 보험료 |
+| prescription | 처방전 |
+| price tag | 가격표 |
+| profit | 이익, 수익 |
+| promotion | 승진 / 판촉 |
+| quick | 빠른 |
+| receipt | 영수증 |
+| reference letter | 추천서 |
+| refund | 환불하다 |
+| reliable | 믿을 수 있는 |
+| remind | 상기시키다 |
+| rent | 임대료 |
+| renter | 세입자, 임차인 |
+| require | 요구하다, 필요로 하다 |
+| rest | 휴식, 나머지 |
+| return policy | 반품 규정 |
+| room | 방, 공간 |
+| sale | 판매, 할인 판매 |
+| sales tax | 판매세 |
+| sample | 견본, 시제품 |
+| schedule | 일정 / 일정을 잡다 |
+| share | 공유하다, 나누다 |
+| shareholder | 주주 |
+| ship | 배 / 발송하다 |
+| shipping | 배송, 운송 |
+| shipping fee | 배송비 |
+| signature | 서명 |
+| similar | 비슷한 |
+| small | 작은 |
+| snack | 간식 |
+| stop | 멈추다, 중단하다 |
+| store credit | (반품 시 받는) 매장 상품권 |
+| sudden | 갑작스러운 |
+| tax | 세금 |
+| temporary | 임시의, 일시적인 |
+| therefore | 그러므로 |
+| tiny | 아주 작은 |
+| transfer | 이동하다, 전근하다 / (전화를) 연결하다 / 환승 |
+| tuition | 수업료 |
+| useless | 쓸모없는 |
+| vacation | 휴가 |
+| visit | 방문(하다) |
+| void | 무효의 |
+| warehouse | 창고 |
+| warning | 경고 |
+| waste output | 폐기물 배출량 |
+| weekend | 주말 |
+| welcome | 환영하다 / 환영의 |
+| withdraw | 인출하다 / 철회하다 |
+| young | 젊은 |
