@@ -202,3 +202,201 @@ NOT 문제 2개(rp12 Q1, rp23 Q1)는 정답 보기가 실제로 언급되지 않
   - **문장 삽입 0:** 토익은 '[1], [2], [3], [4] 중 어디에 들어가기 가장 알맞은가'가 시험마다 2문항 나온다. 지문에 [1]부터 [4]까지 표시가 필요하다.
   - **세부사항이 너무 많고 추론이 적다:** 세부사항이 76%, 추론이 8%다. 실제 시험은 추론(most likely, suggested)의 비중이 이보다 훨씬 크다.
 
+
+# 독해 감사 2부 — 이중·삼중 지문 9개, Part 6 10세트 (2026-11-23)
+
+## 0. 지난 판단 반영
+
+| 항목 | 결과 |
+|---|---|
+| 한 지문 안의 a.m./A.M., e-mail/email 혼용 | 34개 지문과 Part 6 10세트를 모두 봤다. 0건이라 고친 곳이 없다. 지문 사이의 혼용은 그대로 둔다 |
+| 단어장 server (v336, Day 12) | 뜻을 '서버'에서 '서버 / (식당) 종업원'으로 바꿨다. 같은 Day 29개 단어와 가드 겹침 0건. '직원'이 들어간 employee·staff·representative·floor staff는 모두 다른 Day다 |
+| reading.js candidate 풀이 (rp24) | '지원자, 후보자'를 단어장과 같은 순서인 '후보자, 지원자'로 바꿨다 |
+
+## A. 연계 문항
+
+문항마다 정답 근거의 위치와, 한 지문만 읽고 풀리는지를 봤다. 문항별 근거 위치는 아래 E의 해설 표에 적었다.
+
+| 묶음 | 종류 | 연계 문항 | 수 | 한 지문으로 풀려서 고친 것 |
+|---|---|---|---|---|
+| rp13 | 삼중 | Q2 (지문 2+3), Q4 (지문 1+3) | 2 | 없음 |
+| rp27 | 삼중 | Q2 (지문 1+2), Q3 (지문 1+2), Q5 (지문 1+2) | 3 | Q3: 지문 3이 'below the limit for trips abroad'라고 이유를 그대로 말했다. Q5: 지문 3이 'included in the May payment'라고 답을 그대로 말했다 |
+| rp28 | 삼중 | Q2 (지문 1+2), Q3 (지문 1+2), Q4 (지문 1+2+3) | 3 | 없음 |
+| rp29 | 이중 | Q2, Q4 | 2 | 없음 |
+| rp30 | 이중 | Q2, Q3, Q5 | 3 | 없음 (Q2의 날짜를 본문에서 머리글로 옮겼다) |
+| rp31 | 삼중 | Q3 (지문 1+2), Q4 (지문 2+3) | 2 | 없음 |
+| rp32 | 삼중 | Q3 (지문 1+2), Q4 (지문 1+3) | 2 | 옛 Q4 'What question does Nordvik answer?'는 지문 3의 'prepaid return label ... no cost to you'만 읽어도 풀렸다. 새 문항으로 바꿨다 |
+| rp33 | 이중 | Q2, Q3 | 2 | 없음 |
+| rp34 | 이중 | Q3, Q4 | 2 | 없음 |
+
+### 고친 내용
+
+| 지문 | 분류 | 전 | 후 | 이유 |
+|---|---|---|---|---|
+| rp27 | 연계 | { en: "Trip: Client visit, Oslo \| Dates: April 6-8", ko: "출장: 고객 방문, 오슬로 \| 기간: 4월 6일~8일" } | { en: "Trip: Client visit, Oslo (international) \| Dates: April 6-8", ko: "출장: 고객 방문, 오슬로(해외) \| 기간: 4월 6일~8일" } | 해외 출장임을 신청서가 밝히게 했다. 회계팀 메일에서 '해외 한도'를 빼서 생긴 정보 공백을 채운다 |
+| rp27 | 연계 | { en: "Your claim arrived in time, so it will be included in the May payment.", ko: "청구가 기한 안에 접수되어 5월 지급에 포함됩니다." } | { en: "Your claim arrived in time, so it will be paid in the usual way.", ko: "청구가 기한 안에 접수되어 평소대로 지급됩니다." } | Q5: '5월 지급'을 지문 3이 그대로 말해 연계가 아니었다 |
+| rp27 | 연계 | { en: "Your hotel came to $195 per night, which is below the limit for trips abroad, so that part is approved in full.", ko: "숙박비는 1박 195달러로 해외 출장 한도보다 낮아 전액 승인됩니다." } | { en: "Your hotel came to $195 per night, which is within our limit, so that part is approved in full.", ko: "숙박비는 1박 195달러로 한도 안이어서 전액 승인됩니다." } | Q3: '해외 출장 한도보다 낮다'를 지문 3이 그대로 말해 연계가 아니었다 |
+| rp32 | 연계 | { en: "No receipt is needed; the model number on the base is enough.", ko: "영수증은 필요 없으며, 바닥에 적힌 모델 번호면 충분합니다." } | { en: "No receipt is needed; the model number is enough.", ko: "영수증은 필요 없으며, 모델 번호면 충분합니다." } | 새 Q4: 모델 번호 위치는 지문 1에서만 알 수 있게 했다 |
+| rp32 | 문항 교체 | Q4 What question does Nordvik answer for Ms. Petrov? (Who pays for return shipping / How to clean the kettle / Where to buy a new lid / When the K-240 was released) | Q4 Where can Ms. Petrov find the information Nordvik needs to process her claim? (On the base of the kettle / On her original receipt / On the product box / On the handle, 정답 A) | 지문 3이 '모델 번호면 된다', 지문 1이 '모델 번호는 바닥에 있다'를 나눠 말한다. 지문 3에서 'on the base'를 뺐다 |
+
+## B. 지문 사이의 사실 모순
+
+| 지문 | 내용 | 한 일 |
+|---|---|---|
+| rp31 | 직원 메일(지문 3)이 'the floor plan you sent'를 말하는데 공지(지문 1)에 배치도가 없었다 | 공지에 'New room numbers are shown on the attached floor plan.'을 넣었다 |
+| p608 · rp34 | 카페 대표와 식당 주인이 둘 다 Marisol Vega였다 (서로 다른 회사) | p608 대표를 Leah Brandt로 바꿨다 |
+
+확인했고 이상이 없는 것
+
+| 지문 | 확인한 내용 |
+|---|---|
+| rp13 | 일정 3월 5일부터 4월 16일까지 2주 간격. 새로 넣은 메일 날짜 2월 12일은 첫 과정 신청 마감(2주 전인 2월 19일)보다 앞이다 |
+| rp27 | 4월 6일부터 8일까지 2박, 390 ÷ 2 = 195. 390 + 128 + 34 = 552. 제출 4월 11일은 귀국 후 14일 안. 답장 4월 15일은 제출 뒤 |
+| rp28 | 게시글 3월 2일, 답변 3월 3일. 녹화 3개월 보관이 지문 1과 3에서 같다. 학생 할인가 90달러 |
+| rp29 | 입주 7월 1일 가능, 희망 8월. 주차 6 - 2 = 4 |
+| rp30 | 메일 9월 10일은 9월 15일 마감 전. 100대는 최소 50대의 두 배 |
+| rp31 | 8월 14일은 2026년 달력에서 금요일. 메일 8월 10일(월)은 이사 전. 240 + 1,600 + 350 + 400 = 2,590 |
+| rp32 | 5월 구매는 3월 1일부터 7월 31일까지의 회수 기간 안. 회신 9월 9일은 문의 9월 8일 뒤 |
+| rp33 | 60 × 0.6 = 36, 30 × 0.6 = 18 |
+| rp34 | 12 + 14 = 26. 답글 5월 14일은 후기 5월 12일 뒤 |
+| p607 | Monday, May 4와 Friday, May 8은 2026년 달력과 맞다 |
+| p610 | Tuesday, September 9는 2025년 달력과 맞다. 새로 넣은 메일 날짜 9월 1일은 면접 전 |
+| 전 묶음 | 같은 사람의 이름·직책이 지문마다 같다 (Diane Keller, Accounting / Elena Barros, Facilities / Marcia Delgado 등) |
+
+## C. 복수정답 · 형식 · 어휘 (이중·삼중)
+
+- 복수정답: 45문항의 오답 135개를 지문에 비춰 봤다. 고칠 오답은 없었다. 정답 쪽이 틀린 문항도 없다.
+- 형식: Date가 빠진 이메일·게시글에 날짜를 넣었다. 날짜는 지문 사이 순서가 맞게 골랐다.
+
+| 지문 | 전 | 후 | 이유 |
+|---|---|---|---|
+| rp13 | "To: training@northgatebc.org", "Subject: Workshop Registration" | "To: training@northgatebc.org", "Date: February 12", "Subject: Workshop Registration" | 이메일 Date 추가. 신청 마감(과정 2주 전)보다 앞인 2월 12일 |
+| rp27 | "To: Teodor Vasilev", "Subject: Form 7B — Oslo trip" | "To: Teodor Vasilev", "Date: April 15", "Subject: Form 7B — Oslo trip" | 회계팀 답장 Date 추가. 신청서 제출일 4월 11일 뒤 |
+| rp28 | "From: Beatriz Nunes", "Re: Posted by Kwan-ho Lim" | "From: Beatriz Nunes", "Date: March 3", "Re: Kwan-ho Lim's post" | 강사 답변 Date 추가(게시글 3월 2일 다음 날), Re 줄을 자연스럽게 |
+| rp29 | "To: m.delgado@trentonworks.com", "Subject: Third-floor office" | "To: m.delgado@trentonworks.com", "Date: May 18", "Subject: Third-floor office" | 이메일 Date 추가 |
+| rp30 | "To: orders@kestrelaudio.com", "Subject: WR-9 order" | "To: orders@kestrelaudio.com", "Date: September 10", "Subject: WR-9 order" | 본문의 날짜를 머리글로 옮겼다 (rp25와 같은 방식) |
+| rp31 | "To: Elena Barros", "Subject: Boxes and Friday" | "To: Elena Barros", "Date: August 10", "Subject: Boxes and Friday" | 이메일 Date 추가. 이사(8월 14일 금) 전 월요일 |
+| rp32 | "To: support@nordvik.com", "Subject: Recall — K-220" | "To: support@nordvik.com", "Date: September 8", "Subject: Recall — K-220" | 고객 이메일 Date 추가 |
+| rp32 | "To: Hana Petrov", "Subject: RE: Recall — K-220" | "To: Hana Petrov", "Date: September 9", "Subject: RE: Recall — K-220" | 회신 Date 추가. 고객 이메일 다음 날 |
+| rp33 | "To: subs@civicreview.org", "Subject: Student rate and gift" | "To: subs@civicreview.org", "Date: February 3", "Subject: Student rate and gift" | 이메일 Date 추가. 4월 이사 전 |
+| rp34 | "Posted by: Theo Lindqvist \| Rating: 4 of 5" | "Posted by: Theo Lindqvist \| May 12 \| Rating: 4 of 5" | 후기 게시일 추가 |
+| rp34 | "Response from the owner, Marisol Vega" | "Response from the owner, Marisol Vega \| May 14" | 답글 게시일 추가. 후기보다 뒤 |
+| p610 | "To: Ms. Arnault", "Subject: Interview Invitation" | "To: Ms. Arnault", "Date: September 1", "Subject: Interview Invitation" | 이메일 Date 추가. 면접일 9월 9일(화) 전 |
+| rp30 | { en: "I am sending this on September 10, so I expect the early-order discount to apply.", ko: "9월 10일에 보내므로 사전 주문 할인이 적용될 것으로 생각합니다." } | { en: "We expect the early-order discount to apply to this order.", ko: "이번 주문에는 사전 주문 할인이 적용될 것으로 생각합니다." } | 날짜를 머리글로 옮겼다. Q2는 머리글 날짜와 보도자료 마감일을 이어야 풀린다 |
+
+- 어휘: 9개 지문의 어휘 45개가 모두 본문에 있다. 활용형으로 있는 것은 sign up for(signed up mainly for), be billed separately(are billed separately), combine with(cannot be combined with)다.
+- 단어장과 쓰임이 다른 것: rp28 follow-up은 지문에서 형용사(후속의), 단어장은 명사(후속 조치)다. rp30 wholesale도 지문은 형용사(도매의), 단어장은 명사(도매)다. 둘 다 지문 쓰임이 맞아서 그대로 뒀다.
+
+## D. Part 6
+
+- 문법 빈칸 25개: 모두 노트(ruleId)로 풀린다. 전치사 4개(p601 Q4 direct A to B, p602 Q2 by, p605 Q2 by, p607 Q1 through)는 104단계에서 넓힌 g06에 모두 들어 있다.
+- 어휘 빈칸 5개: 오답이 문맥에서 통하지 않는다. 다만 p602 Q4의 following은 통해서 바꿨다.
+- 문장 삽입 10개: 다른 보기가 들어갈 수 있는 것 3개를 고쳤다. 앞뒤 문장 대신 그 보기를 바꿨다. 앞뒤 문장은 이미 정답만 받도록 짜여 있었고, 문제는 '관계없지만 넣어도 어색하지 않은' 보기였다.
+- 어휘 목록: 10세트 50개 모두 본문에 있다 (check-reading의 invalidPart6Vocab이 검사한다).
+
+| 세트 | 분류 | 전 | 후 | 이유 |
+|---|---|---|---|---|
+| p601 | 복수정답 | choices: ["to", "at", "for", "with"] | choices: ["to", "on", "by", "with"] | Q4: direct questions at / questions for the manager도 쓰이는 표현이라 at·for를 뺐다 |
+| p602 | 복수정답 | choices: ["next", "nearest", "later", "following"] | choices: ["next", "nearest", "later", "previous"] | Q4: their following order도 '다음 주문'으로 통한다 |
+| p604 | 문장 삽입 | "The product has been discontinued since 2010." | "All X20 kettles have been checked and are safe to use." | Q2 (B): 단종 제품도 리콜될 수 있어 '사용을 멈추라' 앞에 들어갈 수 있었다. 사용 중단 요청과 모순되는 문장으로 바꿨다 |
+| p604 | 복수정답 | choices: ["inconvenience", "inconvenient", "inconveniently", "inconveniences"] | choices: ["inconvenience", "inconvenient", "inconveniently", "inconvenienced"] | Q4: apologize for the inconveniences도 문법상 맞다 |
+| p605 | 복수정답 | { type: "text", en: " option, and it takes less than two minutes. " } | { type: "text", en: " of our three renewal options, and it takes less than two minutes. " } | Q3: 'the faster option'(둘 중 더 빠른 쪽)도 문법상 맞았다. of our three renewal options로 최상급만 남겼다 |
+| p605 | 번역 | 온라인 갱신이 가장 빠른 방법이며 2분도 걸리지 않습니다. | 온라인 갱신은 세 가지 갱신 방법 중 가장 빠르며 2분도 걸리지 않습니다. | 본문 수정에 맞춤 |
+| p605 | 문장 삽입 | "Our office will be closed for the holidays." | "Your subscription was canceled last month." | Q4 (B): 연휴 휴무 안내는 갱신 안내 끝에 들어갈 수 있었다. 12월 31일 만료와 모순되는 문장으로 바꿨다 |
+| p608 | 이름 | Owner Marisol Vega said | Owner Leah Brandt said | rp34 식당 주인 Marisol Vega와 같은 이름이 다른 회사 대표로 나왔다 |
+| p608 | 번역 | 대표 마리솔 베가는 | 대표 리아 브랜트는 | 이름 변경에 맞춤 |
+| p610 | 문장 삽입 | "Please send two letters of reference by Monday." | "Please send your application by September 30." | Q3 (D): 추천서 요청은 면접 안내에 흔히 들어가서 [3]에 들어갈 수 있었다. 이미 지원한 사람에게 보내는 메일과 모순되는 문장으로 바꿨다 |
+| p610 | 어휘 | { w: "reserve", m: "일정을 잡아 두다" } | { w: "reserve", m: "(시간을) 잡아 두다, 예약하다" } | 단어장 reserve '예약하다'와 맞췄다 |
+
+## E. 해설
+
+- 85개(지문 45 + Part 6 40) 모두 다시 썼다. 지문 해설은 '지문 N의 M번째 문장/줄'과 원문 인용, 연계 문항은 근거를 지문별로 나눠 적었다. Part 6은 노트 번호와 오답마다 안 되는 이유를 적었다.
+- 원래 해설은 Part 6 문법 문항 대부분이 '조동사 will 뒤에는 동사원형이 온다.'처럼 규칙 한 줄이었다. 연계 문항은 어느 지문의 몇 번째 문장인지 없이 '공고에 ~, 이메일에서 ~'로만 적었다.
+
+| 묶음 | 문항 | 전 | 후 |
+|---|---|---|---|
+| rp13 | Q1 | 봄 워크숍 안내와 신청 방법을 알리는 공고다. | 근거: 지문 1(공고)의 제목 PROFESSIONAL DEVELOPMENT WORKSHOPS — Spring Series와 1번째 문장 Our spring workshops are open to all member companies. 지문 1만으로 푼다. 오답: 일정 변경(B)은 어느 지문에도 없고, 결제 요청(C)은 지문 3에서 청구서를 보내 달라는 말로만 나오며, 새 건물 소개(D)는 없다. |
+| rp13 | Q2 | 연계 문제다. 이메일에서 신청한 세 과정 중 가장 빠른 것은 3월 5일 Effective Business Writing이고, 일정표에서 그 과정은 101호다. | 연계 문제다(지문 2 + 지문 3). 근거 1: 지문 3의 2번째 문장에서 Effective Business Writing, Public Speaking, Project Management를 신청했다. 근거 2: 지문 2에서 그중 가장 빠른 것은 1번째 줄 March 5 — Effective Business Writing (Room 101)이다. 오답: 204호(B)는 Data Analysis Basics와 Project Management가 쓰고, 305호(C)·410호(D)는 일정표에 없다. |
+| rp13 | Q3 | 이메일에 세 과정만 적혀 있고 Data Analysis Basics는 빠져 있다. | NOT 문제다. 근거: 지문 3의 2번째 문장에 신청한 세 과정이 나오고, Data Analysis Basics만 없다. 지문 3의 4번째 문장(3월 19일 출장)과 지문 2의 2번째 줄(3월 19일 과정)이 이유를 보여 준다. 오답: A·C·D는 모두 지문 3의 2번째 문장에서 신청했다. |
+| rp13 | Q4 | 연계 문제다. 공고에 세 과정 이상 신청 시 20퍼센트 할인이라고 했고, 이메일에서 세 과정을 신청했다. | 연계 문제다(지문 1 + 지문 3). 근거 1: 지문 1의 3번째 문장 Members who register for three or more sessions receive a 20 percent discount. 근거 2: 지문 3의 2번째 문장에서 세 과정을 신청했다. 지문 3은 할인이 되는지 묻기만 하고 이유는 말하지 않는다. 오답: 신규 회원(A)·선결제(C)·센터 직원(D)은 어느 지문에도 없다. |
+| rp13 | Q5 | Please send the invoice to our accounting department. | 근거: 지문 3의 5번째 문장 Please send the invoice to our accounting department. 오답: 날짜 변경(A)이 아니라 3월 19일 과정을 신청하지 않은 것이고, 큰 강의실(C)·새 워크숍(D)은 요청하지 않았다. |
+| rp27 | Q1 | 식비, 숙박비, 택시, 제출 기한 등 경비 청구 규정을 안내하는 글이다. | 근거: 지문 1(규정)의 제목 TRAVEL EXPENSE POLICY와 1번째부터 5번째 문장. 식비·숙박비·택시비·제출 기한·지급 시기를 정한다. 오답: 급여 변경(B)이 아니라 급여와 함께 지급한다는 말이고, 예산 부족(C)·새 회계 시스템(D)은 없다. |
+| rp27 | Q2 | 연계 문제다. 규정에 20달러 미만은 영수증이 필요 없다고 했고, 신청서의 택시 요금은 34달러다. | 연계 문제다(지문 1 + 지문 2). 근거 1: 지문 1의 3번째 문장 Taxi fares require a receipt; rides under $20 do not. 근거 2: 지문 2의 5번째 줄 Taxi (airport, with receipt): $34. 34달러는 20달러 이상이라 영수증이 필요하다. 오답: 20달러 미만(A)이 아니고, 지문 3의 6번째 문장 Everything else is approved라 승인되지 않음(B)도 아니며, 고객사 부담(D)은 근거가 없다. |
+| rp27 | Q3 | 연계 문제다. 1박 195달러는 국내 한도 160달러를 넘지만 해외 한도 210달러보다는 낮다. 오슬로 출장이라 해외 한도가 적용된다. | 연계 문제다(지문 1 + 지문 2). 근거 1: 지문 2의 2번째·3번째 줄에서 오슬로 해외 출장, 2박 390달러, 즉 1박 195달러다. 근거 2: 지문 1의 2번째 문장에서 국내 한도는 160달러, 해외 한도는 210달러다. 195달러는 국내 한도를 넘지만 해외 한도 안이다. 지문 3의 3번째 문장은 한도 안이라고만 하고 어느 한도인지 말하지 않는다. 오답: 선결제(A)·고객사 분담(B)은 근거가 없고, 2박(C)은 사실이지만 한도는 1박 기준이라 이유가 아니다. |
+| rp27 | Q4 | Please send me the receipts for April 7. | 근거: 지문 3의 4번째·5번째 문장 your meal total exceeds the daily allowance for one of the three days / Please send me the receipts for April 7. 오답: 나머지는 승인됐으므로 전체 재제출(A)이 아니고, 환급금 반환(C)·더 싼 호텔(D)은 요구하지 않았다. |
+| rp27 | Q5 | 연계 문제다. 규정에 다음 달 급여와 함께 지급된다고 했고, 4월에 제출했으므로 5월 지급이다. 이메일에서도 확인된다. | 연계 문제다(지문 1 + 지문 2). 근거 1: 지문 1의 5번째 문장 Approved claims are paid with the following month's salary. 근거 2: 지문 2의 6번째 줄 Submitted: April 11. 4월에 제출했으므로 다음 달인 5월 급여와 함께 받는다. 지문 3의 2번째 문장은 기한 안에 도착했다고만 한다. 오답: 14일(A)은 제출 기한이고, 4월 11일(B)은 제출일이며, 다음 고객 방문(D)은 근거가 없다. |
+| rp28 | Q1 | 수식, 차트, 피벗 테이블 등 스프레드시트 활용을 다룬다. 데이터베이스는 가을 후속 강좌다. | 근거: 지문 1(강좌 안내)의 제목 PRACTICAL SPREADSHEETS와 2번째·3번째 줄의 회차 주제(Formulas, Charts, Pivot tables 등). 오답: 데이터베이스(B)는 지문 3의 5번째 문장에서 가을 후속 강좌로만 나오고, 보고서 작성(C)·웹 디자인(D)은 없다. |
+| rp28 | Q2 | 연계 문제다. 게시글에서 5회차를 놓쳤다고 했고, 안내문에서 5회차는 매크로다. | 연계 문제다(지문 1 + 지문 2). 근거 1: 지문 2의 1번째 문장 I signed up mainly for Session 5, but I had to miss it. 근거 2: 지문 1의 3번째 줄 Session 5 Macros. 오답: 2회차 차트(A), 4회차 데이터 정리(B), 6회차 최종 과제(D)는 놓쳤다는 말이 없다. 4회차는 파일이 빠진 회차다. |
+| rp28 | Q3 | 연계 문제다. 할인된 수강료를 냈다고 했고, 안내문에서 학생 할인가는 90달러다. | 연계 문제다(지문 1 + 지문 2). 근거 1: 지문 2의 5번째 문장 I paid the reduced fee since I am finishing a degree part-time. 근거 2: 지문 1의 4번째 줄 $90 for students with proof of enrollment. 오답: 120달러(B)는 정가이고, 180달러(C)·210달러(D)는 근거가 없다. |
+| rp28 | Q4 | 세 지문을 모두 봐야 하는 연계 문제다. 게시글에서 4회차 파일이 빠졌다고 했고, 답변에서 그 파일을 올렸다고 했고, 안내문에서 4회차는 데이터 정리다. | 연계 문제다(지문 1 + 지문 2 + 지문 3). 근거 1: 지문 2의 3번째 문장 the exercise files for Session 4 were not in the download folder. 근거 2: 지문 3의 2번째 문장 I have now added them to the folder. 근거 3: 지문 1의 3번째 줄 Session 4 Data cleaning. 오답: 수식(A)·차트(B)는 문제가 된 회차가 아니고, 매크로(D)는 임 씨가 놓친 회차다. |
+| rp28 | Q5 | planning a follow-up course on databases for the autumn. 녹화 기간은 원래부터 3개월이라 연장이 아니다. | 근거: 지문 3의 5번째 문장 I am also planning a follow-up course on databases for the autumn. 오답: 녹화 기간(A)은 지문 1의 5번째 줄과 지문 3의 4번째 문장에서 원래 3개월이라 연장이 아니고, 수강료 인하(C)·7회차 추가(D)는 없다. |
+| rp29 | Q1 | including water and building maintenance. 전기와 인터넷은 별도 청구다. | 근거: 지문 1(광고)의 2번째 줄 Monthly rent: $4,200, including water and building maintenance. 오답: 전기(A)·인터넷(B)은 3번째 줄에서 별도 청구라고 했고, 가구(D)는 언급이 없다. |
+| rp29 | Q2 | 연계 문제다. 직원 6명이 차로 출근하고 광고에 주차 두 면이 포함되므로 4면이 더 필요하다. | 연계 문제다(지문 1 + 지문 2). 근거 1: 지문 2의 3번째 문장 six of whom drive to work. 근거 2: 지문 1의 5번째 줄 Two parking spaces are included. 6면에서 2면을 빼면 4면이 더 필요하다. 오답: 2면(A)은 포함된 수, 6면(C)은 운전하는 직원 수, 8면(D)은 방의 수다. |
+| rp29 | Q3 | whether the eight rooms can be combined into fewer, larger spaces. | 근거: 지문 2의 4번째 문장 whether the eight rooms can be combined into fewer, larger spaces. combine을 join together로 바꿔 표현했다. 오답: 창문(B)·난방(C)·청소(D)는 묻지 않았다. |
+| rp29 | Q4 | 연계 문제다. 광고는 최소 2년인데 이메일에서 1년 임대가 가능한지 물었다. 입주는 8월을 원하므로 7월보다 이른 것이 아니다. | 연계 문제다(지문 1 + 지문 2). 근거 1: 지문 1의 4번째 줄 Minimum lease: two years. 근거 2: 지문 2의 5번째 문장 if a one-year lease is possible. 오답: 임대료(A)는 묻지 않았고, 입주는 지문 2의 2번째 문장에서 8월부터라 7월 1일보다 이른 날(B)이 아니며, 창고(C)는 언급이 없다. |
+| rp29 | Q5 | I am free to visit on Thursday or Friday afternoon. 이메일에 보낸 날짜가 없으므로 '주 후반'이 아니라 요일 그대로 고른다. | 근거: 지문 2의 6번째 문장 I am free to visit on Thursday or Friday afternoon. 오답: 이번 주 계약(A)·보증금 선납(B)은 말하지 않았고, 델가도 씨에게 월요일에 전화하겠다(D)는 말도 없다. 지문 1은 전화로 방문 예약을 하라고 했지만 한 씨는 메일로 방문 가능 시간을 알렸다. |
+| rp30 | Q1 | folds flat for travel. | 근거: 지문 1(보도자료)의 2번째 문장 The WR-9 offers thirty hours of battery life and folds flat for travel. 오답: 방수(A)·색상(B)·급속 충전(C)은 언급되지 않았다. |
+| rp30 | Q2 | 연계 문제다. 보도자료에 9월 15일 전 주문은 15퍼센트 할인이라고 했고, 이메일은 9월 10일에 보냈다. | 연계 문제다(지문 1 + 지문 2). 근거 1: 지문 1의 4번째 문장 Retailers ordering before September 15 receive a 15 percent wholesale discount. 근거 2: 지문 2 머리글의 Date: September 10. 지문 2 본문은 할인을 기대한다고만 하고 마감일은 말하지 않는다. 오답: 오랜 거래처(B)·여러 제품 주문(C)·선결제(D)는 근거가 없다. |
+| rp30 | Q3 | 연계 문제다. 최소 주문량은 50대이고 100대를 주문했으므로 두 배다. | 연계 문제다(지문 1 + 지문 2). 근거 1: 지문 1의 5번째 문장 Minimum order: fifty units. 근거 2: 지문 2의 2번째 문장 one hundred WR-9 units. 100대는 최소 주문량의 두 배다. 오답: 최소량 미만(A)이 아니고, 지문 1의 6번째 문장대로 10월 1일에 출하되므로 두 날짜로 나눠 받는다(B)는 근거가 없으며, 다른 제품(D)은 주문하지 않았다. |
+| rp30 | Q4 | Our customers often ask about battery life. | 근거: 지문 2의 4번째 문장 Our customers often ask about battery life. 오답: 소매가(A)·수리(C)·색상(D)을 묻는다는 말은 없다. |
+| rp30 | Q5 | 연계 문제다. 출하가 시작되는 날에 진열하고 싶다고 했고, 보도자료에서 그날은 10월 1일이다. | 연계 문제다(지문 1 + 지문 2). 근거 1: 지문 2의 6번째 문장 We hope to have the units on our shelves on the day shipping begins. 근거 2: 지문 1의 1번째 문장 will begin shipping ... on October 1. 오답: 가격 인하(A)·무료 샘플(B)은 바라지 않았고, 세 매장용이지만 세 번 나눠 배송(D)해 달라는 말은 없다. |
+| rp31 | Q1 | 이사 날짜, 짐 싸는 방법, 당일 근무 방식을 안내하는 공지다. | 근거: 지문 1(사내 공지)의 1번째부터 5번째 문장. 이사 날짜, 짐 싸는 방법, 업체가 옮기는 물건, 당일 재택근무를 안내한다. 오답: 영업시간 변경(A)이 아니라 이사 당일 하루 휴무이고, 예산 요청(C)·새 시설 담당자 소개(D)는 없다. 엘레나 바로스는 문의처로만 나온다. |
+| rp31 | Q2 | 모니터와 의자는 업체가 옮기고 개인 물품만 본인 책임이다. | 근거: 지문 1의 4번째 문장 Monitors and chairs will be moved by the movers; personal items are your responsibility. 오답: 모니터(A)는 이삿짐 업체가 옮기고, 업체 고용(C)·엘리베이터 예약(D)이 직원 몫이라는 말은 없다. |
+| rp31 | Q3 | 연계 문제다. 추가 요금은 토·일에 이사할 때만 붙는데, 공지에서 이사 날짜는 금요일이다. | 연계 문제다(지문 1 + 지문 2). 근거 1: 지문 2의 7번째 줄 Weekend surcharge, added only if the move takes place on a Saturday or Sunday. 근거 2: 지문 1의 1번째 문장 on Friday, August 14. 지문 2에는 날짜만 있고 요일이 없다. 오답: 견적은 30일간 유효하므로 만료(B) 근거가 없고, 조기 예약(C)·인원 감소(D)는 언급이 없다. |
+| rp31 | Q4 | 연계 문제다. 견적서에는 120개인데 이메일에서 90개 정도만 세었다고 했다. | 연계 문제다(지문 2 + 지문 3). 근거 1: 지문 2의 2번째 줄 Packing boxes (120). 근거 2: 지문 3의 4번째 문장 I counted only about ninety boxes in the supply room. 오답: 크기(A)·이름표(C)·새 사무실 배송(D)은 말하지 않았다. |
+| rp31 | Q5 | Could I come in on Wednesday evening and pack then instead? 마감인 목요일보다 하루 앞선 수요일이다. | 근거: 지문 3의 2번째·3번째 문장 I will be at a client site all day Thursday ... Could I come in on Wednesday evening and pack then instead? 마감은 지문 1의 2번째 문장대로 목요일이라 하루 이르다. 오답: 목요일에는 고객사에 있으므로 재택근무(A)가 아니고, 이사를 빠지겠다(C)거나 방 번호를 고르겠다(D)는 말은 없다. 방 번호는 배치도에 없다고 알린 것뿐이다. |
+| rp32 | Q1 | The handle can loosen after repeated use. | 근거: 지문 1(리콜 공고)의 2번째 문장 The handle can loosen after repeated use. 오답: 가열 속도(A)·전선 길이(C)·자동 꺼짐(D)은 언급되지 않았다. |
+| rp32 | Q2 | Stop using the kettle immediately. | 근거: 지문 1의 3번째 문장 Stop using the kettle immediately. 오답: 영수증 우송(B)은 지문 3의 2번째 문장에서 필요 없다고 했고, 수리 센터 방문(C)·받침 분리(D)는 없다. 받침(base)은 모델 번호가 있는 곳이다. |
+| rp32 | Q3 | 연계 문제다. 공고의 회수 기간은 3월 1일~7월 31일이고, 이메일에서 5월에 샀다고 했다. | 연계 문제다(지문 1 + 지문 2). 근거 1: 지문 1의 1번째 문장 sold between March 1 and July 31. 근거 2: 지문 2의 2번째 문장 I bought my kettle in May. 오답: 제품 등록(A)·재구매 고객(C)·전화 신고(D)는 근거가 없다. 페트로프 씨는 메일로 문의했다. |
+| rp32 | Q4 | 연계 문제다. 이메일에서 배송비를 누가 내는지 물었고, 회신에서 선불 라벨이라 부담이 없다고 답했다. | 연계 문제다(지문 1 + 지문 3). 근거 1: 지문 3의 2번째 문장 No receipt is needed; the model number is enough. 근거 2: 지문 1의 5번째 문장 The model number is printed on the base of the kettle. 지문 3은 모델 번호면 된다고만 하고 위치는 말하지 않는다. 오답: 영수증(B)은 필요 없다고 했고, 상자(C)·손잡이(D)에 모델 번호가 있다는 말은 없다. 손잡이는 결함 부위다. |
+| rp32 | Q5 | the K-240 uses a different lid. | 근거: 지문 3의 5번째 문장 the K-240 uses a different lid, so the old lid cannot be reused. 오답: 가격(A)·온라인 전용(C)·색상(D)은 언급되지 않았다. |
+| rp33 | Q1 | includes the full archive since 2008. | 근거: 지문 1(구독 안내)의 2번째 줄 Digital only: $30 a year (includes the full archive since 2008). 오답: 매달 인쇄본(A)은 인쇄 플랜이고, 무료 선물 구독(C)·두 주소 배송(D)은 없다. |
+| rp33 | Q2 | 연계 문제다. 인쇄본과 디지털은 60달러이고 학생 할인 40퍼센트를 적용하면 36달러다. | 연계 문제다(지문 1 + 지문 2). 근거 1: 지문 2의 2번째 문장 I am a graduate student and would like the print and digital plan at the student rate. 근거 2: 지문 1의 3번째·4번째 줄 Print and digital: $60 / Students receive 40 percent off. 60달러에서 40퍼센트를 빼면 36달러다. 오답: 18달러(A)는 디지털 플랜에 할인을 적용한 값, 30달러(B)는 디지털 정가, 60달러(D)는 할인 전 가격이다. |
+| rp33 | Q3 | 연계 문제다. 선물 구독은 학생 할인과 함께 적용할 수 없고, 여동생은 학생도 아니다. | 연계 문제다(지문 1 + 지문 2). 근거 1: 지문 2의 4번째 문장 a one-year digital subscription for my sister, who is not a student. 근거 2: 지문 1의 6번째 줄 Gift subscriptions ... cannot be combined with the student discount. 선물 구독이라 학생 할인이 안 되고, 동생도 학생이 아니다. 오답: 할인(A)이 안 되고, 선물 구독은 가능하다고 했으므로 불가(C)가 아니며, 디지털 플랜을 원하므로 인쇄 포함(D)도 아니다. |
+| rp33 | Q4 | How much notice do you need for a change of address? | 근거: 지문 2의 5번째 문장 How much notice do you need for a change of address? 오답: 지난 주문 취소(B)·기고(C)·견본호(D)는 묻지 않았다. |
+| rp33 | Q5 | 갱신일 14일 전, 즉 2주 전에 취소해야 한다. | 근거: 지문 1의 5번째 줄 Subscriptions renew automatically unless you cancel fourteen days before the renewal date. 14일을 two weeks로 바꿔 표현했다. 오답: 매년 전화(A)·수표 결제(C)·디지털 플랜(D)은 자동 갱신과 관계가 없다. |
+| rp34 | Q1 | the best I have had in this city. 식사 공간은 작고 서비스는 느렸다고 했다. | 근거: 지문 1(후기)의 1번째 문장 The lamb stew was the best I have had in this city. 오답: 식당은 3번째 문장에서 작다고 했고(B), 서비스는 2번째 문장에서 느렸다고 했으며(C), 주말 분위기(D)는 예약 이야기만 있다. |
+| rp34 | Q2 | we waited almost forty minutes for our main course. | 근거: 지문 1의 2번째 문장 we waited almost forty minutes for our main course. 오답: 가격(A)은 4번째 문장에서 적당하다고 했고, 빵(C)은 1번째 문장에서 매장에서 굽는다고 칭찬했으며, 직원은 friendly라 무례하지(D) 않았다. |
+| rp34 | Q3 | 연계 문제다. 답글에서 후기 작성자가 온 그날 저녁 요리사가 아파 인력이 부족했다고 했고, 후기에서 그날은 화요일 저녁이다. | 연계 문제다(지문 1 + 지문 2). 근거 1: 지문 2의 2번째 문장 You are right about the wait that evening. Our second cook was ill, and we were short-staffed. 근거 2: 지문 1의 2번째 문장 on a Tuesday evening. 오답: 월요일(A)은 근거가 없고, 토요일(C)·일요일(D)은 예약이 필요하다고 한 주말이다. |
+| rp34 | Q4 | 연계 문제다. 후기에 12개라고 했고 답글에서 14개를 더한다고 했으므로 26개다. | 연계 문제다(지문 1 + 지문 2). 근거 1: 지문 1의 3번째 문장 only twelve tables. 근거 2: 지문 2의 4번째 문장 a second dining room ... which will add fourteen tables. 12 + 14 = 26. 오답: 12개(A)는 지금, 14개(B)는 새로 늘어나는 수이고, 28개(D)는 근거가 없다. |
+| rp34 | Q5 | We have since hired two part-time cooks. 두 번째 공간은 9월에 열 예정이다. | 근거: 지문 2의 3번째 문장 We have since hired two part-time cooks. 오답: 가격 인하(A)는 없고, 두 번째 공간(C)은 4번째 문장에서 9월에 열 예정이며, 예약은 평일에도 받기 시작했으므로 중단(D)이 아니다. |
+| p601 | Q1 | 조동사 will 뒤에는 동사원형이 온다. | 조동사 will 뒤는 동사원형 자리다(g13). 오답: adopts는 3인칭 현재형, adopting은 -ing, adopted는 과거형·과거분사라 will 뒤에 올 수 없다. |
+| p601 | Q2 | 빈칸 뒤가 명사(feedback)이므로 전치사가 필요하다. 의견을 반영했다는 뜻이므로 in response to. | 빈칸 뒤가 명사구(feedback from staff members)라 전치사가 필요하다(g07). because·although는 접속사라 뒤에 주어+동사가 와야 한다. 남은 전치사 둘 중 despite는 '의견에도 불구하고'라 일찍 여는 변경과 맞지 않는다. 일찍 근무하는 직원의 의견을 반영했으므로 in response to. |
+| p601 | Q3 | 문장 삽입 문제다. 앞뒤가 운영 시간 변경 안내이므로 게시 안내가 자연스럽다. 나머지는 문맥과 맞지 않는다. | 문장 삽입이다. 앞 문장은 변경 이유, 뒤 문장은 '전환 기간 동안 양해 부탁'이다. 새 시간을 입구에 게시한다는 안내가 자연스럽다. 오답: 영구 폐쇄(B)는 새 운영 시간 안내와 모순이고, 도시락 지참(C)은 식당이 계속 운영되므로 맞지 않으며, 관리자 사임(D)은 마지막 문장에서 시설 관리자에게 문의하라는 말과 맞지 않는다. |
+| p601 | Q4 | direct A to B(A를 B에게 보내다) 형태다. | direct A to B(A를 B에게 보내다)는 to를 쓴다(g06). 오답: on·by·with는 direct와 짝을 이루지 않는다. |
+| p602 | Q1 | 주문품은 발송되는 쪽이므로 수동태다. 빈칸 뒤에 목적어가 없다. | 빈칸은 문장의 동사 자리이고, 주문은 '발송되는' 쪽이라 수동태다(g04). 빈칸 뒤에 목적어가 없다는 것도 근거다. 오답: to ship(to부정사)·shipper(명사)·shipping(-ing)은 혼자서 동사가 될 수 없다. |
+| p602 | Q2 | 금요일 전까지 연락하라는 마감 의미이므로 by. | 금요일까지 연락을 '끝내라'는 마감이라 by다(g06). 오답: until은 계속되는 동작에 쓰고, during은 기간 명사 앞, since는 '그때부터 지금까지'라 맞지 않는다. |
+| p602 | Q3 | 뒤 문장이 소식지 구독 혜택을 설명하므로 소식지를 언급하는 문장이 앞에 와야 한다. | 문장 삽입이다. 뒤 문장이 '소식지를 신청한 고객은 할인을 받는다'라서 소식지를 처음 꺼내는 문장이 먼저 와야 한다. 오답: 매장 폐점(A)은 할인 안내와 맞지 않고, 환불 처리(C)·반품 기한(D)은 발송 안내 메일과 맞지 않으며 소식지로 이어지지 않는다. |
+| p602 | Q4 | '다음 주문'이라는 뜻이므로 next order가 자연스럽다. | '다음 주문'이라는 뜻이라 next order다. 오답: nearest는 거리, later는 '나중의'라 소유격 뒤 주문 앞에 쓰지 않고, previous는 '이전 주문'이라 신청한 뒤에 받는 할인과 맞지 않는다. |
+| p603 | Q1 | 조동사 will 뒤에는 동사원형이 온다. | 조동사 will 뒤는 동사원형 자리다(g13). 오답: relocates·relocating·relocated는 will 뒤에 올 수 없다. |
+| p603 | Q2 | 문장 삽입 문제다. 앞뒤가 이전 안내이므로 영업에 영향이 없다는 안내가 자연스럽다. 나머지는 이전 안내와 모순된다. | 문장 삽입이다. 앞 문장이 새 주소, 뒤 문장이 이삿짐 일정이라 이전에 관한 실무 안내가 이어져야 한다. 영업시간에는 영향이 없다는 안내가 자연스럽다. 오답: 건물 철거(B)·전원 재택(C)·지사 폐쇄(D)는 새 건물로 옮긴다는 공지와 모순된다. |
+| p603 | Q3 | 뒤에 동사원형 be가 오므로 조동사 should가 필요하다. | 빈칸 뒤에 동사원형 be가 있어 조동사가 필요하다(g13). 오답: are는 뒤에 be가 올 수 없고, having·to be는 문장의 동사가 되지 못한다. |
+| p603 | Q4 | 명령문 앞의 정중 표현은 please다. 뒤에 동사원형 contact가 온다. | 명령문이라 동사원형 contact 앞에 정중 표현 please가 온다(g12). 오답: pleased·pleasing은 형용사·분사, pleasure는 명사라 명령문 앞에 올 수 없다. |
+| p604 | Q1 | 제품은 출고되는 쪽이므로 수동태다. 빈칸 뒤에 목적어가 없다. | 빈칸은 동사 자리이고, 제품은 '출고되는' 쪽이라 수동태다(g04). 주어 units가 복수라 were. 오답: ship은 능동형이라 목적어가 필요하고, shipper(명사)·shipping(-ing)은 동사가 못 된다. |
+| p604 | Q2 | 리콜 안내 문맥에서 피해 여부를 알리는 문장이 자연스럽다. | 문장 삽입이다. 앞 문장은 결함 내용, 뒤 문장은 '사용을 멈추고 반납하라'다. 피해 여부를 알리는 문장이 자연스럽다. 오답: '모두 점검해서 안전하다'(B)는 바로 뒤의 사용 중단 요청과 모순이고, 매장 영구 폐쇄(C)는 매장으로 반납하라는 말과 모순이며, 디자인상 수상(D)은 리콜 안내와 관계가 없다. |
+| p604 | Q3 | whichever you prefer(둘 중 원하시는 대로)가 뒤에 오므로 선택을 뜻하는 or가 맞다. | whichever you prefer(둘 중 원하는 쪽)가 뒤에 오므로 둘 중 하나를 고르는 or다(g14). 오답: and는 둘 다, but은 대조, nor는 부정문에 쓴다. |
+| p604 | Q4 | the 뒤는 명사 자리다. inconvenience는 셀 수 없는 명사로 쓴다. | the 뒤는 명사 자리다(g01). apologize for the inconvenience는 사과문 정형 표현이다. 오답: inconvenient는 형용사, inconveniently는 부사, inconvenienced는 동사의 과거형·과거분사다. |
+| p605 | Q1 | 주어 Your subscription이 단수이고 예정된 일을 말하므로 현재형 expires. | 주어 Your subscription이 단수이고, 정해진 미래 일정이라 현재형 expires다(g02). 오답: expire는 복수 주어용이고, expired는 이미 끝났다는 뜻이라 '끊김 없이 받으려면 갱신하라'와 맞지 않으며, expiring은 혼자 동사가 될 수 없다. |
+| p605 | Q2 | 12월 15일까지 갱신을 끝내라는 마감 의미이므로 by. | 12월 15일까지 갱신을 '끝내라'는 마감이라 by다(g06). 오답: until은 계속, during은 기간 명사 앞, since는 '그때부터'라 맞지 않는다. |
+| p605 | Q3 | the와 함께 쓰였으므로 최상급 fastest. | the와 of our three renewal options(세 가지 중)가 함께 있어 최상급이다(g10). 오답: fast는 원급, faster는 둘을 비교할 때 쓰므로 셋 중에서 고르는 문장과 맞지 않고, more fast는 틀린 형태다. |
+| p605 | Q4 | 갱신을 권하는 문맥이므로 조기 갱신 혜택을 알리는 문장이 자연스럽다. | 문장 삽입이다. 앞 문장은 온라인 갱신이 빠르다는 내용, 뒤 문장은 '앞으로 1년 더 함께하길 바란다'다. 갱신을 권하는 혜택 안내가 자연스럽다. 오답: 구독이 지난달 취소됐다(B)는 12월 31일에 만료된다는 첫 문장과 모순이고, 잡지 발행 중단(C)은 1년 더 함께하자는 말과 모순이며, 파손된 호 반송(D)은 갱신 안내와 관계가 없다. |
+| p606 | Q1 | 사람이 기쁨을 느끼는 쪽이므로 -ed 형태인 delighted. We are delighted to ~ 는 환영 인사의 정형 표현이다. | 사람(We)이 기쁨을 느끼는 쪽이라 p.p.인 delighted다(g15). 오답: delight는 동사·명사, delighting은 기쁨을 주는 쪽, delightful은 '즐거운(사물·일)'이라 사람 주어의 감정에 맞지 않는다. |
+| p606 | Q2 | 첫날 일정을 안내하는 문맥이므로 점심 제공 안내가 자연스럽다. | 문장 삽입이다. 앞 문장은 9시 오리엔테이션, 뒤 문장은 'afterward(그 후에) 매니저가 만난다'다. 첫날 일정 하나가 더 들어가야 afterward가 자연스럽다. 오답: 사직서 제출(B)은 환영 안내와 모순, 오리엔테이션 취소(C)는 앞 문장과 모순, 주차 불가(D)는 일정이 아니라 afterward와 이어지지 않는다. |
+| p606 | Q3 | three main 뒤이므로 복수 명사 goals가 와야 한다. | three main 뒤라 복수 명사가 와야 한다(g01). 오답: goal은 단수, goaled·goaling은 동사형이다. |
+| p606 | Q4 | need의 목적어 자리이므로 명사가 필요하다. assistance(도움)는 셀 수 없는 명사, assistant는 사람이다. | need의 목적어 자리라 명사가 온다(g01). 오답: assist는 동사, assisted는 과거형, assistant는 사람이라 관사 없이 쓸 수 없고 '도움이 필요하면'이라는 뜻과도 맞지 않는다. |
+| p607 | Q1 | from A through B는 'A부터 B까지(B 포함)'. 기간을 나타내는 짝 표현이다. | from A through B는 'A부터 B까지(B 포함)'다(g06). 오답: among은 셋 이상 사이, along은 '~을 따라', across는 '~을 가로질러'라 기간을 나타내지 않는다. |
+| p607 | Q2 | 문장 삽입 문제다. 서쪽 주차장을 쓰라는 안내 뒤에 안내 표지 설치가 자연스럽게 이어진다. 공사는 아직 시작 전이라 '작년에 끝났다'는 시제가 맞지 않고, 요금이나 출입증 이야기는 나오지 않는다. | 문장 삽입이다. 앞 문장이 '서쪽 주차장을 쓰라', 뒤 문장이 '서쪽에 40면 여유가 있다'다. 안내 표지 설치가 둘 사이에 자연스럽다. 오답: 공사는 아직 시작 전이라 작년에 끝났다(A)는 시제와 맞지 않고, 주차 요금(B)·출입증 반납(D)은 공지 내용과 관계가 없다. |
+| p607 | Q3 | enough room = 충분한 공간. room은 '공간'이라는 뜻의 불가산명사다. | enough room은 '충분한 공간'이다. room은 공간이라는 뜻의 불가산명사다. 오답: amount는 '양', number는 '수', size는 '크기'라 '모두가 주차할 공간'과 맞지 않고 enough 뒤에 관사 없이 쓰지도 않는다. |
+| p607 | Q4 | 동사 apologize를 꾸미므로 부사가 와야 한다. | 동사 apologize를 꾸미므로 부사다(g01). We sincerely apologize는 사과문 정형 표현이다. 오답: sincere는 형용사, sincerity는 명사, sincerest는 최상급 형용사다. |
+| p608 | Q1 | 회사는 '설립되는' 쪽이므로 수동 의미의 과거분사가 와야 한다. | 회사는 '설립되는' 쪽이라 수동 의미의 p.p.가 명사 뒤에서 꾸민다(g15). 오답: founding은 능동, founds는 동사라 콤마 사이 삽입구에 들어갈 수 없고, to found는 '설립하기 위해'라 뜻이 맞지 않는다. |
+| p608 | Q2 | will seat ... and (will) include. 조동사 will을 공유하는 병렬이라 동사원형이 온다. | will seat ... and (will) include. and가 will 뒤의 동사원형 둘을 잇는다(g13). 오답: including·to include는 동사 자리에 못 오고, includes는 will과 함께 쓸 수 없다. |
+| p608 | Q3 | 문장 삽입 문제다. 뒤 문장이 '처음으로 직접 굽는다'로 이어지므로 '첫 베이커리 코너'가 맞다. 2014년은 설립 연도이고, 직원이 60명 이상으로 늘고 있어 감원 이야기도 맞지 않는다. | 문장 삽입이다. 앞 문장이 '작은 베이커리 코너를 둔다', 뒤 문장이 '처음으로 매장에서 직접 굽는다'라서 '첫 베이커리 코너'가 둘을 잇는다. 오답: 원래 매장이 2014년에 문을 닫았다(A)는 2014년에 매장 하나로 시작했다는 앞 내용과 모순이고, 감원(B)은 직원이 60명 넘게 늘었다는 말과 맞지 않으며, 도로 통제(C)는 개점 기사의 흐름과 관계가 없다. |
+| p608 | Q4 | 뒤에 동사 bought가 바로 오므로 주격 관계대명사다. 선행사가 사람이라 which는 안 된다. | 빈칸 뒤에 동사 bought가 바로 오므로 주격 관계대명사이고, 선행사 Customers가 사람이라 who다(g08). 오답: whose는 뒤에 명사가 와야 하고, which는 사물, whom은 목적격이라 뒤에 주어가 있어야 한다. |
+| p609 | Q1 | outage는 서비스가 중단된 시간을 말한다. 철자가 비슷한 단어들과 구분해야 한다. | the 뒤 명사 자리이고, 로그인과 과제 제출이 안 되는 '중단 시간'이라 outage다. 오답: outcome은 결과, outlook은 전망, output은 생산량이라 '그동안 로그인할 수 없다'와 맞지 않는다. |
+| p609 | Q2 | 문장 삽입 문제다. '저장한 내용은 영향 없다' 다음에 However로 뒤집으며 4시간 중단을 알린다. 1시~5시가 네 시간이라는 점도 근거다. 점검은 이번 토요일이라 연기 이야기는 맞지 않는다. | 문장 삽입이다. 앞 문장은 '1시 전에 저장한 작업은 영향 없다', 뒤 문장은 '주말에 필요한 파일을 내려받아 두라'다. However로 '그래도 네 시간은 전혀 못 쓴다'고 뒤집어야 파일을 미리 받으라는 권고가 이어진다. 1시부터 5시까지 네 시간이라는 것도 맞다. 오답: 다음 달로 연기(A)는 이번 토요일 점검이라는 첫 문장과 모순이고, 계정 등록(C)·채점 기간(D)은 점검 안내와 관계가 없다. |
+| p609 | Q3 | will improve ... and (will) resolve. will을 공유하는 병렬이라 동사원형이 온다. | will improve ... and (will) resolve. and가 will 뒤의 동사원형 둘을 잇는다(g13). 오답: resolves·resolved·resolving은 will 뒤에 올 수 없다. |
+| p609 | Q4 | your 뒤에는 명사가 온다. Thank you for your patience는 공지문 마무리 관용구다. | your 뒤는 명사 자리다(g01). Thank you for your patience는 공지 마무리 정형 표현이다. 오답: patient는 형용사(명사로 쓰면 '환자'), patiently는 부사, patientness는 없는 말이다. |
+| p610 | Q1 | would like to 뒤에는 동사원형이 온다. | would like to 뒤는 동사원형이다(g05). 오답: inviting·invited는 to 뒤에 올 수 없고, invitation은 명사라 you를 목적어로 가질 수 없다. |
+| p610 | Q2 | confirm은 '확정하다, 확인해 주다'. 철자가 비슷한 단어와 구분해야 한다. | 이 시간을 '확정하려면' 금요일까지 회신하라는 뜻이라 confirm이다. 오답: conform은 '(규칙에) 따르다'로 to가 필요하고, confine은 '가두다', consume은 '소비하다'라 시간과 맞지 않는다. |
+| p610 | Q3 | 문장 삽입 문제다. 날짜 확정 요청 바로 뒤에 '안 되면 다른 날짜'를 제안하는 것이 자연스럽다. 면접을 제안하는 메일이라 '이미 채용했다'는 모순이고, 9월 9일은 면접일이며, 뒤에서 미리 준비할 것이 없다고 했다. | 문장 삽입이다. 앞 문장이 '이 시간을 확정하려면 회신하라'라서 '그날이 안 되면 다른 날을 제안하겠다'가 자연스럽게 이어진다. 오답: 이미 채용했다(A)는 면접 초대와 모순, 9월 9일은 첫 출근일(B)이 아니라 면접일, 9월 30일까지 지원서를 보내라(D)는 이미 지원한 사람에게 보내는 메일과 모순이다. |
+| p610 | Q4 | in advance = 미리. 굳어진 전치사구다. | in advance(미리)는 굳어진 전치사구다. 오답: advanced(고급의)·advancing·advancement(발전)는 in 뒤에서 '미리'라는 뜻이 되지 않는다. |
