@@ -177,10 +177,54 @@
       document.getElementById("dictation-check").disabled = false;
     }
 
+    // 숫자는 단어로 바꿔 비교한다 (3 = three, 20 = twenty, 21 = twenty-one, 5th = fifth, 3:30 = three thirty).
+    // 하이픈은 지우므로 twenty-one은 'twentyone' 한 단어가 되고, 숫자 21도 같은 모양으로 맞춘다.
+    var ONES = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven",
+      "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+    var TENS = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
+    var ORDINAL_ENDINGS = { one: "first", two: "second", three: "third", five: "fifth", eight: "eighth", nine: "ninth", twelve: "twelfth" };
+
+    function numberWords(n) {
+      if (n < 20) return [ONES[n]];
+      if (n < 100) return [TENS[Math.floor(n / 10)] + (n % 10 ? ONES[n % 10] : "")];
+      if (n < 1000) return [ONES[Math.floor(n / 100)], "hundred"].concat(n % 100 ? numberWords(n % 100) : []);
+      if (n < 1000000) return numberWords(Math.floor(n / 1000)).concat(["thousand"], n % 1000 ? numberWords(n % 1000) : []);
+      return [String(n)];
+    }
+
+    function ordinalWords(n) {
+      var words = numberWords(n);
+      var last = words[words.length - 1];
+      var ending = Object.keys(ORDINAL_ENDINGS).find(function (key) { return last === key || last.slice(-key.length) === key && TENS.indexOf(last.slice(0, -key.length)) > 1; });
+      if (ending) last = last.slice(0, -ending.length) + ORDINAL_ENDINGS[ending];
+      else if (/y$/.test(last)) last = last.slice(0, -1) + "ieth";
+      else last += "th";
+      return words.slice(0, -1).concat([last]);
+    }
+
+    function isContraction(raw) {
+      return /^[a-z]+'(d|m|re|ve|ll|t)$/i.test(raw) || /^(it|that|there|here|he|she|what|who|where|let)'s$/i.test(raw);
+    }
+
+    // 단어마다 {word: 비교용 형태, raw: 원래 형태, contraction: 축약형 여부}를 돌려준다.
     function tokenize(text) {
-      return text.toLowerCase().split(/\s+/).map(function (word) {
-        return word.replace(/[^a-z0-9]/g, "");
-      }).filter(Boolean);
+      var tokens = [];
+      text.replace(/[’‘]/g, "'").split(/\s+/).forEach(function (rawWord) {
+        var raw = rawWord.replace(/^[^a-z0-9$']+|[^a-z0-9%']+$/gi, "");
+        if (!raw) return;
+        var lower = raw.toLowerCase();
+        var time = lower.match(/^(\d{1,2}):(\d{2})$/);
+        var ordinal = lower.match(/^(\d+)(st|nd|rd|th)$/);
+        var words;
+        if (time) words = numberWords(+time[1]).concat(+time[2] ? (+time[2] < 10 ? ["oh"].concat(numberWords(+time[2])) : numberWords(+time[2])) : []);
+        else if (ordinal) words = ordinalWords(+ordinal[1]);
+        else if (/^\$?\d[\d,]*$/.test(lower)) words = numberWords(+lower.replace(/[$,]/g, ""));
+        else words = [lower.replace(/[^a-z0-9]/g, "")];
+        words.filter(Boolean).forEach(function (word) {
+          tokens.push({ word: word, raw: raw, contraction: isContraction(raw) });
+        });
+      });
+      return tokens;
     }
 
     function alignWords(expected, actual) {
@@ -227,9 +271,21 @@
 
     function gradeDictation() {
       var item = currentDictation();
-      var expected = tokenize(item.text);
-      var actual = tokenize(document.getElementById("dictation-input").value);
+      var expectedTokens = tokenize(item.text);
+      var expected = expectedTokens.map(function (token) { return token.word; });
+      var actual = tokenize(document.getElementById("dictation-input").value).map(function (token) { return token.word; });
       var aligned = alignWords(expected, actual);
+      // 틀리거나 빠뜨린 단어가 축약형이면 '축약형으로 들렸다'고 알려 준다 (I'd와 I would는 다르게 채점한다).
+      var missedContractions = [];
+      var expectedPosition = 0;
+      aligned.forEach(function (word) {
+        if (word.kind === "extra") return;
+        var source = expectedTokens[expectedPosition];
+        expectedPosition += 1;
+        if (word.kind !== "correct" && source && source.contraction && missedContractions.indexOf(source.raw) < 0) {
+          missedContractions.push(source.raw);
+        }
+      });
       var correct = aligned.filter(function (word) { return word.kind === "correct"; }).length;
       var accuracy = expected.length ? correct / expected.length : 0;
       var result = document.getElementById("dictation-result");
@@ -251,7 +307,10 @@
         result.appendChild(group);
       });
       document.getElementById("dictation-score").textContent =
-        "정답률 " + correct + " / " + expected.length + " 단어 (" + Math.round(accuracy * 100) + "%)";
+        "정답률 " + correct + " / " + expected.length + " 단어 (" + Math.round(accuracy * 100) + "%)" +
+        (missedContractions.length
+          ? " · " + missedContractions.map(function (raw) { return "'" + raw + "'"; }).join(", ") + "는 축약형으로 들렸어요. 들린 그대로 적어 보세요."
+          : "");
       document.getElementById("dictation-translation").hidden = false;
       document.getElementById("dictation-check").disabled = true;
       document.getElementById("dictation-next").hidden = false;

@@ -331,13 +331,24 @@ function runListeningPage() {
 
   // 받아쓰기: 모든 문장을 차례로 채점하고 다음으로 넘긴다
   var seenDictation = [];
+  // 일부 문장은 다르게 입력해 채점 규칙을 확인한다: 숫자는 단어와 같고, 축약형을 풀어 쓰면 안내가 나온다.
+  var alternateInputs = {
+    d01: ["The meeting will start at 3 o'clock.", "(100%)"],
+    d03: ["I would like to confirm my reservation.", "'I'd'는 축약형으로 들렸어요"],
+    d14: ["the train to boston is running 20 minutes late", "(100%)"],
+    d32: ["The meeting room on the 5th floor is available.", "(100%)"]
+  };
   D.forEach(function (item, index) {
     check($("dictation-counter").textContent === "문장 " + (index + 1) + " / " + D.length,
       "받아쓰기 카운터 — " + $("dictation-counter").textContent);
     check($("dictation-translation").textContent === item.ko, item.id + " 해석 불일치");
-    $("dictation-input").value = item.text;
+    var alternate = alternateInputs[item.id];
+    $("dictation-input").value = alternate ? alternate[0] : item.text;
     $("dictation-check").click();
     check($("dictation-score").textContent !== "", item.id + " 채점 결과 없음");
+    if (alternate) check($("dictation-score").textContent.indexOf(alternate[1]) !== -1, item.id + " 채점 규칙 — " + $("dictation-score").textContent);
+    else check($("dictation-score").textContent.indexOf("(100%)") !== -1 && $("dictation-score").textContent.indexOf("축약형") === -1,
+      item.id + " 원문 그대로 입력했는데 100%가 아님 — " + $("dictation-score").textContent);
     check($("dictation-next").hidden === false, item.id + " 채점 후 다음 버튼이 보이지 않음");
     seenDictation.push(item.id);
     $("dictation-next").click();

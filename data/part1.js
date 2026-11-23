@@ -32,7 +32,7 @@ window.PART1 = [
       "They're sitting on a bench."
     ],
     answer: 0,
-    explanation: "두 사람이 함께 서류를 들여다보고 있어 정답이에요. 길을 건너거나 차 문을 열거나 벤치에 앉아 있지 않아요."
+    explanation: "남자가 펼쳐 든 서류철을 두 사람이 함께 들여다보고 있어 정답이에요(looking at some papers). 두 사람은 보도에 서 있어 길을 건너거나(crossing) 벤치에 앉아 있지 않고, 차 문을 여는 사람도 없어요."
   },
   {
     id: "ph04", img: "assets/img/part1/ph04.jpg", kind: "people",
@@ -87,7 +87,7 @@ window.PART1 = [
       "She's watering a plant."
     ],
     answer: 0,
-    explanation: "여자가 책상에서 일하고 있어 정답이에요. 앉아 있으니 창가에 서 있는 게 아니고, 서류를 건네거나 화분에 물을 주지도 않아요."
+    explanation: "여자가 책상 앞 의자에 앉아 노트북과 마우스로 일하고 있어 정답이에요(working at a desk). 앉아 있으니 창가에 서 있는 게 아니고, 서류를 건네거나 화분에 물을 주지도 않아요. 화분은 노트북 뒤에 놓여 있을 뿐이에요."
   },
   {
     id: "ph09", img: "assets/img/part1/ph09.jpg", kind: "people",
@@ -208,7 +208,7 @@ window.PART1 = [
       "People are waiting to go through a doorway."
     ],
     answer: 3,
-    explanation: "사람들이 출입구를 지나가려고 기다리고 있어 정답이에요. 버스에 타는 장면이 아니고, 줄지어 앉은 승객도, 문을 여는 남자도 없어요."
+    explanation: "가운데 출입구(EXIT 표지 옆) 앞에 사람들이 줄지어 서서 지나가기를 기다리고 있어 정답이에요. 버스는 보이지 않고, 모두 서 있어 줄지어 앉은 승객도 없으며, 문은 이미 열려 있어 문을 여는 남자도 없어요."
   },
   {
     id: "ph20", img: "assets/img/part1/ph20.jpg", kind: "people",
@@ -219,7 +219,7 @@ window.PART1 = [
       "They're seated at outdoor tables."
     ],
     answer: 2,
-    explanation: "몇 사람이 휴대폰을 보고 있어 정답이에요. 가게에 들어가거나 가방을 건네는 동작이 없고, 야외 테이블에 앉아 있지도 않아요."
+    explanation: "가게 앞 보도에서 몇 사람이 휴대폰을 보고 있어 정답이에요. 가게로 들어가는 사람이 없고, 가방은 창턱에 놓여 있어 건네는 동작이 없으며, 한 명은 창턱에 걸터앉아 있을 뿐 야외 테이블은 없어요."
   },
   {
     id: "ph21", img: "assets/img/part1/ph21.jpg", kind: "people",
