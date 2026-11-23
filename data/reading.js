@@ -939,7 +939,7 @@ window.PASSAGES = [
       { w: "proof of enrollment", m: "재학 증명" },
       { w: "recording", m: "녹화 강의" },
       { w: "sign up for", m: "~에 신청하다" },
-      { w: "follow-up", m: "후속의" }
+      { w: "follow-up", m: "(형용사) 후속의" }
     ],
     questions: [
       { q: "What is the course mainly about?", choices: ["Using spreadsheets", "Managing databases", "Writing business reports", "Designing web pages"], answer: 0, explanation: "근거: 지문 1(강좌 안내)의 제목 PRACTICAL SPREADSHEETS와 2번째·3번째 줄의 회차 주제(Formulas, Charts, Pivot tables 등). 오답: 데이터베이스(B)는 지문 3의 5번째 문장에서 가을 후속 강좌로만 나오고, 보고서 작성(C)·웹 디자인(D)은 없다." },
@@ -1023,7 +1023,7 @@ window.PASSAGES = [
       }
     ],
     vocab: [
-      { w: "wholesale", m: "도매의" },
+      { w: "wholesale", m: "(형용사) 도매의" },
       { w: "retailer", m: "소매업체" },
       { w: "minimum order", m: "최소 주문량" },
       { w: "unit", m: "(제품) 대, 개" },
@@ -1032,7 +1032,7 @@ window.PASSAGES = [
     questions: [
       { q: "What is mentioned as a feature of the WR-9?", choices: ["It is waterproof", "It comes in three colors", "It charges in ten minutes", "It folds flat"], answer: 3, explanation: "근거: 지문 1(보도자료)의 2번째 문장 The WR-9 offers thirty hours of battery life and folds flat for travel. 오답: 방수(A)·색상(B)·급속 충전(C)은 언급되지 않았다." },
       { q: "Why is Northline Electronics likely to receive a discount?", choices: ["Its order was placed before September 15", "It is a long-time customer", "It ordered more than one product", "It paid in advance"], answer: 0, explanation: "연계 문제다(지문 1 + 지문 2). 근거 1: 지문 1의 4번째 문장 Retailers ordering before September 15 receive a 15 percent wholesale discount. 근거 2: 지문 2 머리글의 Date: September 10. 지문 2 본문은 할인을 기대한다고만 하고 마감일은 말하지 않는다. 오답: 오랜 거래처(B)·여러 제품 주문(C)·선결제(D)는 근거가 없다." },
-      { q: "What is indicated about Northline's order?", choices: ["It is below the minimum", "It will be split between two dates", "It is twice the minimum order", "It includes other Kestrel products"], answer: 2, explanation: "연계 문제다(지문 1 + 지문 2). 근거 1: 지문 1의 5번째 문장 Minimum order: fifty units. 근거 2: 지문 2의 2번째 문장 one hundred WR-9 units. 100대는 최소 주문량의 두 배다. 오답: 최소량 미만(A)이 아니고, 지문 1의 6번째 문장대로 10월 1일에 출하되므로 두 날짜로 나눠 받는다(B)는 근거가 없으며, 다른 제품(D)은 주문하지 않았다." },
+      { q: "What is suggested about Northline Electronics?", choices: ["It has more than one retail location", "It has sold Kestrel products for many years", "It plans to open a new store in October", "It manufactures its own headphones"], answer: 0, explanation: "추론 문제다. 근거: 지문 2의 2번째 문장 We would like to order one hundred WR-9 units for our three stores. 매장이 셋이라는 말에서 여러 매장을 운영하는 소매업체라고 추론한다. 오답: 오래 거래했다(B)는 근거가 없고, 10월 1일은 출하일이지 새 매장 개점일(C)이 아니며, 다른 회사 헤드폰을 주문하므로 자체 제조(D)도 아니다." },
       { q: "What does Mr. Ivanov say his customers ask about?", choices: ["The retail price", "Battery life", "Repair services", "Color options"], answer: 1, explanation: "근거: 지문 2의 4번째 문장 Our customers often ask about battery life. 오답: 소매가(A)·수리(C)·색상(D)을 묻는다는 말은 없다." },
       { q: "What does Mr. Ivanov hope will happen?", choices: ["The price will be lowered", "A free sample will be sent", "The units will arrive by October 1", "The order will be delivered in three parts"], answer: 2, explanation: "연계 문제다(지문 1 + 지문 2). 근거 1: 지문 2의 6번째 문장 We hope to have the units on our shelves on the day shipping begins. 근거 2: 지문 1의 1번째 문장 will begin shipping ... on October 1. 오답: 가격 인하(A)·무료 샘플(B)은 바라지 않았고, 세 매장용이지만 세 번 나눠 배송(D)해 달라는 말은 없다." }
     ]
