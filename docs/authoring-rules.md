@@ -657,7 +657,8 @@
 
 - **받아쓰기:** `{ id, text, ko, level(정수) }`
 - **Part 2:** `{ id, type, question, choices[3], answer, explanation, ko }`
-  - type은 `PART2_TYPE_LABELS`의 값(wh·yesno·negtag·choice·request·statement·indirect) 중 하나다.
+  - type은 `PART2_TYPE_LABELS`의 값(wh·yesno·negtag·choice·request·statement) 중 하나다.
+  - 간접 의문문(Do you know ~?)은 일반 의문문 yesno로 센다. 예전 indirect 유형의 p220·p243을 2026-11-24에 옮겼다. 실제 토익 비율표에 따로 잡히지 않고, Do로 시작하는 일반 의문문 꼴이라서다.
 - **Part 3:** `{ id, title, script:[{speaker, text}], questions, speakers?, graphic? }`
   - 화자 라벨은 `W`/`M`, 3인 대화면 `W1`·`W2`·`M1`이다(첫 글자가 성별).
 - **Part 4:** `{ id, type, title, voice:"W"|"M", script:["문장"...], questions[3] }`
@@ -793,12 +794,17 @@
   - p222 The printer is out of paper. — "On the desk."가 '(종이는) 책상 위에'로 성립
   - p241 "Yes, I sent it already."는 Yes를 빼면 간접 응답이 된다
   - p208의 교체 후보 "I sent you a text."는 정답으로 성립할 수 있어 쓰지 않았다
+  - p256 This bag isn't yours, is it? — 유사 발음 후보 "It's in the back."이 '(제 건) 뒤에 있어요'로 성립해 "I'll be right back."으로 바꿨다
+  - p249 선택의문문 — "A lot of people are coming."(Yes를 뺀 꼴)이 '사람이 많으니 실내로'로 읽혀 "Yes, at twelve thirty."로 바꿨다
 - **검사:** 사람 검토.
 
 ### L8. Part 2 질문 유형 분포
 
-- 25문항 기준 실제 토익 비율에 맞춘다: 의문사 약 18, 부정·부가 약 5, 평서문 약 6.
-  - 지금(45문항): wh 17, request 7, yesno 5, statement 6, negtag 5, choice 3, indirect 2
+- 실제 토익 25문항 비율로 정한 100문항 목표: 의문사 44, 일반 12, 부정·부가 12, 선택 8, 제안·요청 12, 평서문 12
+  - 지금(73문항): wh 31, yesno 9, negtag 9, choice 6, request 9, statement 9
+- 의문사 안쪽은 Who·What·When·Where·Why·How를 고르게 둔다. 지금 각 5개, Which 1개다. 45문항 때는 What 1·Where 2로 모자랐다.
+- 부정·부가 문항 해설에는 한국어와 Yes/No가 반대라는 점을 쓴다(p247 "안 와요? — 네, 못 가요"는 영어로 No).
+- 선택의문문 정답은 하나를 고르는 것 말고도 제3의 답(p259 수요일로 미뤄짐), 기준 제시(p273 더 조용한 쪽), 보류(p249 예보를 보고)가 있다.
 - **질문 설계**
   - 부정의문문: `Didn't you send the report?` 보냈으면 Yes
   - 부가의문문: `You've met her before, haven't you?` 앞 문장이 맞는지에 답한다
