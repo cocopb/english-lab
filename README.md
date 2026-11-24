@@ -26,6 +26,8 @@ english-lab/
 │  └─ build-grammar-index.js # 문법 색인(docs/grammar-index.md) 생성
 ├─ docs/vocab-index.md    # Day별·상황별 표제어 색인 (자동 생성, 직접 수정 금지)
 ├─ docs/grammar-index.md  # 문법 노트·trap·Part 5 문항·Part 6 ruleId 색인 (자동 생성, 직접 수정 금지)
+├─ docs/authoring-rules.md # 새 콘텐츠 작성 규칙 (감사에서 정한 기준 모음, 새 문항을 만들기 전에 읽기)
+├─ docs/content-status.md # 카테고리별 현재 개수와 목표 (단계마다 갱신)
 └─ README.md
 ```
 
