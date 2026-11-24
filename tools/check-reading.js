@@ -242,6 +242,23 @@ passages.forEach(function (passage) {
   if (marks.length && insertQuestions !== 1) failures.insertPositions.push({ id: passage.id, problems: ["표시 [1]~[4]가 있는데 문장 삽입 문항이 " + insertQuestions + "개"] });
 });
 
+// 정답 위치: 같은 지문(Part 7)·같은 세트(Part 6) 안에서 바로 앞 문항과 정답 위치(A~D)가 같으면 실패.
+// 지문·세트가 바뀌면 처음부터 센다(Part 3·4 검사는 경계를 넘어 보지만, 독해는 지문 단위로 푼다).
+// 문장 삽입 문항은 보기가 [1]~[4]로 고정이라 위치를 바꿀 수 없으므로, 연속이 생기면 앞 문항의 보기 순서를 바꿔서 푼다.
+failures.answerRun = [];
+var answerSpread = { "Part 7": [0, 0, 0, 0], "Part 6": [0, 0, 0, 0] };
+[["Part 7", passages], ["Part 6", part6]].forEach(function (pair) {
+  pair[1].forEach(function (owner) {
+    (owner.questions || []).forEach(function (question, qIndex, list) {
+      if (Number.isInteger(question.answer) && question.answer >= 0 && question.answer < 4) answerSpread[pair[0]][question.answer] += 1;
+      if (qIndex > 0 && question.answer === list[qIndex - 1].answer) {
+        failures.answerRun.push({ part: pair[0], id: owner.id, question: pair[0] === "Part 6" ? question.n : qIndex + 1,
+          answer: "ABCD"[question.answer], previous: pair[0] === "Part 6" ? list[qIndex - 1].n : qIndex });
+      }
+    });
+  });
+});
+
 // 문항 유형 분포 (실패 아님). 질문 문장의 표현으로 나눈다. 같은 규칙을 계속 써서 분포 변화를 지켜본다.
 function part7QuestionType(question) {
   var q = question.q || "";
@@ -276,6 +293,15 @@ console.log("\n[참고] Part 7 문항 유형 분포 (" + typeTotal + "문항, �
 ["주제·목적", "세부사항", "추론", "NOT", "의도 파악", "어휘(동의어)", "문장 삽입"].forEach(function (type) {
   var count = typeCounts[type] || 0;
   console.log("  " + type + " " + count + " (" + Math.round(count / typeTotal * 100) + "%)");
+});
+
+console.log("\n[참고] 정답 위치 분포 — 실패 아님 (지문·세트 안 연속은 answerRun에서 실패로 센다)");
+Object.keys(answerSpread).forEach(function (part) {
+  var counts = answerSpread[part];
+  var total = counts.reduce(function (sum, n) { return sum + n; }, 0);
+  console.log("  " + part + " (" + total + "문항): " + counts.map(function (n, i) {
+    return "ABCD"[i] + " " + n + " (" + Math.round(n / total * 100) + "%)";
+  }).join(" · "));
 });
 
 Object.keys(notes).forEach(function (key) {

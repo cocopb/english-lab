@@ -149,7 +149,7 @@ window.PASSAGES = [
     ],
     questions: [
       { q: "What has changed about the meeting?", choices: ["The time", "The place", "The participants", "The topic"], answer: 1, explanation: "근거: 9:14 Mark Evans의 the location changed. They want to meet at their office instead. 오답: 시간(A)은 eleven 그대로이고, 참석자(C)·주제(D)가 바뀌었다는 말은 없다." },
-      { q: "At 9:18 a.m., what does Ji-woo most likely mean when she writes, \"Will do\"?", choices: ["She will cancel the meeting", "She agrees to leave earlier", "She will print more samples", "She will contact the client"], answer: 1, explanation: "의도 파악 문제다. 근거: 바로 앞 9:17 could you leave a bit early?에 대한 대답이고, 이어서 I'll head out at ten이라고 한다. 오답: 회의 취소(A)·고객 연락(D)은 나오지 않고, 샘플(C)은 더 인쇄하라는 말이 아니라 가져오라는 말이었다." }
+      { q: "At 9:18 a.m., what does Ji-woo most likely mean when she writes, \"Will do\"?", choices: ["She will cancel the meeting", "She will contact the client", "She will print more samples", "She agrees to leave earlier"], answer: 3, explanation: "의도 파악 문제다. 근거: 바로 앞 9:17 could you leave a bit early?에 대한 대답이고, 이어서 I'll head out at ten이라고 한다. 오답: 회의 취소(A)·고객 연락(B)은 나오지 않고, 샘플(C)은 더 인쇄하라는 말이 아니라 가져오라는 말이었다." }
     ]
   },
   {
@@ -174,7 +174,7 @@ window.PASSAGES = [
     ],
     questions: [
       { q: "What is required for the position?", choices: ["A graduate degree", "Two years of marketing experience", "Experience with data analysis", "Fluency in two languages"], answer: 1, explanation: "근거: 세 번째 문장 A bachelor's degree and at least two years of marketing experience are required. 오답: 요구 학위는 학사이지 대학원 학위(A)가 아니고, 데이터 분석 경험(C)은 우대 사항이며, 2개 국어(D)는 언급이 없다." },
-      { q: "What is mentioned as preferred?", choices: ["A bachelor's degree", "Experience with data analysis tools", "Previous management experience", "Willingness to travel"], answer: 1, explanation: "근거: 네 번째 문장 Experience with data analysis tools is preferred but not required. 오답: 학사 학위(A)는 필수 요건이고, 관리 경험(C)·출장 가능(D)은 나오지 않는다. preferred와 required를 구분해야 한다." },
+      { q: "What is mentioned as preferred?", choices: ["A bachelor's degree", "Willingness to travel", "Previous management experience", "Experience with data analysis tools"], answer: 3, explanation: "근거: 네 번째 문장 Experience with data analysis tools is preferred but not required. 오답: 학사 학위(A)는 필수 요건이고, 관리 경험(C)·출장 가능(B)은 나오지 않는다. preferred와 required를 구분해야 한다." },
       { q: "What should applicants send?", choices: ["A resume only", "A resume and a cover letter", "References and a portfolio", "An application form"], answer: 1, explanation: "근거: 여섯 번째 문장 send your resume and cover letter. 오답: 이력서만(A)은 자기소개서가 빠졌고, 추천서·포트폴리오(C)와 지원서 양식(D)은 요구하지 않았다." }
     ]
   },
@@ -200,7 +200,7 @@ window.PASSAGES = [
     ],
     questions: [
       { q: "What is the purpose of the article?", choices: ["To review a restaurant", "To announce a business expansion", "To advertise a job opening", "To report a closure"], answer: 1, explanation: "근거: 첫 문장 Rosewood Bakery will open a second shop ... owner Elena Marsh announced. 기사는 첫 문장이 요약이다. 오답: 식당 평가(A)가 아니고, 직원 채용(C)은 여섯 번째 문장의 세부 내용일 뿐 기사 목적이 아니며, 폐업(D)이 아니라 확장이다." },
-      { q: "Why did the bakery decide to expand?", choices: ["Rent increased", "The current space was too small", "A competitor closed", "Customers requested new products"], answer: 1, explanation: "근거: 세 번째·네 번째 문장 We simply ran out of space / Customers were waiting outside on weekends. 오답: 임대료(A)·경쟁 업체(C)·신제품 요청(D)은 언급되지 않았다." },
+      { q: "Why did the bakery decide to expand?", choices: ["Rent increased", "A competitor closed", "The current space was too small", "Customers requested new products"], answer: 2, explanation: "근거: 세 번째·네 번째 문장 We simply ran out of space / Customers were waiting outside on weekends. 오답: 임대료(A)·경쟁 업체(B)·신제품 요청(D)은 언급되지 않았다." },
       { q: "In which of the positions marked [1], [2], [3], and [4] does the following sentence best belong? \"These new employees will train at the original store first.\"", choices: ["[1]", "[2]", "[3]", "[4]"], answer: 3, insert: "These new employees will train at the original store first.", explanation: "문장 삽입 문제다. 연결 단서는 지시어 These new employees다. 바로 앞에 새 직원 이야기가 있어야 한다. [4] 앞 문장이 Marsh plans to hire about fifteen additional staff members before the opening이라 these new employees가 이 15명을 받는다. 오답: [1] 앞은 원래 매장의 수요 증가, [2] 앞은 손님이 밖에서 기다렸다는 인용, [3] 앞은 새 매장의 크기와 좌석 이야기라 These new employees가 가리킬 사람이 없다." }
     ]
   },
@@ -239,8 +239,8 @@ window.PASSAGES = [
     ],
     questions: [
       { q: "What change does Tom mention?", choices: ["A session was canceled", "A session was moved to a different day", "A room was changed", "A new session was added"], answer: 1, explanation: "근거: 이메일 세 번째 문장 the session on data security has been moved from Tuesday to Thursday. 오답: 취소(A)·추가(D)된 과정은 없고, 강의실(C)이 바뀌었다는 말도 없다." },
-      { q: "Which day should Yuna attend if she can only choose one session?", choices: ["Monday", "Tuesday", "Wednesday", "Thursday"], answer: 1, explanation: "연계 문제다. 근거 1: 이메일 네 번째 문장에서 한 과정만 들을 수 있으면 고객 서비스 워크숍을 추천한다. 근거 2: 일정표에서 Customer Service Workshop은 Tuesday 14:00이다. 오답: 월요일(A)은 회사 개요, 수요일(C)은 소프트웨어 기초, 목요일(D)은 데이터 보안이다." },
-      { q: "In the email, the word \"covers\" is closest in meaning to", choices: ["protects", "pays for", "includes", "hides"], answer: 2, word: "covers", part: 1, explanation: "어휘 문제다. 근거: 지문 1(이메일) 4번째 문장 I recommend the customer service workshop, since it covers the new ticketing system. 워크숍이 새 발권 시스템을 '다룬다', 즉 내용에 포함한다는 뜻이다. 오답: protects(보호하다)·pays for(비용을 대다)·hides(가리다)는 cover의 다른 뜻이라 이 문장에서는 맞지 않는다." }
+      { q: "Which day should Yuna attend if she can only choose one session?", choices: ["Monday", "Thursday", "Wednesday", "Tuesday"], answer: 3, explanation: "연계 문제다. 근거 1: 이메일 네 번째 문장에서 한 과정만 들을 수 있으면 고객 서비스 워크숍을 추천한다. 근거 2: 일정표에서 Customer Service Workshop은 Tuesday 14:00이다. 오답: 월요일(A)은 회사 개요, 수요일(C)은 소프트웨어 기초, 목요일(B)은 데이터 보안이다." },
+      { q: "In the email, the word \"covers\" is closest in meaning to", choices: ["protects", "pays for", "includes", "hides"], answer: 2, word: "covers", part: 1, explanation: "어휘 문제다. 근거: 지문 1(이메일) 4번째 문장 I recommend the customer service workshop, since it covers the new ticketing system. 워크숍이 새 발권 시스템을 '다룬다', 즉 내용에 포함한다는 뜻이다. 오답: protects(보호하다)·pays for(비용을 대다)·hides(가리다)는 cover의 다른 뜻이라 이 문장에서는 맞지 않는다. 참고: 실제 시험에서는 '문단 2, 3행의 단어'처럼 위치를 알려준다. 이 앱은 문단·행 번호 없이 단어로만 표시하니, 형식이 달라도 당황하지 말자." }
     ]
   },
   {
@@ -265,7 +265,7 @@ window.PASSAGES = [
     ],
     questions: [
       { q: "What is the main purpose of the email?", choices: ["To cancel a meeting", "To announce a schedule change", "To introduce a new client", "To request a report"], answer: 1, explanation: "근거: 두 번째 문장 I need to move Thursday's project review from 10 a.m. to 2 p.m. 오답: 회의는 취소(A)가 아니라 시간 변경이고, 새 고객 소개(C)는 없으며, 수치·요약을 준비하라는 부탁(D)은 덧붙인 내용일 뿐 주된 목적이 아니다." },
-      { q: "Why was the meeting moved?", choices: ["The room was unavailable", "A client requested a morning call", "Several members are absent", "The agenda changed"], answer: 1, explanation: "근거: 세 번째 문장 Our client has requested a morning call that I cannot reschedule. 오답: 장소는 그대로 Room 4B라 회의실 문제(A)가 아니고, 불참자(C)·안건 변경(D)은 언급되지 않았다." },
+      { q: "Why was the meeting moved?", choices: ["The room was unavailable", "The agenda changed", "Several members are absent", "A client requested a morning call"], answer: 3, explanation: "근거: 세 번째 문장 Our client has requested a morning call that I cannot reschedule. 오답: 장소는 그대로 Room 4B라 회의실 문제(A)가 아니고, 불참자(C)·안건 변경(B)은 언급되지 않았다." },
       { q: "What is Hana asked to do?", choices: ["Book a meeting room", "Contact the client", "Prepare a summary of survey results", "Update the budget"], answer: 2, explanation: "근거: 여섯 번째 문장 Hana, could you also prepare a short summary of last month's survey results? 오답: 회의실 예약(A)·고객 연락(B)·예산 갱신(D)은 하나 씨에게 부탁한 일이 아니다." },
       { q: "What should team members do if the new time does not work?", choices: ["Send their figures by email", "Notify the sender by Wednesday", "Attend a different meeting", "Call the client directly"], answer: 1, explanation: "근거: 일곱 번째 문장 let me know by Wednesday noon. 메일을 보낸 사람에게 알리라는 뜻이다. 오답: 수치는 회의에 가져오는 것이지 메일로 보내라는 말(A)이 아니고, 별도 보고는 보낸 사람이 마련하는 것이지 다른 회의에 참석하라는 말(C)이 아니며, 고객에게 직접 전화하라는 말(D)은 없다." }
     ]
@@ -289,9 +289,9 @@ window.PASSAGES = [
       { w: "at the owner's expense", m: "차주 부담으로" }
     ],
     questions: [
-      { q: "How long will the north lot be closed?", choices: ["Three days", "About one week", "Two weeks", "One month"], answer: 1, explanation: "근거: 첫 문장 resurfaced from Monday, August 4 to Friday, August 8와 네 번째 문장 The north lot will reopen on Monday, August 11. 약 일주일이다. 오답: 공사만 5일이라 3일(A)보다 길고, 2주(C)·한 달(D)은 날짜와 맞지 않는다." },
+      { q: "What is the purpose of the notice?", choices: ["To announce that parking at the Elm Street garage will now be free", "To inform employees that a parking area will be temporarily unavailable", "To warn employees about new towing fees", "To ask employees to renew their ID badges"], answer: 1, explanation: "주제·목적 문제다. 근거: 제목 Parking Lot Resurfacing과 첫 문장 The north parking lot will be resurfaced from Monday, August 4 to Friday, August 8. 이어지는 문장은 모두 이 공사 기간의 대체 주차·재개장 날짜·주의 사항이다. 공사로 북쪽 주차장을 잠시 쓸 수 없다는 것을 알리는 공지다. 오답: (A) 차고 무료 주차는 공사 기간에 사원증을 보여 줄 때만 해당하는 일부 내용이고, now(앞으로 계속) 무료라는 말이 아니다. (C) 견인은 다섯 번째 문장에 한 번 나오는 주의 사항이고, 새 요금이라는 말은 없다. (D) 사원증은 차고 입구에서 보여 주라는 것이지 갱신하라는 말이 아니다." },
+      { q: "How long will the north lot be closed?", choices: ["Three days", "One month", "Two weeks", "About one week"], answer: 3, explanation: "근거: 첫 문장 resurfaced from Monday, August 4 to Friday, August 8와 네 번째 문장 The north lot will reopen on Monday, August 11. 약 일주일이다. 오답: 공사만 5일이라 3일(A)보다 길고, 2주(C)·한 달(B)은 날짜와 맞지 않는다." },
       { q: "What is offered to employees during the closure?", choices: ["Free garage parking", "A shuttle service", "Extra break time", "A parking refund"], answer: 0, explanation: "근거: 세 번째 문장 Garage parking will be free for employees who show their ID badge. 오답: 셔틀(B)·휴식 시간(C)·주차비 환불(D)은 언급되지 않았다." },
-      { q: "What must employees show at the garage gate?", choices: ["A parking permit", "An ID badge", "A receipt", "A visitor pass"], answer: 1, explanation: "근거: 세 번째 문장 employees who show their ID badge at the gate. 오답: 주차 허가증(A)·영수증(C)·방문증(D)은 나오지 않는다." },
       { q: "What will happen to vehicles left after August 1?", choices: ["They will be fined", "They will be towed", "They will be moved to the south lot", "They will be locked"], answer: 1, explanation: "근거: 다섯 번째 문장 vehicles left in the north lot after 6 p.m. on August 1 will be towed at the owner's expense. 오답: 차주가 비용을 내지만 벌금(A)이라는 말은 없고, 남쪽 주차장으로 옮긴다(C)거나 잠근다(D)는 말도 없다." }
     ]
   },
@@ -314,9 +314,9 @@ window.PASSAGES = [
       { w: "valid", m: "유효한" }
     ],
     questions: [
+      { q: "What is the purpose of the advertisement?", choices: ["To announce new yoga and spinning classes", "To introduce a referral program for current members", "To promote a limited-time membership offer", "To announce the opening of a new location"], answer: 2, explanation: "주제·목적 문제다. 근거: 제목 SUMMER MEMBERSHIP SALE과 첫 문장 Join before July 31 and pay no registration fee. 7월 31일까지 가입하면 등록비가 없다는 기간 한정 회원 모집 광고다. 오답: (A) 요가·스피닝은 추가 요금이 드는 수업으로 한 번 나올 뿐 새 수업이라는 말이 없다. (B) 친구 추천 혜택은 네 번째 문장에 한 번 나오는 부가 혜택이다. (D) Riverside 지점은 할인이 적용되는 곳일 뿐 새로 연다는 말이 없다." },
       { q: "What is required to avoid the registration fee?", choices: ["Signing a one-year contract", "Joining before July 31", "Referring a friend", "Paying in cash"], answer: 1, explanation: "근거: 첫 문장 Join before July 31 and pay no registration fee. 오답: 1년 계약(A)·현금 결제(D)는 조건으로 나오지 않고, 친구 추천(C)은 등록비 면제가 아니라 한 달 무료의 조건이다." },
-      { q: "What costs an additional amount?", choices: ["Weight equipment", "Locker rental", "Group classes", "Parking"], answer: 2, explanation: "근거: 세 번째 문장 Group classes ... are available for an extra $10 per month. 오답: 웨이트 기구(A)는 월 요금에 포함되고, 사물함(B)·주차(D)는 언급되지 않았다." },
-      { q: "What do members receive for referring a friend?", choices: ["A discount on classes", "One free month", "A free T-shirt", "A personal trainer session"], answer: 1, explanation: "근거: 네 번째 문장 Members who refer a friend receive one free month. 오답: 수업 할인(A)·티셔츠(C)·개인 트레이닝(D)은 나오지 않는다." }
+      { q: "What costs an additional amount?", choices: ["Weight equipment", "Locker rental", "Group classes", "Parking"], answer: 2, explanation: "근거: 세 번째 문장 Group classes ... are available for an extra $10 per month. 오답: 웨이트 기구(A)는 월 요금에 포함되고, 사물함(B)·주차(D)는 언급되지 않았다." }
     ]
   },
   {
@@ -337,8 +337,8 @@ window.PASSAGES = [
       { w: "keep someone posted", m: "계속 소식을 알려주다" }
     ],
     questions: [
-      { q: "What problem are the writers discussing?", choices: ["A delayed order", "A broken machine", "A staff shortage", "A pricing error"], answer: 0, explanation: "근거: 2:05 Owen Blake의 Our order won't arrive until Friday와 2:07 That's two days late. 오답: 기계 고장(B)·인력 부족(C)·가격 오류(D)는 나오지 않는다." },
-      { q: "What does Ms. Cho plan to do?", choices: ["Cancel the order", "Contact another branch", "Visit the supplier", "Hire temporary staff"], answer: 1, explanation: "근거: 2:10 Mina Cho의 Let's borrow from the downtown branch. I'll call their manager now. 오답: 주문 취소(A)·공급업체 방문(C)·임시 직원 채용(D)은 말하지 않았다." },
+      { q: "What are the writers mainly discussing?", choices: ["Which supplier to use in the future", "How to deal with a late delivery", "Plans for a weekend sale", "Opening a new downtown branch"], answer: 1, explanation: "주제·목적 문제다. 근거: 2:05 Our order won't arrive until Friday로 시작해 재고가 주말까지 버틸지(2:07·2:08), 다른 지점에서 빌려 오자는 해결책(2:10)으로 이어진다. 늦어진 주문에 어떻게 대처할지가 대화 전체의 주제다. 오답: (A) 공급업체는 전화를 했다는 말뿐이고 바꾸자는 말이 없다. (C) 주말은 재고가 떨어질 수 있는 때로 나올 뿐 할인 행사 이야기가 아니다. (D) 시내 지점은 이미 있는 곳이고, 재고를 빌려 올 곳일 뿐이다." },
+      { q: "What does Ms. Cho plan to do?", choices: ["Cancel the order", "Hire temporary staff", "Visit the supplier", "Contact another branch"], answer: 3, explanation: "근거: 2:10 Mina Cho의 Let's borrow from the downtown branch. I'll call their manager now. 오답: 주문 취소(A)·공급업체 방문(C)·임시 직원 채용(B)은 말하지 않았다." },
       { q: "At 2:11 p.m., what does Mr. Blake mean when he writes, \"Keep me posted\"?", choices: ["He wants to be updated", "He will send a package", "He will post a notice", "He wants to change the plan"], answer: 0, explanation: "의도 파악 문제다. 근거: 바로 앞 2:10에 조 씨가 다른 지점 관리자에게 전화하겠다고 했다. Keep me posted는 그 결과를 알려 달라는 말이다. 오답: post를 '부치다'(B)나 '게시하다'(C)로 읽은 함정이고, 블레이크 씨는 Perfect라고 계획에 동의했으므로 계획 변경(D)도 아니다." }
     ]
   },
@@ -360,8 +360,8 @@ window.PASSAGES = [
       { w: "commute", m: "통근" }
     ],
     questions: [
-      { q: "What did the city council approve?", choices: ["A new train station", "Funding for a bus route", "A road repair project", "A parking regulation"], answer: 1, explanation: "근거: 첫 문장 The city council approved funding on Monday for a new bus route. 오답: 기차역(A)은 노선이 이어지는 기존 장소이고, 도로 보수(C)·주차 규정(D)은 나오지 않는다." },
-      { q: "In the article, the word \"run\" is closest in meaning to", choices: ["race", "manage", "operate", "extend"], answer: 2, word: "run", explanation: "어휘 문제다. 근거: 3번째 문장 The route, numbered 42, will run every fifteen minutes during weekday rush hours. 버스 노선이 15분마다 '운행한다'는 뜻이다. 오답: race(달리다)·manage(운영하다, 경영하다)·extend(뻗어 있다)는 run의 다른 뜻이다. 노선을 '경영한다'거나 '뻗어 있다'로는 '15분마다'와 이어지지 않는다." },
+      { q: "What is the article mainly about?", choices: ["Complaints from residents of the east district", "The renovation of the central train station", "A plan to improve public transportation", "The construction schedule for three bus stops"], answer: 2, explanation: "주제·목적 문제다. 근거: 제목 City to Add New Bus Route와 첫 문장 The city council approved funding ... for a new bus route connecting the east district to the central train station. 기사 전체가 새 버스 노선 신설 계획(운행 간격·정류장 공사·기대 효과)이다. 오답: (A) 주민 불만은 두 번째 문장에 노선을 만드는 배경으로 한 번 나온다. (B) 중앙역은 노선이 이어지는 곳일 뿐 보수 공사 이야기는 없다. (D) 정류장 공사 일정은 네 번째 문장 하나에만 해당하는 일부 내용이다." },
+      { q: "In the article, the word \"run\" is closest in meaning to", choices: ["race", "manage", "extend", "operate"], answer: 3, word: "run", explanation: "어휘 문제다. 근거: 3번째 문장 The route, numbered 42, will run every fifteen minutes during weekday rush hours. 버스 노선이 15분마다 '운행한다'는 뜻이다. 오답: race(달리다)·manage(운영하다, 경영하다)·extend(뻗어 있다)는 run의 다른 뜻이다. 노선을 '경영한다'거나 '뻗어 있다'로는 '15분마다'와 이어지지 않는다. 참고: 실제 시험에서는 '문단 2, 3행의 단어'처럼 위치를 알려준다. 이 앱은 문단·행 번호 없이 단어로만 표시하니, 형식이 달라도 당황하지 말자." },
       { q: "What does Ms. Dole say about the project?", choices: ["It will create new jobs", "It will shorten commute times", "It will reduce traffic accidents", "It will cost less than expected"], answer: 1, explanation: "근거: 다섯 번째 문장 Council member Rita Dole said the project will cut average commute times by about twenty minutes. cut을 shorten으로 바꿔 표현했다. 오답: 일자리(A)·사고 감소(C)·비용(D)은 돌 의원이 말하지 않았다." }
     ]
   },
@@ -403,7 +403,7 @@ window.PASSAGES = [
     questions: [
       { q: "What is NOT listed as a responsibility of the position?", choices: ["Scheduling", "Filing", "Client correspondence", "Managing budgets"], answer: 3, explanation: "NOT 문제다. 근거: 공고 첫 문장 Responsibilities include scheduling, filing, and client correspondence. 오답: 일정 관리(A)·문서 정리(B)·고객 서신(C)은 모두 공고에 나온다. 예산 관리(D)만 언급되지 않았다." },
       { q: "What preferred qualification does Ms. Haddad have?", choices: ["A law degree", "Experience in a legal office", "Fluency in two languages", "Management experience"], answer: 1, explanation: "연계 문제다. 근거 1: 공고 세 번째 문장 Applicants with experience in a legal office are preferred. 근거 2: 이메일 세 번째 문장 including one year at a small law firm. 오답: 법학 학위(A)·2개 국어(C)·관리 경험(D)은 두 지문 어디에도 없다." },
-      { q: "When will interviews take place?", choices: ["Before March 15", "During the last week of March", "In early April", "On March 20"], answer: 1, explanation: "근거: 공고 여섯 번째 문장 Interviews will be held during the last week of March. 오답: 3월 15일(A)은 지원 마감일이고, 3월 20일(D)은 하다드 씨가 면접이 가능해지는 날이다. 4월 초(C)는 언급이 없다." },
+      { q: "When will interviews take place?", choices: ["Before March 15", "On March 20", "In early April", "During the last week of March"], answer: 3, explanation: "근거: 공고 여섯 번째 문장 Interviews will be held during the last week of March. 오답: 3월 15일(A)은 지원 마감일이고, 3월 20일(B)은 하다드 씨가 면접이 가능해지는 날이다. 4월 초(C)는 언급이 없다." },
       { q: "What did Ms. Haddad include with her email?", choices: ["A writing sample", "References", "Her resume", "A portfolio"], answer: 2, explanation: "근거: 이메일 다섯 번째 문장 My resume is attached. 오답: 글쓰기 샘플(A)·추천서(B)·포트폴리오(D)는 첨부했다는 말이 없다." }
     ]
   },
@@ -453,9 +453,9 @@ window.PASSAGES = [
     ],
     questions: [
       { q: "What is the purpose of the first notice?", choices: ["To announce a series of workshops", "To report a schedule change", "To request payment", "To introduce a new building"], answer: 0, explanation: "근거: 지문 1(공고)의 제목 PROFESSIONAL DEVELOPMENT WORKSHOPS — Spring Series와 1번째 문장 Our spring workshops are open to all member companies. 지문 1만으로 푼다. 오답: 일정 변경(B)은 어느 지문에도 없고, 결제 요청(C)은 지문 3에서 청구서를 보내 달라는 말로만 나오며, 새 건물 소개(D)는 없다." },
-      { q: "In which room will Ms. Suzuki's first session be held?", choices: ["Room 101", "Room 204", "Room 305", "Room 410"], answer: 0, explanation: "연계 문제다(지문 2 + 지문 3). 근거 1: 지문 3의 2번째 문장에서 Effective Business Writing, Public Speaking, Project Management를 신청했다. 근거 2: 지문 2에서 그중 가장 빠른 것은 1번째 줄 March 5 — Effective Business Writing (Room 101)이다. 오답: 204호(B)는 Data Analysis Basics와 Project Management가 쓰고, 305호(C)·410호(D)는 일정표에 없다." },
+      { q: "In which room will Ms. Suzuki's first session be held?", choices: ["Room 410", "Room 204", "Room 305", "Room 101"], answer: 3, explanation: "연계 문제다(지문 2 + 지문 3). 근거 1: 지문 3의 2번째 문장에서 Effective Business Writing, Public Speaking, Project Management를 신청했다. 근거 2: 지문 2에서 그중 가장 빠른 것은 1번째 줄 March 5 — Effective Business Writing (Room 101)이다. 오답: 204호(B)는 Data Analysis Basics와 Project Management가 쓰고, 305호(C)·410호(A)는 일정표에 없다." },
       { q: "Which session is Ms. Suzuki NOT registering for?", choices: ["Effective Business Writing", "Data Analysis Basics", "Public Speaking", "Project Management"], answer: 1, explanation: "NOT 문제다. 근거: 지문 3의 2번째 문장에 신청한 세 과정이 나오고, Data Analysis Basics만 없다. 지문 3의 4번째 문장(3월 19일 출장)과 지문 2의 2번째 줄(3월 19일 과정)이 이유를 보여 준다. 오답: A·C·D는 모두 지문 3의 2번째 문장에서 신청했다." },
-      { q: "Why is Ms. Suzuki likely to receive a discount?", choices: ["She is a new member", "She registered for three sessions", "She paid in advance", "She works at the center"], answer: 1, explanation: "연계 문제다(지문 1 + 지문 3). 근거 1: 지문 1의 3번째 문장 Members who register for three or more sessions receive a 20 percent discount. 근거 2: 지문 3의 2번째 문장에서 세 과정을 신청했다. 지문 3은 할인이 되는지 묻기만 하고 이유는 말하지 않는다. 오답: 신규 회원(A)·선결제(C)·센터 직원(D)은 어느 지문에도 없다." },
+      { q: "Why is Ms. Suzuki likely to receive a discount?", choices: ["She is a new member", "She works at the center", "She paid in advance", "She registered for three sessions"], answer: 3, explanation: "연계 문제다(지문 1 + 지문 3). 근거 1: 지문 1의 3번째 문장 Members who register for three or more sessions receive a 20 percent discount. 근거 2: 지문 3의 2번째 문장에서 세 과정을 신청했다. 지문 3은 할인이 되는지 묻기만 하고 이유는 말하지 않는다. 오답: 신규 회원(A)·선결제(C)·센터 직원(B)은 어느 지문에도 없다." },
       { q: "How much will Ms. Suzuki most likely pay for her workshops?", choices: ["$32", "$120", "$96", "$128"], answer: 2, explanation: "추론 문제다. 근거 1: 지문 1의 2번째·3번째 문장 Each session ... costs $40 per participant / Members who register for three or more sessions receive a 20 percent discount. 근거 2: 지문 3의 2번째 문장에서 세 과정을 신청했다. 40달러 × 3 = 120달러에서 20퍼센트를 빼면 96달러다. 오답: 32달러(A)는 한 과정의 할인가, 120달러(B)는 할인 전 금액, 128달러(D)는 네 과정의 할인가다." }
     ]
   },
@@ -481,9 +481,9 @@ window.PASSAGES = [
     ],
     questions: [
       { q: "Why did Mr. Nunes write the email?", choices: ["To cancel an order", "To report missing items", "To request a catalog", "To change a delivery address"], answer: 1, explanation: "근거: 두 번째 문장 two of the six desk chairs are missing from the shipment. 오답: 주문 취소(A)·카탈로그 요청(C)·주소 변경(D)은 없다. 이메일 목적은 첫 문단에 나온다." },
-      { q: "How many chairs did the company receive?", choices: ["Two", "Four", "Six", "Eight"], answer: 1, explanation: "근거: 두 번째 문장 two of the six desk chairs are missing. 6개 중 2개가 빠졌으므로 4개를 받았다. 오답: 2개(A)는 빠진 수, 6개(C)는 주문한 수다. 8개(D)는 근거가 없다." },
+      { q: "How many chairs did the company receive?", choices: ["Two", "Eight", "Six", "Four"], answer: 3, explanation: "근거: 두 번째 문장 two of the six desk chairs are missing. 6개 중 2개가 빠졌으므로 4개를 받았다. 오답: 2개(A)는 빠진 수, 6개(C)는 주문한 수다. 8개(B)는 근거가 없다." },
       { q: "What does Mr. Nunes say he may do?", choices: ["Visit the warehouse", "Rent temporary seating", "Hire fewer staff", "Return the order"], answer: 1, explanation: "근거: 다섯 번째 문장 please let us know so we can rent temporary seating. 오답: 창고 방문(A)·직원 축소(C)·주문 반품(D)은 언급되지 않았다. warehouse는 의자가 남아 있을 수 있는 곳으로만 나온다." },
-      { q: "In the email, the word \"matter\" is closest in meaning to", choices: ["substance", "importance", "mail", "issue"], answer: 3, word: "matter", explanation: "어휘 문제다. 근거: 7번째 문장 Thank you for your prompt attention to this matter. 의자 두 개가 빠진 '이 건(문제)'을 가리킨다. 오답: substance(물질)·importance(중요함, it doesn't matter의 뜻)·mail(우편물, printed matter의 뜻)은 matter의 다른 뜻이다." }
+      { q: "In the email, the word \"matter\" is closest in meaning to", choices: ["substance", "importance", "mail", "issue"], answer: 3, word: "matter", explanation: "어휘 문제다. 근거: 7번째 문장 Thank you for your prompt attention to this matter. 의자 두 개가 빠진 '이 건(문제)'을 가리킨다. 오답: substance(물질)·importance(중요함, it doesn't matter의 뜻)·mail(우편물, printed matter의 뜻)은 matter의 다른 뜻이다. 참고: 실제 시험에서는 '문단 2, 3행의 단어'처럼 위치를 알려준다. 이 앱은 문단·행 번호 없이 단어로만 표시하니, 형식이 달라도 당황하지 말자." }
     ]
   },
   {
@@ -504,8 +504,8 @@ window.PASSAGES = [
       { w: "free to enter", m: "입장 무료인" }
     ],
     questions: [
-      { q: "What will open in September?", choices: ["A new shopping mall", "An indoor garden", "A parking garage", "A restaurant chain"], answer: 1, explanation: "근거: 첫 문장 Riverside Mall will open a 2,000-square-meter indoor garden ... in September. 오답: 쇼핑몰(A)은 이미 있는 곳이고, 주차장(C)·식당 체인(D)은 나오지 않는다. 정원 안의 작은 카페는 식당 체인이 아니다." },
-      { q: "What is indicated about the garden?", choices: ["There is no entry fee", "It opens only on weekends", "It is already finished", "It is for members only"], answer: 0, explanation: "근거: 다섯 번째 문장 The garden will be free to enter. free to enter를 no entry fee로 바꿔 표현했다. 오답: 정규 영업시간에 연다고 했으므로 주말만(B)이 아니고, 공정률이 70퍼센트라 이미 완공(C)도 아니다. 회원 전용(D)이라는 말도 없다." },
+      { q: "What is the main topic of the article?", choices: ["A mall's plan to add a garden space", "The opening of a new café", "The progress of construction at the mall", "A new manager at Riverside Mall"], answer: 0, explanation: "주제·목적 문제다. 근거: 제목 Riverside Mall to Add Indoor Garden과 첫 문장 Riverside Mall will open a 2,000-square-meter indoor garden ... in September. 이후 문장도 정원의 시설·목적·공정·입장 조건이다. 오답: (B) 카페는 정원 안에 들어설 시설 중 하나로 두 번째 문장에만 나온다. (C) 공정률 70퍼센트는 네 번째 문장 하나에 해당하는 일부 내용이다. (D) Tomas Reyes는 이미 쇼핑몰 관리자로 소개될 뿐 새로 왔다는 말이 없다." },
+      { q: "What is indicated about the garden?", choices: ["It is already finished", "It opens only on weekends", "There is no entry fee", "It is for members only"], answer: 2, explanation: "근거: 다섯 번째 문장 The garden will be free to enter. free to enter를 no entry fee로 바꿔 표현했다. 오답: 정규 영업시간에 연다고 했으므로 주말만(B)이 아니고, 공정률이 70퍼센트라 이미 완공(A)도 아니다. 회원 전용(D)이라는 말도 없다." },
       { q: "In which of the positions marked [1], [2], [3], and [4] does the following sentence best belong? \"However, food and drinks from the café will not be free.\"", choices: ["[1]", "[2]", "[3]", "[4]"], answer: 3, insert: "However, food and drinks from the café will not be free.", explanation: "문장 삽입 문제다. 연결 단서는 접속부사 However와 정관사 the café다. However는 앞 문장과 반대되는 내용을 이어야 하고, the café는 앞에서 이미 나온 카페여야 한다. [4] 앞 문장 The garden will be free to enter와 '무료'가 대비되고, 카페는 2번째 문장에 나왔다. 오답: [1]은 카페가 아직 나오지 않았고, [2]는 카페는 나왔지만 앞 문장에 '무료'가 없어 However가 대비할 것이 없으며, [3] 앞은 공사 진행률이라 음식값과 이어지지 않는다." }
     ]
   },
@@ -570,8 +570,8 @@ window.PASSAGES = [
     ],
     questions: [
       { q: "Where most likely is Ms. Whitfield?", choices: ["At a repair shop", "At a delivery depot", "At a customer's office", "At a parking garage"], answer: 1, explanation: "근거: 10:12 Dana Whitfield의 I'm still at the depot. 오답: 정비사를 기다리는 중이라 정비소(A)가 아니고, 아직 출발하지 못했으므로 고객 사무실(C)도 아니다. 주차장(D)은 언급이 없다." },
-      { q: "At 10:15 A.M., what does Ms. Whitfield most likely mean when she writes, \"but I've heard that before\"?", choices: ["She has not met the mechanic", "She doubts the mechanic will arrive on time", "She wants to call a different mechanic", "She already repaired the van"], answer: 1, explanation: "의도 파악 문제다. 근거: 바로 앞 문장 He said twenty minutes. 전에도 같은 말을 들었다는 것은 이번에도 20분 안에 오지 않을 거라고 의심한다는 뜻이다. 오답: 정비사를 만난 적 없다(A)거나, 다른 정비사를 부르겠다(C)거나, 이미 고쳤다(D)는 말은 없다." },
-      { q: "In the text message chain, the word \"holds\" is closest in meaning to", choices: ["contains", "grips", "delays", "hosts"], answer: 0, word: "holds", explanation: "어휘 문제다. 근거: 10:18 Dana Whitfield의 It only holds half the boxes. I'd have to make two trips. 작은 트럭에 상자가 절반만 '들어간다'는 뜻이다. 오답: grips(손에 쥐다)·delays(붙잡아 두다, hold up)·hosts(행사를 열다, hold a meeting)는 hold의 다른 뜻이다." },
+      { q: "At 10:15 A.M., what does Ms. Whitfield most likely mean when she writes, \"but I've heard that before\"?", choices: ["She has not met the mechanic", "She already repaired the van", "She wants to call a different mechanic", "She doubts the mechanic will arrive on time"], answer: 3, explanation: "의도 파악 문제다. 근거: 바로 앞 문장 He said twenty minutes. 전에도 같은 말을 들었다는 것은 이번에도 20분 안에 오지 않을 거라고 의심한다는 뜻이다. 오답: 정비사를 만난 적 없다(A)거나, 다른 정비사를 부르겠다(C)거나, 이미 고쳤다(B)는 말은 없다." },
+      { q: "In the text message chain, the word \"holds\" is closest in meaning to", choices: ["contains", "grips", "delays", "hosts"], answer: 0, word: "holds", explanation: "어휘 문제다. 근거: 10:18 Dana Whitfield의 It only holds half the boxes. I'd have to make two trips. 작은 트럭에 상자가 절반만 '들어간다'는 뜻이다. 오답: grips(손에 쥐다)·delays(붙잡아 두다, hold up)·hosts(행사를 열다, hold a meeting)는 hold의 다른 뜻이다. 참고: 실제 시험에서는 '문단 2, 3행의 단어'처럼 위치를 알려준다. 이 앱은 문단·행 번호 없이 단어로만 표시하니, 형식이 달라도 당황하지 말자." },
       { q: "What does Mr. Haddad say he will do?", choices: ["Drive the van himself", "Reschedule some deliveries", "Cancel the first stop", "Hire a new mechanic"], answer: 1, explanation: "근거: 10:20 Omar Haddad의 I'll call the afternoon customers and push their times back. push back을 reschedule로 바꿔 표현했다. 오답: 직접 운전(A)·첫 배송지 취소(C)·정비사 고용(D)은 말하지 않았다. 첫 배송지는 작은 트럭으로 가기로 했다." }
     ]
   },
@@ -598,7 +598,7 @@ window.PASSAGES = [
     questions: [
       { q: "What is the main topic of the discussion?", choices: ["A printer supply problem", "A change to a meeting time", "A new marketing campaign", "An office relocation"], answer: 0, explanation: "근거: 2:02 The printer on the third floor is out of toner again으로 시작해 2:09 토너 주문으로 끝난다. 오답: 내일 회의(B)는 공지할 자리로만 나오고, 마케팅 캠페인(C)·사무실 이전(D)은 주제가 아니다." },
       { q: "What does Ms. Kowalski confirm?", choices: ["The printer is broken", "The marketing team made a large number of copies", "The supply closet is locked", "A new printer was purchased"], answer: 1, explanation: "근거: 2:05 Anna Kowalski의 That's right, they did. Three hundred copies. 앞 문장의 '마케팅 팀이 카탈로그를 출력했다'를 확인한 것이다. 오답: 프린터 고장(A)이 아니라 토너가 떨어졌고, 비품실이 잠겼다(C)는 말은 없으며(토너가 없다고만 했다), 새 프린터 구입(D)도 없다." },
-      { q: "At 2:06 P.M., why does Mr. Ferreira mention the copy center?", choices: ["To recommend buying a new machine", "To point out where large print jobs should be done", "To complain about printing costs", "To ask for directions"], answer: 1, explanation: "의도 파악 문제다. 근거: 2:06 Large print jobs are supposed to go to the copy center downstairs. be supposed to는 정해진 규칙을 말한다. 바로 앞에서 마케팅 팀이 300부를 이 프린터로 뽑았다고 했으므로 규칙 위반을 지적한 것이다. 오답: 새 기계 구입(A)·비용 불만(C)·길 묻기(D)는 근거가 없다." },
+      { q: "At 2:06 P.M., why does Mr. Ferreira mention the copy center?", choices: ["To recommend buying a new machine", "To ask for directions", "To complain about printing costs", "To point out where large print jobs should be done"], answer: 3, explanation: "의도 파악 문제다. 근거: 2:06 Large print jobs are supposed to go to the copy center downstairs. be supposed to는 정해진 규칙을 말한다. 바로 앞에서 마케팅 팀이 300부를 이 프린터로 뽑았다고 했으므로 규칙 위반을 지적한 것이다. 오답: 새 기계 구입(A)·비용 불만(C)·길 묻기(B)는 근거가 없다." },
       { q: "What will Mr. Ferreira most likely do today?", choices: ["Order supplies", "Repair the printer", "Lead a staff meeting", "Visit the marketing team"], answer: 0, explanation: "근거: 2:09 I'll put in the order before I leave. 2:08에 토너 주문을 부탁받았다. 오답: 수리(B)는 필요 없고, 내일 회의에서 공지하는 사람은 코발스키 씨이며(C), 마케팅 팀 방문(D)은 언급이 없다." }
     ]
   },
@@ -625,7 +625,7 @@ window.PASSAGES = [
     ],
     questions: [
       { q: "What is suggested about the order?", choices: ["It was delivered late", "It qualified for free delivery", "It was partly canceled", "It included a discount on lamps"], answer: 1, explanation: "근거: 여섯 번째 줄 Subtotal: $366.00 | Delivery: $0.00 (free on orders over $300). 소계가 300달러를 넘어 배송비가 없다. 오답: 배송 지연(A)·일부 취소(C)·램프 할인(D)은 청구서에 없다." },
-      { q: "By when should the clinic pay?", choices: ["June 3", "June 17", "July 3", "July 17"], answer: 1, explanation: "근거: 두 번째 줄 Payment due: June 17. 오답: 6월 3일(A)은 청구 일자이고, 7월 날짜(C, D)는 청구서에 없다." },
+      { q: "By when should the clinic pay?", choices: ["June 3", "July 17", "July 3", "June 17"], answer: 3, explanation: "근거: 두 번째 줄 Payment due: June 17. 오답: 6월 3일(A)은 청구 일자이고, 7월 날짜(B, C)는 청구서에 없다." },
       { q: "If the clinic pays the invoice on June 20, how much will it most likely pay?", choices: ["$359.68", "$366.00", "$373.32", "$380.64"], answer: 2, explanation: "추론 문제다. 근거 1: 2번째 줄 Payment due: June 17. 6월 20일은 납기 뒤다. 근거 2: 7번째·8번째 줄 Total due: $366.00 / A 2 percent late fee is added to invoices paid after the due date. 366달러의 2퍼센트인 7.32달러가 더해져 373.32달러다. 오답: 359.68달러(A)는 2퍼센트를 뺀 값, 366달러(B)는 기한 안에 낼 때의 금액, 380.64달러(D)는 4퍼센트를 더한 값이다." }
     ]
   },
@@ -648,9 +648,9 @@ window.PASSAGES = [
       { w: "full refund", m: "전액 환불" }
     ],
     questions: [
-      { q: "What does Harborline Tours offer?", choices: ["Boat repairs", "Guided boat tours", "Fishing lessons", "Hotel bookings"], answer: 1, explanation: "근거: 첫 문장 Harborline Tours has operated guided boat trips along the north coast. 오답: 보트 수리(A)·낚시 강습(C)·호텔 예약(D)은 나오지 않는다." },
+      { q: "What is the purpose of the web page?", choices: ["To announce a new tour route", "To explain a refund policy for canceled tours", "To recruit licensed tour guides", "To describe a company's tour service"], answer: 3, explanation: "주제·목적 문제다. 근거: 제목 About Us와 첫 문장 Harborline Tours has operated guided boat trips along the north coast since 2009. 이후 출발 시각·가이드·요금·단체 예약·취소를 차례로 안내하는 회사 소개 페이지다. 오답: (A) 2009년부터 운영해 온 투어라 새 노선이 아니다. (B) 환불은 마지막 문장에 한 번 나오는 일부 내용이다. (C) licensed guide는 투어를 이끄는 사람을 설명할 뿐 가이드를 뽑는다는 말이 없다." },
       { q: "What is indicated about the tours?", choices: ["They run only in summer", "They are offered in two languages", "They last three hours", "They are free for children"], answer: 1, explanation: "근거: 세 번째 문장 commentary in English and Spanish. 오답: 운영 계절(A)은 언급이 없고, 투어는 90분이라 3시간(C)이 아니며, 아동도 11달러를 내므로 무료(D)가 아니다." },
-      { q: "What are large groups advised to do?", choices: ["Pay in cash", "Reserve several days ahead", "Arrive at 9 A.M.", "Bring their own guide"], answer: 1, explanation: "근거: 다섯 번째 문장 Groups of ten or more should book at least three days in advance. book in advance를 reserve ahead로 바꿔 표현했다. 오답: 현금 결제(A)·오전 9시 도착(C)·가이드 동반(D)은 요구하지 않았다. 9시는 첫 출발 시각이다." }
+      { q: "What are large groups advised to do?", choices: ["Reserve several days ahead", "Pay in cash", "Arrive at 9 A.M.", "Bring their own guide"], answer: 0, explanation: "근거: 다섯 번째 문장 Groups of ten or more should book at least three days in advance. book in advance를 reserve ahead로 바꿔 표현했다. 오답: 현금 결제(B)·오전 9시 도착(C)·가이드 동반(D)은 요구하지 않았다. 9시는 첫 출발 시각이다." }
     ]
   },
   {
@@ -691,8 +691,8 @@ window.PASSAGES = [
       { w: "facility", m: "시설" }
     ],
     questions: [
-      { q: "What will happen on July 10?", choices: ["A new branch will open", "A pool will be closed for cleaning", "Membership fees will change", "The fitness center will close all day"], answer: 1, explanation: "근거: 첫 문장 The swimming pool will be drained for cleaning on Thursday, July 10. 오답: 새 지점 개장(A)이 아니라 기존 오크필드 지점을 이용하라는 것이고, 회비 변경(C)은 없으며, All other facilities will remain open이라 센터 전체가 닫는 것(D)도 아니다." },
-      { q: "What are members asked to bring to the Oakfield branch?", choices: ["An extra payment", "Their membership card", "A towel and swimsuit", "A printed copy of the notice"], answer: 1, explanation: "근거: 세 번째 문장 Please bring your membership card to the front desk there. there는 오크필드 지점이다. 오답: at no extra charge라 추가 요금(A)은 없고, 수건·수영복(C)·공지 사본(D)은 언급되지 않았다." }
+      { q: "What is the main purpose of the notice?", choices: ["To introduce a new branch in Oakfield", "To inform members that a facility will be unavailable for a day", "To remind members to renew their membership cards", "To announce that the fitness center will close for a day"], answer: 1, explanation: "주제·목적 문제다. 근거: 첫 문장 The swimming pool will be drained for cleaning on Thursday, July 10, and will reopen Friday morning. 수영장 하루 이용 중단과 그날의 대안을 알리는 공지다. 오답: (A) 오크필드 지점은 그날 대신 쓸 수 있는 기존 지점이지 새 지점이 아니다. (C) 회원 카드는 오크필드 지점에 가져가라는 것이지 갱신하라는 말이 아니다. (D) All other facilities will remain open as usual이라고 했으므로 센터 전체가 닫는 것이 아니다. 지문이 '하지 않는다'고 한 내용을 고르게 하는 함정이다." },
+      { q: "What are members asked to bring to the Oakfield branch?", choices: ["An extra payment", "A printed copy of the notice", "A towel and swimsuit", "Their membership card"], answer: 3, explanation: "근거: 세 번째 문장 Please bring your membership card to the front desk there. there는 오크필드 지점이다. 오답: at no extra charge라 추가 요금(A)은 없고, 수건·수영복(C)·공지 사본(B)은 언급되지 않았다." }
     ]
   },
   {
@@ -753,7 +753,7 @@ window.PASSAGES = [
     ],
     questions: [
       { q: "What is one responsibility of the position?", choices: ["Repairing damaged books", "Scanning photographs", "Leading school tours", "Managing a budget"], answer: 1, explanation: "근거: 공고 두 번째 문장 Responsibilities include cataloging documents, scanning photographs, and assisting researchers. 오답: 책 수리(A)·학교 견학 안내(C)·예산 관리(D)는 업무로 나오지 않는다." },
-      { q: "How did Ms. Bello learn about the job?", choices: ["From a newspaper", "From the library's website", "From a former colleague", "At a job fair"], answer: 1, explanation: "근거: 이메일 두 번째 문장 the archivist position advertised on your website. 오답: 신문(A)·전 동료(C)·채용 박람회(D)는 언급되지 않았다." },
+      { q: "How did Ms. Bello learn about the job?", choices: ["From a newspaper", "From a former colleague", "From the library's website", "At a job fair"], answer: 2, explanation: "근거: 이메일 두 번째 문장 the archivist position advertised on your website. 오답: 신문(A)·전 동료(B)·채용 박람회(D)는 언급되지 않았다." },
       { q: "What is suggested about Ms. Bello's availability?", choices: ["She can work on Saturdays when needed", "She can work only on weekday mornings", "She needs a full-time schedule", "She is unavailable until April"], answer: 0, explanation: "연계 문제다. 근거 1: 공고 네 번째 문장 with occasional Saturday shifts. 근거 2: 이메일 네 번째 문장 I am available on weekends as well as weekdays. 오답: 평일 오전만(B)·전일제 필요(C)·4월까지 불가(D)는 이메일 내용과 맞지 않는다." },
       { q: "What does Ms. Bello offer to provide?", choices: ["A photograph sample", "References", "A writing sample", "A university transcript"], answer: 1, explanation: "근거: 이메일 다섯 번째 문장 I would be glad to provide references if needed. 오답: 사진 샘플(A)·글쓰기 샘플(C)·성적 증명서(D)는 제공하겠다고 하지 않았다. 사진은 경력 설명에만 나온다." }
     ]
@@ -795,7 +795,7 @@ window.PASSAGES = [
     questions: [
       { q: "What is included in the room rate?", choices: ["Breakfast", "Parking", "An airport transfer", "Laundry service"], answer: 0, explanation: "근거: 확인서 네 번째 줄 Breakfast is included in the room rate. 오답: 주차(B)는 1일 15달러를 따로 받고, 공항 이동(C)·세탁(D)은 언급되지 않았다." },
       { q: "What change does Dr. Osei request?", choices: ["A different room type", "A later check-out date", "An earlier check-in", "A lower nightly rate"], answer: 1, explanation: "근거: 이메일 두 번째 문장 I would like to stay until October 12. 원래 퇴실일은 10월 11일이었다. 오답: 객실 종류(A)·입실 날짜(C)·요금(D)을 바꿔 달라는 말은 없다." },
-      { q: "Why will Dr. Osei most likely not be charged a change fee?", choices: ["He is a frequent guest", "He requested the change more than 48 hours in advance", "He has already paid in full", "He is attending a conference"], answer: 1, explanation: "연계 문제다. 근거 1: 확인서 다섯 번째 줄 Changes made more than 48 hours before check-in are free of charge. 근거 2: 이메일 머리글의 날짜는 October 3이고, 확인서의 입실일은 October 8이다. 오답: 단골 손님(A)·전액 선결제(C)는 근거가 없고, 학회 참석(D)은 변경 이유이지 수수료가 없는 이유가 아니다." },
+      { q: "Why will Dr. Osei most likely not be charged a change fee?", choices: ["He requested the change more than 48 hours in advance", "He is a frequent guest", "He has already paid in full", "He is attending a conference"], answer: 0, explanation: "연계 문제다. 근거 1: 확인서 다섯 번째 줄 Changes made more than 48 hours before check-in are free of charge. 근거 2: 이메일 머리글의 날짜는 October 3이고, 확인서의 입실일은 October 8이다. 오답: 단골 손님(B)·전액 선결제(C)는 근거가 없고, 학회 참석(D)은 변경 이유이지 수수료가 없는 이유가 아니다." },
       { q: "How much will Dr. Osei most likely pay for his room, not including parking?", choices: ["$540", "$780", "$720", "$900"], answer: 2, explanation: "추론 문제다. 근거 1: 지문 1(확인서) 2번째·3번째 줄 Check-in: October 8 / $180 per night. 근거 2: 지문 2(이메일) 2번째 문장 I would like to stay until October 12. 8일부터 12일까지 4박이라 180달러 × 4 = 720달러다. 오답: 540달러(A)는 원래 예약 3박, 780달러(B)는 4일 주차비 60달러를 더한 값, 900달러(D)는 5박이다." }
     ]
   },
@@ -986,7 +986,7 @@ window.PASSAGES = [
       { w: "combine", m: "합치다" }
     ],
     questions: [
-      { q: "What is included in the monthly rent?", choices: ["Electricity", "Internet service", "Water and building maintenance", "Office furniture"], answer: 2, explanation: "근거: 지문 1(광고)의 2번째 줄 Monthly rent: $4,200, including water and building maintenance. 오답: 전기(A)·인터넷(B)은 3번째 줄에서 별도 청구라고 했고, 가구(D)는 언급이 없다." },
+      { q: "Why did Ms. Han write the email?", choices: ["To announce that her studio is expanding", "To request a reduction in the monthly rent", "To confirm a viewing appointment", "To ask about an advertised office space"], answer: 3, explanation: "주제·목적 문제다. 근거: 지문 2(이메일)의 2번째 문장 the third floor sounds suitable 뒤로 방을 합칠 수 있는지, 1년 임대가 되는지를 묻는다. 광고에 나온 3층 사무실에 대해 문의하는 메일이다. 오답: (A) we may expand again soon은 1년 임대를 원하는 이유로 한 번 나올 뿐 확장을 알리는 메일이 아니다. (B) 임대료는 지문 1에만 나오고 한 씨는 깎아 달라고 하지 않았다. (C) 방문 가능한 요일을 알렸을 뿐 이미 잡힌 약속을 확인하는 것이 아니다. 지문 1은 전화로 예약하라고 했다." },
       { q: "How many additional parking spaces would Ms. Han's company need?", choices: ["Two", "Four", "Six", "Eight"], answer: 1, explanation: "연계 문제다(지문 1 + 지문 2). 근거 1: 지문 2의 3번째 문장 six of whom drive to work. 근거 2: 지문 1의 5번째 줄 Two parking spaces are included. 6면에서 2면을 빼면 4면이 더 필요하다. 오답: 2면(A)은 포함된 수, 6면(C)은 운전하는 직원 수, 8면(D)은 방의 수다." },
       { q: "What is suggested about the office for Ms. Han's company?", choices: ["It could be ready by the time her studio wants to move", "It is too small for fourteen employees", "It includes free electricity", "It comes with enough parking for all drivers"], answer: 0, explanation: "추론 문제다. 근거 1: 지문 1(광고) 6번째 줄 Available from July 1. 근거 2: 지문 2(이메일) 2번째 문장 Our design studio is looking for space from August. 7월부터 쓸 수 있으므로 8월 입주에 맞출 수 있다. 오답: 크기(B)를 문제 삼는 말은 없고, 전기는 별도 청구이며(C), 주차는 두 면만 포함돼 운전하는 직원 6명에게 모자란다(D)." },
       { q: "What does Ms. Han request that differs from the advertised terms?", choices: ["A lower monthly rent", "An earlier move-in date", "Extra storage space", "A shorter lease period"], answer: 3, explanation: "연계 문제다(지문 1 + 지문 2). 근거 1: 지문 1의 4번째 줄 Minimum lease: two years. 근거 2: 지문 2의 5번째 문장 if a one-year lease is possible. 오답: 임대료(A)는 묻지 않았고, 입주는 지문 2의 2번째 문장에서 8월부터라 7월 1일보다 이른 날(B)이 아니며, 창고(C)는 언급이 없다." },
@@ -1032,8 +1032,8 @@ window.PASSAGES = [
     questions: [
       { q: "What is mentioned as a feature of the WR-9?", choices: ["It is waterproof", "It comes in three colors", "It charges in ten minutes", "It folds flat"], answer: 3, explanation: "근거: 지문 1(보도자료)의 2번째 문장 The WR-9 offers thirty hours of battery life and folds flat for travel. 오답: 방수(A)·색상(B)·급속 충전(C)은 언급되지 않았다." },
       { q: "Why is Northline Electronics likely to receive a discount?", choices: ["Its order was placed before September 15", "It is a long-time customer", "It ordered more than one product", "It paid in advance"], answer: 0, explanation: "연계 문제다(지문 1 + 지문 2). 근거 1: 지문 1의 4번째 문장 Retailers ordering before September 15 receive a 15 percent wholesale discount. 근거 2: 지문 2 머리글의 Date: September 10. 지문 2 본문은 할인을 기대한다고만 하고 마감일은 말하지 않는다. 오답: 오랜 거래처(B)·여러 제품 주문(C)·선결제(D)는 근거가 없다." },
-      { q: "What is suggested about Northline Electronics?", choices: ["It has more than one retail location", "It has sold Kestrel products for many years", "It plans to open a new store in October", "It manufactures its own headphones"], answer: 0, explanation: "추론 문제다. 근거: 지문 2의 2번째 문장 We would like to order one hundred WR-9 units for our three stores. 매장이 셋이라는 말에서 여러 매장을 운영하는 소매업체라고 추론한다. 오답: 오래 거래했다(B)는 근거가 없고, 10월 1일은 출하일이지 새 매장 개점일(C)이 아니며, 다른 회사 헤드폰을 주문하므로 자체 제조(D)도 아니다." },
-      { q: "In the email, the word \"figure\" is closest in meaning to", choices: ["shape", "number", "person", "drawing"], answer: 1, word: "figure", part: 2, explanation: "어휘 문제다. 근거: 지문 2(이메일) 4번째 문장 Our customers often ask about battery life, so the thirty-hour figure will help us sell them. 배터리 '30시간'이라는 수치를 가리킨다. 오답: shape(형태)·person(인물, a public figure)·drawing(도형, 그림)은 figure의 다른 뜻이다." },
+      { q: "What is suggested about Northline Electronics?", choices: ["It manufactures its own headphones", "It has sold Kestrel products for many years", "It plans to open a new store in October", "It has more than one retail location"], answer: 3, explanation: "추론 문제다. 근거: 지문 2의 2번째 문장 We would like to order one hundred WR-9 units for our three stores. 매장이 셋이라는 말에서 여러 매장을 운영하는 소매업체라고 추론한다. 오답: 오래 거래했다(B)는 근거가 없고, 10월 1일은 출하일이지 새 매장 개점일(C)이 아니며, 다른 회사 헤드폰을 주문하므로 자체 제조(A)도 아니다." },
+      { q: "In the email, the word \"figure\" is closest in meaning to", choices: ["shape", "number", "person", "drawing"], answer: 1, word: "figure", part: 2, explanation: "어휘 문제다. 근거: 지문 2(이메일) 4번째 문장 Our customers often ask about battery life, so the thirty-hour figure will help us sell them. 배터리 '30시간'이라는 수치를 가리킨다. 오답: shape(형태)·person(인물, a public figure)·drawing(도형, 그림)은 figure의 다른 뜻이다. 참고: 실제 시험에서는 '문단 2, 3행의 단어'처럼 위치를 알려준다. 이 앱은 문단·행 번호 없이 단어로만 표시하니, 형식이 달라도 당황하지 말자." },
       { q: "What does Mr. Ivanov hope will happen?", choices: ["The price will be lowered", "A free sample will be sent", "The units will arrive by October 1", "The order will be delivered in three parts"], answer: 2, explanation: "연계 문제다(지문 1 + 지문 2). 근거 1: 지문 2의 6번째 문장 We hope to have the units on our shelves on the day shipping begins. 근거 2: 지문 1의 1번째 문장 will begin shipping ... on October 1. 오답: 가격 인하(A)·무료 샘플(B)은 바라지 않았고, 세 매장용이지만 세 번 나눠 배송(D)해 달라는 말은 없다." }
     ]
   },
@@ -1091,7 +1091,7 @@ window.PASSAGES = [
       { q: "What will Mr. Oyelaran most likely do on August 14?", choices: ["Visit a client site", "Pack his desk", "Help the movers", "Work from home"], answer: 3, explanation: "추론 문제다. 근거 1: 지문 1(공지) 1번째 문장 We will move ... on Friday, August 14. 근거 2: 지문 1의 5번째 문장 The office will be closed on August 14, so please work from home that day. 이사 날 사무실이 닫으므로 오옐라란 씨도 집에서 일한다. 오답: 고객사 방문(A)은 목요일, 짐 싸기(B)는 수요일 저녁에 하겠다고 한 일이고, 이삿짐 업체를 돕는다(C)는 말은 없다. 짐 옮기기는 업체 몫이다." },
       { q: "Why will Fairbrook Analytics most likely NOT pay the surcharge?", choices: ["The move is scheduled for a weekday", "The estimate has expired", "The company booked early", "Fewer movers were needed"], answer: 0, explanation: "연계 문제다(지문 1 + 지문 2). 근거 1: 지문 2의 7번째 줄 Weekend surcharge, added only if the move takes place on a Saturday or Sunday. 근거 2: 지문 1의 1번째 문장 on Friday, August 14. 지문 2에는 날짜만 있고 요일이 없다. 오답: 견적은 30일간 유효하므로 만료(B) 근거가 없고, 조기 예약(C)·인원 감소(D)는 언급이 없다." },
       { q: "What does Mr. Oyelaran suggest about the boxes?", choices: ["They are the wrong size", "There are fewer than the estimate lists", "They have already been labeled", "They were delivered to the new office"], answer: 1, explanation: "연계 문제다(지문 2 + 지문 3). 근거 1: 지문 2의 2번째 줄 Packing boxes (120). 근거 2: 지문 3의 4번째 문장 I counted only about ninety boxes in the supply room. 오답: 크기(A)·이름표(C)·새 사무실 배송(D)은 말하지 않았다." },
-      { q: "What does Mr. Oyelaran ask permission to do?", choices: ["Work from home on Thursday", "Pack his desk a day early", "Skip the move entirely", "Choose his own room number"], answer: 1, explanation: "근거: 지문 3의 2번째·3번째 문장 I will be at a client site all day Thursday ... Could I come in on Wednesday evening and pack then instead? 마감은 지문 1의 2번째 문장대로 목요일이라 하루 이르다. 오답: 목요일에는 고객사에 있으므로 재택근무(A)가 아니고, 이사를 빠지겠다(C)거나 방 번호를 고르겠다(D)는 말은 없다. 방 번호는 배치도에 없다고 알린 것뿐이다." }
+      { q: "What does Mr. Oyelaran ask permission to do?", choices: ["Pack his desk a day early", "Work from home on Thursday", "Skip the move entirely", "Choose his own room number"], answer: 0, explanation: "근거: 지문 3의 2번째·3번째 문장 I will be at a client site all day Thursday ... Could I come in on Wednesday evening and pack then instead? 마감은 지문 1의 2번째 문장대로 목요일이라 하루 이르다. 오답: 목요일에는 고객사에 있으므로 재택근무(B)가 아니고, 이사를 빠지겠다(C)거나 방 번호를 고르겠다(D)는 말은 없다. 방 번호는 배치도에 없다고 알린 것뿐이다." }
     ]
   },
   {
@@ -1185,7 +1185,7 @@ window.PASSAGES = [
       { w: "notice", m: "사전 통지" }
     ],
     questions: [
-      { q: "What is included with the digital plan?", choices: ["A printed copy each month", "Access to issues going back to 2008", "A free gift subscription", "Delivery to two addresses"], answer: 1, explanation: "근거: 지문 1(구독 안내)의 2번째 줄 Digital only: $30 a year (includes the full archive since 2008). 오답: 매달 인쇄본(A)은 인쇄 플랜이고, 무료 선물 구독(C)·두 주소 배송(D)은 없다." },
+      { q: "Why did Mr. Castellanos write the email?", choices: ["To report that he has moved to a new address", "To ask about starting new subscriptions", "To cancel an automatic renewal", "To complain about the price of the print edition"], answer: 1, explanation: "주제·목적 문제다. 근거: 지문 2(이메일)의 2번째 문장부터 4번째 문장까지. 학생 요금으로 인쇄+디지털 플랜을 원한다며 첫해 금액을 묻고, 동생에게 줄 디지털 구독도 사고 싶다고 한다. 새 구독 두 건에 대한 문의다. 오답: (A) 주소 변경은 마지막 질문으로 한 번 나오고, 4월에 이사할 예정이라 아직 이사하지 않았다. (C) 자동 갱신은 지문 1의 안내에만 나온다. (D) 인쇄판 가격은 지문 1에 있지만 불만을 말하지 않았다." },
       { q: "How much will Mr. Castellanos most likely pay for his own subscription?", choices: ["$18", "$30", "$36", "$60"], answer: 2, explanation: "연계 문제다(지문 1 + 지문 2). 근거 1: 지문 2의 2번째 문장 I am a graduate student and would like the print and digital plan at the student rate. 근거 2: 지문 1의 3번째·4번째 줄 Print and digital: $60 / Students receive 40 percent off. 60달러에서 40퍼센트를 빼면 36달러다. 오답: 18달러(A)는 디지털 플랜에 할인을 적용한 값, 30달러(B)는 디지털 정가, 60달러(D)는 할인 전 가격이다." },
       { q: "What is indicated about the subscription for Mr. Castellanos's sister?", choices: ["It will be discounted", "It will cost the full price", "It is not available", "It must include print"], answer: 1, explanation: "연계 문제다(지문 1 + 지문 2). 근거 1: 지문 2의 4번째 문장 a one-year digital subscription for my sister, who is not a student. 근거 2: 지문 1의 6번째 줄 Gift subscriptions ... cannot be combined with the student discount. 선물 구독이라 학생 할인이 안 되고, 동생도 학생이 아니다. 오답: 할인(A)이 안 되고, 선물 구독은 가능하다고 했으므로 불가(C)가 아니며, 디지털 플랜을 원하므로 인쇄 포함(D)도 아니다." },
       { q: "What else does Mr. Castellanos ask about?", choices: ["Changing his address", "Canceling a past order", "Writing for the magazine", "Receiving a sample issue"], answer: 0, explanation: "근거: 지문 2의 5번째 문장 How much notice do you need for a change of address? 오답: 지난 주문 취소(B)·기고(C)·견본호(D)는 묻지 않았다." },
@@ -1226,7 +1226,7 @@ window.PASSAGES = [
       { w: "part-time", m: "시간제의" }
     ],
     questions: [
-      { q: "What did Mr. Lindqvist praise?", choices: ["The lamb stew", "The size of the dining room", "The speed of the service", "The weekend atmosphere"], answer: 0, explanation: "근거: 지문 1(후기)의 1번째 문장 The lamb stew was the best I have had in this city. 오답: 식당은 3번째 문장에서 작다고 했고(B), 서비스는 2번째 문장에서 느렸다고 했으며(C), 주말 분위기(D)는 예약 이야기만 있다." },
+      { q: "Why did Ms. Vega write the response?", choices: ["To recruit additional part-time cooks", "To reply to a review and describe changes", "To announce the opening of a second location", "To explain a new weekend reservation policy"], answer: 1, explanation: "주제·목적 문제다. 근거: 지문 2(답글)의 1번째·2번째 문장에서 후기의 칭찬과 지적에 답하고, 3번째·4번째 문장에서 그 뒤에 바뀐 점(요리사 채용·평일 예약·새 홀)을 알린다. 후기에 대한 답과 개선 사항 안내다. 오답: (A) 요리사는 이미 뽑았다(have since hired)고 했으므로 모집하는 글이 아니다. (C) 9월에 여는 것은 옆 건물의 두 번째 홀이지 두 번째 지점이 아니고, 4번째 문장 하나에 해당한다. (D) 새로 바뀐 것은 평일(weekdays) 예약이고, 주말 예약은 후기에서 이미 필수라고 했다." },
       { q: "What is suggested about Mr. Lindqvist's visit?", choices: ["He visited the restaurant on a weekend", "He came with a large group", "He could not have reserved a table for that evening", "He was served by the owner"], answer: 2, explanation: "추론 문제다. 근거 1: 지문 1(후기) 2번째 문장 on a Tuesday evening. 근거 2: 지문 2(답글) 3번째 문장 we now take reservations on weekdays as well. 지금은 평일에도 예약을 받는다는 말에서, 그가 왔던 화요일에는 예약을 받지 않았다는 것을 알 수 있다. 오답: 주말(A)이 아니라 화요일이고, 단체로 가지 않겠다(B)는 다음 방문 이야기이며, 사장이 서빙했다(D)는 근거가 없다." },
       { q: "On which day was Marisol's Kitchen short-staffed?", choices: ["Monday", "Tuesday", "Saturday", "Sunday"], answer: 1, explanation: "연계 문제다(지문 1 + 지문 2). 근거 1: 지문 2의 2번째 문장 You are right about the wait that evening. Our second cook was ill, and we were short-staffed. 근거 2: 지문 1의 2번째 문장 on a Tuesday evening. 오답: 월요일(A)은 근거가 없고, 토요일(C)·일요일(D)은 예약이 필요하다고 한 주말이다." },
       { q: "How many tables will the restaurant have after September?", choices: ["Twelve", "Fourteen", "Twenty-six", "Twenty-eight"], answer: 2, explanation: "연계 문제다(지문 1 + 지문 2). 근거 1: 지문 1의 3번째 문장 only twelve tables. 근거 2: 지문 2의 4번째 문장 a second dining room ... which will add fourteen tables. 12 + 14 = 26. 오답: 12개(A)는 지금, 14개(B)는 새로 늘어나는 수이고, 28개(D)는 근거가 없다." },
@@ -1262,7 +1262,7 @@ window.PART6 = [
       { n: 1, type: "grammar", choices: ["adopt", "adopts", "adopting", "adopted"], answer: 0, explanation: "조동사 will 뒤는 동사원형 자리다(g13). 오답: adopts는 3인칭 현재형, adopting은 -ing, adopted는 과거형·과거분사라 will 뒤에 올 수 없다.", ruleId: "g13" },
       { n: 2, type: "grammar", choices: ["because", "in response to", "although", "despite"], answer: 1, explanation: "빈칸 뒤가 명사구(feedback from staff members)라 전치사가 필요하다(g07). because·although는 접속사라 뒤에 주어+동사가 와야 한다. 남은 전치사 둘 중 despite는 '의견에도 불구하고'라 일찍 여는 변경과 맞지 않는다. 일찍 근무하는 직원의 의견을 반영했으므로 in response to.", ruleId: "g07" },
       { n: 3, type: "sentence", choices: ["The new hours will be posted at the entrance.", "The cafeteria will be closed permanently.", "Employees must bring their own lunch.", "The manager has resigned."], answer: 0, explanation: "문장 삽입이다. 앞 문장은 변경 이유, 뒤 문장은 '전환 기간 동안 양해 부탁'이다. 새 시간을 입구에 게시한다는 안내가 자연스럽다. 오답: 영구 폐쇄(B)는 새 운영 시간 안내와 모순이고, 도시락 지참(C)은 식당이 계속 운영되므로 맞지 않으며, 관리자 사임(D)은 마지막 문장에서 시설 관리자에게 문의하라는 말과 맞지 않는다.", ruleId: null },
-      { n: 4, type: "grammar", choices: ["to", "on", "by", "with"], answer: 0, explanation: "direct A to B(A를 B에게 보내다)는 to를 쓴다(g06). 오답: on·by·with는 direct와 짝을 이루지 않는다.", ruleId: "g06" }
+      { n: 4, type: "grammar", choices: ["with", "on", "by", "to"], answer: 3, explanation: "direct A to B(A를 B에게 보내다)는 to를 쓴다(g06). 오답: on·by·with는 direct와 짝을 이루지 않는다.", ruleId: "g06" }
     ]
   },
   {
@@ -1318,9 +1318,9 @@ window.PART6 = [
     ],
     questions: [
       { n: 1, type: "grammar", choices: ["relocate", "relocates", "relocating", "relocated"], answer: 0, explanation: "조동사 will 뒤는 동사원형 자리다(g13). 오답: relocates·relocating·relocated는 will 뒤에 올 수 없다.", ruleId: "g13" },
-      { n: 2, type: "sentence", choices: ["The move will not affect business hours.", "The building will be demolished next year.", "All staff will work remotely from now on.", "The company is closing its Chicago branch."], answer: 0, explanation: "문장 삽입이다. 앞 문장이 새 주소, 뒤 문장이 이삿짐 일정이라 이전에 관한 실무 안내가 이어져야 한다. 영업시간에는 영향이 없다는 안내가 자연스럽다. 오답: 건물 철거(B)·전원 재택(C)·지사 폐쇄(D)는 새 건물로 옮긴다는 공지와 모순된다.", ruleId: null },
+      { n: 2, type: "sentence", choices: ["The company is closing its Chicago branch.", "The building will be demolished next year.", "All staff will work remotely from now on.", "The move will not affect business hours."], answer: 3, explanation: "문장 삽입이다. 앞 문장이 새 주소, 뒤 문장이 이삿짐 일정이라 이전에 관한 실무 안내가 이어져야 한다. 영업시간에는 영향이 없다는 안내가 자연스럽다. 오답: 건물 철거(B)·전원 재택(C)·지사 폐쇄(A)는 새 건물로 옮긴다는 공지와 모순된다.", ruleId: null },
       { n: 3, type: "grammar", choices: ["should", "are", "having", "to be"], answer: 0, explanation: "빈칸 뒤에 동사원형 be가 있어 조동사가 필요하다(g13). 오답: are는 뒤에 be가 올 수 없고, having·to be는 문장의 동사가 되지 못한다.", ruleId: "g13" },
-      { n: 4, type: "grammar", choices: ["please", "pleased", "pleasing", "pleasure"], answer: 0, explanation: "명령문이라 동사원형 contact 앞에 정중 표현 please가 온다(g12). 오답: pleased·pleasing은 형용사·분사, pleasure는 명사라 명령문 앞에 올 수 없다.", ruleId: "g12" }
+      { n: 4, type: "grammar", choices: ["pleasure", "pleased", "pleasing", "please"], answer: 3, explanation: "명령문이라 동사원형 contact 앞에 정중 표현 please가 온다(g12). 오답: pleased·pleasing은 형용사·분사, pleasure는 명사라 명령문 앞에 올 수 없다.", ruleId: "g12" }
     ]
   },
   {
@@ -1407,7 +1407,7 @@ window.PART6 = [
       { n: 1, type: "grammar", choices: ["delight", "delighted", "delighting", "delightful"], answer: 1, explanation: "사람(We)이 기쁨을 느끼는 쪽이라 p.p.인 delighted다(g15). 오답: delight는 동사·명사, delighting은 기쁨을 주는 쪽, delightful은 '즐거운(사물·일)'이라 사람 주어의 감정에 맞지 않는다.", ruleId: "g15" },
       { n: 2, type: "sentence", choices: ["Lunch will be provided in the staff lounge.", "You must submit your resignation in advance.", "The orientation has been canceled.", "Parking is not available for employees."], answer: 0, explanation: "문장 삽입이다. 앞 문장은 9시 오리엔테이션, 뒤 문장은 'afterward(그 후에) 매니저가 만난다'다. 첫날 일정 하나가 더 들어가야 afterward가 자연스럽다. 오답: 사직서 제출(B)은 환영 안내와 모순, 오리엔테이션 취소(C)는 앞 문장과 모순, 주차 불가(D)는 일정이 아니라 afterward와 이어지지 않는다.", ruleId: null },
       { n: 3, type: "grammar", choices: ["goal", "goals", "goaled", "goaling"], answer: 1, explanation: "three main 뒤라 복수 명사가 와야 한다(g01). 오답: goal은 단수, goaled·goaling은 동사형이다.", ruleId: "g01" },
-      { n: 4, type: "grammar", choices: ["assist", "assistance", "assistant", "assisted"], answer: 1, explanation: "need의 목적어 자리라 명사가 온다(g01). 오답: assist는 동사, assisted는 과거형, assistant는 사람이라 관사 없이 쓸 수 없고 '도움이 필요하면'이라는 뜻과도 맞지 않는다.", ruleId: "g01" }
+      { n: 4, type: "grammar", choices: ["assist", "assisted", "assistant", "assistance"], answer: 3, explanation: "need의 목적어 자리라 명사가 온다(g01). 오답: assist는 동사, assisted는 과거형, assistant는 사람이라 관사 없이 쓸 수 없고 '도움이 필요하면'이라는 뜻과도 맞지 않는다.", ruleId: "g01" }
     ]
   },
   {
@@ -1523,7 +1523,7 @@ window.PART6 = [
       { n: 1, type: "grammar", choices: ["invite", "inviting", "invited", "invitation"], answer: 0, explanation: "would like to 뒤는 동사원형이다(g05). 오답: inviting·invited는 to 뒤에 올 수 없고, invitation은 명사라 you를 목적어로 가질 수 없다.", ruleId: "g05" },
       { n: 2, type: "vocab", choices: ["conform", "confirm", "confine", "consume"], answer: 1, explanation: "이 시간을 '확정하려면' 금요일까지 회신하라는 뜻이라 confirm이다. 오답: conform은 '(규칙에) 따르다'로 to가 필요하고, confine은 '가두다', consume은 '소비하다'라 시간과 맞지 않는다.", ruleId: null },
       { n: 3, type: "sentence", choices: ["We have already filled the position.", "Your first day will be September 9.", "If that date is not convenient, we can suggest another.", "Please send your application by September 30."], answer: 2, explanation: "문장 삽입이다. 앞 문장이 '이 시간을 확정하려면 회신하라'라서 '그날이 안 되면 다른 날을 제안하겠다'가 자연스럽게 이어진다. 오답: 이미 채용했다(A)는 면접 초대와 모순, 9월 9일은 첫 출근일(B)이 아니라 면접일, 9월 30일까지 지원서를 보내라(D)는 이미 지원한 사람에게 보내는 메일과 모순이다.", ruleId: null },
-      { n: 4, type: "vocab", choices: ["advanced", "advancing", "advance", "advancement"], answer: 2, explanation: "in advance(미리)는 굳어진 전치사구다. 오답: advanced(고급의)·advancing·advancement(발전)는 in 뒤에서 '미리'라는 뜻이 되지 않는다.", ruleId: null }
+      { n: 4, type: "vocab", choices: ["advanced", "advancing", "advancement", "advance"], answer: 3, explanation: "in advance(미리)는 굳어진 전치사구다. 오답: advanced(고급의)·advancing·advancement(발전)는 in 뒤에서 '미리'라는 뜻이 되지 않는다.", ruleId: null }
     ]
   }
 ];

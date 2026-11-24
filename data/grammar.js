@@ -36,7 +36,10 @@ window.GRAMMAR = [
         ["단수 (he, she, it, the report)", "works / is / has"],
         ["복수 (they, we, the reports)", "work / are / have"],
         ["셀 수 없는 명사 (information)", "단수 취급"],
-        ["A and B (the manager and her assistant)", "복수 취급 (either A or B 같은 짝은 g14)"],
+        ["A and B (the manager and her assistant)", "복수 취급 (both A and B도 복수)"],
+        ["either A or B / neither A nor B / not only A but also B", "B에 맞춘다 (짝은 g14)"],
+        ["each · every · either · neither (+ of the 복수 명사)", "단수 취급 (g16)"],
+        ["a number of + 복수 명사 / the number of + 복수 명사", "복수 / 단수 (g16)"],
         ["There is / There are", "뒤에 오는 명사가 주어"]
       ]
     },
@@ -45,8 +48,8 @@ window.GRAMMAR = [
       { good: "The keys to the storage room are on my desk.", bad: "The keys to the storage room is on my desk.", note: "주어는 keys, to the storage room은 전치사구" },
       { good: "This advice is helpful.", bad: "These advices are helpful.", note: "advice는 셀 수 없음" }
     ],
-    trap: "주어와 동사 사이에 낀 전치사구에 속지 마라.\nThe color of the chairs ___ .\n→ 주어는 color(단수)지 chairs가 아니다.\neach·every·neither·a number of·the number of처럼 주어 앞에 수량 표현이 붙어 수가 정해지는 경우는 g16(수량 표현)에서 다룬다.",
-    toeicPattern: "주어와 빈칸 사이에 of, in, with로 시작하는 덩어리가 길게 끼어 있으면 이 유형이다. 그 덩어리를 손으로 가리고 진짜 주어를 찾아라.\n단 a number of(많은) + 복수 명사는 of 덩어리를 가리면 안 된다. a number of는 '많은'이라는 꾸밈말이고 뒤의 복수 명사가 주어라서 복수 동사를 쓴다 (g16)."
+    trap: "주어와 동사 사이에 낀 전치사구에 속지 마라.\nThe color of the chairs ___ .\n→ 주어는 color(단수)지 chairs가 아니다.\n주어를 꾸미는 덩어리는 전치사구 말고도 있다. 관계사절(who ~, that ~)과 분사구(made by ~)도 가리고 본다.\nThe technician who fixed the copiers ___ . → 주어는 technician(단수)\n주어 앞에 수량 표현이 붙으면 그 표현이 수를 정한다. each·every·either·neither는 단수, a number of(많은)는 복수, the number of(~의 수)는 단수다. 자세한 표는 g16(수량 표현).\n짝으로 쓰는 either A or B, neither A nor B, not only A but also B는 동사를 B(동사에 가까운 쪽)에 맞춘다. both A and B는 복수다. 짝 고르기는 g14.",
+    toeicPattern: "주어와 빈칸 사이에 of, in, with로 시작하는 덩어리가 길게 끼어 있으면 이 유형이다. who·that으로 시작하는 관계사절이나 -ing·p.p.로 시작하는 분사구도 같다. 그 덩어리를 손으로 가리고 진짜 주어를 찾아라.\n단 a number of(많은) + 복수 명사는 of 덩어리를 가리면 안 된다. a number of는 '많은'이라는 꾸밈말이고 뒤의 복수 명사가 주어라서 복수 동사를 쓴다 (g16)."
   },
   {
     id: "g03", order: 3, title: "시제", weight: "빈출",
@@ -502,5 +505,9 @@ window.GRAMMAR_QUIZ = [
   { id: "q177", ruleId: "g16", question: "We received ____ information about the delay.", choices: ["few", "many", "several", "little"], answer: 3, explanation: "information은 셀 수 없는 명사이므로 little. '거의 받지 못했다'는 뜻이 된다. few·many·several은 셀 수 있는 복수 명사에 붙는다.", difficulty: "medium" },
   { id: "q178", ruleId: "g16", question: "____ of the two proposals meets our budget.", choices: ["Neither", "Both", "Many", "Few"], answer: 0, explanation: "of the two(둘 중)와 단수 동사 meets가 있으므로 neither. both는 복수 동사(meet)를 쓴다. 뒤에 nor가 없으므로 상관 접속사가 아니다.", difficulty: "medium" },
   { id: "q179", ruleId: "g16", question: "____ of the new machines has its own manual.", choices: ["Many", "Each", "Both", "Few"], answer: 1, explanation: "동사 has와 its가 단수이므로 each. each of the + 복수 명사는 단수 동사를 쓴다.", difficulty: "medium" },
-  { id: "q180", ruleId: "g16", alsoRuleIds: ["g10"], question: "There were ____ complaints last month than this month.", choices: ["few", "less", "fewer", "little"], answer: 2, explanation: "than이 있어 비교급이고, complaints는 셀 수 있는 명사이므로 fewer. less는 셀 수 없는 명사에 쓴다. few·little은 원급이라 than과 쓰지 않는다. 구어에서 less complaints도 들리지만 토익은 fewer를 정답으로 낸다.", difficulty: "medium" }
+  { id: "q180", ruleId: "g16", alsoRuleIds: ["g10"], question: "There were ____ complaints last month than this month.", choices: ["few", "less", "fewer", "little"], answer: 2, explanation: "than이 있어 비교급이고, complaints는 셀 수 있는 명사이므로 fewer. less는 셀 수 없는 명사에 쓴다. few·little은 원급이라 than과 쓰지 않는다. 구어에서 less complaints도 들리지만 토익은 fewer를 정답으로 낸다.", difficulty: "medium" },
+  { id: "q181", ruleId: "g02", alsoRuleIds: ["g16"], question: "The number of visitors to the city's three main museums ____ risen steadily.", choices: ["have", "are", "has", "were"], answer: 2, explanation: "주어는 the number(~의 수)라 단수 동사 has. the number of는 '수 그 자체'라 단수이고, of visitors to the city's three main museums는 꾸밈말이다. 빈칸 바로 앞 museums(복수)에 속지 마라. a number of(많은)였다면 복수 have다. have는 복수형이고, are·were는 복수형인 데다 rise는 목적어를 받지 않는 동사라 be + p.p.(수동)로 쓰지 않는다(g04).", difficulty: "medium" },
+  { id: "q182", ruleId: "g02", question: "The consultant who reviewed the budgets for our three overseas branches ____ recommended several changes.", choices: ["have", "were", "are", "has"], answer: 3, explanation: "주어는 consultant(단수)다. who reviewed the budgets for our three overseas branches는 consultant를 꾸미는 관계사절이라 가리고 본다. 빈칸 바로 앞 branches(복수)에 속지 마라. 뒤에 recommended와 목적어 several changes가 있으니 현재완료 has recommended. have는 복수형이고, were·are는 복수형인 데다 be + p.p.(수동)가 되어 목적어 several changes와 맞지 않는다.", difficulty: "hard" },
+  { id: "q183", ruleId: "g02", alsoRuleIds: ["g16"], question: "Either of the two meeting rooms on the third floor ____ suitable for the interview.", choices: ["are", "were", "is", "have been"], answer: 2, explanation: "either of the + 복수 명사는 either(둘 중 어느 하나)가 주어라 단수 동사 is. of the two meeting rooms on the third floor는 꾸밈말이니 복수 rooms에 속지 마라. are·were·have been은 모두 복수형이다.", difficulty: "medium" },
+  { id: "q184", ruleId: "g02", alsoRuleIds: ["g14"], question: "Not only the sales representatives but also the regional manager ____ planning to attend the trade fair.", choices: ["are", "were", "have", "is"], answer: 3, explanation: "not only A but also B는 동사를 B에 맞춘다. B인 the regional manager가 단수라 is. 앞의 sales representatives(복수)에 속지 마라. are·were는 복수형이고, have는 복수형인 데다 바로 뒤에 planning(-ing)이 올 수 없다.", difficulty: "hard" }
 ];
