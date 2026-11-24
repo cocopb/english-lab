@@ -494,6 +494,122 @@ window.PART3 = [
       { q: "What does the man ask the woman to do?", choices: ["Leave her laptop on", "Restart her laptop", "Bring her laptop to his office", "Call the director"], answer: 0, explanation: "근거: 4번째 대사(남자) leave your laptop on and stay logged in. 오답: (B) 재시작은 고치는 동안 저절로 될 수 있다는 말이지(6번째 대사) 여자에게 시킨 일이 아니다. (C) from here, 즉 원격으로 고친다고 했다. (D) 이사에게는 여자가 자료를 보내야 할 뿐 전화하라는 말은 없다." },
       { q: "What is suggested about the update?", choices: ["It was installed by mistake", "It deleted some of the woman's files", "It affected more than one computer", "It will be removed tomorrow"], answer: 2, explanation: "추론 문제다. 근거: 2번째 대사(남자) You're not the only one. That update changed a security setting, and three other people from your department have called this morning. 업데이트 뒤 같은 문제로 여러 사람이 전화했으므로 한 대 이상의 컴퓨터에 영향을 주었다. 오답: (A) 실수로 설치했다는 말은 없다. (B) 파일이 지워진 것이 아니라 프로그램이 열리지 않는 것이다. (D) 내일 제거한다는 말은 없다." }
     ]
+  },
+  {
+    id: "p321",
+    title: "고객 만찬 룸 예약",
+    graphic: {
+      title: "Private Dining Rooms",
+      columns: ["Room", "Seats", "Minimum Charge"],
+      rows: [
+        ["Garden Room", "8", "$400"],
+        ["Library Room", "12", "$600"],
+        ["Terrace Room", "16", "$750"],
+        ["Main Hall", "30", "$1,500"]
+      ]
+    },
+    script: [
+      { speaker: "M", text: "Hello, my company is hosting a client dinner next Friday evening, and we'd like a private room." },
+      { speaker: "W", text: "Certainly. How many guests are you expecting?" },
+      { speaker: "M", text: "There will be twelve people, including my manager. We'd also like to keep the bill to six hundred dollars, not counting drinks." },
+      { speaker: "W", text: "That works. Private rooms require a credit card to hold the booking, and there's a fee if you cancel less than forty-eight hours ahead." },
+      { speaker: "M", text: "Understood. Two of the guests don't eat meat. Could the kitchen prepare something for them?" },
+      { speaker: "W", text: "Our chef can make a vegetarian menu with three days' notice. I'll email you the choices this afternoon." }
+    ],
+    questions: [
+      { q: "Why is the man calling?", choices: ["To cancel a reservation", "To ask about a vegetarian menu", "To order food for an office party", "To book a room for a business dinner"], answer: 3, explanation: "근거: 1번째 대사(남자) my company is hosting a client dinner next Friday evening, and we'd like a private room. client dinner를 business dinner로 바꿔 표현했다. 오답: (A) 취소는 4번째 대사의 수수료 안내에만 나온다. (B) 채식 메뉴는 5번째 대사에 덧붙인 부탁이다. (C) 사무실 파티용 음식 주문은 나오지 않는다." },
+      { q: "Look at the graphic. Which room will the man most likely book?", choices: ["Garden Room", "Library Room", "Terrace Room", "Main Hall"], answer: 1, graphic: true, link: "twelve people", explanation: "시각 정보 연계 문제다. 근거: 3번째 대사(남자) There will be twelve people ... We'd also like to keep the bill to six hundred dollars. 도표에서 12석이면서 최소 요금이 $600를 넘지 않는 방은 Library Room이다. 대화에는 방 이름이 나오지 않는다. 오답: Garden Room(A)은 8석이라 자리가 모자라고, Terrace Room(C)은 최소 $750, Main Hall(D)은 최소 $1,500라 예산을 넘는다." },
+      { q: "What is required to hold the booking?", choices: ["A credit card", "A cash deposit", "A signed contract", "A list of guests"], answer: 0, explanation: "근거: 4번째 대사(여자) Private rooms require a credit card to hold the booking. 오답: (B) 현금 보증금과 (C) 계약서는 나오지 않는다. (D) 손님 수는 2번째 대사에서 묻지만 명단을 내라고 하지는 않았다." }
+    ]
+  },
+  {
+    id: "p322",
+    title: "재킷 수선 문제",
+    script: [
+      { speaker: "W", text: "Hi, I'm here to pick up the jacket I dropped off on Monday. The name is Rosalind Ortega." },
+      { speaker: "M", text: "Here it is. We shortened the sleeves and moved the top button, as you asked." },
+      { speaker: "W", text: "The sleeves look shorter than we discussed. I can see my whole wrist." },
+      { speaker: "M", text: "You're right. They're half an inch shorter than the note says. That's our mistake, so there's no charge to fix it." },
+      { speaker: "W", text: "Could you have it ready by Thursday? I'm wearing it to a job interview on Friday morning." },
+      { speaker: "M", text: "Thursday? I wouldn't count on it. We're finishing suits for a large wedding party this week. But I can have it ready when we open on Friday at seven." },
+      { speaker: "W", text: "My interview isn't until ten, so that works." }
+    ],
+    questions: [
+      { q: "What problem does the woman mention?", choices: ["A button is missing", "The jacket is the wrong color", "The sleeves are too short", "She was charged twice"], answer: 2, explanation: "근거: 3번째 대사(여자) The sleeves look shorter than we discussed. I can see my whole wrist. 4번째 대사에서 남자도 반 인치 짧다고 인정한다. 오답: (A) 단추는 요청대로 옮겼다(2번째 대사). (B) 색 이야기는 없다. (D) 오히려 고치는 비용을 받지 않는다고 했다." },
+      { q: "What does the man mean when he says, \"I wouldn't count on it\"?", choices: ["He has not counted the wedding suits yet", "He does not believe the woman's explanation", "The woman will not have to pay for the repair", "The jacket probably will not be ready by Thursday"], answer: 3, quote: "I wouldn't count on it", explanation: "의도 파악 문제다. 근거: 바로 앞 5번째 대사(여자)가 목요일까지 되느냐고 물었고, 남자는 이 말 뒤에 이번 주에는 결혼식 정장을 끝내야 하니 금요일 아침에 찾아가라고 한다. count on은 '기대하다, 믿다'라서 목요일은 어렵다는 뜻이다. 오답: (A)는 count를 '세다'로 글자 그대로 읽은 함정이다. (B) 여자의 말을 의심하는 것이 아니라 일정이 어렵다는 말이다. (C) 비용을 받지 않는다는 것은 4번째 대사의 내용이고 이 말의 뜻이 아니다." },
+      { q: "What is suggested about the shop this week?", choices: ["It will close early on Thursday", "It has more work than usual", "It is moving to a new location", "It is hiring another tailor"], answer: 1, explanation: "추론 문제다. 근거 1: 6번째 대사(남자) We're finishing suits for a large wedding party this week. 근거 2: 같은 대사에서 반 인치 수선도 목요일까지는 어렵다고 한다. 큰 주문 때문에 작은 수선도 밀리니 이번 주는 일이 평소보다 많다. 오답: (A) 목요일 조기 마감, (C) 가게 이전, (D) 직원 채용은 나오지 않는다." }
+    ]
+  },
+  {
+    id: "p323",
+    title: "주차장 이용 신청",
+    script: [
+      { speaker: "W", text: "Hi, I joined the design department this week, and my manager said to talk to you about a parking spot." },
+      { speaker: "M", text: "Welcome. A monthly pass is forty dollars, and it comes straight out of your paycheck." },
+      { speaker: "W", text: "A coworker mentioned a waiting list. Is that right?" },
+      { speaker: "M", text: "For the covered levels, yes. It's about two months right now. The rooftop level has spaces available today, though." },
+      { speaker: "W", text: "I'll take the rooftop for now. Could I move inside later?" },
+      { speaker: "M", text: "Sure, I'll add you to the list for the covered levels as well. Just bring in your vehicle registration so I can record your license plate." }
+    ],
+    questions: [
+      { q: "What does the woman want?", choices: ["A place to park her car", "A transfer to another department", "An advance on her paycheck", "A copy of her contract"], answer: 0, explanation: "근거: 1번째 대사(여자) my manager said to talk to you about a parking spot. 5번째 대사 I'll take the rooftop for now. 오답: (B) 디자인 부서에는 이번 주에 막 들어왔고(I joined the design department), 부서를 옮기는 이야기는 없다. (C) 급여에서 바로 빠진다는 2번째 대사를 이용한 함정이다. (D) 계약서는 나오지 않는다." },
+      { q: "What is suggested about the covered levels?", choices: ["They cost less than the rooftop", "They are closed for repairs", "They are in higher demand than the rooftop", "They are only for managers"], answer: 2, explanation: "추론 문제다. 근거 1: 4번째 대사(남자) For the covered levels, yes. It's about two months right now. 근거 2: 같은 대사 The rooftop level has spaces available today. 지붕 있는 층은 두 달을 기다려야 하고 옥상은 바로 자리가 있으니, 지붕 있는 층을 원하는 사람이 더 많다. 오답: (A) 층별 요금 차이는 말하지 않았다. (B) 수리로 닫혔다는 말은 없다. (D) 관리자 전용이라는 말은 없고, 매니저는 여자를 보낸 사람일 뿐이다." },
+      { q: "What does the man ask the woman to bring?", choices: ["Her employee ID", "Her manager's approval", "A payment of forty dollars", "Her vehicle registration"], answer: 3, explanation: "근거: 6번째 대사(남자) Just bring in your vehicle registration so I can record your license plate. 오답: (A) 사원증과 (B) 관리자 승인은 요구하지 않았다. (C) 40달러는 급여에서 바로 빠지므로(2번째 대사) 따로 낼 필요가 없다." }
+    ]
+  },
+  {
+    id: "p324",
+    title: "자동차 보험 청구",
+    script: [
+      { speaker: "M", text: "Hi, I'm calling about my car. Someone backed into it in a grocery store parking lot yesterday." },
+      { speaker: "W", text: "I'm sorry to hear that. Was anyone hurt, and did you get the other driver's information?" },
+      { speaker: "M", text: "No one was hurt, and I have her name and insurance details. But now the rear door won't close properly." },
+      { speaker: "W", text: "Then the next step is a repair estimate. Any shop on our approved list can bill us directly, so you won't pay anything up front." },
+      { speaker: "M", text: "The garage I always go to isn't on your list, though." },
+      { speaker: "W", text: "You can still go there. You'd pay first and send us the receipt, and we'd pay you back in about two weeks." },
+      { speaker: "M", text: "I'd rather not wait that long for the money. I'll pick one from your list instead." }
+    ],
+    questions: [
+      { q: "Why is the man calling?", choices: ["To ask about buying a new car", "To report damage to his vehicle", "To change his insurance company", "To complain about a repair shop"], answer: 1, explanation: "근거: 1번째 대사(남자) I'm calling about my car. Someone backed into it in a grocery store parking lot yesterday. 3번째 대사 the rear door won't close properly. 오답: (A) 새 차 구입 이야기는 없다. (C) 보험사를 바꾸는 이야기는 없다. (D) 늘 가던 정비소가 목록에 없다고 말했을 뿐 불만은 없다." },
+      { q: "What does the woman say about the shops on the list?", choices: ["They send their bills to the insurance company", "They offer free car washes", "They are open on weekends", "They can repair cars in one day"], answer: 0, explanation: "근거: 4번째 대사(여자) Any shop on our approved list can bill us directly, so you won't pay anything up front. bill us directly를 send their bills to the insurance company로 바꿔 표현했다. 오답: (B) 무료 세차, (C) 주말 영업, (D) 하루 수리는 나오지 않는다." },
+      { q: "What will the man most likely do?", choices: ["Pay his usual garage first", "Call the other driver", "Choose a shop from the woman's list", "Wait two weeks for an estimate"], answer: 2, explanation: "근거: 7번째 대사(남자) I'd rather not wait that long for the money. I'll pick one from your list instead. 오답: (A) 늘 가던 정비소에 먼저 내고 2주 뒤 돌려받는 방법을 거절했다. (B) 상대 운전자에게 연락한다는 말은 없다. (D) 2주는 비용을 돌려받기까지 걸리는 기간이지 견적을 기다리는 기간이 아니다." }
+    ]
+  },
+  {
+    id: "p325",
+    title: "직원 프로필 사진 촬영",
+    speakers: { W1: "Yolanda", M1: "Henrik", M2: "Gordon" },
+    script: [
+      { speaker: "W1", text: "The photographer arrives Wednesday at nine to take new staff photos for our website. Henrik, is the conference room free that morning?" },
+      { speaker: "M1", text: "Only until eleven. The sales team has it after that. Gordon, how many people are on your list?" },
+      { speaker: "M2", text: "Thirty-four, but six of them work from home on Wednesdays." },
+      { speaker: "W1", text: "At about four minutes a person, the other twenty-eight fit before eleven. The six remote workers could come on Thursday, when the photographer is back for the warehouse shots." },
+      { speaker: "M2", text: "I'll ask them. A few of them may switch their home day this week." },
+      { speaker: "M1", text: "Gordon, could you also remind everyone to wear a solid-colored top? Busy patterns don't look good in photos." },
+      { speaker: "M2", text: "Sure. I'll send a message to the whole list this afternoon." }
+    ],
+    questions: [
+      { q: "What are the speakers mainly discussing?", choices: ["Hiring a photographer for an event", "Redesigning the company website", "Booking a room for a sales meeting", "Scheduling photos of employees"], answer: 3, explanation: "근거: 1번째 대사(Yolanda) The photographer arrives Wednesday at nine to take new staff photos for our website. 이후 장소·인원·시간·옷차림을 정한다. 오답: (A) 사진가는 이미 정해져 있고 행사 촬영이 아니다. (B) 웹사이트는 사진을 쓸 곳일 뿐 개편 이야기가 아니다. (C) 영업팀은 2번째 대사에서 11시 이후 회의실을 쓰는 팀으로 한 번 나온다." },
+      { q: "Why will some employees most likely be photographed on Thursday?", choices: ["The conference room is busy on Thursday", "They do not work in the office on Wednesdays", "They work in the warehouse", "The photographer is late on Wednesday"], answer: 1, explanation: "추론 문제다. 근거 1: 3번째 대사(Gordon) six of them work from home on Wednesdays. 근거 2: 4번째 대사(Yolanda) The six remote workers could come on Thursday. 오답: (A) 회의실이 차 있는 것은 수요일 11시 이후다. (C) 창고는 사진가가 목요일에 찍는 다른 장소이고, 그 직원들이 창고에서 일한다는 말은 없다. (D) 사진가가 늦는다는 말은 없다." },
+      { q: "What does Henrik ask Gordon to do?", choices: ["Remind staff what to wear", "Reserve a second room", "Take the photos himself", "Update the website"], answer: 0, explanation: "근거: 6번째 대사(Henrik) Gordon, could you also remind everyone to wear a solid-colored top? 7번째 대사에서 Gordon은 오후에 전체 메시지를 보내겠다고 한다. 오답: (B) 다른 방 예약, (C) 직접 촬영, (D) 웹사이트 수정은 부탁하지 않았다." }
+    ]
+  },
+  {
+    id: "p326",
+    title: "교육 과정 신청",
+    script: [
+      { speaker: "W", text: "Hi, I wanted to sign up for the project management course, but the session in March is already full." },
+      { speaker: "M", text: "Yes, it filled up in two days. We're adding an online version in April with the same instructor." },
+      { speaker: "W", text: "Online would actually suit me better. I'm on the road a lot for work." },
+      { speaker: "M", text: "Then I'll put you on the list. Keep in mind that your manager has to approve the training hours first." },
+      { speaker: "W", text: "My manager is away until Monday. Will that be too late?" },
+      { speaker: "M", text: "Not at all. Registration for the online class stays open until the fifteenth." }
+    ],
+    questions: [
+      { q: "Why can the woman not join the March session?", choices: ["Her manager did not approve it", "It was canceled", "It has no seats left", "It conflicts with a business trip"], answer: 2, explanation: "근거: 1번째 대사(여자) the session in March is already full. 2번째 대사(남자) it filled up in two days. 오답: (A) 관리자 승인은 앞으로 받아야 하는 것이다(4번째 대사). (B) 취소된 것이 아니라 마감됐다. (D) 출장이 잦다는 말은 온라인 과정이 낫다는 이유이고, 3월 과정과 겹친다는 말은 없다." },
+      { q: "What is suggested about the project management course?", choices: ["It is taught by several instructors", "It is required for all managers", "It will be offered only online from now on", "It is popular among employees"], answer: 3, explanation: "추론 문제다. 근거 1: 2번째 대사(남자) it filled up in two days. 근거 2: 같은 대사 We're adding an online version. 이틀 만에 마감되어 과정을 하나 더 여는 것이므로 인기가 많다. 오답: (A) 같은 강사가 가르친다. (B) 관리자 필수 과정이라는 말은 없다. (C) 온라인 과정을 '추가'하는 것이지 대면 과정을 없앤다는 말은 없다." },
+      { q: "What does the man say about registration for the online class?", choices: ["It requires a fee", "It is open until the fifteenth", "It must be done in person", "It closed on Monday"], answer: 1, explanation: "근거: 6번째 대사(남자) Registration for the online class stays open until the fifteenth. 오답: (A) 수강료와 (C) 직접 방문은 나오지 않는다. (D) 월요일은 관리자가 돌아오는 날이고, 그때도 늦지 않다고 했다." }
+    ]
   }
 ];
 
