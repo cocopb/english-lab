@@ -262,11 +262,11 @@ var labels = {
   missingExplanation: "해설(explanation) 비어 있음",
   duplicateIds: "ID 중복/누락"
 };
-// 정답 위치 쏠림: 한 보기가 균등값 ±10%p를 벗어나면 실패 (4지선다 Part 3·4는 15% 미만·35% 초과,
+// 정답 위치 쏠림: 한 보기가 균등값 ±10%p를 벗어나면 실패 (4지선다 Part 3·4는 35% 이상·15% 이하(경계값 포함),
 // 3지선다 Part 2는 균등값 33%라 23% 미만·43% 초과). 모르는 문제를 한 위치로 찍어 점수가 오르면 약점 분석이 어긋난다.
 // 같은 기준이 check-reading.js·check-grammar.js·check-part1.js에도 있다.
 failures.answerSkew = [];
-labels.answerSkew = "정답 위치 쏠림(한 보기가 균등값 ±10%p 밖)";
+labels.answerSkew = "정답 위치 쏠림(4지선다 35% 이상·15% 이하, 3지선다 43% 초과·23% 미만)";
 var answerSpreadLines = [];
 [["Part 2", part2, 3], ["Part 3", part3, 4], ["Part 4", part4, 4]].forEach(function (entry) {
   var answers = entry[0] === "Part 2"
@@ -277,9 +277,12 @@ var answerSpreadLines = [];
   var fair = 100 / entry[2];
   counts.forEach(function (n, i) {
     var percent = n / answers.length * 100;
-    if (percent > fair + 10 || percent < fair - 10) {
+    var skewed = entry[2] === 4
+      ? n * 100 >= 35 * answers.length || n * 100 <= 15 * answers.length
+      : percent > fair + 10 || percent < fair - 10;
+    if (skewed) {
       failures.answerSkew.push({ part: entry[0], choice: "ABCD"[i], count: n, percent: Math.round(percent),
-        allowed: Math.round(fair - 10) + "%-" + Math.round(fair + 10) + "%" });
+        allowed: entry[2] === 4 ? "15% 초과 35% 미만" : Math.round(fair - 10) + "%-" + Math.round(fair + 10) + "%" });
     }
   });
   answerSpreadLines.push(entry[0] + " (" + answers.length + "문항): " + counts.map(function (n, i) {

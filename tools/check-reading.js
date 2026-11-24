@@ -259,7 +259,7 @@ var answerSpread = { "Part 7": [0, 0, 0, 0], "Part 6": [0, 0, 0, 0] };
   });
 });
 
-// 정답 위치 쏠림: 한 보기가 균등값(25%) ±10%p를 벗어나면(15% 미만·35% 초과) 실패.
+// 정답 위치 쏠림: 한 보기가 35% 이상이거나 15% 이하면 실패(경계값 포함). 40문항 중 14개(35%)도 쏠림으로 본다.
 // 모르는 문제를 한 위치로 찍어 점수가 오르면 실력보다 점수가 높게 나와 약점 분석이 어긋난다.
 // 같은 기준이 check-grammar.js(Part 5)·check-listening.js(Part 2·3·4)·check-part1.js(Part 1)에도 있다.
 failures.answerSkew = [];
@@ -268,7 +268,7 @@ Object.keys(answerSpread).forEach(function (part) {
   var total = counts.reduce(function (sum, n) { return sum + n; }, 0);
   counts.forEach(function (n, i) {
     var percent = n / total * 100;
-    if (percent > 35 || percent < 15) failures.answerSkew.push({ part: part, choice: "ABCD"[i], count: n, percent: Math.round(percent), allowed: "15%-35%" });
+    if (n * 100 >= 35 * total || n * 100 <= 15 * total) failures.answerSkew.push({ part: part, choice: "ABCD"[i], count: n, percent: Math.round(percent), allowed: "15% 초과 35% 미만" });
   });
 });
 
