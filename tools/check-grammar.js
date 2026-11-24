@@ -387,6 +387,21 @@ failures.absoluteClaimUnreviewed = absoluteClaims.filter(function (claim) { retu
 failures.absoluteClaimStale = Object.keys(REVIEWED_ABSOLUTE_CLAIMS).filter(function (key) { return !absoluteSeen[key]; })
   .map(function (key) { return { key: key, hint: "노트에서 이 문장이 바뀌었거나 사라졌다. 새 문장을 다시 대조하고 목록을 고친다" }; });
 
+// 정답 위치 쏠림: 한 보기가 균등값(25%) ±10%p를 벗어나면(15% 미만·35% 초과) 실패.
+// 모르는 문제를 한 위치로 찍어 점수가 오르면 실력보다 점수가 높게 나와 약점 분석이 어긋난다 (check-reading.js와 같은 기준).
+failures.answerSkew = [];
+var answerSpread = [0, 0, 0, 0];
+questions.forEach(function (question) {
+  if (Number.isInteger(question.answer) && question.answer >= 0 && question.answer < 4) answerSpread[question.answer] += 1;
+});
+answerSpread.forEach(function (n, i) {
+  var percent = n / questions.length * 100;
+  if (percent > 35 || percent < 15) failures.answerSkew.push({ choice: "ABCD"[i], count: n, percent: Math.round(percent), allowed: "15%-35%" });
+});
+console.log("정답 위치 분포 (" + questions.length + "문항): " + answerSpread.map(function (n, i) {
+  return "ABCD"[i] + " " + n + " (" + Math.round(n / questions.length * 100) + "%)";
+}).join(" · "));
+
 var failureCount = Object.keys(failures).reduce(function (total, key) {
   return total + failures[key].length;
 }, 0);

@@ -210,7 +210,15 @@ var fair = PART1.length / 4;
 spread.forEach(function (count, index) {
   check(Math.abs(count - fair) <= 1, "정답 위치 " + "ABCD"[index] + "가 " + count + "개 (고르게 " + fair + "개 안팎이어야 함)");
 });
-console.log("정답 위치: " + spread.map(function (count, index) { return "ABCD"[index] + " " + count; }).join(" · "));
+// 쏠림: 한 보기가 균등값(25%) ±10%p를 벗어나면(15% 미만·35% 초과) 실패. 독해·문법·리스닝 검사와 같은 기준이다.
+// 위의 '고르게 ±1개' 검사가 더 엄격하지만, 문항이 늘어 ±1개 기준을 풀게 되더라도 이 기준은 남긴다.
+spread.forEach(function (count, index) {
+  var percent = count / PART1.length * 100;
+  check(percent <= 35 && percent >= 15, "정답 위치 " + "ABCD"[index] + "가 " + Math.round(percent) + "% (15%-35% 밖, 쏠림)");
+});
+console.log("정답 위치: " + spread.map(function (count, index) {
+  return "ABCD"[index] + " " + count + " (" + Math.round(count / PART1.length * 100) + "%)";
+}).join(" · "));
 
 // ---------- 4·5. 가짜 DOM 리스닝 화면 ----------
 function FakeElement(tag) {

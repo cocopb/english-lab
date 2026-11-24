@@ -262,6 +262,30 @@ var labels = {
   missingExplanation: "해설(explanation) 비어 있음",
   duplicateIds: "ID 중복/누락"
 };
+// 정답 위치 쏠림: 한 보기가 균등값 ±10%p를 벗어나면 실패 (4지선다 Part 3·4는 15% 미만·35% 초과,
+// 3지선다 Part 2는 균등값 33%라 23% 미만·43% 초과). 모르는 문제를 한 위치로 찍어 점수가 오르면 약점 분석이 어긋난다.
+// 같은 기준이 check-reading.js·check-grammar.js·check-part1.js에도 있다.
+failures.answerSkew = [];
+labels.answerSkew = "정답 위치 쏠림(한 보기가 균등값 ±10%p 밖)";
+var answerSpreadLines = [];
+[["Part 2", part2, 3], ["Part 3", part3, 4], ["Part 4", part4, 4]].forEach(function (entry) {
+  var answers = entry[0] === "Part 2"
+    ? entry[1].map(function (item) { return item && item.answer; })
+    : [].concat.apply([], entry[1].map(function (item) { return ((item && item.questions) || []).map(function (q) { return q && q.answer; }); }));
+  var counts = new Array(entry[2]).fill(0);
+  answers.forEach(function (answer) { if (Number.isInteger(answer) && answer >= 0 && answer < entry[2]) counts[answer] += 1; });
+  var fair = 100 / entry[2];
+  counts.forEach(function (n, i) {
+    var percent = n / answers.length * 100;
+    if (percent > fair + 10 || percent < fair - 10) {
+      failures.answerSkew.push({ part: entry[0], choice: "ABCD"[i], count: n, percent: Math.round(percent),
+        allowed: Math.round(fair - 10) + "%-" + Math.round(fair + 10) + "%" });
+    }
+  });
+  answerSpreadLines.push(entry[0] + " (" + answers.length + "문항): " + counts.map(function (n, i) {
+    return "ABCD"[i] + " " + n + " (" + Math.round(n / answers.length * 100) + "%)";
+  }).join(" · "));
+});
 var dataFailures = 0;
 Object.keys(failures).forEach(function (key) {
   if (!failures[key].length) return;
@@ -271,15 +295,10 @@ Object.keys(failures).forEach(function (key) {
 });
 var part3QuestionCount = part3.reduce(function (sum, d) { return sum + ((d && d.questions) || []).length; }, 0);
 var part4QuestionCount = part4.reduce(function (sum, t) { return sum + ((t && t.questions) || []).length; }, 0);
-var part4AnswerSpread = [0, 1, 2, 3].map(function (n) {
-  return "ABCD"[n] + " " + part4.reduce(function (sum, t) {
-    return sum + ((t && t.questions) || []).filter(function (q) { return q && q.answer === n; }).length;
-  }, 0);
-}).join(" · ");
 console.log("데이터: 받아쓰기 " + dictation.length + "문장, Part 2 " + part2.length + "문제, Part 3 대화 " +
   part3.length + "개(" + part3QuestionCount + "문항), Part 4 담화 " + part4.length + "개(" + part4QuestionCount + "문항)" +
   (dataFailures ? "" : " — 이상 없음"));
-console.log("  Part 4 정답 위치: " + part4AnswerSpread);
+console.log("  정답 위치 분포 — " + answerSpreadLines.join(" / "));
 
 // ---------- 2. 화면 로드 검사 (가짜 DOM) ----------
 
