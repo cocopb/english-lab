@@ -947,5 +947,103 @@ window.PART4 = [
       { q: "What can visitors buy in the gift shop?", choices: ["A membership", "A catalog", "A photograph", "A guidebook of the city"], answer: 1, explanation: "근거: 3번째 문장 Our gift shop stays open until five fifteen for anyone who would like a catalog of the exhibit. 오답: 회원권(A)·사진(C)·도시 안내서(D)를 판다는 말은 없다." },
       { q: "What is offered to members?", choices: ["A discount on tickets", "A free catalog", "Early access to an exhibit", "A guided tour"], answer: 2, explanation: "근거: 4번째 문장 members can see the new glass collection on the thirteenth, one day before it opens to the public. 오답: 티켓 할인(A)이 아니라 사전 관람 티켓이 무료이고, 무료 카탈로그(B)·가이드 투어(D)는 없다." }
     ]
+  },
+  {
+    id: "pt413",
+    type: "공항 안내 방송",
+    title: "탑승구 변경과 출발 지연",
+    voice: "W",
+    script: [
+      "Good evening, passengers on Coastal Air flight two eighteen to Halifax.",
+      "Because the aircraft for this flight arrived late, we will now depart from gate fourteen instead of gate six.",
+      "Gate fourteen is in the north concourse, about a ten-minute walk from here, so please begin making your way there now.",
+      "Our new departure time is seven fifty, about forty minutes later than scheduled.",
+      "Passengers with connecting flights in Halifax should speak with an agent at gate fourteen before boarding.",
+      "Every passenger on this flight will also receive a meal voucher, which can be used at any restaurant in the north concourse.",
+      "Any further updates will be shown on the screens at gate fourteen."
+    ],
+    questions: [
+      { q: "What is the purpose of the announcement?", choices: ["To announce changes to a flight", "To introduce a new route to Halifax", "To promote restaurants in the north concourse", "To announce that a flight has been canceled"], answer: 0, explanation: "주제·목적 문제다. 근거: 2번째 문장 we will now depart from gate fourteen instead of gate six와 4번째 문장 Our new departure time is seven fifty. 탑승구와 출발 시각이 바뀐 것을 알리는 방송이다. 오답: (B) 할리팩스는 원래 목적지이고 새 노선 이야기가 아니다. (C) 식당은 6번째 문장의 식사 쿠폰을 쓸 곳으로 한 번 나온다. (D) 취소가 아니라 40분 늦게 출발한다." },
+      { q: "What will every passenger on the flight receive?", choices: ["A seat upgrade", "Free checked baggage", "A travel discount", "A voucher for a meal"], answer: 3, explanation: "근거: 6번째 문장 Every passenger on this flight will also receive a meal voucher. 오답: (A) 좌석 업그레이드, (B) 무료 수하물, (C) 여행 할인은 나오지 않는다." },
+      { q: "What is suggested about passengers with connecting flights?", choices: ["They must change terminals", "They should board first", "They may miss their next flight", "They will get a second voucher"], answer: 2, explanation: "추론 문제다. 근거 1: 4번째 문장 Our new departure time is seven fifty, about forty minutes later than scheduled. 근거 2: 5번째 문장 Passengers with connecting flights in Halifax should speak with an agent ... before boarding. 출발이 40분 늦어져 할리팩스에서 갈아탈 비행기를 놓칠 수 있으니 미리 직원과 이야기하라는 것이다. 오답: (A) 터미널을 바꾸라는 말은 없고, 같은 북쪽 구역의 14번 탑승구로 간다. (B) 먼저 탑승하라는 말은 없다. (D) 쿠폰은 모든 승객이 한 장씩 받는다." }
+    ]
+  },
+  {
+    id: "pt414",
+    type: "전화 메시지",
+    title: "주방 공사 지연 안내",
+    voice: "M",
+    script: [
+      "Hi, Ms. Albright, this is Wendell from Keystone Renovations, calling about your kitchen project.",
+      "The cabinets were supposed to arrive yesterday, but the factory just told me they won't ship until next Wednesday.",
+      "That pushes our finish date back by more than a week.",
+      "I know you were hoping to have the kitchen ready before your family visits at the end of the month, and it's going to be tight.",
+      "One option is to install the countertops and appliances first, so you would at least have a working sink and stove while we wait.",
+      "If you'd like to go ahead with that, please call me by Friday, and I'll have the crew start on Monday.",
+      "Either way, there's no extra charge for the delay."
+    ],
+    questions: [
+      { q: "Why is the speaker calling?", choices: ["To request an additional payment", "To explain a delay in a project", "To schedule a family visit", "To recommend new appliances"], answer: 1, explanation: "주제·목적 문제다. 근거: 2번째 문장 The cabinets were supposed to arrive yesterday, but ... they won't ship until next Wednesday. 3번째 문장 That pushes our finish date back. 공사가 늦어진다는 것을 알리는 전화다. 오답: (A) 7번째 문장에서 추가 비용이 없다고 했다. (C) 가족 방문은 고객의 일정으로 한 번 나온다. (D) 가전제품은 먼저 설치하자는 것이지 새 제품을 권하는 것이 아니다." },
+      { q: "What does the speaker imply when he says, \"it's going to be tight\"?", choices: ["The kitchen will not have enough space", "The new cabinets are too small", "The work may not be finished before the visit", "The crew is very busy this month"], answer: 2, quote: "it's going to be tight", explanation: "의도 파악 문제다. 근거: 같은 4번째 문장 앞부분 you were hoping to have the kitchen ready before your family visits at the end of the month와 3번째 문장 That pushes our finish date back by more than a week. 일정이 빠듯해서 가족 방문 전에 끝내기 어려울 수 있다는 뜻이다. 오답: (A)·(B)는 tight를 '공간이 좁다·꽉 끼다'로 글자 그대로 읽은 함정이다. (D) 작업자가 바쁘다는 말은 없고, 늦어지는 이유는 공장 출고다." },
+      { q: "What will happen on Monday if the listener agrees?", choices: ["The countertops and appliances will be installed", "The cabinets will be delivered", "The listener's family will arrive", "The speaker will visit the factory"], answer: 0, explanation: "근거: 5번째 문장 One option is to install the countertops and appliances first. 6번째 문장 If you'd like to go ahead with that, please call me by Friday, and I'll have the crew start on Monday. 오답: (B) 수납장은 다음 주 수요일에야 출고된다. (C) 가족은 월말에 온다. (D) 공장에 간다는 말은 없다." }
+    ]
+  },
+  {
+    id: "pt415",
+    type: "워크숍 도입",
+    title: "회의 효율화 워크숍",
+    voice: "W",
+    script: [
+      "Thanks for joining today's workshop on running effective meetings.",
+      "My name is Helena Quinlan, and for the past ten years I've helped companies cut the time they spend in meetings.",
+      "A recent survey of your staff found that the average employee here spends eleven hours a week in meetings.",
+      "By the end of today, I'd like each of you to have a plan to reduce that by at least two hours.",
+      "We'll start with a short video and then break into small groups to review one of your own recent meetings.",
+      "Before we begin, please put your phones on silent and write your name on the card in front of you."
+    ],
+    questions: [
+      { q: "What is the main purpose of the talk?", choices: ["To present the results of a survey", "To announce a new meeting policy", "To explain how to use video equipment", "To introduce a training session"], answer: 3, explanation: "주제·목적 문제다. 근거: 1번째 문장 Thanks for joining today's workshop on running effective meetings. 이후 강사 소개, 오늘의 목표와 진행 순서, 주의 사항을 알린다. workshop을 training session으로 바꿔 표현했다. 오답: (A) 설문 결과는 3번째 문장에 한 번 나오는 배경이다. (B) 새 회의 규정을 발표하는 것이 아니다. (C) 영상은 처음에 보여 줄 자료일 뿐 장비 사용법이 아니다." },
+      { q: "Who most likely are the listeners?", choices: ["Employees of the same company", "Professional trainers", "Survey researchers", "Job applicants"], answer: 0, explanation: "추론 문제다. 근거 1: 3번째 문장 A recent survey of your staff found that the average employee here ... 근거 2: 5번째 문장 review one of your own recent meetings. 청중의 회사 직원을 조사했고 그들의 회의를 다룬다. 오답: (B) 강사는 화자 한 명이다. (C) 설문은 청중을 조사한 것이지 청중이 조사원인 것이 아니다. (D) 지원자라는 근거가 없다." },
+      { q: "What are the listeners asked to write on a card?", choices: ["Their meeting schedules", "Their phone numbers", "Their names", "Their questions for the speaker"], answer: 2, explanation: "근거: 6번째 문장 please put your phones on silent and write your name on the card in front of you. 오답: (A) 회의 일정은 쓰라고 하지 않았다. (B) 전화는 무음으로 하라는 것이다. (D) 질문을 적으라는 말은 없다." }
+    ]
+  },
+  {
+    id: "pt416",
+    type: "사내 공지",
+    title: "새 경비 정산 시스템",
+    voice: "M",
+    script: [
+      "Good afternoon. This is a reminder from the finance department about our new expense system.",
+      "Starting March first, all travel and meal expenses must be submitted through the ClaimPoint app instead of on paper forms.",
+      "You can simply take a photo of each receipt with your phone, so you no longer need to keep the originals.",
+      "Payments will also be faster: you should be paid back in under a week rather than three weeks.",
+      "Paper forms will still be accepted for February expenses, but only until March fifteenth.",
+      "To help you get started, we'll hold two short training sessions in the third-floor training room on Thursday, one at ten and one at two.",
+      "If neither time works, a recording will be posted online the next day."
+    ],
+    questions: [
+      { q: "What is the announcement mainly about?", choices: ["A change to the travel policy", "A new way to submit expenses", "An update to the company website", "A reduction in meal allowances"], answer: 1, explanation: "주제·목적 문제다. 근거: 1번째 문장 a reminder ... about our new expense system과 2번째 문장 all travel and meal expenses must be submitted through the ClaimPoint app instead of on paper forms. 오답: (A) 출장 규정이 바뀌는 것이 아니라 제출 방법이 바뀐다. (C) 녹화본을 온라인에 올린다는 말이 7번째 문장에 한 번 나올 뿐 웹사이트 개편 이야기가 아니다. (D) 식비 한도를 줄인다는 말은 없다." },
+      { q: "What does the speaker say about receipts?", choices: ["They must be mailed to the finance department", "They are needed only for meals", "Original copies are no longer required", "They should be submitted by March first"], answer: 2, explanation: "근거: 3번째 문장 You can simply take a photo of each receipt with your phone, so you no longer need to keep the originals. 오답: (A) 우편으로 보낸다는 말은 없다. (B) 출장비와 식비 모두 앱으로 낸다. (D) 3월 1일은 앱 사용이 시작되는 날이다." },
+      { q: "What will happen on Thursday?", choices: ["The app will be updated", "Paper forms will stop being accepted", "Payments will be sent out", "Training sessions will be held"], answer: 3, explanation: "근거: 6번째 문장 we'll hold two short training sessions in the third-floor training room on Thursday. 오답: (A) 앱 업데이트는 나오지 않는다. (B) 종이 양식은 3월 15일까지 받는다. (C) 지급은 제출 뒤 일주일 안이라는 말이지(4번째 문장) 목요일에 지급한다는 말이 아니다." }
+    ]
+  },
+  {
+    id: "pt417",
+    type: "광고",
+    title: "사무실 청소 서비스 광고",
+    voice: "W",
+    script: [
+      "Is your office starting to look a little tired? Clearwater Cleaning can help.",
+      "For fifteen years, we've cleaned offices, clinics, and shops across the county, and every member of our staff is fully trained and insured.",
+      "We work after your business closes, so your employees never have to work around a vacuum cleaner.",
+      "Choose a weekly, twice-weekly, or daily plan, and we'll bring all of our own supplies, which are free of harsh chemicals.",
+      "This month, new customers on a six-month plan pay half price for their first month.",
+      "To book a free walk-through of your space, call us or fill out the form on our website."
+    ],
+    questions: [
+      { q: "What type of business is being advertised?", choices: ["A cleaning service", "A cleaning supply store", "A staffing agency", "A medical clinic"], answer: 0, explanation: "주제·목적 문제다. 근거: 1번째 문장 Clearwater Cleaning can help와 2번째 문장 we've cleaned offices, clinics, and shops. 사무실을 청소해 주는 업체의 광고다. 오답: (B) 청소용품은 4번째 문장에서 직접 가져온다고 한 것이지 파는 것이 아니다. (C) 직원은 교육받았다고 소개할 뿐 인력을 파견하는 회사가 아니다. (D) 병원은 청소해 온 곳의 하나로 나온다." },
+      { q: "Why does the speaker mention a vacuum cleaner?", choices: ["To describe a new product", "To show that the work will not disturb employees", "To explain why the prices are low", "To ask listeners to buy their own equipment"], answer: 1, explanation: "추론 문제다. 근거: 3번째 문장 We work after your business closes, so your employees never have to work around a vacuum cleaner. 업무가 끝난 뒤에 일하니 직원들이 청소기 소리나 움직임에 방해받지 않는다는 것을 보여 주려는 말이다. 오답: (A) 새 제품 소개가 아니다. (C) 가격 이야기와 관계없다. (D) 4번째 문장에서 용품은 업체가 모두 가져온다고 했다." },
+      { q: "What do new customers receive this month?", choices: ["A free carpet cleaning", "Free cleaning supplies", "A discount on their first month", "An extra cleaning each week"], answer: 2, explanation: "근거: 5번째 문장 new customers on a six-month plan pay half price for their first month. half price를 discount로 바꿔 표현했다. 오답: (A) 카펫 청소는 나오지 않는다. (B) 용품을 가져온다는 것은 혜택이 아니라 서비스 방식이다. (D) 추가 청소는 나오지 않는다." }
+    ]
   }
 ];
