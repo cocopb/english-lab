@@ -1153,5 +1153,101 @@ window.PART4 = [
       { q: "Look at the graphic. On which day will the concert most likely be held?", choices: ["Wednesday", "Thursday", "Friday", "Saturday"], answer: 0, graphic: true, link: "first sunny day", explanation: "시각 정보 연계 문제다. 근거: 3번째 문장 have moved it to the first sunny day of the week. 도표에서 월·화요일은 비이고 처음으로 맑은 날은 Wednesday다. 담화에는 요일이 토요일(원래 날짜)만 나온다. 오답: Thursday(B)는 흐리고, Friday(C)는 맑지만 첫 번째 맑은 날이 아니며, Saturday(D)는 폭풍 때문에 옮기기 전의 원래 날짜다." },
       { q: "What does the speaker advise people attending the concert to bring?", choices: ["An umbrella", "A blanket", "A ticket", "A folding chair"], answer: 1, explanation: "근거: 4번째 문장 admission is free, but bring a blanket, since all of the seating is on the grass. 오답: (A) 우산은 말하지 않았고 공연 날은 맑은 날이다. (C) 입장은 무료라 표가 필요 없다. (D) 의자가 아니라 잔디에 앉는다." }
     ]
+  },
+  {
+    id: "pt423",
+    type: "기차역 안내 방송",
+    title: "열차 운행 취소 안내",
+    voice: "M",
+    graphic: {
+      title: "Morning Departures",
+      columns: ["Departs", "Destination", "Platform"],
+      rows: [
+        ["9:40 A.M.", "Portland", "Platform 2"],
+        ["9:55 A.M.", "Salem", "Platform 5"],
+        ["10:15 A.M.", "Eugene", "Platform 3"],
+        ["10:30 A.M.", "Portland", "Platform 4"]
+      ]
+    },
+    script: [
+      "Attention, passengers. Because of a signal problem north of the city, the nine forty train to Portland has been canceled.",
+      "Passengers holding tickets for that train may take the next train to Portland without paying again.",
+      "Trains to all other destinations are running on schedule this morning.",
+      "If you would prefer your money back, you can ask for a refund at the ticket windows near the front entrance until noon.",
+      "For anyone affected by the cancellation, hot drinks are being served free of charge at the café beside the waiting room.",
+      "We will make further announcements as soon as we have more information."
+    ],
+    questions: [
+      { q: "What is the purpose of the announcement?", choices: ["To report that a train has been canceled", "To announce a new route to Salem", "To promote a café in the station", "To explain a change in ticket prices"], answer: 0, explanation: "주제·목적 문제다. 근거: 1번째 문장 the nine forty train to Portland has been canceled. 이후 대체 열차, 환불, 음료 제공을 안내한다. 오답: (B) 세일럼행은 시간표에 있는 기존 열차이고 새 노선 이야기가 없다. (C) 카페는 5번째 문장에서 무료 음료를 주는 곳으로 한 번 나온다. (D) 요금 변경은 없고, 다시 내지 않고 다음 열차를 탈 수 있다고 했다(2번째 문장)." },
+      { q: "Look at the graphic. Where should passengers with tickets for the canceled train go?", choices: ["Platform 2", "Platform 3", "Platform 4", "Platform 5"], answer: 2, graphic: true, link: "the next train to Portland", explanation: "시각 정보 연계 문제다. 근거: 2번째 문장 Passengers holding tickets for that train may take the next train to Portland. 도표에서 취소된 9:40 다음의 포틀랜드행은 10:30 A.M. 열차이고 Platform 4에서 출발한다. 방송에는 승강장 번호가 나오지 않는다. 오답: Platform 2(A)는 취소된 9:40 열차의 승강장이고, Platform 3(B)은 유진행, Platform 5(D)는 세일럼행이다." },
+      { q: "What is being offered at the café?", choices: ["A discount on meals", "Seats reserved for passengers", "Train schedules", "Free hot drinks"], answer: 3, explanation: "근거: 5번째 문장 hot drinks are being served free of charge at the café beside the waiting room. free of charge를 free로 바꿔 표현했다. 오답: (A) 식사 할인과 (B) 좌석 예약은 나오지 않는다. (C) 시간표는 카페와 관계없다." }
+    ]
+  },
+  {
+    id: "pt424",
+    type: "호텔 안내",
+    title: "단체 여행객 호텔 도착 안내",
+    voice: "W",
+    graphic: {
+      title: "Halvorsen Hotel — Guest Facilities",
+      columns: ["Facility", "Location", "Hours"],
+      rows: [
+        ["Breakfast Room", "Lobby level", "6:30 A.M. to 10 A.M."],
+        ["Fitness Room", "2nd floor", "6 A.M. to 10 P.M."],
+        ["Business Center", "3rd floor", "Open 24 hours"],
+        ["Rooftop Lounge", "12th floor", "5 P.M. to midnight"]
+      ]
+    },
+    script: [
+      "Good evening, everyone. My name is Delphine, and I'm coordinating your trip for the next three days here at the Halvorsen Hotel.",
+      "Your room keys are in the envelopes I just handed out, and the hotel staff will bring your suitcases to your rooms within the hour.",
+      "This evening you're free to relax, and I highly recommend the view from the rooftop lounge after sunset.",
+      "Tomorrow morning, please meet me at seven where breakfast is served, so that we can eat together before the bus leaves at eight.",
+      "The museum we're visiting first doesn't allow large bags, so bring only a small backpack.",
+      "If you have any questions tonight, my room number is four twelve."
+    ],
+    questions: [
+      { q: "What will the hotel staff do within the hour?", choices: ["Hand out room keys", "Bring luggage to the rooms", "Serve dinner in the lounge", "Arrange a museum tour"], answer: 1, explanation: "근거: 2번째 문장 the hotel staff will bring your suitcases to your rooms within the hour. suitcases를 luggage로 바꿔 표현했다. 오답: (A) 방 열쇠는 화자가 이미 봉투에 넣어 나눠 주었다. (C) 라운지 저녁 식사는 나오지 않고, 라운지는 전망을 권한 곳이다. (D) 박물관 견학은 화자가 이끄는 다음 날 일정이다." },
+      { q: "Look at the graphic. Where will the group meet tomorrow morning?", choices: ["Lobby level", "2nd floor", "3rd floor", "12th floor"], answer: 0, graphic: true, link: "where breakfast is served", explanation: "시각 정보 연계 문제다. 근거: 4번째 문장 please meet me at seven where breakfast is served. 도표에서 아침 식사를 하는 Breakfast Room은 Lobby level에 있다. 담화에는 층이 나오지 않는다. 오답: 2nd floor(B)는 피트니스 룸, 3rd floor(C)는 비즈니스 센터, 12th floor(D)는 3번째 문장에서 오늘 저녁에 권한 옥상 라운지다." },
+      { q: "What will the listeners do at eight tomorrow morning?", choices: ["Check out of the hotel", "Use the fitness room", "Leave on a bus", "Meet a museum guide"], answer: 2, explanation: "근거: 4번째 문장 so that we can eat together before the bus leaves at eight. 오답: (A) 사흘 동안 머문다고 했으니 체크아웃이 아니다. (B) 피트니스 룸은 도표에만 있는 시설이다. (D) 박물관 안내원을 만난다는 말은 없다." }
+    ]
+  },
+  {
+    id: "pt425",
+    type: "신제품 발표",
+    title: "공기청정기 출시 발표",
+    voice: "W",
+    script: [
+      "Good afternoon. I'm pleased to share some news about the Aria, the compact air purifier our team has been developing for the past eighteen months.",
+      "It goes on sale in stores on April first, and early reviews from our test customers have been very positive.",
+      "The comment we heard most often was about the sound. One tester told us she forgot it was even running.",
+      "Of course, the price ended up higher than we first planned, at one hundred and forty-nine dollars.",
+      "But competitors charge about the same for larger, louder machines, so we believe customers will see the value.",
+      "Over the next two weeks, our sales team will visit our main retail partners to show them the Aria in person."
+    ],
+    questions: [
+      { q: "What is the purpose of the talk?", choices: ["To compare competitors' products", "To announce a price reduction", "To report the results of a sales campaign", "To introduce a new product"], answer: 3, explanation: "주제·목적 문제다. 근거: 1번째 문장 I'm pleased to share some news about the Aria, the compact air purifier our team has been developing. 이후 출시일, 반응, 가격, 판매 계획이 이어진다. 오답: (A) 경쟁사 제품은 5번째 문장에서 가격을 비교할 때 한 번 나온다. (B) 가격은 내린 것이 아니라 계획보다 올랐다. (C) 판매는 아직 시작되지 않았다." },
+      { q: "What does the speaker imply when she says, \"she forgot it was even running\"?", choices: ["The tester did not use the product", "The product is very quiet", "The product turns off by itself", "The tester lost the instructions"], answer: 1, quote: "she forgot it was even running", explanation: "의도 파악 문제다. 근거: 같은 3번째 문장 앞부분 The comment we heard most often was about the sound. 소리에 대한 평가 중에 켜져 있는 것도 잊었다고 했으니 아주 조용하다는 뜻이다. 5번째 문장의 louder machines(경쟁 제품이 더 시끄럽다)도 같은 내용이다. 오답: (A)는 '잊었다'를 '쓰지 않았다'로, (C)는 '돌고 있는 줄 몰랐다'를 '저절로 꺼진다'로 글자 그대로 읽은 함정이다. (D) 설명서 이야기는 없다." },
+      { q: "What is suggested about the Aria's price?", choices: ["It was raised during development", "It will be lowered in April", "It is much higher than competitors' prices", "It includes free delivery"], answer: 0, explanation: "추론 문제다. 근거: 4번째 문장 the price ended up higher than we first planned. 개발하면서 처음 계획한 가격보다 올라갔다. 오답: (B) 4월 1일은 판매 시작일이고 가격 인하 이야기는 없다. (C) 5번째 문장에서 경쟁사도 거의 같은 값을 받는다고 했다. (D) 무료 배송은 나오지 않는다." }
+    ]
+  },
+  {
+    id: "pt426",
+    type: "사내 공지",
+    title: "자선 달리기 대회 안내",
+    voice: "M",
+    script: [
+      "Hi, everyone. This is a quick reminder about the Riverbend Charity Run, which our company is sponsoring this year.",
+      "The five-kilometer run starts at eight next Saturday morning in Founders Park.",
+      "All the money raised will go to the city's children's hospital, and the company will match every dollar that our employees collect.",
+      "So far, forty-two of you have signed up, which already beats last year's total of thirty-five.",
+      "You don't have to run to take part. We still need volunteers to hand out water along the route.",
+      "Sign-up sheets for both runners and volunteers are on the board outside the cafeteria, and they come down this Friday."
+    ],
+    questions: [
+      { q: "Who most likely are the listeners?", choices: ["Hospital staff", "Professional runners", "Employees of a company", "Park employees"], answer: 2, explanation: "추론 문제다. 근거 1: 1번째 문장 the Riverbend Charity Run, which our company is sponsoring. 근거 2: 3번째 문장 the company will match every dollar that our employees collect. 4번째 문장 forty-two of you have signed up. 회사가 후원하고 직원들이 참가하므로 청중은 그 회사 직원이다. 오답: (A) 병원은 모금액을 받는 곳이다. (B) 달리지 않아도 참여할 수 있다고 할 만큼 일반 참가자 대상이다. (D) 공원은 대회 장소일 뿐이다." },
+      { q: "What will the company do?", choices: ["Provide running shoes", "Hold the race in its parking lot", "Pay for a new hospital wing", "Match the money employees raise"], answer: 3, explanation: "근거: 3번째 문장 the company will match every dollar that our employees collect. 오답: (A) 운동화 제공은 없다. (B) 대회 장소는 파운더스 공원이다. (C) 모금액은 아동 병원으로 가지만 새 병동을 짓는다는 말은 없다." },
+      { q: "What will happen on Friday?", choices: ["The race will begin", "The sign-up sheets will be taken down", "Volunteers will receive training", "Last year's results will be announced"], answer: 1, explanation: "근거: 6번째 문장 Sign-up sheets ... are on the board outside the cafeteria, and they come down this Friday. come down을 be taken down으로 바꿔 표현했다. 오답: (A) 대회는 다음 주 토요일이다. (C) 자원봉사자 교육은 나오지 않는다. (D) 작년 기록(35명)은 4번째 문장에서 비교로 나올 뿐 발표하는 날이 아니다." }
+    ]
   }
 ];
