@@ -982,14 +982,28 @@ async function runLcTests() {
   check('Part 3·4는 듣기 전에 문제가 안 보임', p3PromptLeaks === 0, p3PromptLeaks + '건');
   check('시각 정보 도표: 도표가 있는 대화·담화 문항에는 듣기 전부터 도표(제목·모든 칸·스크롤 영역)가 보이고, 다른 문항에는 없음', graphicProblems.length === 0 && graphicShown > 0,
     graphicProblems.slice(0, 4).join(' ; ') || '도표 표시 ' + graphicShown + '문항');
-  check('20회 동안 대화·담화가 섞여 나옴 (14개 중 13개, 12개 중 10개)', [...talkUse.keys()].filter(k => k.startsWith('p3:')).length === 14 && [...talkUse.keys()].filter(k => k.startsWith('p4:')).length === 12,
-    '대화 ' + [...talkUse.keys()].filter(k => k.startsWith('p3:')).length + '종 · 담화 ' + [...talkUse.keys()].filter(k => k.startsWith('p4:')).length + '종');
-  // 20회 × 6장 = 120장을 뽑는다. 사람 23장·사물 11장이면 기대값은 약 33종이라 28종 미만이면 뽑기가 치우친 것으로 본다.
+  // 20회에서는 '전부 나오는지'가 아니라 쏠림만 본다 (특정 대화·사진이 과도하게 자주 나오는지). 개수는 데이터에서 읽는다.
+  // 모든 항목이 나올 수 있는지(도달성)는 출제 함수만 200회 돌리는 runReachabilityTests에서 본다.
+  const lcTalkPool = list => list.filter(t => Array.isArray(t.script) && t.script.length && Array.isArray(t.questions) && t.questions.length === 3);
   const allPhotos = g.window.PART1;
+  const useOf = (map, prefix) => new Map([...map.entries()].filter(([k]) => k.startsWith(prefix)).map(([k, v]) => [k.slice(prefix.length), v]));
+  const p3Use = useOf(talkUse, 'p3:'), p4Use = useOf(talkUse, 'p4:');
+  const p3Pool = lcTalkPool(g.window.PART3), p4Pool = lcTalkPool(g.window.PART4);
+  const p3PerRun = [...p3Use.values()].reduce((s, n) => s + n, 0) / 20, p4PerRun = [...p4Use.values()].reduce((s, n) => s + n, 0) / 20;
+  const overUsed = (pool, use, perRun) => { const hi = skewBounds(20, perRun / pool.length)[1]; return pool.filter(i => (use.get(i.id) || 0) > hi).map(i => i.id + ' ' + use.get(i.id) + '회'); };
+  const talkOver = overUsed(p3Pool, p3Use, p3PerRun).concat(overUsed(p4Pool, p4Use, p4PerRun));
+  check('20회 동안 특정 대화·담화가 과도하게 나오지 않음 (대화 ' + p3Pool.length + '개 · 담화 ' + p4Pool.length + '개 기준)', talkOver.length === 0 &&
+    [...talkUse.keys()].every(k => (k.startsWith('p3:') ? p3Pool : p4Pool).some(t => 'p' + (k.startsWith('p3:') ? 3 : 4) + ':' + t.id === k)),
+    talkOver.length ? talkOver.join(', ') : '대화 ' + p3Use.size + '종 · 담화 ' + p4Use.size + '종 나옴');
   const usedPeople = allPhotos.filter(p => p.kind === 'people' && photoUse.has(p.id)).length;
   const usedObjects = allPhotos.filter(p => p.kind === 'objects' && photoUse.has(p.id)).length;
-  check('20회 동안 사진이 섞여 나옴 (' + allPhotos.length + '장 중 28종 이상 · 모두 PART1에 있는 사진)', photoUse.size >= 28 && [...photoUse.keys()].every(id => allPhotos.some(p => p.id === id)),
-    photoUse.size + '종 (사람 ' + usedPeople + '/' + allPhotos.filter(p => p.kind === 'people').length + ' · 사물 ' + usedObjects + '/' + allPhotos.filter(p => p.kind === 'objects').length + ')');
+  const photoOver = ['people', 'objects'].flatMap(kind => {
+    const pool = allPhotos.filter(p => p.kind === kind);
+    const picks = pool.reduce((s, p) => s + (photoUse.get(p.id) || 0), 0) / 20;
+    return overUsed(pool, photoUse, picks);
+  });
+  check('20회 동안 특정 사진이 과도하게 나오지 않음 · 모두 PART1에 있는 사진', photoOver.length === 0 && [...photoUse.keys()].every(id => allPhotos.some(p => p.id === id)),
+    photoOver.length ? photoOver.join(', ') : photoUse.size + '종 (사람 ' + usedPeople + '/' + allPhotos.filter(p => p.kind === 'people').length + ' · 사물 ' + usedObjects + '/' + allPhotos.filter(p => p.kind === 'objects').length + ')');
 
   // --- 2. 실전 조건: 한 번만 재생 · 되돌아가기 없음 · 스크립트 없음 ---
   console.log('\n[LC 풀세트 — 실전 조건]');
@@ -1340,11 +1354,105 @@ async function runLcTests() {
   check('사람 사진이 3장이면 오류 표시', !!err3 && err3.textContent.includes('Part 1 사람 사진 수가 모자라') && err3.textContent.includes('현재 3개'), err3 && err3.textContent);
 }
 
+// ---------- 출제 도달성 · 쏠림 (화면 없이 출제 함수만 200회) ----------
+// 콘텐츠를 늘려도 검사를 고치지 않도록 개수는 전부 데이터와 구성표에서 읽는다.
+// 1) 도달성: 그 모드가 쓸 수 있는 항목(풀)이 200회 안에 모두 최소 1번 나와야 한다. 한 번도 안 나오는 항목은 출제 코드가 그 항목에 닿지 못한다는 뜻이다.
+// 2) 쏠림: 뽑힐 확률이 같은 풀(LC 사진·Part 2·대화·담화, RC Part 6 세트·Part 7 지문 묶음)은 나온 횟수가
+//    이항분포 B(R, p)의 평균 ± (4.5 표준편차 + 1) 안에 있어야 한다. p = 한 번에 뽑는 수 / 풀 크기.
+//    Part 5는 '한 유형 6문항 이하' 제한 때문에, 미니 모의고사의 Part 6·7은 조합 출제라서 문항마다 확률이 달라 도달성만 본다.
+const REACH_RUNS = 200;
+function skewBounds(runs, p) {
+  const mean = runs * p, sd = Math.sqrt(runs * p * (1 - p));
+  return [Math.max(0, mean - 4.5 * sd - 1), mean + 4.5 * sd + 1];
+}
+// pool: [{id}], counts: Map(id → 나온 횟수), picksPerRun: 한 번에 뽑는 평균 개수. skew=false면 도달성만.
+function reachAndSkew(label, pool, counts, runs, picksPerRun, skew) {
+  const missing = pool.filter(item => !counts.get(item.id));
+  check(label + ' — ' + runs + '회 안에 풀 ' + pool.length + '개가 모두 최소 1번 나옴', pool.length > 0 && missing.length === 0,
+    missing.length ? '한 번도 안 나옴: ' + missing.map(m => m.id).join(', ') : '최소 ' + Math.min(...pool.map(i => counts.get(i.id))) + '회');
+  if (!skew) return;
+  const p = picksPerRun / pool.length;
+  const [lo, hi] = skewBounds(runs, p);
+  const out = pool.filter(item => { const n = counts.get(item.id) || 0; return n < lo || n > hi; });
+  check(label + ' — 쏠림 없음 (기대 ' + (runs * p).toFixed(1) + '회, 허용 ' + Math.ceil(lo) + '회 이상 ' + Math.floor(hi) + '회 이하)', out.length === 0,
+    out.length ? out.map(i => i.id + ' ' + (counts.get(i.id) || 0) + '회').join(', ') : '최소 ' + Math.min(...pool.map(i => counts.get(i.id) || 0)) + '회 · 최대 ' + Math.max(...pool.map(i => counts.get(i.id) || 0)) + '회');
+}
+function bump(map, id) { map.set(id, (map.get(id) || 0) + 1); }
+
+function runReachabilityTests() {
+  console.log('\n[출제 도달성 · 쏠림 — 화면 없이 ' + REACH_RUNS + '회]');
+  const env = loadPracticePage();
+  const W = env.window;
+  const lcApi = W.PracticeLcFullSet, rcApi = W.PracticeFullSet, miniApi = W.PracticeMini;
+  check('검사용 출제 함수가 노출됨 (PracticeLcFullSet.plan · PracticeFullSet.plan · PracticeMini.build)',
+    !!(lcApi && typeof lcApi.plan === 'function' && rcApi && typeof rcApi.plan === 'function' && miniApi && typeof miniApi.build === 'function'));
+  if (!(lcApi && lcApi.plan && rcApi && rcApi.plan && miniApi && miniApi.build)) return;
+
+  // LC 풀세트: 대화·담화는 문항이 3개인 것만, 사진은 kind별로 쓴다 (practice.js usableTalks · usablePhotos와 같은 기준).
+  const talkPool = list => list.filter(t => Array.isArray(t.script) && t.script.length && Array.isArray(t.questions) && t.questions.length === 3);
+  const lc = { people: new Map(), objects: new Map(), p2: new Map(), p3: new Map(), p4: new Map() };
+  const lcPicks = { people: 0, objects: 0, p2: 0, p3: 0, p4: 0 };
+  const kindOf = new Map(W.PART1.map(p => [p.id, p.kind]));
+  for (let run = 0; run < REACH_RUNS; run++) {
+    const plan = lcApi.plan();
+    plan.p1.forEach(id => { const k = kindOf.get(id); bump(lc[k], id); lcPicks[k]++; });
+    ['p2', 'p3', 'p4'].forEach(part => plan[part].forEach(id => { bump(lc[part], id); lcPicks[part]++; }));
+  }
+  reachAndSkew('LC 풀세트 Part 1 사람 사진', W.PART1.filter(p => p.kind === 'people'), lc.people, REACH_RUNS, lcPicks.people / REACH_RUNS, true);
+  reachAndSkew('LC 풀세트 Part 1 사물 사진', W.PART1.filter(p => p.kind === 'objects'), lc.objects, REACH_RUNS, lcPicks.objects / REACH_RUNS, true);
+  reachAndSkew('LC 풀세트 Part 2', W.PART2.filter(q => Array.isArray(q.choices) && q.choices.length === 3), lc.p2, REACH_RUNS, lcPicks.p2 / REACH_RUNS, true);
+  reachAndSkew('LC 풀세트 Part 3 대화', talkPool(W.PART3), lc.p3, REACH_RUNS, lcPicks.p3 / REACH_RUNS, true);
+  reachAndSkew('LC 풀세트 Part 4 담화', talkPool(W.PART4), lc.p4, REACH_RUNS, lcPicks.p4 / REACH_RUNS, true);
+
+  // RC 풀세트: Part 6은 4문항 세트, Part 7은 (지문 수, 문항 수) 묶음별로 뽑는다. 묶음 기준은 구성표에서 읽는다.
+  const partCount = p => Array.isArray(p.parts) && p.parts.length ? p.parts.length : 1;
+  const shapeOf = p => partCount(p) + '지문 ' + p.questions.length + '문항';
+  const rc = { p5: new Map(), p6: new Map(), p7: new Map() };
+  const shapePicks = new Map();
+  let p6Picks = 0;
+  const byId = new Map(W.PASSAGES.map(p => [p.id, p]));
+  for (let run = 0; run < REACH_RUNS; run++) {
+    const plan = rcApi.plan();
+    plan.p5.forEach(id => bump(rc.p5, id));
+    plan.p6.forEach(id => { bump(rc.p6, id); p6Picks++; });
+    plan.single.concat(plan.double, plan.triple).forEach(id => { bump(rc.p7, id); const s = shapeOf(byId.get(id)); shapePicks.set(s, (shapePicks.get(s) || 0) + 1); });
+  }
+  reachAndSkew('RC 풀세트 Part 5', W.GRAMMAR_QUIZ, rc.p5, REACH_RUNS, 0, false);
+  const p6Size = Math.round(p6Picks / REACH_RUNS);
+  reachAndSkew('RC 풀세트 Part 6 (' + p6Size + '문항 세트)', W.PART6.filter(s => s.questions.length === p6Size), rc.p6, REACH_RUNS, p6Picks / REACH_RUNS, true);
+  [...shapePicks.keys()].sort().forEach(shape => {
+    reachAndSkew('RC 풀세트 Part 7 ' + shape, W.PASSAGES.filter(p => shapeOf(p) === shape), rc.p7, REACH_RUNS, shapePicks.get(shape) / REACH_RUNS, true);
+  });
+  // RC 풀세트 구성에 없는 모양의 지문은 구조상 나올 수 없다 (실패 아님). 미니 모의고사·파트별 연습에는 나온다.
+  const offShape = W.PASSAGES.filter(p => !shapePicks.has(shapeOf(p)));
+  console.log('  ℹ RC 풀세트 구성에 없는 모양이라 풀세트에는 안 나오는 지문 ' + offShape.length + '개' +
+    (offShape.length ? ': ' + offShape.map(p => p.id + '(' + shapeOf(p) + ')').join(', ') : ''));
+
+  // 미니 모의고사: 모든 Part 5 문항·Part 6 세트·Part 7 지문에 닿는지.
+  const mini = { p5: new Map(), p6: new Map(), p7: new Map() };
+  const qIdByText = new Map(W.GRAMMAR_QUIZ.map(q => [q.question, q.id]));
+  for (let run = 0; run < REACH_RUNS; run++) {
+    miniApi.build().forEach(item => {
+      if (item.part === 'p5') bump(mini.p5, qIdByText.get(item.prompt || item.question || item.q));
+      else if (item.part === 'p6') bump(mini.p6, item.group.set.id);
+      else if (item.part === 'p7') bump(mini.p7, item.group.passage.id);
+    });
+  }
+  reachAndSkew('미니 모의고사 Part 5', W.GRAMMAR_QUIZ, mini.p5, REACH_RUNS, 0, false);
+  reachAndSkew('미니 모의고사 Part 6 세트', W.PART6, mini.p6, REACH_RUNS, 0, false);
+  reachAndSkew('미니 모의고사 Part 7 지문', W.PASSAGES, mini.p7, REACH_RUNS, 0, false);
+}
+
 (async () => {
   try {
     await runLcTests();
   } catch (error) {
     check('LC 풀세트 검사 실행', false, error.stack);
+  }
+  try {
+    runReachabilityTests();
+  } catch (error) {
+    check('출제 도달성 검사 실행', false, error.stack);
   }
   console.log(failures ? `\n실패 ${failures}건` : '\n전부 통과');
   process.exit(failures ? 1 : 0);

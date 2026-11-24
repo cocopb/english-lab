@@ -2,9 +2,9 @@
 
 // Part 1 사진 묘사(data/part1.js) 검사 + 가짜 DOM으로 리스닝 탭 Part 1 화면 검사
 // 실행: node tools/check-part1.js  (외부 패키지 불필요)
-//  1. 데이터: 34문항 · choices 4개 · answer 범위 · explanation · kind · id/img 형식
+//  1. 데이터: 문항 수(데이터에서 읽음, 고정 개수 없음) · choices 4개 · answer 범위 · explanation · kind · id/img 형식
 //     + 문장 중복: 서로 다른 사진의 정답끼리, 한 사진 안의 선택지끼리 (기준은 아래 sentenceOverlap 주석)
-//  2. 이미지 파일이 실제로 있는지 (34개 모두, JPEG 시그니처까지) + 표시 크기가 원본 픽셀 크기와 무관한지
+//  2. 이미지 파일이 실제로 있는지 (데이터의 사진 모두, JPEG 시그니처까지. 쓰지 않는 파일도 실패) + 표시 크기가 원본 픽셀 크기와 무관한지
 //  3. 정답 위치: A~D 고르게 분포 · 바로 앞 문항과 같은 위치 연속 금지
 //  4. 사진 alt: "Part 1 사진 N" 형식이고, 선택지 문장의 내용어가 들어가지 않음
 //  5. 리스닝 탭: 사진 표시 · 네 선택지 음성 · 채점 전 문장 글자 없음 · 채점 후 네 문장과 해설 · 로딩 실패 대체 문구 · part1 기록
@@ -27,9 +27,9 @@ if (!Array.isArray(PART1)) {
 }
 
 // ---------- 1. 데이터 ----------
-var EXPECTED_COUNT = 34;
 var ALLOWED_KEYS = ["id", "img", "kind", "choices", "answer", "explanation"];
-check(PART1.length === EXPECTED_COUNT, "문항 수 " + PART1.length + " (기대 " + EXPECTED_COUNT + ")");
+// 문항 수는 고정하지 않는다. 사진을 늘릴 때마다 검사를 고치지 않게, 데이터와 이미지 폴더가 서로 맞는지(아래 2절)만 본다.
+check(PART1.length > 0, "문항이 없음");
 var seen = {};
 PART1.forEach(function (item, index) {
   item = item || {};

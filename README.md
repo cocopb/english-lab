@@ -42,7 +42,7 @@ node tools/check-reading.js    # 독해: 전략 ID, 정답 인덱스, 문장별 
 node tools/check-listening.js  # 리스닝: Part 2·3·4 정답 위치 쏠림(Part 3·4는 35% 이상·15% 이하, 3지선다 Part 2는 43% 초과·23% 미만이면 실패), 받아쓰기 text/ko/level, Part 2 선택지 3개·정답, Part 3 script/questions·선택지 4개·정답, ID 중복, 해설 + 화면 로드 + 음성 재생(음성 목록이 빈 모바일·데스크톱·미지원 브라우저)
 node tools/check-part1.js      # Part 1: 정답 위치 쏠림(35% 이상·15% 이하면 실패), 34문항 choices 4개·answer 범위·해설·kind, 문장 중복(다른 사진의 정답끼리·한 사진의 선택지끼리: 같은 문장, 내용어 겹침, 3단어 틀, 내용어가 든 4단어 표현), 이미지 파일 34개 존재(JPEG·300KB 이하), 표시 크기(원본이 작아도 작게 보이지 않음), 정답 위치 분포·연속 금지, alt가 "Part 1 사진 N"이고 선택지 내용어 없음 + 화면: 사진 표시, (A)~(D) 음성, 채점 전 문장 글자 없음, 채점 후 네 문장·해설, 로딩 실패 대체 문구
 node tools/check-speaking.js   # 회화: 패턴 pattern/meaning/tip/drills, 드릴 ko/en, 롤플레이 me 턴 instruction/model/comment, 쉐도잉 en/ko/level, ID 중복 + 화면 로드·채점(패턴·쉐도잉·롤플레이 끝까지 진행, 괄호 지문 음성 제외) + TTS 재생(음성 목록이 빈 모바일·데스크톱)
-node tools/check-practice.js   # 실전: 메뉴 7개, 30문항 구성, OMR 이동, 타이머 색·자동 제출, 결과 집계, 기록 저장, 파트별 연습
+node tools/check-practice.js   # 실전: 메뉴 7개, 미니 모의고사·RC/LC 풀세트 구성, OMR 이동, 타이머 색·자동 제출, 결과 집계, 기록 저장, 파트별 연습, 출제 도달성(200회 출제에서 모든 항목이 최소 1번)·쏠림
 node tools/check-backup.js     # 기록 옮기기: 옛 파일을 가져와도 진도가 줄지 않음, 시험 기록 중복 없음, 나중에 맞힌 문제가 되살아나지 않음, 왕복, 잘못된 파일 거절, 빈 기록, 백업·되돌리기 + 일부러 심은 버그 8종을 잡는지
 ```
 

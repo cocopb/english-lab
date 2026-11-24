@@ -379,6 +379,121 @@ window.PART3 = [
       { q: "Look at the graphic. What time will the woman most likely arrive at her terminal?", choices: ["5:55 A.M.", "6:10 A.M.", "6:40 A.M.", "7:10 A.M."], answer: 1, graphic: true, link: "five thirty", explanation: "시각 정보 연계 문제다. 근거 1: 1번째 대사(여자) My flight leaves from the north terminal. 근거 2: 4번째 대사(남자) The five thirty would be safest. 도표에서 5:30 A.M.에 호텔을 떠나는 셔틀은 North Terminal에 6:10 A.M.에 도착한다. 대화에는 도착 시각이 나오지 않는다. 오답: 5:55 A.M.(A)은 같은 셔틀의 남쪽 터미널 도착이고, 6:40 A.M.(C)은 빠듯하다고 한 6시 셔틀, 7:10 A.M.(D)은 6시 30분 셔틀이다." },
       { q: "What should the woman do tonight?", choices: ["Print her boarding pass", "Pay the driver", "Call the airline", "Tell the front desk"], answer: 3, explanation: "근거: 6번째 대사(남자) Just tell the front desk tonight. 오답: 탑승권 인쇄(A)·기사에게 요금 지불(B)·항공사 전화(C)는 나오지 않는다. 신청서는 따로 없다." }
     ]
+  },
+  {
+    id: "p315",
+    title: "치과 예약 변경",
+    script: [
+      { speaker: "W", text: "Hi, this is Marta Silva. I have a cleaning appointment with Dr. Brennan tomorrow at ten, but I need to change it." },
+      { speaker: "M", text: "Let me see what's open. Dr. Brennan's next opening is Thursday at eight thirty in the morning." },
+      { speaker: "W", text: "I have a staff meeting every Thursday morning, so I'll have to pass on that one." },
+      { speaker: "M", text: "Then there's a four forty-five on Friday afternoon. It's the last appointment of the week." },
+      { speaker: "W", text: "Friday is perfect. Oh, and my dental insurance changed at the start of this month." },
+      { speaker: "M", text: "Could you bring the new card when you come in? If we don't have it on file, we have to charge the full fee, and you would send the claim to your insurer yourself." }
+    ],
+    questions: [
+      { q: "Why is the woman calling?", choices: ["To reschedule a dental visit", "To cancel her treatment", "To ask about her insurance coverage", "To complain about a bill"], answer: 0, explanation: "근거: 1번째 대사(여자) I have a cleaning appointment with Dr. Brennan tomorrow at ten, but I need to change it. 오답: (B) 치료를 취소하는 것이 아니라 금요일로 다시 잡는다. (C) 보험은 5번째 대사에 덧붙인 말이고 보장 범위를 묻지 않았다. (D) 청구서에 대한 불만은 나오지 않는다." },
+      { q: "What does the woman mean when she says, \"I'll have to pass on that one\"?", choices: ["She will give the appointment to a coworker", "She would like an earlier time on Thursday", "She cannot take the time that was offered", "She will walk past the clinic on Thursday"], answer: 2, quote: "I'll have to pass on that one", explanation: "의도 파악 문제다. 근거: 바로 앞 2번째 대사(남자)가 목요일 오전 8시 30분을 제안했고, 여자는 목요일 아침마다 회의가 있다고 말한 뒤 이 말을 했다. pass on은 '(제안을) 사양하다'라는 뜻이라, 제안받은 시간에는 갈 수 없다는 말이다. 오답: (A)는 pass를 '넘겨주다'로, (D)는 '지나가다'로 글자 그대로 읽은 함정이다. (B) 목요일 아침에는 회의가 있으므로 더 이른 시간을 원한다는 근거가 없다." },
+      { q: "What is suggested about the woman's insurance?", choices: ["It covers only cleanings", "The clinic may not have her current details", "It will expire on Friday", "Dr. Brennan does not accept it"], answer: 1, explanation: "추론 문제다. 근거 1: 5번째 대사(여자) my dental insurance changed at the start of this month. 근거 2: 6번째 대사(남자) Could you bring the new card when you come in? If we don't have it on file, we have to charge the full fee. 보험이 이번 달에 바뀌어 병원에 새 정보가 없을 수 있으니 카드를 가져오라는 것이다. 오답: (A) 보장 범위는 말하지 않았다. (C) 금요일은 예약 날짜이고 보험 만료와 관계없다. (D) 받지 않는다는 말은 없고, 새 카드가 있으면 처리한다." }
+    ]
+  },
+  {
+    id: "p316",
+    title: "해외 송금 보류",
+    script: [
+      { speaker: "M", text: "Hi, I sent a payment to a supplier in Canada on Monday, but they say it still hasn't arrived." },
+      { speaker: "W", text: "International transfers can take a few days to clear. Do you have the reference number?" },
+      { speaker: "M", text: "Yes, it's seven five zero nine. The supplier won't ship our order until the money is in their account." },
+      { speaker: "W", text: "I see it here. The transfer is on hold because the account name doesn't match. Your form says Northfield Supply, but their bank has Northfield Supply Company." },
+      { speaker: "M", text: "That's my mistake. Can you correct it today?" },
+      { speaker: "W", text: "Yes, but you'll need to sign a correction form in person. If you come in before three, it will go out this afternoon." },
+      { speaker: "M", text: "I'm only ten minutes away. I'll come over right now." }
+    ],
+    questions: [
+      { q: "What are the speakers mainly discussing?", choices: ["Opening a new business account", "Shipping a package to Canada", "A change to a supplier's prices", "A payment that has not arrived"], answer: 3, explanation: "근거: 1번째 대사(남자) I sent a payment to a supplier in Canada on Monday, but they say it still hasn't arrived. 4번째 대사(여자) The transfer is on hold. 오답: (A) 계좌를 새로 여는 이야기는 없다. (B) 캐나다는 돈을 보낸 공급업체가 있는 곳일 뿐, 소포를 보내는 이야기는 없다. (C) 가격 변경은 나오지 않는다." },
+      { q: "Why is the transfer on hold?", choices: ["A name on the form is incorrect", "The reference number is missing", "The account does not have enough money", "The supplier's bank is closed"], answer: 0, explanation: "근거: 4번째 대사(여자) The transfer is on hold because the account name doesn't match. Your form says Northfield Supply, but their bank has Northfield Supply Company. doesn't match를 incorrect로 바꿔 표현했다. 오답: (B) 참조 번호는 3번째 대사에서 남자가 불러 주었다. (C) 잔액 부족과 (D) 은행 휴무는 나오지 않는다." },
+      { q: "What will the man most likely do next?", choices: ["Call the supplier", "Fill out a form online", "Go to the bank", "Send a second payment"], answer: 2, explanation: "근거: 6번째 대사(여자) you'll need to sign a correction form in person. If you come in before three, it will go out this afternoon. 7번째 대사(남자) I'm only ten minutes away. I'll come over right now. 오답: (A) 공급업체에 전화한다는 말은 없다. (B) 양식은 직접 와서(in person) 서명해야 하므로 온라인이 아니다. (D) 기존 송금의 이름을 고치는 것이지 다시 보내는 것이 아니다." }
+    ]
+  },
+  {
+    id: "p317",
+    title: "직원 숙소 임대",
+    script: [
+      { speaker: "W", text: "Hello, I'm calling from Brightwell Engineering. An engineer from our Melbourne branch is joining this office next month, and he needs an apartment for about six months." },
+      { speaker: "M", text: "Most landlords around here won't rent for less than twelve months, but we do have a few furnished units with shorter terms." },
+      { speaker: "W", text: "Furnished would be ideal, since he isn't shipping any furniture. Is there anything near the train station?" },
+      { speaker: "M", text: "There's a one-bedroom on Carver Street, a five-minute walk from the station. It's available from the first of the month, but it's on the fourth floor, and there's no elevator." },
+      { speaker: "W", text: "He told me he walks to work every day back home, so the stairs shouldn't bother him. Would you email me some photos?" },
+      { speaker: "M", text: "Sure. I'll email them this afternoon, and if he'd like, I can set up a video tour so he can see the place before he arrives." }
+    ],
+    questions: [
+      { q: "Who most likely is the woman?", choices: ["A landlord on Carver Street", "An employee arranging housing for a coworker", "An engineer moving from Melbourne", "A real estate agent"], answer: 1, explanation: "추론 문제다. 근거: 1번째 대사(여자) I'm calling from Brightwell Engineering. An engineer from our Melbourne branch is joining this office next month, and he needs an apartment. 회사 직원이 옮겨 오는 동료의 집을 알아보고 있다. 오답: (A) 집주인은 남자가 말하는 landlords다. (C) 멜버른에서 오는 사람은 여자가 말하는 engineer다. (D) 매물을 소개하는 부동산 쪽은 남자다." },
+      { q: "What does the man say about most landlords in the area?", choices: ["They do not allow pets", "They include furniture", "They lower rents in winter", "They prefer longer leases"], answer: 3, explanation: "근거: 2번째 대사(남자) Most landlords around here won't rent for less than twelve months. 12개월 미만으로는 세를 주지 않으니, 6개월보다 긴 계약을 원한다는 뜻이다. 오답: (A) 반려동물과 (C) 겨울 할인은 나오지 않는다. (B) 가구가 딸린 집은 일부(a few furnished units)일 뿐 대부분의 집주인 이야기가 아니다." },
+      { q: "Why does the man offer a video tour?", choices: ["The engineer has not moved to the city yet", "The apartment has already been rented", "The building has no elevator", "The woman cannot visit this afternoon"], answer: 0, explanation: "추론 문제다. 근거 1: 1번째 대사(여자) An engineer from our Melbourne branch is joining this office next month. 근거 2: 6번째 대사(남자) I can set up a video tour so he can see the place before he arrives. 아직 멜버른에 있어 직접 볼 수 없으니 영상으로 보여 주겠다는 것이다. 오답: (B) 4번째 대사에서 다음 달 1일부터 들어갈 수 있다고 했다. (C) 엘리베이터가 없다는 것은 집의 단점이지 영상 투어를 권하는 이유가 아니다. (D) 오늘 오후는 남자가 사진을 보내는 때이고, 여자가 방문을 못 한다는 말은 없다." }
+    ]
+  },
+  {
+    id: "p318",
+    title: "생산 라인 지연",
+    speakers: { M1: "Pavel", W1: "Ingrid", W2: "Selin" },
+    script: [
+      { speaker: "M1", text: "The new labeling machine on line two is running at only half speed, and the supplier's technician can't come until Monday." },
+      { speaker: "W1", text: "Then we won't finish the Hollis order by Friday. Selin, could shipping push back the pickup?" },
+      { speaker: "W2", text: "I can ask the trucking company, but Hollis told us Friday was firm. Ingrid, could we move part of the order to line one?" },
+      { speaker: "W1", text: "Line one is set up for the large bottles. Switching it over would take most of a shift." },
+      { speaker: "M1", text: "That might still be worth it. If we switch it tonight, we lose about six hours but gain two full days of labeling." },
+      { speaker: "W2", text: "Then I'll keep the Friday pickup and tell Hollis everything is on schedule." },
+      { speaker: "M1", text: "Let's not promise anything yet. Ingrid, send me your numbers by four, and we'll decide then." }
+    ],
+    questions: [
+      { q: "What are the speakers mainly discussing?", choices: ["A delivery that arrived damaged", "A customer who canceled an order", "A delay on a production line", "Training for a new technician"], answer: 2, explanation: "근거: 1번째 대사(Pavel) The new labeling machine on line two is running at only half speed. 2번째 대사(Ingrid) Then we won't finish the Hollis order by Friday. 오답: (A) 파손 배송과 (B) 주문 취소는 나오지 않는다. (D) 기술자는 월요일에 수리하러 오는 사람이고 교육 이야기는 없다." },
+      { q: "What does Ingrid say about line one?", choices: ["It is running at half speed", "It is set up for a different bottle size", "It will be repaired on Monday", "It is used only on weekends"], answer: 1, explanation: "근거: 4번째 대사(Ingrid) Line one is set up for the large bottles. Switching it over would take most of a shift. Hollis 주문을 하려면 바꿔야 하므로 지금은 다른 크기의 병에 맞춰져 있다. 오답: (A) 절반 속도로 도는 것은 1번째 대사의 2번 라인 기계다. (C) 월요일 수리도 2번 라인 기계 이야기다. (D) 주말에만 쓴다는 말은 없다." },
+      { q: "What is suggested about the Hollis order?", choices: ["It will be picked up on Monday", "It has already been shipped", "It is for large bottles", "Its pickup date is difficult to change"], answer: 3, explanation: "추론 문제다. 근거 1: 2번째 대사(Ingrid) Selin, could shipping push back the pickup? 근거 2: 3번째 대사(Selin) Hollis told us Friday was firm. 고객이 금요일을 못 박았으므로 수거 날짜를 옮기기 어렵다. 오답: (A) 월요일은 기술자가 오는 날이다. (B) 아직 작업을 끝내지도 못했다. (C) 1번 라인이 큰 병용인데 이 주문을 하려면 라인을 바꿔야 하므로 큰 병 주문이 아니다." }
+    ]
+  },
+  {
+    id: "p319",
+    title: "전단 인쇄 주문",
+    graphic: {
+      title: "Bayside Print — Flyers (500 copies)",
+      columns: ["Service", "Ready In", "Price"],
+      rows: [
+        ["Standard", "5 business days", "$60"],
+        ["Priority", "3 business days", "$85"],
+        ["Express", "1 business day", "$120"],
+        ["Same Day", "By 6 P.M.", "$160"]
+      ]
+    },
+    script: [
+      { speaker: "M", text: "Hi, we need five hundred flyers for our booth at the home and garden fair." },
+      { speaker: "W", text: "Of course. Is your design file ready, or would you like help from our designer?" },
+      { speaker: "M", text: "It's ready. The thing is, we need the flyers within three business days, but I don't want to pay for anything faster than that." },
+      { speaker: "W", text: "That's no problem. Just note that files we receive after noon are counted from the next business day." },
+      { speaker: "M", text: "I'll email it within the hour, then. Could you also print them on recycled paper? We're trying to cut down on waste." },
+      { speaker: "W", text: "Sure. Recycled paper is the same price as our regular paper, so it won't change your total." }
+    ],
+    questions: [
+      { q: "Where most likely does the woman work?", choices: ["At a print shop", "At a garden center", "At a recycling plant", "At a trade fair office"], answer: 0, explanation: "추론 문제다. 근거: 1번째 대사(남자) we need five hundred flyers, 2번째 대사(여자) would you like help from our designer?, 6번째 대사(여자) our regular paper. 전단 주문을 받고 디자이너와 종이를 갖춘 곳이다. 오답: (B) home and garden fair는 남자가 전단을 쓸 행사다. (C) recycled paper에서 떠올린 함정이다. (D) 박람회는 남자의 회사가 부스를 내는 곳이다." },
+      { q: "Look at the graphic. How much will the man most likely pay?", choices: ["$60", "$85", "$120", "$160"], answer: 1, graphic: true, link: "three business days", explanation: "시각 정보 연계 문제다. 근거: 3번째 대사(남자) we need the flyers within three business days, but I don't want to pay for anything faster than that. 도표에서 3 business days인 Priority가 $85다. 대화에는 가격이 나오지 않고, 6번째 대사에서 재생지도 값이 같다고 했다. 오답: $60(A) Standard는 5일이 걸려 늦고, $120(C) Express와 $160(D) Same Day는 필요한 것보다 빨라서 남자가 원하지 않는 더 비싼 선택이다." },
+      { q: "What does the woman say about recycled paper?", choices: ["It takes longer to print", "It must be ordered in advance", "It costs the same as regular paper", "It is available only in white"], answer: 2, explanation: "근거: 6번째 대사(여자) Recycled paper is the same price as our regular paper. 오답: (A) 더 오래 걸린다는 말은 없다. 시간 이야기는 4번째 대사의 정오 이후 접수 조건뿐이다. (B) 미리 주문해야 한다는 말과 (D) 흰색만 있다는 말은 나오지 않는다." }
+    ]
+  },
+  {
+    id: "p320",
+    title: "업데이트 후 프로그램 오류",
+    script: [
+      { speaker: "W", text: "Hi, this is Corinne in accounting. My laptop restarted overnight for an update, and now the budget program won't open." },
+      { speaker: "M", text: "You're not the only one. That update changed a security setting, and three other people from your department have called this morning." },
+      { speaker: "W", text: "I need to send the quarterly figures to the director by noon." },
+      { speaker: "M", text: "I can fix it from here, but leave your laptop on and stay logged in. It should take about twenty minutes." },
+      { speaker: "W", text: "That's fine. Can I keep working on a report while you do that?" },
+      { speaker: "M", text: "I wouldn't. It may restart a couple of times. If you need email in the meantime, there's a spare computer by the break room." }
+    ],
+    questions: [
+      { q: "What problem does the woman report?", choices: ["Her laptop will not turn on", "She forgot her password", "An update was not installed", "A program will not open"], answer: 3, explanation: "근거: 1번째 대사(여자) now the budget program won't open. 오답: (A) 노트북은 켜져 있고, 4번째 대사에서 켜 둔 채로 두라고 한다. (B) 비밀번호 이야기는 없다. (C) 업데이트는 이미 설치되어 밤새 재시작까지 했다." },
+      { q: "What does the man ask the woman to do?", choices: ["Leave her laptop on", "Restart her laptop", "Bring her laptop to his office", "Call the director"], answer: 0, explanation: "근거: 4번째 대사(남자) leave your laptop on and stay logged in. 오답: (B) 재시작은 고치는 동안 저절로 될 수 있다는 말이지(6번째 대사) 여자에게 시킨 일이 아니다. (C) from here, 즉 원격으로 고친다고 했다. (D) 이사에게는 여자가 자료를 보내야 할 뿐 전화하라는 말은 없다." },
+      { q: "What is suggested about the update?", choices: ["It was installed by mistake", "It deleted some of the woman's files", "It affected more than one computer", "It will be removed tomorrow"], answer: 2, explanation: "추론 문제다. 근거: 2번째 대사(남자) You're not the only one. That update changed a security setting, and three other people from your department have called this morning. 업데이트 뒤 같은 문제로 여러 사람이 전화했으므로 한 대 이상의 컴퓨터에 영향을 주었다. 오답: (A) 실수로 설치했다는 말은 없다. (B) 파일이 지워진 것이 아니라 프로그램이 열리지 않는 것이다. (D) 내일 제거한다는 말은 없다." }
+    ]
   }
 ];
 

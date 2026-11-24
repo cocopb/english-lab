@@ -1524,6 +1524,12 @@
       return { plan: plan, items: assembleLcSet(plan) };
     }
 
+    // 검사용(tools/check-practice.js): 화면 없이 출제를 여러 번 돌려 "한 번도 나올 수 없는 항목이 없는지"와
+    // 특정 항목 쏠림을 본다. 앱 동작에는 쓰지 않는다.
+    window.PracticeFullSet.plan = planFullSet;
+    window.PracticeLcFullSet.plan = planLcSet;
+    window.PracticeMini = { build: buildExam };
+
     // ---------- LC 풀세트 저장 (RC 풀세트와 별도 키) ----------
 
     function readLcSave() {
