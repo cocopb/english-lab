@@ -558,11 +558,11 @@ window.PASSAGES = [
     header: ["Text Message Conversation"],
     sentences: [
       { en: "Dana Whitfield (10:12 A.M.): The delivery van won't start. I'm still at the depot.", ko: "다나 휘트필드 (오전 10시 12분): 배송 차량이 시동이 안 걸려요. 저 아직 물류 창고에 있어요." },
-      { en: "Omar Haddad (10:14 A.M.): How long until the mechanic arrives?", ko: "오마르 하다드 (오전 10시 14분): 정비사가 오기까지 얼마나 걸려요?" },
+      { en: "Omar Petrakis (10:14 A.M.): How long until the mechanic arrives?", ko: "오마르 페트라키스 (오전 10시 14분): 정비사가 오기까지 얼마나 걸려요?" },
       { en: "Dana Whitfield (10:15 A.M.): He said twenty minutes, but I've heard that before.", ko: "다나 휘트필드 (오전 10시 15분): 20분이라고 했는데, 전에도 그 말 들었어요." },
-      { en: "Omar Haddad (10:17 A.M.): Our first stop expects the order by eleven. Can you take the smaller truck?", ko: "오마르 하다드 (오전 10시 17분): 첫 배송지가 11시까지 주문품을 받기로 돼 있어요. 작은 트럭으로 갈 수 있어요?" },
+      { en: "Omar Petrakis (10:17 A.M.): Our first stop expects the order by eleven. Can you take the smaller truck?", ko: "오마르 페트라키스 (오전 10시 17분): 첫 배송지가 11시까지 주문품을 받기로 돼 있어요. 작은 트럭으로 갈 수 있어요?" },
       { en: "Dana Whitfield (10:18 A.M.): It only holds half the boxes. I'd have to make two trips.", ko: "다나 휘트필드 (오전 10시 18분): 거기엔 상자가 절반밖에 안 들어가요. 두 번 왕복해야 해요." },
-      { en: "Omar Haddad (10:20 A.M.): Do that for now. I'll call the afternoon customers and push their times back.", ko: "오마르 하다드 (오전 10시 20분): 우선 그렇게 해주세요. 오후 고객들에게는 제가 전화해서 시간을 뒤로 미룰게요." },
+      { en: "Omar Petrakis (10:20 A.M.): Do that for now. I'll call the afternoon customers and push their times back.", ko: "오마르 페트라키스 (오전 10시 20분): 우선 그렇게 해주세요. 오후 고객들에게는 제가 전화해서 시간을 뒤로 미룰게요." },
       { en: "Dana Whitfield (10:21 A.M.): Loading it now.", ko: "다나 휘트필드 (오전 10시 21분): 지금 싣고 있어요." }
     ],
     vocab: [
@@ -576,7 +576,7 @@ window.PASSAGES = [
       { q: "Where most likely is Ms. Whitfield?", choices: ["At a repair shop", "At a delivery depot", "At a customer's office", "At a parking garage"], answer: 1, explanation: "근거: 10:12 Dana Whitfield의 I'm still at the depot. 오답: 정비사를 기다리는 중이라 정비소(A)가 아니고, 아직 출발하지 못했으므로 고객 사무실(C)도 아니다. 주차장(D)은 언급이 없다." },
       { q: "At 10:15 A.M., what does Ms. Whitfield most likely mean when she writes, \"but I've heard that before\"?", choices: ["She has not met the mechanic", "She already repaired the van", "She wants to call a different mechanic", "She doubts the mechanic will arrive on time"], answer: 3, explanation: "의도 파악 문제다. 근거: 바로 앞 문장 He said twenty minutes. 전에도 같은 말을 들었다는 것은 이번에도 20분 안에 오지 않을 거라고 의심한다는 뜻이다. 오답: 정비사를 만난 적 없다(A)거나, 다른 정비사를 부르겠다(C)거나, 이미 고쳤다(B)는 말은 없다." },
       { q: "In the text message chain, the word \"holds\" is closest in meaning to", choices: ["contains", "grips", "delays", "hosts"], answer: 0, word: "holds", explanation: "어휘 문제다. 근거: 10:18 Dana Whitfield의 It only holds half the boxes. I'd have to make two trips. 작은 트럭에 상자가 절반만 '들어간다'는 뜻이다. 오답: grips(손에 쥐다)·delays(붙잡아 두다, hold up)·hosts(행사를 열다, hold a meeting)는 hold의 다른 뜻이다. 참고: 실제 시험에서는 '문단 2, 3행의 단어'처럼 위치를 알려준다. 이 앱은 문단·행 번호 없이 단어로만 표시하니, 형식이 달라도 당황하지 말자." },
-      { q: "What does Mr. Haddad say he will do?", choices: ["Drive the van himself", "Reschedule some deliveries", "Cancel the first stop", "Hire a new mechanic"], answer: 1, explanation: "근거: 10:20 Omar Haddad의 I'll call the afternoon customers and push their times back. push back을 reschedule로 바꿔 표현했다. 오답: 직접 운전(A)·첫 배송지 취소(C)·정비사 고용(D)은 말하지 않았다. 첫 배송지는 작은 트럭으로 가기로 했다." }
+      { q: "What does Mr. Petrakis say he will do?", choices: ["Drive the van himself", "Reschedule some deliveries", "Cancel the first stop", "Hire a new mechanic"], answer: 1, explanation: "근거: 10:20 Omar Petrakis의 I'll call the afternoon customers and push their times back. push back을 reschedule로 바꿔 표현했다. 오답: 직접 운전(A)·첫 배송지 취소(C)·정비사 고용(D)은 말하지 않았다. 첫 배송지는 작은 트럭으로 가기로 했다." }
     ]
   },
   {
@@ -1363,6 +1363,240 @@ window.PASSAGES = [
       { q: "What is the main purpose of the information sheet?", choices: ["To advertise the fair to visitors", "To announce a change of location due to bad weather", "To explain arrangements for people who will sell at the fair", "To invite artists to reserve a booth"], answer: 2, explanation: "주제·목적 문제다. 근거: 머리글 Information for Exhibitors와 1번째 문장 Thank you for reserving a booth. 이후 설치 시간, 부스 구성, 테이블 대여, 주차, 우천 시 안내가 이어진다. 오답: (A) 방문객이 아니라 부스를 예약한 참가 업체에게 쓴 글이다. (B) 6번째 문장에서 비가 와도 예정대로 진행한다고 했다. (D) 이미 예약한 사람에게 감사하는 글이다." },
       { q: "What does each booth include?", choices: ["A parking space behind the main tent", "Access to electricity", "Three chairs", "An extra table at no charge"], answer: 1, explanation: "근거: 3번째 문장 Each booth comes with one table, two chairs, and access to an electrical outlet. electrical outlet을 electricity로 바꿔 표현했다. 오답: (A) 5번째 문장에서 본 천막 뒤는 짐을 내리는 동안만 쓸 수 있다. (C) 의자는 두 개다. (D) 4번째 문장에서 추가 테이블은 하루 20달러를 받는다." },
       { q: "How much would an exhibitor most likely pay to rent two extra tables for the entire fair?", choices: ["$40", "$60", "$80", "$120"], answer: 3, explanation: "추론 문제다. 근거 1: 1번째 문장 runs from Friday, May 15, to Sunday, May 17. 금·토·일 사흘이다. 근거 2: 4번째 문장 Extra tables can be rented for $20 each per day. 20달러 × 2개 × 3일 = 120달러다. 오답: (A) 40달러는 두 개를 하루 빌린 값이다. (B) 60달러는 한 개를 사흘 빌린 값이다. (C) 80달러는 두 개를 이틀 빌린 값이다." }
+    ]
+  },
+  {
+    id: "rp40", type: "삼중 지문", title: "교육 행사 신청과 워크숍 배정", strategyId: "r06", recommendedSec: 270,
+    parts: [
+      {
+        label: "지문 1 — 행사 안내",
+        header: ["Pacific Coast Hospitality Association", "Spring Training Day — Saturday, April 11", "Grandview Conference Center"],
+        sentences: [
+          { en: "Our annual training day offers practical workshops for hotel and restaurant staff.", ko: "해마다 열리는 교육의 날에는 호텔·식당 직원을 위한 실무 워크숍이 열립니다." },
+          { en: "Registration is $70 per person for association members and $95 for nonmembers, and lunch is included.", ko: "등록비는 협회 회원 1인 70달러, 비회원 95달러이며 점심이 포함됩니다." },
+          { en: "Each participant may choose one morning and one afternoon workshop.", ko: "참가자는 오전 워크숍 하나와 오후 워크숍 하나를 고를 수 있습니다." },
+          { en: "Morning workshops: Front Desk Software (Room 1), Handling Guest Complaints (Room 2)", ko: "오전 워크숍: 프런트 데스크 소프트웨어(1번 방), 고객 불만 응대(2번 방)" },
+          { en: "Afternoon workshops: Food Safety Basics (Room 1), Wine Service (Room 3, limited to 20 participants)", ko: "오후 워크숍: 식품 안전 기초(1번 방), 와인 서비스(3번 방, 20명 한정)" },
+          { en: "Workshop seats are given out in the order that registration forms arrive.", ko: "워크숍 자리는 신청서가 도착한 순서대로 배정합니다." },
+          { en: "Registration closes on March 27.", ko: "등록은 3월 27일에 마감합니다." }
+        ]
+      },
+      {
+        label: "지문 2 — 참가 신청서",
+        header: ["Spring Training Day — Registration Form"],
+        sentences: [
+          { en: "Business: Lantern Bay Bistro | Contact: Renata Szabo, General Manager", ko: "업체: 랜턴 베이 비스트로 | 담당자: 레나타 사보, 총지배인" },
+          { en: "Association member number: PCHA-3318", ko: "협회 회원 번호: PCHA-3318" },
+          { en: "Participant 1: Ruben Vidal | Morning: Handling Guest Complaints | Afternoon: Wine Service", ko: "참가자 1: 루벤 비달 | 오전: 고객 불만 응대 | 오후: 와인 서비스" },
+          { en: "Participant 2: Aiko Mori | Morning: Front Desk Software | Afternoon: Food Safety Basics", ko: "참가자 2: 아이코 모리 | 오전: 프런트 데스크 소프트웨어 | 오후: 식품 안전 기초" },
+          { en: "Participant 3: Anton Volkov | Morning: Handling Guest Complaints | Afternoon: Wine Service", ko: "참가자 3: 안톤 볼코프 | 오전: 고객 불만 응대 | 오후: 와인 서비스" },
+          { en: "Total payment enclosed: $210 | Date sent: March 25", ko: "동봉한 총액: 210달러 | 보낸 날짜: 3월 25일" }
+        ]
+      },
+      {
+        label: "지문 3 — 주최 측 이메일",
+        header: ["From: Jasper Nakamura", "To: Renata Szabo", "Date: March 26", "Subject: Your Spring Training Day registration"],
+        sentences: [
+          { en: "Dear Ms. Szabo,", ko: "사보 씨께," },
+          { en: "Thank you for registering three members of your staff for Spring Training Day.", ko: "봄 교육의 날에 직원 세 분을 등록해 주셔서 감사합니다." },
+          { en: "Unfortunately, only one seat was left in the Wine Service workshop when your form reached us.", ko: "안타깝게도 신청서가 도착했을 때 와인 서비스 워크숍에는 한 자리만 남아 있었습니다." },
+          { en: "I have saved that seat for the first participant listed on your form.", ko: "그 자리는 신청서에 처음 적힌 참가자에게 배정해 두었습니다." },
+          { en: "Your other employee who chose Wine Service has been placed in the remaining afternoon workshop instead.", ko: "와인 서비스를 고른 다른 직원분은 대신 남은 오후 워크숍에 배정했습니다." },
+          { en: "If he would rather join the waiting list for Wine Service, please tell me by April 3.", ko: "그분이 와인 서비스 대기자 명단에 오르기를 원하시면 4월 3일까지 알려 주십시오." },
+          { en: "Your payment has been received, and name badges will be ready at the front entrance on the day.", ko: "결제는 확인했으며, 이름표는 당일 정문에서 받으실 수 있습니다." },
+          { en: "Sincerely, Jasper Nakamura, Events Coordinator", ko: "재스퍼 나카무라, 행사 담당 드림" }
+        ]
+      }
+    ],
+    vocab: [
+      { w: "practical", m: "실무적인" },
+      { w: "nonmember", m: "비회원" },
+      { w: "enclosed", m: "동봉된" },
+      { w: "waiting list", m: "대기자 명단" },
+      { w: "name badge", m: "이름표" }
+    ],
+    questions: [
+      { q: "Why did Mr. Nakamura write to Ms. Szabo?", choices: ["To request a missing payment", "To explain a change to a workshop assignment", "To announce that registration has closed", "To ask for her association member number"], answer: 1, explanation: "주제·목적 문제다. 근거: 지문 3(이메일) 3번째 문장 only one seat was left in the Wine Service workshop와 5번째 문장 has been placed in the remaining afternoon workshop instead. 신청한 워크숍에 자리가 모자라 배정을 바꿨다고 알리는 메일이다. 오답: (A) 7번째 문장 Your payment has been received. 결제는 이미 받았다. (C) 지문 1에서 마감은 3월 27일이고 메일은 3월 26일이라 마감 전이다. (D) 회원 번호는 지문 2 신청서에 이미 적혀 있다." },
+      { q: "In the email, the word \"placed\" is closest in meaning to", choices: ["ranked", "set down", "ordered", "assigned"], answer: 3, word: "placed", part: 3, explanation: "어휘 문제다. 근거: 지문 3(이메일) 5번째 문장 has been placed in the remaining afternoon workshop instead. 사람을 다른 워크숍에 '배정했다'는 뜻이다. 오답: (A) '순위가 매겨지다'(placed second), (B) '물건을 내려놓다', (C) '주문하다'(place an order)는 place의 다른 뜻이다. 사람이 워크숍에 순위가 매겨지거나 내려놓아진다는 말은 통하지 않는다. 참고: 실제 시험에서는 '문단 2, 3행의 단어'처럼 위치를 알려준다. 이 앱은 문단 번호가 없어 문서 종류로 가리킨다." },
+      { q: "Who will take the Wine Service workshop?", choices: ["Ruben Vidal", "Aiko Mori", "Anton Volkov", "Renata Szabo"], answer: 0, explanation: "연계 문제다(지문 2 + 지문 3). 근거 1: 지문 3(이메일) 4번째 문장 I have saved that seat for the first participant listed on your form. 근거 2: 지문 2(신청서) 3번째 줄 Participant 1: Ruben Vidal ... Afternoon: Wine Service. 이메일은 이름을 말하지 않고, 신청서만으로는 누가 자리를 받았는지 알 수 없다. 오답: (B) 모리 씨는 식품 안전 기초를 골랐다. (C) 볼코프 씨는 세 번째로 적혀 있어 다른 워크숍으로 옮겨졌다. (D) 사보 씨는 신청한 담당자이고 참가자 명단에 없다." },
+      { q: "Where will Mr. Volkov most likely be on the afternoon of April 11?", choices: ["In Room 2", "In Room 3", "In Room 1", "At the front entrance"], answer: 2, explanation: "연계 문제다(지문 1 + 지문 2 + 지문 3). 추론 문제다. 근거 1: 지문 2(신청서) 5번째 줄 Anton Volkov ... Afternoon: Wine Service. 와인 서비스를 고른 두 번째 사람이다. 근거 2: 지문 3(이메일) 5번째 문장 Your other employee who chose Wine Service has been placed in the remaining afternoon workshop. 근거 3: 지문 1(안내) 5번째 줄 Afternoon workshops: Food Safety Basics (Room 1), Wine Service (Room 3). 남은 오후 워크숍은 식품 안전 기초이고 1번 방이다. 오답: (A) 2번 방은 오전 워크숍(고객 불만 응대) 장소다. (B) 3번 방은 와인 서비스 장소인데 자리를 받지 못했다. (D) 정문은 이름표를 받는 곳이다." },
+      { q: "What is Ms. Szabo asked to do by April 3?", choices: ["Say whether an employee wants to wait for a seat", "Send the rest of the registration fee", "Choose a different morning workshop", "Pick up name badges for her staff"], answer: 0, explanation: "근거: 지문 3(이메일) 6번째 문장 If he would rather join the waiting list for Wine Service, please tell me by April 3. join the waiting list를 wait for a seat로 바꿔 표현했다. 오답: (B) 결제는 이미 받았다. (C) 오전 워크숍은 바뀌지 않았다. (D) 이름표는 당일 정문에서 받는다." }
+    ]
+  },
+  {
+    id: "rp41", type: "삼중 지문", title: "사무 가구 주문과 배송 지연", strategyId: "r06", recommendedSec: 270,
+    parts: [
+      {
+        label: "지문 1 — 제품 카탈로그",
+        header: ["Evermore Office Furnishings — Spring Catalog"],
+        sentences: [
+          { en: "Item E-210 Ergonomic Desk Chair | $189 | Colors: black, gray", ko: "제품 E-210 인체공학 의자 | 189달러 | 색상: 검정, 회색" },
+          { en: "Item E-340 Adjustable Standing Desk | $420 | Colors: white, oak", ko: "제품 E-340 높이 조절 스탠딩 책상 | 420달러 | 색상: 흰색, 오크" },
+          { en: "Item E-115 Mobile File Cabinet | $135 | Colors: black, white", ko: "제품 E-115 이동식 서류함 | 135달러 | 색상: 검정, 흰색" },
+          { en: "Item E-505 LED Desk Lamp | $45 | Colors: black, silver", ko: "제품 E-505 LED 책상 조명 | 45달러 | 색상: 검정, 은색" },
+          { en: "Orders of more than $1,000 are delivered at no cost; for smaller orders, a $40 fee applies.", ko: "1,000달러가 넘는 주문은 무료로 배송하고, 그보다 작은 주문에는 40달러를 받습니다." },
+          { en: "Standing desks are built to order and ship within three weeks of the order date. Everything else leaves our warehouse within seven days.", ko: "스탠딩 책상은 주문 제작이라 주문일로부터 3주 안에 발송됩니다. 그 밖의 제품은 7일 안에 창고에서 출고됩니다." }
+        ]
+      },
+      {
+        label: "지문 2 — 주문서",
+        header: ["Evermore Office Furnishings — Order Form", "Customer: Hargrove Tax Advisors"],
+        sentences: [
+          { en: "Ordered by: Marisa Lindholm, Office Manager | Order date: May 6", ko: "주문자: 마리사 린드홈, 사무 관리자 | 주문일: 5월 6일" },
+          { en: "E-210 Ergonomic Desk Chair, gray, quantity 4 | $756", ko: "E-210 인체공학 의자, 회색, 4개 | 756달러" },
+          { en: "E-340 Adjustable Standing Desk, oak, quantity 1 | $420", ko: "E-340 높이 조절 스탠딩 책상, 오크, 1개 | 420달러" },
+          { en: "E-115 Mobile File Cabinet, white, quantity 2 | $270", ko: "E-115 이동식 서류함, 흰색, 2개 | 270달러" },
+          { en: "Order total: $1,446 | Delivery: Free", ko: "주문 합계: 1,446달러 | 배송: 무료" }
+        ]
+      },
+      {
+        label: "지문 3 — 배송 안내 이메일",
+        header: ["From: Oren Castellano", "To: Marisa Lindholm", "Date: May 9", "Subject: Your order from Evermore"],
+        sentences: [
+          { en: "Dear Ms. Lindholm,", ko: "린드홈 씨께," },
+          { en: "Thank you for choosing Evermore.", ko: "에버모어를 이용해 주셔서 감사합니다." },
+          { en: "I am sorry to report that one of the items you ordered is temporarily out of stock in gray.", ko: "주문하신 제품 중 하나가 회색 재고가 일시적으로 떨어졌음을 알려 드리게 되어 죄송합니다." },
+          { en: "We expect new stock by May 20 and will send those pieces as a separate shipment at no extra cost.", ko: "5월 20일까지 새 재고가 들어올 예정이며, 그 제품은 따로 추가 비용 없이 보내 드리겠습니다." },
+          { en: "Everything else in your order, except the item that is being built for you, left our warehouse this morning.", ko: "고객님을 위해 제작 중인 제품을 빼고 나머지는 모두 오늘 아침 창고에서 출고되었습니다." },
+          { en: "If you would prefer not to wait, we can ship the same model in black today.", ko: "기다리기 원치 않으시면 같은 모델을 검정색으로 오늘 보내 드릴 수 있습니다." },
+          { en: "Best regards, Oren Castellano, Customer Service", ko: "오렌 카스텔라노, 고객 서비스팀 드림" }
+        ]
+      }
+    ],
+    vocab: [
+      { w: "ergonomic", m: "인체공학적인" },
+      { w: "built to order", m: "주문 제작되는" },
+      { w: "warehouse", m: "창고" },
+      { w: "out of stock", m: "재고가 떨어진" },
+      { w: "separate shipment", m: "별도 배송" }
+    ],
+    questions: [
+      { q: "Which item in Ms. Lindholm's order is temporarily unavailable?", choices: ["The standing desk", "The file cabinets", "The desk chairs", "The desk lamps"], answer: 2, explanation: "연계 문제다(지문 2 + 지문 3). 근거 1: 지문 3(이메일) 3번째 문장 one of the items you ordered is temporarily out of stock in gray. 이메일은 제품 이름을 말하지 않는다. 근거 2: 지문 2(주문서)에서 회색으로 주문한 것은 2번째 줄 E-210 Ergonomic Desk Chair, gray뿐이다. 오답: (A) 책상은 오크, (B) 서류함은 흰색으로 주문했다. (D) 조명은 주문하지 않았다." },
+      { q: "By what date will the standing desk most likely be shipped?", choices: ["May 9", "May 13", "May 20", "May 27"], answer: 3, explanation: "연계 문제다(지문 1 + 지문 2 + 지문 3). 추론 문제다. 근거 1: 지문 3(이메일) 5번째 문장 except the item that is being built for you. 오늘 출고되지 않은 제작 중인 제품이 있다. 근거 2: 지문 1(카탈로그) 6번째 줄 Standing desks are built to order and ship within three weeks of the order date. 제작품은 스탠딩 책상이다. 근거 3: 지문 2(주문서) 1번째 줄 Order date: May 6. 5월 6일부터 3주 뒤는 5월 27일이다. 오답: (A) 5월 9일은 나머지 제품이 출고된 날이다. (B) 5월 13일은 주문일에서 7일 뒤로, 다른 제품의 발송 기한이다. (C) 5월 20일은 회색 의자의 새 재고가 들어올 날이다." },
+      { q: "What is NOT included in Ms. Lindholm's order?", choices: ["Four chairs", "Desk lamps", "A desk made of oak", "Two file cabinets"], answer: 1, explanation: "NOT 문제다. 근거: 지문 2(주문서) 2번째부터 4번째 줄까지 의자 4개(A), 오크 책상 1개(C), 서류함 2개(D)가 있다. 조명(E-505)은 지문 1 카탈로그에만 있고 주문서에는 없다." },
+      { q: "In the catalog, the word \"applies\" is closest in meaning to", choices: ["is charged", "submits a request", "is spread", "concentrates"], answer: 0, word: "applies", part: 1, explanation: "어휘 문제다. 근거: 지문 1(카탈로그) 5번째 줄 for smaller orders, a $40 fee applies. 1,000달러 이하 주문에는 40달러 요금이 '붙는다, 부과된다'는 뜻이다. 오답: (B) '지원하다·신청하다', (C) '(크림 등을) 바르다', (D) '(apply oneself) 전념하다'는 apply의 다른 뜻이다. 요금이 신청하거나 발리거나 전념한다는 말은 통하지 않는다. 참고: 실제 시험에서는 '문단 2, 3행의 단어'처럼 위치를 알려준다. 이 앱은 문단 번호가 없어 문서 종류로 가리킨다." },
+      { q: "What does Mr. Castellano offer to do?", choices: ["Refund the delivery fee", "Lower the price of the chairs", "Deliver the desk by May 20", "Send the item in a different color"], answer: 3, explanation: "근거: 지문 3(이메일) 6번째 문장 we can ship the same model in black today. 회색 대신 검정을 보내 줄 수 있다는 제안이다. 오답: (A) 배송은 원래 무료(지문 2)였고 환불 이야기는 없다. (B) 가격 인하는 없다. (C) 5월 20일은 의자의 새 재고가 들어오는 날이다." }
+    ]
+  },
+  {
+    id: "rp42", type: "문자 메시지", title: "제안서 부수 추가", strategyId: "r03", recommendedSec: 80,
+    header: ["Text Message Conversation"],
+    sentences: [
+      { en: "Greta Kerr (11:02 A.M.): Are you still at the print shop? The client just asked for ten copies of the proposal instead of six.", ko: "그레타 커 (오전 11시 2분): 아직 인쇄소에 계세요? 고객이 제안서를 6부 말고 10부 달래요." },
+      { en: "Leon Whitcombe (11:04 A.M.): I'm already in the car. I picked up the six copies about ten minutes ago.", ko: "리언 위트컴 (오전 11시 4분): 벌써 차에 탔어요. 6부는 10분쯤 전에 찾았어요." },
+      { en: "Greta Kerr (11:05 A.M.): Oh no. The meeting starts at noon.", ko: "그레타 커 (오전 11시 5분): 이런. 회의가 12시에 시작하는데요." },
+      { en: "Leon Whitcombe (11:06 A.M.): Say no more. I'm turning around now.", ko: "리언 위트컴 (오전 11시 6분): 더 말 안 해도 돼요. 지금 차 돌릴게요." },
+      { en: "Leon Whitcombe (11:07 A.M.): The shop is only five minutes away, so I'll still be back in plenty of time.", ko: "리언 위트컴 (오전 11시 7분): 인쇄소가 5분 거리라 넉넉히 돌아갈 수 있어요." },
+      { en: "Greta Kerr (11:08 A.M.): Thank you! I'll set up the conference room in the meantime.", ko: "그레타 커 (오전 11시 8분): 고마워요! 그동안 저는 회의실을 준비할게요." }
+    ],
+    vocab: [
+      { w: "print shop", m: "인쇄소" },
+      { w: "proposal", m: "제안서" },
+      { w: "pick up", m: "찾아오다" },
+      { w: "turn around", m: "(차를) 돌리다" },
+      { w: "in the meantime", m: "그동안" }
+    ],
+    questions: [
+      { q: "At 11:06 A.M., what does Mr. Whitcombe mean when he writes, \"Say no more\"?", choices: ["He does not want to discuss the client", "He thinks the meeting should be canceled", "He understands what he needs to do", "He wants Ms. Kerr to call the print shop"], answer: 2, explanation: "의도 파악 문제다. 근거: 11:02 고객이 10부를 원한다는 말과 11:05 The meeting starts at noon.에 답한 말이고, 바로 뒤에 I'm turning around now.가 이어진다. 끝까지 말하지 않아도 무엇을 해야 하는지 알겠다는 뜻이다. 오답: (A) 고객 이야기를 그만하자는 뜻이 아니다. (B) 회의를 취소하자는 말은 없다. (D) 인쇄소에 가는 사람은 위트컴 씨 자신이다." },
+      { q: "How many more copies will Mr. Whitcombe most likely pick up?", choices: ["Two", "Four", "Six", "Ten"], answer: 1, explanation: "추론 문제다. 근거 1: 11:02 The client just asked for ten copies of the proposal instead of six. 근거 2: 11:04 I picked up the six copies. 10부가 필요한데 6부를 찾았으니 4부를 더 찾아야 한다. 오답: (A) 2부는 계산이 맞지 않는다. (C) 6부는 이미 찾은 수다. (D) 10부는 필요한 전체 수다." }
+    ]
+  },
+  {
+    id: "rp43", type: "영수증", title: "원예 용품점 영수증", strategyId: "r02", recommendedSec: 80,
+    header: ["Fernhill Garden Supply", "Receipt 48213 | June 2 | 10:41 A.M."],
+    sentences: [
+      { en: "Clay flower pots, set of 3 | 2 at $18.00 | $36.00", ko: "점토 화분 3개 세트 | 2개 × 18.00달러 | 36.00달러" },
+      { en: "Potting soil, 20 lb bag | 3 at $7.50 | $22.50", ko: "화분용 흙 20파운드 | 3개 × 7.50달러 | 22.50달러" },
+      { en: "Watering can | 1 at $14.00 | $14.00", ko: "물뿌리개 | 1개 × 14.00달러 | 14.00달러" },
+      { en: "Subtotal: $72.50 | Loyalty member discount (10%): $7.25", ko: "소계: 72.50달러 | 단골 회원 할인(10%): 7.25달러" },
+      { en: "Total paid by credit card: $65.25", ko: "신용카드 결제 합계: 65.25달러" },
+      { en: "Unopened products can be brought back for a full refund until July 2.", ko: "뜯지 않은 상품은 7월 2일까지 가져오시면 전액 환불해 드립니다." },
+      { en: "Loyalty members earn one point for every full dollar paid.", ko: "단골 회원은 결제한 1달러마다 1포인트를 받습니다." }
+    ],
+    vocab: [
+      { w: "clay", m: "점토" },
+      { w: "potting soil", m: "화분용 흙" },
+      { w: "subtotal", m: "소계" },
+      { w: "loyalty member", m: "단골 회원, 멤버십 회원" },
+      { w: "unopened", m: "뜯지 않은" }
+    ],
+    questions: [
+      { q: "How many points did the customer most likely earn with this purchase?", choices: ["7", "36", "65", "72"], answer: 2, explanation: "추론 문제다. 근거 1: 5번째 줄 Total paid by credit card: $65.25. 근거 2: 7번째 줄 Loyalty members earn one point for every full dollar paid. 4번째 줄에서 회원 할인을 받았으니 회원이고, 실제 낸 65.25달러에서 1달러 단위만 세면 65포인트다. 오답: (A) 7은 할인액(7.25달러)이다. (B) 36은 화분 금액이다. (D) 72는 할인 전 소계다." },
+      { q: "What is NOT shown on the receipt?", choices: ["The method of payment", "The time of the purchase", "The return period", "The name of the cashier"], answer: 3, explanation: "NOT 문제다. 근거: 결제 수단(A)은 5번째 줄 by credit card, 구매 시각(B)은 머리글 10:41 A.M., 반품 기간(C)은 6번째 줄 until July 2에 있다. 계산원 이름(D)은 영수증 어디에도 없다." }
+    ]
+  },
+  {
+    id: "rp44", type: "후기", title: "카메라 수리점 후기", strategyId: "r02", recommendedSec: 120,
+    header: ["Lensworks Camera Repair — Customer Reviews", "Posted by: Yusuf Demir | October 8 | Rating: 4 of 5"],
+    sentences: [
+      { en: "I dropped my camera during a hiking trip last month, and the lens stopped focusing properly.", ko: "지난달 등산 중에 카메라를 떨어뜨렸더니 렌즈 초점이 제대로 맞지 않았어요." },
+      { en: "A friend recommended Lensworks, so I took it there the following Monday.", ko: "친구가 렌즈웍스를 추천해서 그다음 월요일에 가져갔습니다.", mark: 1 },
+      { en: "The technician examined it while I waited and quoted a price of $120.", ko: "기술자가 제가 기다리는 동안 살펴보고 120달러를 불렀어요.", mark: 2 },
+      { en: "She said the repair would take about a week, but the camera was ready in just four days.", ko: "수리에 일주일쯤 걸린다고 했는데 나흘 만에 찾을 수 있었어요.", mark: 3 },
+      { en: "The only drawback was parking, since the shop's small lot was full both times I went.", ko: "단점은 주차 하나였어요. 갈 때마다 가게의 작은 주차장이 꽉 차 있었거든요.", mark: 4 },
+      { en: "Still, I would gladly go back, and I have already sent two coworkers there.", ko: "그래도 기꺼이 다시 갈 거고, 이미 동료 두 명에게 그곳을 알려 줬어요." }
+    ],
+    vocab: [
+      { w: "focus", m: "초점을 맞추다" },
+      { w: "recommend", m: "추천하다" },
+      { w: "quote", m: "(가격을) 제시하다" },
+      { w: "drawback", m: "단점" },
+      { w: "gladly", m: "기꺼이" }
+    ],
+    questions: [
+      { q: "Why did Mr. Demir write the review?", choices: ["To describe his experience with a repair service", "To report that a repair took longer than promised", "To thank a friend for a recommendation", "To complain about parking near a shop"], answer: 0, explanation: "주제·목적 문제다. 근거: 1번째 문장에서 카메라가 고장 났고, 2번째부터 6번째 문장까지 맡긴 과정, 가격, 수리 기간, 단점, 재방문 의사를 차례로 말한다. 수리를 맡긴 경험을 전하는 후기다. 오답: (B) 4번째 문장에서 일주일 걸린다고 했는데 나흘 만에 끝났다. (C) 친구 추천은 2번째 문장에 한 번 나온다. (D) 주차는 5번째 문장 하나에만 해당하는 단점이다." },
+      { q: "In the review, the word \"lot\" is closest in meaning to", choices: ["large amount", "fate", "item for auction", "parking area"], answer: 3, word: "lot", explanation: "어휘 문제다. 근거: 5번째 문장 The only drawback was parking, since the shop's small lot was full. 주차 이야기라 lot은 '주차장(부지)'이다. 오답: (A) '많음'(a lot), (B) '운명', (C) '경매 물품 한 묶음'은 lot의 다른 뜻이다. 가게의 작은 운명이 꽉 찼다는 말은 통하지 않는다. 참고: 실제 시험에서는 '문단 2, 3행의 단어'처럼 위치를 알려준다. 이 앱은 문단 번호가 없어 문서 종류로 가리킨다." },
+      { q: "In which of the positions marked [1], [2], [3], and [4] does the following sentence best belong? \"That figure turned out to be exactly what I paid.\"", choices: ["[1]", "[2]", "[3]", "[4]"], answer: 1, insert: "That figure turned out to be exactly what I paid.", explanation: "문장 삽입이다. 근거: 연결 단서는 That figure(그 금액)와 what I paid(낸 돈)다. [2] 앞 문장 quoted a price of $120에 금액이 처음 나오므로 '그 금액이 실제로 낸 돈과 같았다'가 이어진다. 오답: [1] 앞에는 아직 금액이 없다. [3] 앞의 four days는 숫자지만 돈이 아니라 낼 수 없다. [4] 앞은 주차 이야기라 가리킬 금액이 없다." }
+    ]
+  },
+  {
+    id: "rp45", type: "설문", title: "대중교통 이용자 설문", strategyId: "r02", recommendedSec: 110,
+    header: ["Ashgrove Public Transit — Rider Survey", "Respondent: Carmen Liu | Date: August 18"],
+    sentences: [
+      { en: "We are planning changes to our weekend bus service and would like to hear from regular riders.", ko: "주말 버스 운행을 바꾸려고 하니 자주 타시는 분들의 의견을 듣고 싶습니다." },
+      { en: "Everyone who returns this survey by August 31 will be entered in a drawing for a free monthly pass.", ko: "8월 31일까지 설문을 보내 주신 모든 분은 무료 월 정기권 추첨에 들어갑니다." },
+      { en: "1. Which route do you ride most often? Route 14 (Downtown to Westfield Mall)", ko: "1. 가장 자주 타는 노선은? 14번(시내에서 웨스트필드 몰)" },
+      { en: "2. How often do you ride on weekends? Every Saturday. I work at the mall.", ko: "2. 주말에는 얼마나 자주 타나요? 토요일마다요. 몰에서 일해요." },
+      { en: "3. What would most improve your weekend trips? More frequent buses. On Saturdays, Route 14 comes only once an hour, so I often wait a long time after work.", ko: "3. 주말 이용에서 가장 나아졌으면 하는 점은? 더 자주 오는 버스요. 토요일에는 14번이 한 시간에 한 번만 와서 퇴근 뒤 오래 기다릴 때가 많아요." },
+      { en: "4. May we contact you about your answers? Yes, by email.", ko: "4. 답변에 관해 연락드려도 될까요? 네, 이메일로요." }
+    ],
+    vocab: [
+      { w: "respondent", m: "응답자" },
+      { w: "regular rider", m: "자주 이용하는 승객" },
+      { w: "monthly pass", m: "월 정기권" },
+      { w: "route", m: "노선" },
+      { w: "frequent", m: "자주 있는, 잦은" }
+    ],
+    questions: [
+      { q: "What is the main purpose of the rider survey?", choices: ["To announce a new route to Westfield Mall", "To collect opinions before changing weekend service", "To advertise a free monthly pass", "To recruit drivers for Saturday shifts"], answer: 1, explanation: "주제·목적 문제다. 근거: 1번째 문장 We are planning changes to our weekend bus service and would like to hear from regular riders. 주말 운행을 바꾸기 전에 의견을 모으는 설문이다. 오답: (A) 14번 노선은 이미 다니는 노선이다. (C) 정기권은 2번째 문장에서 설문 참여자 추첨 상품으로만 나온다. (D) 기사 모집은 없고, 일하는 사람은 응답자다." },
+      { q: "What is suggested about Ms. Liu?", choices: ["She rides the bus every day", "She wants a new route to be added", "She prefers to be contacted by phone", "She is eligible for the prize drawing"], answer: 3, explanation: "추론 문제다. 근거 1: 2번째 문장 Everyone who returns this survey by August 31 will be entered in a drawing. 근거 2: 머리글 Date: August 18. 마감 전에 작성했으니 추첨 대상이다. 오답: (A) 4번째 줄에서 주말에는 토요일마다 탄다고만 했고, 매일 탄다는 말은 없다. (B) 새 노선이 아니라 더 자주 오는 버스를 원한다. (C) 6번째 줄에서 이메일로 연락받겠다고 했다." },
+      { q: "In the survey, the word \"drawing\" is closest in meaning to", choices: ["lottery", "picture", "pulling", "design plan"], answer: 0, word: "drawing", explanation: "어휘 문제다. 근거: 2번째 문장 will be entered in a drawing for a free monthly pass. 정기권을 받을 사람을 뽑는 '추첨'이다. 오답: (B) '그림', (C) '끌어당기기', (D) '설계 도면'은 drawing의 다른 뜻이다. 그림에 응모해 정기권을 받는다는 말은 통하지 않는다. 참고: 실제 시험에서는 '문단 2, 3행의 단어'처럼 위치를 알려준다. 이 앱은 문단 번호가 없어 문서 종류로 가리킨다." }
+    ]
+  },
+  {
+    id: "rp46", type: "보도자료", title: "소프트웨어 회사 청소년 코딩 프로그램", strategyId: "r05", recommendedSec: 150,
+    header: ["FOR IMMEDIATE RELEASE", "Contact: Ilse Brannock, Communications Manager, Corvane Software"],
+    sentences: [
+      { en: "Corvane Software announced today that it will offer a free six-week coding program for high school students in the Millbrook area.", ko: "코베인 소프트웨어는 오늘 밀브룩 지역 고등학생을 위한 6주짜리 무료 코딩 프로그램을 연다고 발표했다." },
+      { en: "The program will begin on July 6 and will meet three afternoons a week at the company's headquarters on Garnet Avenue.", ko: "프로그램은 7월 6일에 시작해 가닛 가에 있는 본사에서 일주일에 사흘 오후에 모인다.", mark: 1 },
+      { en: "Students do not need any previous programming experience to apply.", ko: "지원하는 데 프로그래밍 경험은 필요 없다.", mark: 2 },
+      { en: "Each participant will be paired with a Corvane engineer, who will guide the student through building a simple mobile app.", ko: "참가자마다 코베인 엔지니어 한 명이 짝이 되어 간단한 모바일 앱을 만드는 과정을 이끈다.", mark: 3 },
+      { en: "At the end of the program, students will present their apps to family members and local business owners.", ko: "프로그램이 끝나면 학생들은 가족과 지역 사업주들 앞에서 앱을 발표한다.", mark: 4 },
+      { en: "Applications are available on the company's website and must be submitted by May 29.", ko: "지원서는 회사 웹사이트에 있으며 5월 29일까지 내야 한다." },
+      { en: "\"Many of our staff grew up in Millbrook, and this is our way of giving back,\" said Corvane president Walter Imbriano.", ko: "\"직원 중 많은 사람이 밀브룩에서 자랐고, 이것이 우리가 지역에 돌려주는 방식입니다\"라고 월터 임브리아노 코베인 사장은 말했다." }
+    ],
+    vocab: [
+      { w: "for immediate release", m: "즉시 배포용(보도자료 머리말)" },
+      { w: "headquarters", m: "본사" },
+      { w: "previous", m: "이전의" },
+      { w: "be paired with", m: "~와 짝이 되다" },
+      { w: "give back", m: "(사회에) 환원하다" }
+    ],
+    questions: [
+      { q: "What is the press release mainly about?", choices: ["The opening of a new headquarters", "A job opening for software engineers", "A free educational program for teenagers", "A competition for the best mobile app"], answer: 2, explanation: "주제·목적 문제다. 근거: 1번째 문장 will offer a free six-week coding program for high school students. 이후 일정, 지원 조건, 진행 방식, 지원 마감이 이어진다. 오답: (A) 본사는 2번째 문장에서 프로그램 장소로만 나오고 새로 여는 것이 아니다. (B) 엔지니어는 학생을 돕는 사람으로 나오고 채용 이야기는 없다. (D) 5번째 문장은 앱 발표이고 경연이 아니다." },
+      { q: "Where will the program take place?", choices: ["At Corvane's headquarters", "At a local high school", "At a public library", "Online"], answer: 0, explanation: "근거: 2번째 문장 will meet three afternoons a week at the company's headquarters on Garnet Avenue. 오답: (B) 고등학교는 참가 대상을 말할 때만 나온다. (C) 도서관과 (D) 온라인은 나오지 않는다." },
+      { q: "When will the program most likely end?", choices: ["In late June", "In mid-August", "In early July", "In late September"], answer: 1, explanation: "추론 문제다. 근거 1: 1번째 문장 a free six-week coding program. 근거 2: 2번째 문장 The program will begin on July 6. 7월 6일부터 6주면 8월 중순에 끝난다. 오답: (A) 6월 말은 시작 전이다. (C) 7월 초는 시작하는 때다. (D) 9월 말은 6주보다 훨씬 뒤다." },
+      { q: "In which of the positions marked [1], [2], [3], and [4] does the following sentence best belong? \"These engineers have all volunteered to take part.\"", choices: ["[1]", "[2]", "[3]", "[4]"], answer: 2, insert: "These engineers have all volunteered to take part.", explanation: "문장 삽입이다. 근거: 연결 단서는 These engineers(이 엔지니어들)다. [3] 앞 문장 Each participant will be paired with a Corvane engineer에서 엔지니어가 처음 나오므로 그 뒤에 와야 한다. 오답: [1]과 [2] 앞에는 엔지니어가 아직 나오지 않았다. [4] 앞 문장은 가족과 지역 사업주라 These engineers가 가리킬 대상이 아니다." }
     ]
   }
 ];

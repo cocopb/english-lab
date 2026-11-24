@@ -123,6 +123,8 @@
   - 같은 인물이면 이름 철자, Mr./Ms., 직책을 질문·해설·지문·speakers 표에서 똑같이 쓴다.
 - **왜:** 학습자는 같은 이름이면 같은 사람으로 읽는다.
 - **예:** p608 카페 대표와 rp34 식당 주인이 둘 다 Marisol Vega였다. p608 쪽을 Leah Brandt로 바꿨다.
+  - 성만 같아도 바꾼다. rp12 Noor Haddad와 rp17 Omar Haddad는 미니 모의고사 한 회에 함께 나올 수 있어서 rp17을 Omar Petrakis로 바꿨다(2026-11-24).
+  - 새 이름은 이름과 성을 각각 data 전체에서 검색한다. 2단계에서 Tomas·Dmitri·Delgado·Nadia·Marsh가 걸렸고, 새 지문끼리도 Hargrove가 겹쳤다.
 - **검사:** 사람 검토.
 
 ---
@@ -468,7 +470,8 @@
 - **규칙**
   - 이중·삼중 지문의 연계 문항은 두 지문의 정보를 합쳐야만 풀려야 한다.
   - 한쪽 지문이 이유나 답을 직접 말하면 그 말을 빼고, 빠진 정보는 다른 지문이 말하게 한다.
-  - 연계 문항 수: 지금 데이터는 이중 지문 2개, 삼중 지문 2개 또는 3개다. 명시 규칙은 아니고 관찰값이다.
+  - 연계 문항 수: 삼중 지문은 세트당 2개 또는 3개로 쓴다(사용자 기준). 이중 지문은 지금 1개에서 3개다.
+  - 세 지문을 다 이어야 풀리는 문항을 하나 넣으면 좋다. 예: rp40 Q4 신청서(볼코프는 두 번째로 와인 서비스 신청) + 이메일(남은 오후 워크숍으로 배정) + 안내(남은 워크숍은 1번 방). rp41 Q2 이메일(제작 중인 제품은 아직 출고 안 됨) + 카탈로그(스탠딩 책상은 주문 제작, 3주 안 발송) + 주문서(주문일 5월 6일).
 - **왜:** 연계로 표시한 문항이 실제로는 한 지문으로 풀렸다.
 - **예**
   - rp27 Q3: 지문 3이 "below the limit for trips abroad"라고 이유를 그대로 말했다. "which is within our limit"로 바꾸고, 해외 여부는 신청서 "Oslo (international)"로 옮겼다.
@@ -509,7 +512,7 @@
   - 2: 단어가 두 번 나오면 질문이 가리키는 자리가 하나로 정해지지 않는다.
   - 3: 독해 탭이 핵심 어휘를 본문과 함께 보여 줘서 답이 미리 보인다.
   - 4: 1번 뜻이 정답이면 문맥을 읽지 않고도 풀린다.
-- **예 (지금 7문항)**
+- **예 (지금 11문항)**
 
   | 지문 | 단어 | 정답 | 오답(다른 뜻) |
   |---|---|---|---|
@@ -520,6 +523,10 @@
   | rp30 | figure | number | shape, person, drawing |
   | rp35 | address | deal with | speak to an audience about, write a location on, call by a title |
   | rp37 | credit | recognize | believe, lend money to, add funds to |
+  | rp40 | placed | assigned | ranked, set down, ordered |
+  | rp41 | applies | is charged | submits a request, is spread, concentrates |
+  | rp44 | lot | parking area | large amount, fate, item for auction |
+  | rp45 | drawing | lottery | picture, pulling, design plan |
 
   - 핵심 어휘에서 뺀 예: rp06 cover(다루다), rp17 hold(담다). 각각 ticketing system, first stop으로 바꿨다.
   - run의 manage가 오답인 이유: 노선을 '경영한다'로는 '15분마다'와 이어지지 않는다.
@@ -538,6 +545,8 @@
 - **예**
   - rp15 "However, food and drinks from the café will not be free."는 [4](free to enter 뒤)가 정답이다. [1]에서는 카페가 아직 안 나왔고, [2]에서는 However가 대비할 '무료'가 없다.
   - rp05 "These new employees will train at the original store first."는 채용 문장 뒤만 '새 직원'을 가리킬 수 있다.
+  - rp44 "That figure turned out to be exactly what I paid."는 120달러를 부른 문장 뒤([2])만 된다. [3] 앞의 four days도 숫자지만 낼 수 있는 돈이 아니다.
+  - rp46 "These engineers have all volunteered to take part."는 엔지니어가 처음 나오는 문장 뒤([3])만 된다. 7번째 문장의 our staff는 표시가 없는 자리다.
 - **검사:** `insertPositions`, 렌더링 검사의 삽입 표시. 단서는 사람 검토.
 
 ### R5. 추론
@@ -634,17 +643,17 @@
   6. purpose / Why ... write·sent / mainly about·discuss / main topic → 주제·목적
   7. 나머지 → 세부사항
 - **질문을 쓸 때 주의:** 원하는 유형으로 분류되는 표현을 쓴다. "suggested"가 든 목적 질문은 추론으로 센다.
-- **지금 분포 (147문항)와 260문항 목표**
+- **지금 분포 (171문항)와 260문항 목표**
 
   | 유형 | 지금 | 260문항 목표 | 방향 |
   |---|---|---|---|
-  | 주제·목적 | 24 (16%) | 39 (15%) | 15% 안팎 유지 |
-  | 세부사항 | 76 (52%) | 115 (44%) | 줄인다 |
-  | 추론 | 27 (18%) | 52 (20%) | 늘린다 |
-  | 어휘 | 7 (5%) | 23 (9%) | 크게 늘린다 |
-  | NOT | 6 (4%) | 16 (6%) | 늘린다 |
-  | 의도 파악 | 5 (3%) | 10 (4%) | 문자·채팅 지문에 |
-  | 문장 삽입 | 2 (1%) | 10 (4%) | 크게 늘린다 |
+  | 주제·목적 | 28 (16%) | 39 (15%) | 15% 안팎 유지 |
+  | 세부사항 | 81 (47%) | 115 (44%) | 줄인다 |
+  | 추론 | 33 (19%) | 52 (20%) | 늘린다 |
+  | 어휘 | 11 (6%) | 23 (9%) | 크게 늘린다 |
+  | NOT | 8 (5%) | 16 (6%) | 늘린다 |
+  | 의도 파악 | 6 (4%) | 10 (4%) | 문자·채팅 지문에 |
+  | 문장 삽입 | 4 (2%) | 10 (4%) | 크게 늘린다 |
 
   새 지문은 세부사항 대신 추론·어휘·삽입 쪽으로 쓴다.
 
