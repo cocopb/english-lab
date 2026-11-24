@@ -610,6 +610,85 @@ window.PART3 = [
       { q: "What is suggested about the project management course?", choices: ["It is taught by several instructors", "It is required for all managers", "It will be offered only online from now on", "It is popular among employees"], answer: 3, explanation: "추론 문제다. 근거 1: 2번째 대사(남자) it filled up in two days. 근거 2: 같은 대사 We're adding an online version. 이틀 만에 마감되어 과정을 하나 더 여는 것이므로 인기가 많다. 오답: (A) 같은 강사가 가르친다. (B) 관리자 필수 과정이라는 말은 없다. (C) 온라인 과정을 '추가'하는 것이지 대면 과정을 없앤다는 말은 없다." },
       { q: "What does the man say about registration for the online class?", choices: ["It requires a fee", "It is open until the fifteenth", "It must be done in person", "It closed on Monday"], answer: 1, explanation: "근거: 6번째 대사(남자) Registration for the online class stays open until the fifteenth. 오답: (A) 수강료와 (C) 직접 방문은 나오지 않는다. (D) 월요일은 관리자가 돌아오는 날이고, 그때도 늦지 않다고 했다." }
     ]
+  },
+  {
+    id: "p327",
+    title: "시상식 만찬 준비",
+    graphic: {
+      title: "Westbrook Hotel — Event Halls",
+      columns: ["Hall", "Capacity", "Stage"],
+      rows: [
+        ["Birch Hall", "60", "Yes"],
+        ["Aspen Hall", "100", "No"],
+        ["Maple Hall", "120", "Yes"],
+        ["Willow Hall", "200", "Yes"]
+      ]
+    },
+    script: [
+      { speaker: "W", text: "The hotel sent the list of halls for our awards dinner in June. Have you finalized the guest count?" },
+      { speaker: "M", text: "Ninety-two people have replied so far, and I don't expect many more. Let's plan for about a hundred." },
+      { speaker: "W", text: "We'll need a stage for the award presentations, too." },
+      { speaker: "M", text: "Right. And the CEO asked us to keep costs down, so let's not book a hall that's much bigger than we need." },
+      { speaker: "W", text: "Agreed. I'll also ask whether they can set up a screen for the slideshow." },
+      { speaker: "M", text: "Good. Could you check whether there's parking for the guests as well? People complained about it last year." }
+    ],
+    questions: [
+      { q: "What are the speakers mainly discussing?", choices: ["Preparations for a company event", "A complaint from a hotel guest", "The cost of a slideshow", "A change to the CEO's schedule"], answer: 0, explanation: "근거: 1번째 대사(여자) The hotel sent the list of halls for our awards dinner in June. 이후 인원·무대·비용·화면·주차를 정한다. awards dinner를 company event로 바꿔 표현했다. 오답: (B) 불만은 6번째 대사에서 작년 손님들이 주차 문제로 한 것이고, 호텔 투숙객 이야기가 아니다. (C) 슬라이드 쇼는 화면을 설치할 수 있는지만 묻는다. (D) CEO는 비용을 줄이라고 했을 뿐 일정 변경은 없다." },
+      { q: "Look at the graphic. Which hall will the speakers most likely reserve?", choices: ["Birch Hall", "Aspen Hall", "Maple Hall", "Willow Hall"], answer: 2, graphic: true, link: "about a hundred", explanation: "시각 정보 연계 문제다. 근거 1: 2번째 대사(남자) Let's plan for about a hundred. 근거 2: 3번째 대사(여자) We'll need a stage. 근거 3: 4번째 대사(남자) let's not book a hall that's much bigger than we need. 도표에서 100명이 들어가고 무대가 있는 홀 가운데 가장 작은 곳은 Maple Hall(120석)이다. 대화에는 홀 이름이 나오지 않는다. 오답: Birch Hall(A)은 60석이라 모자라고, Aspen Hall(B)은 무대가 없으며, Willow Hall(D)은 200석이라 필요보다 훨씬 크다." },
+      { q: "What does the man ask the woman to check?", choices: ["Whether a screen is available", "How many guests have replied", "What the dinner menu will be", "Whether there is parking for guests"], answer: 3, explanation: "근거: 6번째 대사(남자) Could you check whether there's parking for the guests as well? 오답: (A) 화면은 5번째 대사에서 여자가 스스로 묻겠다고 한 것이다. (B) 답장 수는 2번째 대사에서 남자가 이미 말했다(92명). (C) 메뉴는 나오지 않는다." }
+    ]
+  },
+  {
+    id: "p328",
+    title: "소셜 미디어 담당자 면접",
+    script: [
+      { speaker: "M", text: "Thanks for coming in today. Your application says you've run the social media accounts for two restaurants." },
+      { speaker: "W", text: "That's right. At the second one, I grew our followers from about two thousand to nine thousand in a year." },
+      { speaker: "M", text: "Impressive. This role also involves writing our monthly newsletter. Have you done much writing?" },
+      { speaker: "W", text: "Not newsletters exactly, but I wrote all of our posts and the weekly specials menu." },
+      { speaker: "M", text: "Good. We also offer a training budget, so you could take a writing course if you wanted." },
+      { speaker: "W", text: "That's music to my ears. I've been looking for a course like that." },
+      { speaker: "M", text: "Great. What comes next is a short writing test. I'll email it to you tonight, and you'll have two days to send it back." }
+    ],
+    questions: [
+      { q: "What has the woman done in her previous jobs?", choices: ["Opened a restaurant", "Managed social media accounts", "Taught writing classes", "Printed newsletters"], answer: 1, explanation: "근거: 1번째 대사(남자) Your application says you've run the social media accounts for two restaurants. 2번째 대사(여자) That's right. run을 managed로 바꿔 표현했다. 오답: (A) 식당은 여자가 일했던 곳이지 직접 연 곳이 아니다. (C) 글쓰기 수업은 앞으로 들을 수 있는 것이다(5번째 대사). (D) 뉴스레터는 새 일에서 맡을 일이고, 4번째 대사에서 뉴스레터는 써 본 적이 없다고 했다." },
+      { q: "What does the woman mean when she says, \"That's music to my ears\"?", choices: ["She is pleased to hear about the offer", "She would like to work at a music venue", "She did not hear the man clearly", "She listens to music while she writes"], answer: 0, quote: "That's music to my ears", explanation: "의도 파악 문제다. 근거: 바로 앞 5번째 대사(남자)가 교육비를 지원하니 글쓰기 강좌를 들을 수 있다고 했고, 여자는 이 말 뒤에 그런 강좌를 찾고 있었다고 한다. music to my ears는 '듣던 중 반가운 소리'라는 뜻이다. 오답: (B)·(D)는 music을 글자 그대로 읽은 함정이다. (C) 잘 들었기 때문에 바로 강좌 이야기를 이어 간다." },
+      { q: "What will the man most likely do tonight?", choices: ["Call the woman's references", "Post a job opening", "Send the woman a test", "Review a newsletter"], answer: 2, explanation: "근거: 7번째 대사(남자) What comes next is a short writing test. I'll email it to you tonight. 오답: (A) 추천인 연락, (B) 채용 공고 게시, (D) 뉴스레터 검토는 나오지 않는다." }
+    ]
+  },
+  {
+    id: "p329",
+    title: "당일 서류 픽업",
+    script: [
+      { speaker: "W", text: "Hi, I need a package picked up from our office today. It has to reach a client in Denver by tomorrow morning." },
+      { speaker: "M", text: "Our overnight service delivers by ten in the morning, as long as we pick it up by four." },
+      { speaker: "W", text: "The documents still need our director's signature, and she's in a meeting from two to three thirty. Could your driver come a little later, say four fifteen?" },
+      { speaker: "M", text: "I'm afraid four o'clock is four o'clock. After that, our truck leaves for the airport." },
+      { speaker: "W", text: "All right. I'll get her signature right after the meeting. How much is it for a large envelope?" },
+      { speaker: "M", text: "Forty-five dollars. I'll schedule the pickup for three forty-five, and the driver will call when he arrives." }
+    ],
+    questions: [
+      { q: "Why is the woman calling?", choices: ["To complain about a late delivery", "To change a delivery address", "To ask about a lost envelope", "To arrange a pickup for a package"], answer: 3, explanation: "근거: 1번째 대사(여자) I need a package picked up from our office today. 오답: (A) 늦은 배송 불만은 없다. (B) 덴버는 처음부터 보낼 곳이고 주소를 바꾸지 않는다. (C) 큰 봉투는 5번째 대사에서 요금을 묻는 것이지 분실 이야기가 아니다." },
+      { q: "What does the man mean when he says, \"four o'clock is four o'clock\"?", choices: ["He wants to confirm the current time", "The pickup cannot be later than four", "The office closes at four", "The driver usually arrives early"], answer: 1, quote: "four o'clock is four o'clock", explanation: "의도 파악 문제다. 근거: 바로 앞 3번째 대사(여자)가 4시 15분에 와 줄 수 있느냐고 물었고, 남자는 이 말 뒤에 그 뒤에는 트럭이 공항으로 떠난다고 한다. 4시라는 마감은 늦출 수 없다는 뜻이다. 오답: (A)는 같은 시각을 되풀이한 말을 시간 확인으로 읽은 함정이다. (C) 사무실이 닫는 시각이 아니라 픽업 마감이다. (D) 기사가 일찍 온다는 말은 없다." },
+      { q: "When will the package be picked up?", choices: ["At 3:45", "At 3:30", "At 4:00", "At 4:15"], answer: 0, explanation: "근거: 6번째 대사(남자) I'll schedule the pickup for three forty-five. 오답: 3:30(B)은 이사의 회의가 끝나는 시각, 4:00(C)은 픽업 마감, 4:15(D)는 여자가 처음에 부탁했다가 안 된다고 들은 시각이다." }
+    ]
+  },
+  {
+    id: "p330",
+    title: "다리 통제와 출퇴근",
+    script: [
+      { speaker: "M", text: "Did you hear the Fulton Bridge is shutting down for repairs all next week?" },
+      { speaker: "W", text: "Yes, and the detour adds about forty minutes to my drive. I'm thinking of taking the train instead." },
+      { speaker: "M", text: "I take the seven ten every day. It's crowded, but it gets downtown in twenty-five minutes." },
+      { speaker: "W", text: "That's faster than I expected. Is there parking at the station?" },
+      { speaker: "M", text: "There's a lot, but it's usually full by seven. You might be better off taking the number twelve bus to the station." },
+      { speaker: "W", text: "I'll try that. I'll also ask our manager whether I can start at nine thirty next week, just in case." }
+    ],
+    questions: [
+      { q: "What will happen next week?", choices: ["A train line will be extended", "A new bus route will open", "A bridge will be closed", "The office will move downtown"], answer: 2, explanation: "근거: 1번째 대사(남자) the Fulton Bridge is shutting down for repairs all next week. shutting down을 will be closed로 바꿔 표현했다. 오답: (A) 기차 노선 연장과 (B) 새 버스 노선은 나오지 않는다. 12번 버스는 원래 있는 노선이다. (D) 시내는 기차가 가는 곳일 뿐 사무실 이전 이야기는 없다." },
+      { q: "What does the man say about the parking lot at the station?", choices: ["It is free on weekdays", "It is being repaved", "It is next to the bus stop", "It fills up early"], answer: 3, explanation: "근거: 5번째 대사(남자) There's a lot, but it's usually full by seven. full by seven을 fills up early로 바꿔 표현했다. 오답: (A) 요금, (B) 포장 공사, (C) 버스 정류장 위치는 말하지 않았다." },
+      { q: "What will the woman most likely do next week?", choices: ["Drive her usual route", "Take a bus to the train station", "Work from home", "Ride to work with the man"], answer: 1, explanation: "근거: 5번째 대사(남자) You might be better off taking the number twelve bus to the station. 6번째 대사(여자) I'll try that. 오답: (A) 평소 길은 우회로 때문에 40분이 더 걸려서 기차를 타려고 한다. (C) 재택근무가 아니라 9시 30분 출근을 물어보겠다고 했다. (D) 남자와 함께 간다는 말은 없다." }
+    ]
   }
 ];
 

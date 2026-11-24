@@ -1428,19 +1428,25 @@ function runReachabilityTests() {
   console.log('  ℹ RC 풀세트 구성에 없는 모양이라 풀세트에는 안 나오는 지문 ' + offShape.length + '개' +
     (offShape.length ? ': ' + offShape.map(p => p.id + '(' + shapeOf(p) + ')').join(', ') : ''));
 
-  // 미니 모의고사: 모든 Part 5 문항·Part 6 세트·Part 7 지문에 닿는지.
+  // 미니 모의고사: 모든 Part 5 문항·Part 6 세트·Part 7 지문에 닿는지. 지문·세트는 한 회에 한 번으로 센다.
+  // Part 7은 문항 수 합 7·8 조합으로 뽑아서 지문마다 확률이 다르다. 가장 드문 4문항 단일 지문은 회당 약 2%라
+  // 200회로는 한 번도 안 나올 확률이 지문당 약 1%여서 검사가 간헐적으로 실패했다 (2026-11-24). 그래서 미니만 1,500회 돌린다.
+  const MINI_REACH_RUNS = 1500;
   const mini = { p5: new Map(), p6: new Map(), p7: new Map() };
   const qIdByText = new Map(W.GRAMMAR_QUIZ.map(q => [q.question, q.id]));
-  for (let run = 0; run < REACH_RUNS; run++) {
+  for (let run = 0; run < MINI_REACH_RUNS; run++) {
+    const sets = new Set(), passagesSeen = new Set();
     miniApi.build().forEach(item => {
       if (item.part === 'p5') bump(mini.p5, qIdByText.get(item.prompt || item.question || item.q));
-      else if (item.part === 'p6') bump(mini.p6, item.group.set.id);
-      else if (item.part === 'p7') bump(mini.p7, item.group.passage.id);
+      else if (item.part === 'p6') sets.add(item.group.set.id);
+      else if (item.part === 'p7') passagesSeen.add(item.group.passage.id);
     });
+    sets.forEach(id => bump(mini.p6, id));
+    passagesSeen.forEach(id => bump(mini.p7, id));
   }
-  reachAndSkew('미니 모의고사 Part 5', W.GRAMMAR_QUIZ, mini.p5, REACH_RUNS, 0, false);
-  reachAndSkew('미니 모의고사 Part 6 세트', W.PART6, mini.p6, REACH_RUNS, 0, false);
-  reachAndSkew('미니 모의고사 Part 7 지문', W.PASSAGES, mini.p7, REACH_RUNS, 0, false);
+  reachAndSkew('미니 모의고사 Part 5', W.GRAMMAR_QUIZ, mini.p5, MINI_REACH_RUNS, 0, false);
+  reachAndSkew('미니 모의고사 Part 6 세트', W.PART6, mini.p6, MINI_REACH_RUNS, 0, false);
+  reachAndSkew('미니 모의고사 Part 7 지문', W.PASSAGES, mini.p7, MINI_REACH_RUNS, 0, false);
 }
 
 (async () => {
