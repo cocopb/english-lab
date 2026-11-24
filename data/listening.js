@@ -1045,5 +1045,113 @@ window.PART4 = [
       { q: "Why does the speaker mention a vacuum cleaner?", choices: ["To describe a new product", "To show that the work will not disturb employees", "To explain why the prices are low", "To ask listeners to buy their own equipment"], answer: 1, explanation: "추론 문제다. 근거: 3번째 문장 We work after your business closes, so your employees never have to work around a vacuum cleaner. 업무가 끝난 뒤에 일하니 직원들이 청소기 소리나 움직임에 방해받지 않는다는 것을 보여 주려는 말이다. 오답: (A) 새 제품 소개가 아니다. (C) 가격 이야기와 관계없다. (D) 4번째 문장에서 용품은 업체가 모두 가져온다고 했다." },
       { q: "What do new customers receive this month?", choices: ["A free carpet cleaning", "Free cleaning supplies", "A discount on their first month", "An extra cleaning each week"], answer: 2, explanation: "근거: 5번째 문장 new customers on a six-month plan pay half price for their first month. half price를 discount로 바꿔 표현했다. 오답: (A) 카펫 청소는 나오지 않는다. (B) 용품을 가져온다는 것은 혜택이 아니라 서비스 방식이다. (D) 추가 청소는 나오지 않는다." }
     ]
+  },
+  {
+    id: "pt418",
+    type: "라디오 방송",
+    title: "재활용 수거 방식 변경",
+    voice: "M",
+    script: [
+      "Good morning, and thanks for tuning in to Valley Community Radio.",
+      "First, the city says that starting next month, recycling will be collected every week instead of every other week.",
+      "Residents will also be able to put glass bottles and jars in their blue bins, which until now had to be taken to a drop-off center.",
+      "To make room for the extra material, every household will get a larger bin before the change begins.",
+      "If you'd rather keep your current bin, just fill out a short form on the city's website before the fifteenth.",
+      "Collection days themselves are not changing, so your bin should go out on the same day as always.",
+      "After the break, we'll talk with the owner of a local bakery that recently switched to compostable packaging."
+    ],
+    questions: [
+      { q: "What is the main topic of the broadcast?", choices: ["The opening of a new drop-off center", "A new bakery in the area", "A change to collection days", "Changes to a recycling service"], answer: 3, explanation: "주제·목적 문제다. 근거: 2번째 문장 starting next month, recycling will be collected every week instead of every other week. 이후 유리병 배출, 큰 수거함, 신청 방법이 이어진다. 오답: (A) 수거 센터는 지금까지 유리를 가져가던 곳으로 한 번 나온다. (B) 빵집은 광고 뒤에 이어질 인터뷰 상대로 한 번 나온다. (C) 6번째 문장에서 수거 요일은 바뀌지 않는다고 했다. 지문이 '하지 않는다'고 한 것을 고르게 하는 함정이다." },
+      { q: "What will residents be able to put in their blue bins?", choices: ["Glass containers", "Food waste", "Old electronics", "Garden waste"], answer: 0, explanation: "근거: 3번째 문장 Residents will also be able to put glass bottles and jars in their blue bins. bottles and jars를 glass containers로 바꿔 표현했다. 오답: (B) 음식물, (C) 전자 제품, (D) 정원 쓰레기는 나오지 않는다. compostable packaging은 빵집 이야기다." },
+      { q: "What will listeners hear after the break?", choices: ["A traffic report", "An interview with a business owner", "A message from the mayor", "Music requests from listeners"], answer: 1, explanation: "근거: 7번째 문장 After the break, we'll talk with the owner of a local bakery. 오답: (A) 교통 정보, (C) 시장의 메시지, (D) 신청곡은 나오지 않는다." }
+    ]
+  },
+  {
+    id: "pt419",
+    type: "견학 안내",
+    title: "방송국 견학",
+    voice: "W",
+    script: [
+      "Welcome to the Channel Nine broadcast center. I'm Bianca, and I'll be your guide for the next hour.",
+      "We'll begin in the newsroom, where our reporters are getting ready for the noon news, and then we'll move to the main studio.",
+      "The studio is kept quite cold because the lights produce a lot of heat, so you may want to keep your jackets on.",
+      "During the live broadcast, you'll watch from a glass booth above the studio floor.",
+      "Please don't use flash photography in the booth. The anchors can see it through the glass, and believe me, they notice.",
+      "To finish the tour, our staff will photograph you at the anchors' desk, and you'll get a free print to take home."
+    ],
+    questions: [
+      { q: "What is the purpose of the talk?", choices: ["To explain how to become a reporter", "To advertise a photography class", "To introduce a tour of a TV station", "To announce a change to the news schedule"], answer: 2, explanation: "주제·목적 문제다. 근거: 1번째 문장 Welcome to the Channel Nine broadcast center. I'm Bianca, and I'll be your guide. 이후 견학 순서와 주의 사항을 안내한다. 오답: (A) 기자는 뉴스룸에서 일하는 사람으로 나올 뿐 기자가 되는 법은 말하지 않는다. (B) 사진은 플래시 금지와 기념사진 이야기로만 나온다. (D) 정오 뉴스는 그대로 진행되는 프로그램이다." },
+      { q: "Why does the speaker say, \"believe me, they notice\"?", choices: ["To praise the anchors' attention to detail", "To suggest that the listeners take more photos", "To explain why the studio is cold", "To stress that flashes would distract the anchors"], answer: 3, quote: "believe me, they notice", explanation: "의도 파악 문제다. 근거: 같은 5번째 문장 앞부분 Please don't use flash photography in the booth. The anchors can see it through the glass. 플래시를 터뜨리면 생방송 중인 앵커에게 그대로 보여 방해가 된다는 것을 강조하는 말이다. 오답: (A) notice를 '세심하게 알아차린다'는 칭찬으로 글자 그대로 읽은 함정이다. (B) 오히려 사진을 조심하라는 말이다. (C) 스튜디오가 추운 이유는 3번째 문장의 조명 이야기다." },
+      { q: "What is suggested about the tour?", choices: ["It will include part of a live broadcast", "It ends with a meal in the cafeteria", "It is offered only once a week", "It requires advance payment"], answer: 0, explanation: "추론 문제다. 근거 1: 2번째 문장 our reporters are getting ready for the noon news. 근거 2: 4번째 문장 During the live broadcast, you'll watch from a glass booth. 견학 중에 정오 생방송을 위에서 지켜보게 된다. 오답: (B) 식사는 나오지 않고 마지막은 기념사진이다. (C) 견학 횟수와 (D) 요금 이야기는 없다." }
+    ]
+  },
+  {
+    id: "pt420",
+    type: "연설",
+    title: "은퇴 기념사",
+    voice: "M",
+    script: [
+      "Thank you all for coming to celebrate Gloria Pham's retirement after twenty-six years with Ridgeline Logistics.",
+      "Gloria joined us as a dispatcher when we had just four trucks, and today she leads a team that manages more than two hundred.",
+      "Many of you know that she designed the routing system we still use, which lowered our fuel bills by nearly a fifth.",
+      "What fewer people know is that she trained almost every dispatcher in this room, including me.",
+      "Gloria plans to spend her retirement sailing along the coast with her husband, so we've put together something to help with that.",
+      "In a moment, I'll invite her up to the front to open our gift, and after that, lunch will be served in the next room."
+    ],
+    questions: [
+      { q: "What is the purpose of the speech?", choices: ["To introduce a new routing system", "To honor a retiring employee", "To welcome a new dispatcher", "To announce a company expansion"], answer: 1, explanation: "주제·목적 문제다. 근거: 1번째 문장 Thank you all for coming to celebrate Gloria Pham's retirement after twenty-six years. 이후 그녀의 경력과 공을 소개한다. 오답: (A) 경로 시스템은 그녀가 예전에 만든 것으로, 지금도 쓰는 기존 시스템이다. (C) 신입 배차 담당자를 환영하는 자리가 아니다. (D) 트럭이 4대에서 200대 넘게 늘었다는 것은 지난 일이고 확장 발표가 아니다." },
+      { q: "What is suggested about the speaker?", choices: ["He designed a routing system", "He plans to retire soon", "He once worked as a dispatcher", "He will go sailing with Ms. Pham"], answer: 2, explanation: "추론 문제다. 근거: 4번째 문장 she trained almost every dispatcher in this room, including me. 화자도 그녀에게 배운 배차 담당자였다는 뜻이다. 오답: (A) 경로 시스템은 Ms. Pham이 만들었다(3번째 문장). (B) 은퇴하는 사람은 Ms. Pham이다. (D) 항해는 Ms. Pham이 남편과 할 일이다(5번째 문장)." },
+      { q: "What will happen next?", choices: ["Lunch will be served", "A video will be shown", "Awards will be presented", "Ms. Pham will open a gift"], answer: 3, explanation: "근거: 6번째 문장 In a moment, I'll invite her up to the front to open our gift, and after that, lunch will be served. 오답: (A) 점심은 선물을 연 뒤(after that)에 나온다. (B) 영상과 (C) 시상은 나오지 않는다." }
+    ]
+  },
+  {
+    id: "pt421",
+    type: "자동 응답",
+    title: "극장 매표소 자동 응답",
+    voice: "W",
+    script: [
+      "You've reached the Granville Theater box office, which is now closed.",
+      "We reopen at noon on Tuesday.",
+      "Please note that this weekend's performances of The Lighthouse Keeper are sold out, but a waiting list opens at the box office one hour before each show.",
+      "Tickets for our spring season go on sale to the public next Monday, and members can buy them starting this Thursday.",
+      "Membership also includes free coat check and ten percent off at our café; you can join on our website.",
+      "If you're calling about a ticket you have already bought, please leave your name and number after the tone, and we will return your call on the next business day."
+    ],
+    questions: [
+      { q: "What is the purpose of the message?", choices: ["To give callers information about a theater", "To announce that a performance has been canceled", "To promote a café menu", "To explain how to apply for a job"], answer: 0, explanation: "주제·목적 문제다. 근거: 1번째 문장 You've reached the Granville Theater box office, which is now closed. 이후 영업시간, 매진 공연, 판매 일정, 회원 혜택, 문의 방법을 안내한다. 오답: (B) 공연은 취소된 것이 아니라 매진이다(3번째 문장). (C) 카페는 회원 할인이 되는 곳으로 한 번 나온다. (D) 채용 이야기는 없다." },
+      { q: "What is mentioned about this weekend's performances?", choices: ["They will start an hour later", "They are sold out", "They are free for members", "They have moved to a new venue"], answer: 1, explanation: "근거: 3번째 문장 this weekend's performances of The Lighthouse Keeper are sold out. 오답: (A) '한 시간'은 공연 한 시간 전에 대기 명단을 받는다는 말이다. (C) 회원 혜택은 선판매, 물품 보관, 카페 할인이다. (D) 장소 변경은 없다." },
+      { q: "What will happen this Thursday?", choices: ["The box office will open early", "The theater will close for repairs", "Members can start buying spring tickets", "The waiting list will be posted online"], answer: 2, explanation: "근거: 4번째 문장 Tickets for our spring season go on sale to the public next Monday, and members can buy them starting this Thursday. 오답: (A) 매표소를 일찍 연다는 말은 없다. (B) 수리로 닫는다는 말은 없다. (D) 대기 명단은 공연 한 시간 전에 매표소에서 받는다." }
+    ]
+  },
+  {
+    id: "pt422",
+    type: "일기 예보",
+    title: "주간 날씨와 공연 날짜 변경",
+    voice: "M",
+    graphic: {
+      title: "This Week's Forecast",
+      columns: ["Day", "Forecast", "High"],
+      rows: [
+        ["Monday", "Rain", "58 F"],
+        ["Tuesday", "Rain", "61 F"],
+        ["Wednesday", "Sunny", "68 F"],
+        ["Thursday", "Cloudy", "64 F"],
+        ["Friday", "Sunny", "70 F"],
+        ["Saturday", "Storms", "59 F"]
+      ]
+    },
+    script: [
+      "Good morning, and here's your weather for the week ahead.",
+      "After a gray and wet start, we'll see some breaks in the clouds, but things turn stormy again by the weekend.",
+      "Because of those weekend storms, organizers of the Elmwood Park jazz concert, originally planned for Saturday, have moved it to the first sunny day of the week.",
+      "The concert begins at six in the evening, and admission is free, but bring a blanket, since all of the seating is on the grass.",
+      "If you're driving this morning, watch for standing water on Route Nine near the river.",
+      "I'll be back with another update at noon."
+    ],
+    questions: [
+      { q: "What is the main purpose of the broadcast?", choices: ["To promote a jazz album", "To report on road construction", "To announce the opening of a park", "To give a weather forecast"], answer: 3, explanation: "주제·목적 문제다. 근거: 1번째 문장 here's your weather for the week ahead. 이후 한 주의 날씨와 그에 따른 공연 날짜 변경, 도로 상황을 알린다. 오답: (A) 재즈는 공연 이야기로 나올 뿐 음반 홍보가 아니다. (B) 5번째 문장은 도로에 고인 물을 조심하라는 말이지 공사 소식이 아니다. (C) 공원은 원래 있는 공연 장소다." },
+      { q: "Look at the graphic. On which day will the concert most likely be held?", choices: ["Wednesday", "Thursday", "Friday", "Saturday"], answer: 0, graphic: true, link: "first sunny day", explanation: "시각 정보 연계 문제다. 근거: 3번째 문장 have moved it to the first sunny day of the week. 도표에서 월·화요일은 비이고 처음으로 맑은 날은 Wednesday다. 담화에는 요일이 토요일(원래 날짜)만 나온다. 오답: Thursday(B)는 흐리고, Friday(C)는 맑지만 첫 번째 맑은 날이 아니며, Saturday(D)는 폭풍 때문에 옮기기 전의 원래 날짜다." },
+      { q: "What does the speaker advise people attending the concert to bring?", choices: ["An umbrella", "A blanket", "A ticket", "A folding chair"], answer: 1, explanation: "근거: 4번째 문장 admission is free, but bring a blanket, since all of the seating is on the grass. 오답: (A) 우산은 말하지 않았고 공연 날은 맑은 날이다. (C) 입장은 무료라 표가 필요 없다. (D) 의자가 아니라 잔디에 앉는다." }
+    ]
   }
 ];
