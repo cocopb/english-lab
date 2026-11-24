@@ -795,14 +795,18 @@
   - p241 "Yes, I sent it already."는 Yes를 빼면 간접 응답이 된다
   - p208의 교체 후보 "I sent you a text."는 정답으로 성립할 수 있어 쓰지 않았다
   - p256 This bag isn't yours, is it? — 유사 발음 후보 "It's in the back."이 '(제 건) 뒤에 있어요'로 성립해 "I'll be right back."으로 바꿨다
+  - p271 You've already booked the hotel, haven't you? — 연상 오답 "It has a nice pool."이 '(그 호텔은) 수영장이 좋아요'로 읽혀 "Their pool was closed last summer."로 바꿨다. 연상 오답은 주어나 시점을 질문과 다르게 두면 생략을 채워도 답이 되지 않는다(사용자 기준)
   - p249 선택의문문 — "A lot of people are coming."(Yes를 뺀 꼴)이 '사람이 많으니 실내로'로 읽혀 "Yes, at twelve thirty."로 바꿨다
 - **검사:** 사람 검토.
 
 ### L8. Part 2 질문 유형 분포
 
 - 실제 토익 25문항 비율로 정한 100문항 목표: 의문사 44, 일반 12, 부정·부가 12, 선택 8, 제안·요청 12, 평서문 12
-  - 지금(73문항): wh 31, yesno 9, negtag 9, choice 6, request 9, statement 9
-- 의문사 안쪽은 Who·What·When·Where·Why·How를 고르게 둔다. 지금 각 5개, Which 1개다. 45문항 때는 What 1·Where 2로 모자랐다.
+  - 지금(100문항, 완료): wh 44, yesno 12, negtag 12, choice 8, request 12, statement 12
+- 의문사 안쪽은 Who·What·When·Where·Why·How를 고르게 둔다. 지금 각 7개, Which 2개다. 45문항 때는 What 1·Where 2로 모자랐다.
+  - How 7개는 변형을 섞었다: How long, How do I get, How many, How often, How did ~ go, How much, How far
+  - What 7개도 What time, What kind, What color를 섞었다
+- 제안·요청 정답은 수락(p279), 거절(p288), 조건부 수락(p298 "As long as you return it by four.")을 섞는다. 평서문 정답은 공감(p283), 제안(p297), 정보(p300)를 섞는다.
 - 부정·부가 문항 해설에는 한국어와 Yes/No가 반대라는 점을 쓴다(p247 "안 와요? — 네, 못 가요"는 영어로 No).
 - 선택의문문 정답은 하나를 고르는 것 말고도 제3의 답(p259 수요일로 미뤄짐), 기준 제시(p273 더 조용한 쪽), 보류(p249 예보를 보고)가 있다.
 - **질문 설계**
